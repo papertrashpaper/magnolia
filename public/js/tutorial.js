@@ -1,19 +1,90 @@
-import {newGame} from './engine.js?v=6';
-import {CARD} from './cards.js?v=3';
+import {newGame,level,power,previewPlacement,legalCells,STAT_NAMES} from './engine.js?v=11';
+import {CARD,RACES,JOBS} from './cards.js?v=3';
 
-export function tutorialGame(name){
- const game=newGame([{id:'human',name:name.trim()||'あなた',cpu:false},{id:'cpu-0',name:'宿屋の常連',cpu:true}],{warVP:[4,0]});
- // 実際の山札と交換し、練習中もカードの枚数を保つ。
- const choices=[...new Set(game.deck.filter(id=>CARD[id].cost<=2))].slice(0,5);
- for(let i=0;i<choices.length;i++){
-  const index=game.deck.indexOf(choices[i]);
-  [game.players[0].hand[i],game.deck[index]]=[game.deck[index],game.players[0].hand[i]];
- }
- game.tutorial=true;return game;
+export const TUTORIAL_CHAPTERS=[
+ {title:'序盤：王国をつくる',intro:'マグノリアは、カードを王国に配置して勝利点（VP）を稼ぐゲームです。最後に最もVPが多い人が勝ちます。第1章は何もない王国から、手札交換・配置・各フェーズを1回ずつ試します。',goal:'最初の例：人間の行商を置き、その後ろにドワーフの料理人を置いてみましょう。行商の収入、料理人の発展とVPを1ラウンドで確認できます。別のカードを試しても大丈夫です。'},
+ {title:'中盤：育てて組み合わせる',intro:'第2章は練習用に準備した途中盤面です。前の章の続きではありません。技術2点・信仰2点、7金から始めます。どちらもあと1点でLv.2。同じ種族を並べることと、レベルに応じたカード効果を試しましょう。',goal:'ドワーフが横に2体並んでいます。3体目を同じ横列に置くと技術ボーナス。信仰を伸ばすカードや、レベルで強くなるカードも比べてみましょう。'},
+ {title:'終盤：勝ち切るタイミング',intro:'第3章も独立した例題です。王国は7体、技術・信仰はLv.3、VPは39。得点用のカードが既にあるため、この1ラウンドで終了条件に到達します。最後の配置を考え、残金を含む最終得点まで確認しましょう。',goal:'戦力を増やす・今すぐVPを増やす・お金を残す、どれがよさそうでしょうか。9体になると終了することも意識して、好きな一手を試してください。'},
+];
+const specs=[
+ {gold:5,tech:0,faith:0,vp:0,board:[],hand:['human_marchant','dwarf_cook','dwarf_pugilist','elf_marchant','demon_storm'],enemy:[],enemyHand:['human_marchant','goblin_soldier','elf_marchant','dwarf_cook','elf_saint']},
+ {gold:7,tech:2,faith:2,vp:12,board:[['dwarf_cook',0,0],['dwarf_gem',1,0],['human_saint',0,1],['elf_mistic',1,1]],hand:['dwarf_pugilist','elf_follower','golem_iron','elf_artist','human_great_marchant'],enemy:[['human_knight',0,0],['human_marchant',1,0],['elf_saint',0,1]],enemyHand:['goblin_soldier','elf_marchant','human_great_marchant','dwarf_cook','elf_artist']},
+ {gold:8,tech:7,faith:7,vp:39,board:[['golem_iron',0,0],['human_knight',1,0],['elf_mistic',2,0],['dwarf_cook',0,1],['human_saint',1,1],['elf_artist',2,1],['human_marchant',0,2]],hand:['elf_follower','dwarf_beer','elf_saint','human_great_marchant','demon_destroy'],enemy:[['demon_pest',0,0],['goblin_great_soldier',1,0],['elf_archer',2,0],['human_great_marchant',0,1]],enemyHand:['goblin_soldier','elf_marchant','human_saint','dwarf_cook','golem_gold']},
+];
+export function tutorialGame(name,chapter=0){
+ if(!Number.isInteger(chapter)||!specs[chapter])throw Error('練習の章が見つかりません。');
+ const g=newGame([{id:'human',name:name.trim()||'あなた',cpu:false},{id:'cpu-0',name:'宿屋の常連',cpu:true,cpuDifficulty:'normal'}],{warVP:[4,0]});
+ // 配られたカードを戻し、練習用のカードを実際の山札から取る。
+ for(const p of g.players){g.deck.push(...p.hand);p.hand=[];}
+ const take=id=>{const i=g.deck.indexOf(id);if(i<0)throw Error(`練習用カードが不足：${id}`);return g.deck.splice(i,1)[0];};
+ const s=specs[chapter],own=g.players[0],enemy=g.players[1];
+ Object.assign(own,{gold:s.gold,tech:s.tech,faith:s.faith,vp:s.vp});
+ Object.assign(enemy,{gold:chapter?6:5,tech:chapter?3:0,faith:chapter?3:0,vp:chapter===2?35:chapter===1?13:0});
+ own.board=s.board.map(([id,x,y])=>({card:take(id),x,y}));
+ enemy.board=s.enemy.map(([id,x,y])=>({card:take(id),x,y}));
+ own.hand=s.hand.map(take);enemy.hand=s.enemyHand.map(take);
+ own.power=power(own);enemy.power=power(enemy);
+ g.tutorial=true;g.tutorialChapter=chapter;return g;
 }
-export function tutorialGuide({round,phase,moves=0,replayPhase=null}){
- if(round>1||phase==='ended'||(phase==='round'&&!replayPhase))return {step:4,title:'最初の1ラウンド、完了！',text:'カードを置くほど王国が育ちます。技術・信仰は1・3・7・15点でレベルアップ。同じ種族や職業を縦横に3枚そろえるとボーナスです。40VP、または9体配置したラウンドで終了します。',target:null,done:true};
- if(replayPhase&&replayPhase!=='draw')return {step:3,title:'戦争から収入まで、増減を見よう',text:'中央の「次の処理」で1つずつ確認します。戦争は各縦列の最前線の戦力で順位を決め、発展で技術・信仰、収入でお金、最後にカードのVPを得ます。全て確認すると結果画面へ進みます。',target:'.replay-controls'};
- if(phase==='draw'||replayPhase==='draw')return {step:1,title:'まずは手札を整えよう',text:'手札は5枚。不要なカードを選ぶと、捨ててから5枚まで補充します。今回は安いカードを用意しました。そのまま「交換せず補充」で進んでもOKです。',target:'#confirmButton'};
- return {step:2,title:moves?'仮配置の増減を確認しよう':'カードを卓に置いてみよう',text:moves?'お金と戦力が変わりました。「最後の配置を戻す」で取り消せます。2枚目は上下左右の「＋」へ。最大2枚置けます。準備ができたら「配置を確定」を押してください。置かなかった枠は、配置処理後に1金ずつもらえます。':'手札のカードを「＋」にドラッグ、またはカードを選んで「＋」を押します。コストはカード左上の数字。まずは1枚置いて、お金の変化を見てみましょう。王国は幅・高さ3マスまで広げられます。',target:moves?'#confirmButton':'.hand'};
+
+export const TUTORIAL_REFERENCE=[
+ {title:'何をするゲーム？ どうなったら勝ち？',paragraphs:['手札からカードを最大2枚ずつ王国へ置き、戦争・カードの効果・配置ボーナスでVPを稼ぎます。戦争だけでなく、毎ラウンドVPを生む王国をつくることも勝ち方です。','誰かが40VP以上、または王国に9体配置したラウンドの最後に終了します。その瞬間には終わらず、全員の戦争・発展・収入・VPを処理してから残金を得点にします。最後に最もVPが高い人が勝ち。同点なら同時優勝です。']},
+ {title:'お金・戦力・技術・信仰・VPの違い',paragraphs:['お金は配置の支払いに使います。戦力は戦争の順位を決める数値。VPは勝敗を決める得点です。現在のVP順位と戦争順位は別なので、戦力で負けていてもVPで勝つことはあります。','技術点と信仰点は、カードの効果を伸ばすための成長値です。支払いに使うお金とは違い、効果を使っても消費しません。ただし、そのレベルを参照するカードがなければ、レベルを上げただけで全カードの戦力やVPが増えるわけではありません。']},
+ {title:'技術・信仰は何点で強くなる？',paragraphs:['点数とレベルは別です。0点＝Lv.0、1〜2点＝Lv.1、3〜6点＝Lv.2、7〜14点＝Lv.3、15点＝Lv.4。点数は15、レベルは4が上限です。盤面のバーは今の点数、下の目盛りは次のレベルへの境目です。','たとえば技術2→3点はLv.1→2になるので、エルフの芸術家の「2VP×技術レベル」は毎ラウンド2→4VPになります。技術3→4点はLv.2のまま。同じ1点でも、境目を越えると効果が大きく伸びます。','信仰を使う例は人間の聖職者の「1VP×信仰レベル」やエルフの神秘家の「自身の追加戦力2×信仰レベル」。神秘家は基本戦力2なので、前線なら信仰Lv.2で戦力6です。技術と信仰は、それぞれ使えるカードと組み合わせて育てましょう。']},
+ {title:'カードはどこを見る？',paragraphs:['左上の金額が配置コスト、その下の剣の数値が基本戦力です。種族と職業は3枚揃えの条件。下の効果欄では「いつ」「何が」「いくつ増えるか」を見ます。カードの詳細でも効果を確認できます。','「配置時」は置いた瞬間に1回、「発展」「収入」「VP」はそのフェーズごとに発動。「戦争VP獲得時」は戦争の報酬VPをもらえた場合に発動します。数字が大きいカードも、支払えるか、前線に置けるか、効果の条件を満たせるかを確認しましょう。']},
+ {title:'手札交換は何を捨てる？',paragraphs:['毎ラウンドのドローで、残っている手札から好きな枚数を捨てて5枚まで補充します。捨てなくても補充されます。交換はそのラウンドで1回だけ。捨てたカードの代わりに何が来るかは分かりません。','最初は今のお金で置けるカードを残すと動きやすくなります。ただし、高いカードでも次に置きたいなら残せます。中盤以降は自分の技術・信仰で効果が伸びるカード、あと1枚で種族・職業が揃うカードを探しましょう。']},
+ {title:'配置の操作・順番・取り消し',paragraphs:['カードを選び、王国の「＋」を押すかタップして配置します。PCではドラッグ、スマホでも上下にドラッグして配置できます。スマホの手札を横にスワイプすると、別のカードが見えます。2枚目の手札は1枚目を置いた後の残りから選びます。','配置は仮置きです。お金・効果・戦力の変化を見て、「最後の配置を戻す」でやり直せます。最後に配置を確定します。オンラインでは全員の確定後に順番に処理が表示されます。','1枚ごとに支払い→配置時効果→配置ボーナスの順に処理します。1枚目で得たお金や成長値を2枚目に使える場合があるので順番も大切です。置かない枠1つにつき1金を配置処理の後にもらいます。この報酬を今回の配置代金には使えません。お金が足りないカードは配置・ドラッグできません。']},
+ {title:'どこに置く？ 前線と3×3の考え方',paragraphs:['カードは上下左右につなげて置きます。斜めだけの接続は不可。王国全体の幅・高さはそれぞれ3マスまで。最初のカードの最終的な位置は、あとからどちらへ広げたかで決まります。','画面の上が前方。各縦列で一番上にある1体が前線で、原則そのカードの戦力だけを合計します。高戦力カードを同じ列の後ろに置いても戦力は増えません。前に置くと前線が交代します。エルフの射手のような、後ろからでも参戦できる例外があります。','後列でも収入・成長・VPなどの効果は使えます。戦うカードを前、王国を支えるカードを後ろに置くと役割が分かりやすくなります。配置済みカードは移動・置き換えできず、王国全体もずらせません。空きをどこに残すかも考えましょう。']},
+ {title:'3枚揃えると何が起きる？',paragraphs:['縦か横の1列3枚を、同じ種族または同じ職業で揃えると配置ボーナスが出ます。列が揃うと1回発動し、次のラウンドに自動で繰り返すものではありません。同時に複数列や種族・職業が揃えば、すべて発動します。','種族：人間5VP／ドワーフ技術2／エルフ信仰2／ゴブリン3金／ゴーレム技術2＋信仰2／デーモン7VP。職業：戦士3金／商人5VP／職人技術2／聖職者信仰2／魔術師1金＋3VP／君主9VP。','2枚揃ったからといって3枚目を無理に探す必要はありません。支払い、前線、カード効果と両立できると強力です。第2章ではドワーフ2枚の横列を用意してあるので、ボーナスが起きる配置を試せます。']},
+ {title:'1ラウンドに起こること',paragraphs:['ドローで手札を整える→配置で最大2枚置く→戦争で前線の戦力を比べる→発展で技術・信仰を増やす→収入で基本3金とカードの収入を得る→VPフェーズでカードの得点を得る、の順です。','配置後のお金が少なくても、収入フェーズには基本3金が入ります。発展でレベルが上がると、その後の収入・VPでは新しいレベルを参照します。戦争は発展より先なので、このラウンドの発展で得るレベルを今の戦争には使えません。','2人戦の戦争報酬は標準で1位4VP・2位0VP。3人以上は1位5VP・2位3VP・3位以下0VP。設定で変更できます。同戦力は同順位で、次の順位を飛ばします。中央の増減メッセージで、どの効果によって増えたか確認しましょう。']},
+ {title:'序盤・中盤・終盤はどう動く？',paragraphs:['序盤は安いカードで、収入や毎ラウンドの成長・VPをつくると後の選択が増えます。「毎ラウンド＋1」のカードも早く置けば何度も使えます。高いカードだけを集めると、置けないまま手番を終えることがあります。','中盤は、既にあるカードに合う技術・信仰、3枚揃え、前線の強化を比べます。戦力は自分の合計だけでなく相手との比較が大切。相手を越えられるか、今の順位を保てるかを見てからお金を使いましょう。','終盤は残りの得点機会が少なくなります。収入を育てるより今すぐVPを取る方がよいこともあります。9体目を置くとそのラウンドで終了するため、まだ成長させたいなら空きを残す選択もできます。逆にリードしているなら終了を早める考え方もあります。']},
+ {title:'最後のお金と、よくある勘違い',paragraphs:['終了時は残金3金につき1VP、端数切り捨て。たとえば8金なら2VP、9金なら3VPです。人間の君主がいる場合は、このお金のVPを3倍にします。終了ラウンドの収入も含めた残金で計算します。','技術・信仰そのものは最後にVPへ換算されません。レベルを使うカードが得点を生みます。お金を使い切る・必ず2枚置く・戦力だけを伸ばす、といった動きが毎回正解とは限りません。王国の得点源と相手、終わるタイミングを一緒に見ましょう。']},
+];
+const phaseLessons={
+ place:['配置：先に代金、そのあと効果','各カードの処理は支払い→配置時効果→配置ボーナス。中央で理由つきの増減を確認します。置かなかった枠の1金は、今回の配置が終わってから入ります。'],
+ war:['戦争：相手と前線を比べる','各縦列の金色の前線の戦力を合計します。2人戦のこの練習では1位4VP、2位0VP。同じ戦力なら両者1位。戦争VPを得たときだけ働くカードの追加効果も確認しましょう。'],
+ develop:['発展：点数とレベルの両方を見る','発展のカードで技術・信仰が増えます。1・3・7・15点に達するとレベルが上がります。この後の収入・VPの効果には新しいレベルを使います。'],
+ income:['収入：次に使うお金をつくる','基本収入3金は毎ラウンド全員が得ます。さらに収入カードの効果を加えます。次の配置で使える金額が増えたか、終了する場合は残金の得点がいくつになるかを見ましょう。'],
+ vp:['VP：王国が生む得点を確認','VP効果は前線・後列を問わず発動します。技術・信仰レベルを参照するカードは、発展後のレベルで計算します。戦争以外の得点源も王国に用意することが大切です。'],
+ final:['最終得点：残金も足して勝敗を決める','全フェーズの後、残ったお金を3金につき1VPにします。最終VPが最も高い人が勝ち。同点なら同時優勝。技術・信仰点をそのまま得点には加えません。'],
+};
+export function tutorialGuide({chapter=0,phase,moves=0,replayPhase=null}){
+ const lesson=TUTORIAL_CHAPTERS[chapter]??TUTORIAL_CHAPTERS[0];
+ if(!replayPhase&&['round','ended'].includes(phase))return {step:4,title:chapter===2?'3章の練習、おつかれさまでした！':'この章の1ラウンドを完了！',text:chapter===0?'お金を払ってカードを置き、戦争・成長・収入・VPが順に発生する流れを体験しました。次は途中盤面から、成長値と組み合わせを練習します。':chapter===1?'成長値は使うカードと組み合わせると役立ちます。3枚揃えとレベルの境目も確認できましたか？ 次は終了直前の盤面で、最後の得点まで体験します。':'最終結果は戦争だけでなく、カードのVP・配置ボーナス・残金の合計で決まります。勝っても負けても練習は完了です。下の解説はいつでも読み直せます。通常対戦では同じ考え方を、自分の引いたカードで試してみましょう。',target:null,done:true};
+ if(replayPhase&&replayPhase!=='draw'){const [title,text]=phaseLessons[replayPhase]??phaseLessons.vp;return {step:3,title,text,target:'.replay-controls'};}
+ if(phase==='draw'||replayPhase==='draw')return {step:1,title:'手札を整える：置けるカードを残そう',text:chapter===0?'最初は5金・手札5枚です。今回は収入・技術・信仰を試せる安いカードと、今は置けない9金の嵐のデーモンを用意しました。不要なカードを押して選び「交換を確定」。そのまま「交換せず補充」でも進めます。':`${lesson.goal} まず手札のコストと効果を確認し、使いたいカードを残しましょう。用意された手札のまま練習するなら「交換せず補充」で進めます。`,target:'.hand'};
+ return {step:2,title:moves?'仮置きの結果を見て、次の一手を考える':'配置する：カードの役割と置き場所を選ぼう',text:moves?'仮置きで変わったお金・技術・信仰・戦力を見ましょう。「最後の配置を戻す」でやり直せます。2枚目の代金は今表示されているお金から支払います。1枚だけでも、何も置かなくても確定できます。準備ができたら配置を確定してください。':`${lesson.goal} 手札を選んで「＋」を押すかタップ、またはドラッグして仮置きします。上が前方。前線のカードで戦力を、後列のカードで収入や成長・VPを支える配置を試してみましょう。`,target:moves?'#confirmButton':'.hand'};
+}
+export function tutorialObservation(player,opponents=[]){
+ if(!player)return [];
+ const tips=[`現在 ${player.gold}金、戦力${power(player)}、技術${player.tech}点（Lv.${level(player.tech)}）、信仰${player.faith}点（Lv.${level(player.faith)}）。`];
+ for(const stat of ['tech','faith']){const next=[1,3,7,15].find(n=>n>player[stat]);if(next)tips.push(`${stat==='tech'?'技術':'信仰'}はあと${next-player[stat]}点でLv.${level(next)}。伸びる効果をカードの詳細で確認しましょう。`);}
+ const enemy=opponents[0];if(enemy)tips.push(`相手の公開盤面の戦力は${power(enemy)}。まだ確定していない配置で変わるので、今の値は目安です。`);
+ // 実際に合法な1枚配置で成立するボーナスだけを案内する。
+ outer:for(let i=0;i<player.hand.length;i++)for(const cell of legalCells(player.board)){
+  if(CARD[player.hand[i]].cost>player.gold)continue;
+  const result=previewPlacement(player,[{handIndex:i,...cell}]);
+  const bonuses=result.placed[0].bonuses;
+  if(bonuses.length){tips.push(`${CARD[player.hand[i]].name}は、置く場所によって${bonuses.map(b=>(b.type==='race'?RACES:JOBS)[b.value]).join('・')}の3枚揃えをつくれます。仮置きでボーナスを確認してみましょう。`);break outer;}
+ }
+ if(player.board.length>=7)tips.push(`いま${player.board.length}/9体。9体になったラウンドで終了します。終える前に、カードのVP効果と残金を確認しましょう。`);
+ return tips;
+}
+
+// 解決済みの実際の記録を使い、効果がないフェーズも理由を伝える。
+export function tutorialPhaseOutcome(resolution,phase,you='human'){
+ if(!resolution||phase==='draw')return [];
+ const events=resolution.events.filter(e=>e.phase===phase&&e.playerId===you);
+ if(!events.length)return [];
+ const p=events.at(-1).after,changes=events.flatMap(e=>e.changes);
+ if(changes.length)return changes.map(c=>`${c.source}：${STAT_NAMES[c.stat]} ${c.before}→${c.after}${['tech','faith'].includes(c.stat)?`（Lv.${level(c.before)}→Lv.${level(c.after)}）`:''}。`);
+ if(phase==='war')return [`あなたは戦力${p.power}で戦争${p.rank}位。今回の戦争報酬は${p.warVP}VPです。報酬が0VPなので、得点を得たときだけの追加効果も発動しません。戦争で得点がなくても、この後の成長・収入・VPは処理されます。`];
+ const cards=p.board.flatMap(b=>CARD[b.card].effects.filter(e=>e.phase===phase).map(e=>({card:CARD[b.card],effect:e})));
+ if(!cards.length)return [phase==='develop'?'今回のあなたの王国には「発展」の効果を持つカードがないため、技術・信仰は増えません。フェーズが飛ばされたわけではありません。ドワーフの料理人や人間の聖職者などを置くと、毎ラウンド成長できます。':phase==='vp'?'今回のあなたの王国には「VP」フェーズで得点するカードがないため、ここでは増えません。戦争や配置ボーナスで得たVPは残っています。料理人・芸術家・聖職者など、王国に合う得点源を探しましょう。':phase==='final'?'今回の残金は3金未満のため、残金による得点は0VPです。端数のお金は得点になりません。':'このフェーズでは、あなたの値を変える効果がありません。カードの効果に書かれた発動タイミングを確認しましょう。'];
+ return cards.map(({card,effect})=>{
+  if(effect.scale==='techLevel'&&level(p.tech)===0)return `${card.name}は技術レベルを参照しますが、今はLv.0なので得られる量が0です。技術を1点以上にすると働き始めます。`;
+  if(effect.scale==='faithLevel'&&level(p.faith)===0)return `${card.name}は信仰レベルを参照しますが、今はLv.0なので得られる量が0です。信仰を1点以上にすると働き始めます。`;
+  if(['tech','faith'].includes(effect.stat)&&p[effect.stat]===15)return `${card.name}の成長効果はありますが、${STAT_NAMES[effect.stat]}は既に上限15点のため増えません。`;
+  return `${card.name}の効果はありますが、今回の条件では値が増えません。カードの詳細で参照する値・条件を確認しましょう。`;
+ });
 }

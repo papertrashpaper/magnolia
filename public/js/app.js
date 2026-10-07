@@ -1,5 +1,5 @@
 import {matBounds,createRefreshments,servingLabel} from './tavern.js?v=1';
-import {tutorialGame,tutorialGuide} from './tutorial.js?v=7';
+import {tutorialGame,tutorialGuide,tutorialObservation,tutorialPhaseOutcome,TUTORIAL_CHAPTERS,TUTORIAL_REFERENCE} from './tutorial.js?v=8';
 import {bindCardDrag} from './drag.js?v=8';
 import {CARDS,CARD,RACES,JOBS,RACE_BONUS,JOB_BONUS,effectText} from './cards.js?v=3';
 import {newGame,submit,nextRound,publicView,previewPlacement,legalCells,bounds,power,level,CPU_LEVELS,normalizeCPU} from './engine.js?v=11';
@@ -157,8 +157,8 @@ function warFields(){return `<div class="war-fields">${Array.from({length:setup.
 function renderSetup(){
  const saved=store.get('magnolia-local');
  const oldSession=store.get('magnolia-session');
- app.innerHTML=`<section class="setup"><div class="tavern-welcome"><span class="inn-emblem" aria-hidden="true">✦</span><div><p class="inn-sign">THE AMBER LANTERN</p><h2>琥珀の灯亭</h2><p>灯りの下、今宵もひとつの王国が生まれる。</p></div><span class="inn-emblem" aria-hidden="true">✦</span></div><div class="setup-head"><div><p class="eyebrow">旅人たちの卓</p><h1>対戦を始める</h1></div><span class="muted small">2〜5人</span></div><div class="tabs"><button data-tab="local" class="${setupTab==='local'?'active':''}">CPU対戦</button><button data-tab="online" class="${setupTab==='online'?'active':''}">オンライン対戦</button></div><div class="tutorial-entry"><div><b>初めての旅人へ</b><span>宿屋の常連と1ラウンド。操作と王国づくりを練習できます。</span></div><button id="tutorialButton">チュートリアルで遊ぶ</button></div><div class="setup-grid"><section class="panel"><h2>${setupTab==='local'?'CPUと遊ぶ':'部屋を作る・参加する'}</h2><label>プレイヤー名<input id="nameInput" maxlength="20" value="${esc(setup.name)}"></label>${setupTab==='online'?`<label style="margin-top:18px">対戦サーバーURL<input id="serverInput" type="url" placeholder="https://……onrender.com" value="${esc(setup.server)}"></label><p class="muted small" style="margin:8px 0">接続先は設定済みです。そのまま部屋を作成できます。</p>`:''}<div class="fields"><label>合計人数<select id="totalInput">${[2,3,4,5].map(n=>`<option value="${n}" ${setup.total===n?'selected':''}>${n}人${setupTab==='local'?`（あなた＋CPU${n-1}人）`:''}</option>`).join('')}</select></label>${setupTab==='online'?`<label>CPU用に確保する席<select id="cpuInput">${Array.from({length:setup.total},(_,i)=>`<option value="${i}" ${setup.cpuCount===i?'selected':''}>${i}席</option>`).join('')}</select></label>`:''}</div>${cpuStrengthFields()}<h3>戦争で獲得するVP</h3>${warFields()}<p class="muted small" style="margin:10px 0">同点は同順位。次の順位は飛ばします。</p><button id="createButton" class="primary">${setupTab==='local'?'CPU対戦を開始':'部屋を作成'}</button>${setupTab==='local'&&saved?'<button id="resumeLocal" style="width:100%;margin-top:10px">前回のCPU対戦を再開</button>':''}${setupTab==='online'?`<div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--line)"><label>部屋番号<input id="roomInput" placeholder="例：A1B2C3" maxlength="6" value="${esc(setup.room)}" style="text-transform:uppercase"></label><button id="joinButton" style="width:100%;margin-top:12px">部屋に参加</button>${oldSession?'<button id="resumeOnline" style="width:100%;margin-top:10px">前回の部屋に再接続</button>':''}</div>`:''}<div id="formError" class="form-error" role="alert"></div></section><aside class="panel"><h2>ラウンドの流れ</h2><ul class="mini-sequence"><li><span>01</span><div><b>手札を交換</b><br>捨てるカードを選び、5枚まで補充。</div></li><li><span>02</span><div><b>最大2枚を配置</b><br>上下左右につなげて、王国を広げる。</div></li><li><span>03</span><div><b>戦争・発展・収入・VP</b><br>全員の確定後に、自動で計算。</div></li></ul><div class="note">誰かが40VP、または9体配置したラウンドで終了。残金も得点に加わります。</div><p class="muted small" style="margin:18px 0 0">各種族の王とデーモンは1枚、眼のデーモンは2枚。その他は人間・ドワーフ・エルフ・ゴブリン各3枚、ゴーレム各2枚です。</p></aside></div></section>`;
- qs('#tutorialButton').onclick=startTutorial;
+ app.innerHTML=`<section class="setup"><div class="tavern-welcome"><span class="inn-emblem" aria-hidden="true">✦</span><div><p class="inn-sign">THE AMBER LANTERN</p><h2>琥珀の灯亭</h2><p>灯りの下、今宵もひとつの王国が生まれる。</p></div><span class="inn-emblem" aria-hidden="true">✦</span></div><div class="setup-head"><div><p class="eyebrow">旅人たちの卓</p><h1>対戦を始める</h1></div><span class="muted small">2〜5人</span></div><div class="tabs"><button data-tab="local" class="${setupTab==='local'?'active':''}">CPU対戦</button><button data-tab="online" class="${setupTab==='online'?'active':''}">オンライン対戦</button></div><div class="tutorial-entry"><div><b>初めての旅人へ</b><span>3つの短い例題で、勝ち方・操作・王国の育て方をじっくり練習。各章1ラウンド、途中盤面から始められます。</span></div><button id="tutorialButton">チュートリアルで遊ぶ</button></div><div class="setup-grid"><section class="panel"><h2>${setupTab==='local'?'CPUと遊ぶ':'部屋を作る・参加する'}</h2><label>プレイヤー名<input id="nameInput" maxlength="20" value="${esc(setup.name)}"></label>${setupTab==='online'?`<label style="margin-top:18px">対戦サーバーURL<input id="serverInput" type="url" placeholder="https://……onrender.com" value="${esc(setup.server)}"></label><p class="muted small" style="margin:8px 0">接続先は設定済みです。そのまま部屋を作成できます。</p>`:''}<div class="fields"><label>合計人数<select id="totalInput">${[2,3,4,5].map(n=>`<option value="${n}" ${setup.total===n?'selected':''}>${n}人${setupTab==='local'?`（あなた＋CPU${n-1}人）`:''}</option>`).join('')}</select></label>${setupTab==='online'?`<label>CPU用に確保する席<select id="cpuInput">${Array.from({length:setup.total},(_,i)=>`<option value="${i}" ${setup.cpuCount===i?'selected':''}>${i}席</option>`).join('')}</select></label>`:''}</div>${cpuStrengthFields()}<h3>戦争で獲得するVP</h3>${warFields()}<p class="muted small" style="margin:10px 0">同点は同順位。次の順位は飛ばします。</p><button id="createButton" class="primary">${setupTab==='local'?'CPU対戦を開始':'部屋を作成'}</button>${setupTab==='local'&&saved?'<button id="resumeLocal" style="width:100%;margin-top:10px">前回のCPU対戦を再開</button>':''}${setupTab==='online'?`<div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--line)"><label>部屋番号<input id="roomInput" placeholder="例：A1B2C3" maxlength="6" value="${esc(setup.room)}" style="text-transform:uppercase"></label><button id="joinButton" style="width:100%;margin-top:12px">部屋に参加</button>${oldSession?'<button id="resumeOnline" style="width:100%;margin-top:10px">前回の部屋に再接続</button>':''}</div>`:''}<div id="formError" class="form-error" role="alert"></div></section><aside class="panel"><h2>ラウンドの流れ</h2><ul class="mini-sequence"><li><span>01</span><div><b>手札を交換</b><br>捨てるカードを選び、5枚まで補充。</div></li><li><span>02</span><div><b>最大2枚を配置</b><br>上下左右につなげて、王国を広げる。</div></li><li><span>03</span><div><b>戦争・発展・収入・VP</b><br>全員の確定後に、自動で計算。</div></li></ul><div class="note">誰かが40VP、または9体配置したラウンドで終了。残金も得点に加わります。</div><p class="muted small" style="margin:18px 0 0">各種族の王とデーモンは1枚、眼のデーモンは2枚。その他は人間・ドワーフ・エルフ・ゴブリン各3枚、ゴーレム各2枚です。</p></aside></div></section>`;
+ qs('#tutorialButton').onclick=()=>startTutorial();
  qs('#nameInput').oninput=e=>{setup.name=e.target.value;store.set('magnolia-name',setup.name);};
  qs('#difficultyInput').onchange=e=>{setup.cpuDifficulty=e.target.value;setup.cpuDifficulties=Array(setup.total-1).fill(setup.cpuDifficulty);store.set('magnolia-cpu-difficulty',setup.cpuDifficulty);store.set('magnolia-cpu-seats',setup.cpuDifficulties);renderSetup();};
  for(const el of document.querySelectorAll('[data-cpu-seat]'))el.onchange=e=>{setup.cpuDifficulties[Number(el.dataset.cpuSeat)]=e.target.value;store.set('magnolia-cpu-seats',setup.cpuDifficulties);renderSetup();};
@@ -173,13 +173,26 @@ function renderSetup(){
  if(qs('#joinButton'))qs('#joinButton').onclick=()=>connectRoom('join');
  if(qs('#resumeOnline'))qs('#resumeOnline').onclick=()=>resumeOnline(oldSession);
 }
-function startTutorial(){
- game=tutorialGame(setup.name);autoPlay=false;fillCPU(game,submit);mode='local';myId='human';boardId=myId;draftKey='';seenResolutions.clear();applyView(publicView(game,myId));
+let tutorialDetails=new Set();
+function startTutorial(chapter=0){
+ clearTimeout(playTimer);clearTimeout(noticeTimer);clearFinalResults();playback=null;pendingView=null;notice=null;
+ game=tutorialGame(setup.name,chapter);autoPlay=false;fillCPU(game,submit);mode='local';myId='human';boardId=myId;draftKey='';state=null;moves=[];selected=null;seenResolutions.clear();seenFinalResults.clear();tutorialDetails=new Set();tutorialDockCollapsed=false;
+ applyView(publicView(game,myId));requestAnimationFrame(()=>qs('.tutorial-guide')?.scrollIntoView({block:'start',behavior:'instant'}));
+}
+function tutorialGuideNow(){
+ const replayPhase=playback?state.resolution.events[playback.index].phase:null;
+ const guide=tutorialGuide({chapter:game?.tutorialChapter??0,phase:state.phase,moves:moves.length,replayPhase});
+ guide.personal=replayPhase?tutorialPhaseOutcome(state.resolution,replayPhase,myId):[];return guide;
+}
+function tutorialFinishControls(){
+ const chapter=game.tutorialChapter??0;
+ return `<div class="tutorial-finish-actions">${chapter<2?'<button data-tutorial-next class="primary">次の章を練習する</button>':'<button data-tutorial-play class="primary">通常のCPU対戦を始める</button>'}<button data-tutorial-retry>この章をもう一度</button><button data-tutorial-menu class="quiet">メニューへ戻る</button></div>`;
 }
 function tutorialHTML(){
  if(mode!=='local'||!game?.tutorial)return '';
- const guide=tutorialGuide({round:state.round,phase:state.phase,moves:moves.length,replayPhase:playback?state.resolution.events[playback.index].phase:null});
- return `<section class="panel tutorial-guide" aria-label="チュートリアル" aria-live="polite"><div class="tutorial-top"><span class="eyebrow">宿屋の常連からの手ほどき · ${guide.step}/4</span><button id="exitTutorial" class="quiet">${guide.done?'練習を終えて対戦を続ける':'案内を閉じて対戦を続ける'}</button></div><h2>${guide.title}</h2><p>${esc(tutorialText(guide.text))}</p><div class="tutorial-progress" aria-hidden="true">${['手札交換','配置','処理の確認','完了'].map((title,i)=>`<span class="${i+1<=guide.step?'visited':''}">${title}</span>`).join('')}</div></section>`;
+ const chapter=game.tutorialChapter??0,guide=tutorialGuideNow(),lesson=TUTORIAL_CHAPTERS[chapter];
+ const observation=state.phase==='place'&&!playback?tutorialObservation(currentDraft(),state.players.filter(p=>p.id!==myId)):[];
+ return `<section class="panel tutorial-guide" aria-label="チュートリアル"><div class="tutorial-top"><span class="eyebrow">宿屋の手ほどき · 第${chapter+1}章 / 3 · 各章1ラウンド</span><button data-tutorial-menu class="quiet">練習を終了</button></div><nav class="tutorial-chapters" aria-label="練習する章">${TUTORIAL_CHAPTERS.map((c,i)=>`<button data-tutorial-chapter="${i}" ${chapter===i?'aria-current="step"':''}>${i+1}. ${c.title.split('：')[0]}</button>`).join('')}</nav><p class="muted small tutorial-chapter-note">どの章からでも練習できます。章を切り替えると、その章の初期盤面から始まります。</p><h2>${esc(lesson.title)}</h2><p class="tutorial-intro">${esc(lesson.intro)}</p><div class="tutorial-current" aria-live="polite"><h3>${esc(guide.title)}</h3><p>${esc(tutorialText(guide.text))}</p>${guide.personal.length?`<div class="tutorial-personal"><b>今回のあなたの王国では</b><ul>${guide.personal.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></div>`:''}</div>${guide.done?tutorialFinishControls():''}<div class="tutorial-progress" aria-label="この章の進み具合">${['手札交換','配置','処理の確認','完了'].map((title,i)=>`<span class="${i+1<=guide.step?'visited':''}">${title}</span>`).join('')}</div>${observation.length?`<details data-tutorial-detail="observation" ${tutorialDetails.has('observation')?'open':''}><summary>今の盤面を見るヒント</summary><ul>${observation.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></details>`:''}<div class="tutorial-handbook"><h3>気になるところから読める解説</h3>${TUTORIAL_REFERENCE.map((topic,i)=>`<details data-tutorial-detail="${i}" ${tutorialDetails.has(String(i))?'open':''}><summary>${esc(topic.title)}</summary>${i===2?'<table class="tutorial-level-table"><thead><tr><th>点数</th><th>レベル</th></tr></thead><tbody><tr><td>0</td><td>Lv.0</td></tr><tr><td>1〜2</td><td>Lv.1</td></tr><tr><td>3〜6</td><td>Lv.2</td></tr><tr><td>7〜14</td><td>Lv.3</td></tr><tr><td>15</td><td>Lv.4</td></tr></tbody></table>':''}${topic.paragraphs.map(t=>`<p>${esc(t)}</p>`).join('')}</details>`).join('')}</div></section>`;
 }
 function startLocal(){
  try{
@@ -241,7 +254,7 @@ function applyView(view){
  state=view;const key=`${mode}:${view.room||''}:${view.gameId||''}:${view.round||0}:${view.phase}`;
  if(key!==draftKey){draftKey=key;moves=[];discard=new Set();selected=null;}
  if(view.phase==='place'&&view.ownOrder?.moves)moves=structuredClone(view.ownOrder.moves);
- if(mode==='local')store.set('magnolia-local',game);
+ if(mode==='local'&&!game?.tutorial)store.set('magnolia-local',game);
  if(view.resolution?.events.length&&!seenResolutions.has(view.resolution.id)){seenResolutions.add(view.resolution.id);playback={id:view.resolution.id,index:0};notice=null;clearTimeout(noticeTimer);scheduleReplay();}
  render();
 }
@@ -287,6 +300,7 @@ function statsHTML(p){return `<div class="status-grid"><div class="stat vp"><spa
 function actionHTML(p){
  if(playback&&state.resolution.events[playback.index].phase==='draw')return '<div class="action-panel replay-hint">手札を交換・補充しています…</div>';
  if(playback)return `<div class="action-panel replay-hint">全員の処理を順番に確認しています。中央の「次の処理」で進めてください。</div>`;
+ if(mode==='local'&&game?.tutorial&&['round','ended'].includes(state.phase))return `<div class="action-panel"><p>この章の練習は完了です。次の例題へ進むか、同じ盤面でもう一度試せます。</p>${tutorialFinishControls()}</div>`;
  if(state.phase==='ended')return `<div class="action-panel">${mode==='online'?(myId===state.hostId?`<button id="rematchButton" class="primary" ${busy?'disabled':''}>同じ部屋で再対戦</button>`:'<p class="muted">部屋主が再対戦を開始できます。この部屋でお待ちください。</p>'):'<button id="newButton">新しい対戦へ</button>'}</div>`;
  if(state.phase==='round')return `<div class="action-panel"><div class="action-buttons">${mode==='local'||myId===state.hostId?`<button id="nextButton" class="primary" ${busy?'disabled':''}>次のラウンドへ</button>`:'<span class="muted">部屋主が次のラウンドへ進めます。</span>'}</div></div>`;
  const own=state.players.find(x=>x.id===myId),locked=own.ready;
@@ -327,8 +341,13 @@ function renderGame(){
  qs('#mobileOverviewToggle').onclick=()=>{mobileOverviewCompact=!mobileOverviewCompact;render();};
  for(const button of document.querySelectorAll('[data-mobile-jump]'))button.onclick=()=>{boardId=myId;render();mobileJump(button.dataset.mobileJump==='hand'?'#handActions':'#playerBoard');};
  if(qs('#mobileCancelSelection'))qs('#mobileCancelSelection').onclick=()=>{selected=null;render();};
- if(qs('#exitTutorial'))qs('#exitTutorial').onclick=()=>{game.tutorial=false;if(game.phase==='round')localNext();else{store.set('magnolia-local',game);render();}};
- if(mode==='local'&&game?.tutorial){const guide=tutorialGuide({round:state.round,phase:state.phase,moves:moves.length,replayPhase:playback?state.resolution.events[playback.index].phase:null});if(guide.target)qs(guide.target)?.classList.add('tutorial-focus');}
+ for(const el of document.querySelectorAll('[data-tutorial-chapter]'))el.onclick=()=>startTutorial(Number(el.dataset.tutorialChapter));
+ for(const el of document.querySelectorAll('[data-tutorial-next]'))el.onclick=()=>startTutorial((game.tutorialChapter??0)+1);
+ for(const el of document.querySelectorAll('[data-tutorial-retry]'))el.onclick=()=>startTutorial(game.tutorialChapter??0);
+ for(const el of document.querySelectorAll('[data-tutorial-menu]'))el.onclick=returnSetup;
+ for(const el of document.querySelectorAll('[data-tutorial-play]'))el.onclick=()=>{returnSetup();startLocal();};
+ for(const el of document.querySelectorAll('[data-tutorial-detail]'))el.ontoggle=()=>{el.open?tutorialDetails.add(el.dataset.tutorialDetail):tutorialDetails.delete(el.dataset.tutorialDetail);};
+ if(mode==='local'&&game?.tutorial){const guide=tutorialGuideNow();if(guide.target)qs(guide.target)?.classList.add('tutorial-focus');}
  qs('#backButton').onclick=returnSetup;
  for(const button of document.querySelectorAll('[data-refreshment]'))button.onclick=()=>enjoyRefreshment(button.dataset.refreshment);
  if(qs('.round-review'))qs('.round-review').ontoggle=e=>{reviewOpen=e.target.open;};
@@ -374,9 +393,10 @@ function updateTutorialDock(){
  const visible=active&&original.getBoundingClientRect().top<0;
  dock.hidden=!visible;
  if(visible){
-  const guide=tutorialGuide({round:state.round,phase:state.phase,moves:moves.length,replayPhase:playback?state.resolution.events[playback.index].phase:null});
-  const html=`<div class="tutorial-dock-top"><b>手ほどき ${guide.step}/4 · ${esc(guide.title)}</b><button id="toggleTutorialDock" class="quiet" aria-expanded="${!tutorialDockCollapsed}">${tutorialDockCollapsed?'助言を開く':'小さくする'}</button></div>${tutorialDockCollapsed?'':`<p>${esc(tutorialText(guide.text))}</p>`}`;
+  const guide=tutorialGuideNow();
+  const html=`<div class="tutorial-dock-top"><b>第${(game.tutorialChapter??0)+1}章 · ${esc(guide.title)}</b><button id="toggleTutorialDock" class="quiet" aria-expanded="${!tutorialDockCollapsed}">${tutorialDockCollapsed?'助言を開く':'小さくする'}</button></div>${tutorialDockCollapsed?'':`<p>${esc(guide.personal?.[0]??tutorialText(guide.text))}</p><button id="tutorialReadMore" class="quiet">詳しい解説へ</button>`}`;
   if(dock.innerHTML!==html)dock.innerHTML=html;
+  if(qs('#tutorialReadMore'))qs('#tutorialReadMore').onclick=()=>qs('.tutorial-guide')?.scrollIntoView({block:'start',behavior:'instant'});
   qs('#toggleTutorialDock').onclick=()=>{tutorialDockCollapsed=!tutorialDockCollapsed;updateTutorialDock();};
  }else if(!active){tutorialDockCollapsed=false;dock.innerHTML='';}
  const height=visible?Math.ceil(dock.getBoundingClientRect().height)+24:0;
