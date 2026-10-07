@@ -209,3 +209,10 @@ body:has(#app.dragging-card) .tutorial-dock{opacity:.15;pointer-events:none}
 #beerPourRig.is-pouring{display:block;animation:tavern-pour-from-right 2s ease-in-out forwards}
 #beerPourRig.is-pouring .refill-stream{display:block;z-index:2;left:11.5%;top:50.5%;height:38%;width:2.4%;border-radius:3px;background:linear-gradient(90deg,#bd7016,#ffe2a0 45%,#d89628);transform-origin:top;animation:tavern-bottle-stream 2s linear forwards}
 @keyframes tavern-pour-from-right{0%{opacity:0;transform:translateX(calc(100vw + 100%)) rotate(10deg)}20%{opacity:1;transform:translateX(0) rotate(10deg)}35%,75%{opacity:1;transform:translateX(0) rotate(-12deg)}85%{opacity:1;transform:translateX(0) rotate(10deg)}100%{opacity:0;transform:translateX(calc(100vw + 100%)) rotate(10deg)}}
+
+.cpu-strength-settings{min-width:0;margin:22px 0;padding:16px;border:1px solid var(--line);border-radius:10px;background:#ffffff08}
+.cpu-strength-settings legend{padding:0 8px;font-weight:700;color:var(--text);font-size:1rem}
+.cpu-strength-all{max-width:100%}
+.cpu-strength-seats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+.cpu-strength-hint{margin:10px 0 0}.cpu-strength-guide{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--line);font-size:.8rem}
+@media(max-width:400px){.cpu-strength-settings{padding:12px}.cpu-strength-seats{gap:10px}}
