@@ -21,6 +21,8 @@ export function bindCardDrag(root,onDrop){
   if(gesture){try{gesture.card.releasePointerCapture(gesture.id);}catch{}gesture=null;}
  }
  root.addEventListener('pointerdown',e=>{
+  // On phones, swiping the hand scrolls it; tap a card then a placement cell.
+  if(e.pointerType==='touch'&&window.matchMedia('(max-width:760px)').matches)return;
   const card=e.target.closest('[data-draggable="true"]');
   if(!card||e.button!==0||!e.isPrimary||gesture)return;
   gesture={card,index:Number(card.dataset.hand),id:e.pointerId,startX:e.clientX,startY:e.clientY,x:e.clientX,y:e.clientY,active:false};
