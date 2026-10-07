@@ -21,18 +21,21 @@ export function bindCardDrag(root,onDrop){
   if(gesture){try{gesture.card.releasePointerCapture(gesture.id);}catch{}gesture=null;}
  }
  root.addEventListener('pointerdown',e=>{
-  // On phones, swiping the hand scrolls it; tap a card then a placement cell.
-  if(e.pointerType==='touch'&&window.matchMedia('(max-width:760px)').matches)return;
   const card=e.target.closest('[data-draggable="true"]');
   if(!card||e.button!==0||!e.isPrimary||gesture)return;
-  gesture={card,index:Number(card.dataset.hand),id:e.pointerId,startX:e.clientX,startY:e.clientY,x:e.clientX,y:e.clientY,active:false};
+  gesture={card,index:Number(card.dataset.hand),id:e.pointerId,startX:e.clientX,startY:e.clientY,x:e.clientX,y:e.clientY,active:false,touch:e.pointerType==='touch'};
   card.setPointerCapture(e.pointerId);
  },options);
  root.addEventListener('dragstart',e=>{if(e.target.closest('[data-hand]'))e.preventDefault();},options);
  document.addEventListener('pointermove',e=>{
   if(!gesture||e.pointerId!==gesture.id)return;
   gesture.x=e.clientX;gesture.y=e.clientY;
-  if(!gesture.active&&Math.hypot(gesture.x-gesture.startX,gesture.y-gesture.startY)<7)return;
+  if(!gesture.active){
+   const dx=Math.abs(gesture.x-gesture.startX),dy=Math.abs(gesture.y-gesture.startY);
+   if(Math.hypot(dx,dy)<8)return;
+   // Let the browser own horizontal hand swipes; vertical gestures lift a card.
+   if(gesture.touch&&dx>dy*1.2){clear();return;}
+  }
   e.preventDefault();
   if(!gesture.active){
    gesture.active=true;gesture.card.classList.add('drag-source');root.classList.add('dragging-card');

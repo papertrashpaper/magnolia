@@ -1,7 +1,8 @@
+import {matBounds,createRefreshments,servingLabel} from './tavern.js?v=1';
 import {tutorialGame,tutorialGuide} from './tutorial.js?v=7';
-import {bindCardDrag} from './drag.js?v=5';
+import {bindCardDrag} from './drag.js?v=6';
 import {CARDS,CARD,RACES,JOBS,RACE_BONUS,JOB_BONUS,effectText} from './cards.js?v=3';
-import {newGame,submit,nextRound,publicView,previewPlacement,legalCells,bounds,power,level,CPU_LEVELS,normalizeCPU} from './engine.js?v=11';
+import {newGame,submit,nextRound,publicView,previewPlacement,legalCells,power,level,CPU_LEVELS,normalizeCPU} from './engine.js?v=11';
 import {fillCPU} from './cpu.js?v=11';
 import {PHASE_NAMES,scoreRank,changeSentence,levelChangeSentence,levelProgress,battleRank,resolutionView,undoChanges} from './presentation.js?v=3';
 
@@ -11,6 +12,8 @@ const qs=s=>document.querySelector(s);
 const store={get(key,fallback=null){try{return JSON.parse(localStorage.getItem(key))??fallback;}catch{return fallback;}},set(key,value){try{localStorage.setItem(key,JSON.stringify(value));return true;}catch{return false;}},remove(key){try{localStorage.removeItem(key);}catch{}}};
 let mode='setup',setupTab='local',game=null,state=null,myId='human',boardId='human',session=null,stream=null;
 let cleanupDrag=null;
+const refreshmentService=createRefreshments(updateRefreshment);
+const refreshments=refreshmentService.servings;
 const mobileLayout=()=>window.matchMedia('(max-width:760px)').matches;
 let mobileOverviewCompact=true,mobileGalleryScroll=0,mobileHandScroll=0,mobilePlaybackFocus=null;
 const tutorialText=text=>mobileLayout()?text.replace('手札のカードを「＋」にドラッグ、またはカードを選んで「＋」を押します。','手札を横にスワイプしてカードを選び、王国の「＋」をタップします。'):text;
@@ -28,6 +31,10 @@ let reviewRound=null,reviewOpen=false,backupSaved=true;
 let setup={name:store.get('magnolia-name','あなた'),total:3,cpuCount:0,cpuDifficulty:store.get('magnolia-cpu-difficulty','normal'),cpuDifficulties:store.get('magnolia-cpu-seats',[]),server:initialParams.get('server')||store.get('magnolia-server',defaultServer),room:initialParams.get('room')||'',warVP:[5,3,0,0,0]};
 if(initialParams.get('room'))setupTab='online';
 function toast(text){qs('#toast').textContent=text;qs('#toast').classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>qs('#toast').classList.remove('show'),4500);}
+function moneyWarning(){
+ const host=qs('#actionWarning');host.textContent='お金がたりない！';host.classList.add('show');
+ clearTimeout(moneyWarning.timer);moneyWarning.timer=setTimeout(()=>host.classList.remove('show'),2200);
+}
 function bonusText(b){return Object.entries(b).map(([s,n])=>`${n}${{gold:'金',tech:'技術点',faith:'信仰点',vp:'VP'}[s]}`).join(' ＋ ');}
 function scheduleReplay(){clearTimeout(playTimer);if(!playback)return;const drawing=state.resolution.events[playback.index].phase==='draw';if(drawing||autoPlay)playTimer=setTimeout(advanceReplay,drawing?1050:3200);}
 function advanceReplay(){
@@ -228,8 +235,19 @@ async function copyInvite(){
  try{await navigator.clipboard.writeText(url.href);toast('招待リンクをコピーしました。');}catch{toast(`部屋番号：${session.room} ／ サーバー：${session.server}`);}
 }
 function currentDraft(){if(playback)return resolutionView({...state,you:myId},playback.index).players.find(p=>p.id===myId);const p=state.players.find(p=>p.id===myId);if(state.phase==='place')return previewPlacement(p,p.ready?(state.ownOrder?.moves||moves):moves).player;return p;}
+function refreshmentsHTML(){
+ return `<div class="tavern-refreshments" aria-label="卓のパンとビール">${['bread','beer'].map(kind=>`<button class="tavern-prop ${kind}" data-refreshment="${kind}" aria-label="${servingLabel(kind,refreshments[kind])}" ${refreshments[kind]===3?'disabled':''}><span class="refreshment-previous refreshment-sprite" style="--stage:3" aria-hidden="true"></span><span class="refreshment-sprite serving-current" style="--stage:${refreshments[kind]}" aria-hidden="true"></span><span class="bite-fragment" aria-hidden="true"></span><span class="refill-stream" aria-hidden="true"></span><span class="drink-ripple" aria-hidden="true"></span><span class="refreshment-label">${refreshments[kind]===3?(kind==='bread'?'給仕しています…':'注いでいます…'):(kind==='bread'?'パンを食べる':'ビールを飲む')}</span></button>`).join('')}</div>`;
+}
+function updateRefreshment(kind,served=false){
+ const button=qs(`[data-refreshment="${kind}"]`);if(!button)return;
+ button.disabled=refreshments[kind]===3;button.setAttribute('aria-label',servingLabel(kind,refreshments[kind]));
+ button.querySelector('.serving-current').style.setProperty('--stage',refreshments[kind]);
+ button.querySelector('.refreshment-label').textContent=refreshments[kind]===3?(kind==='bread'?'給仕しています…':'注いでいます…'):(kind==='bread'?'パンを食べる':'ビールを飲む');
+ button.classList.remove('taking-serving','fresh-serving');void button.offsetWidth;button.classList.add(served?'fresh-serving':'taking-serving');
+}
+function enjoyRefreshment(kind){refreshmentService.take(kind);}
 function boardHTML(p,interactive){
- const cells=interactive?legalCells(p.board):[];const all=[...p.board,...cells];const b=bounds(all);const width=b.maxX-b.minX+1;
+ const cells=interactive?legalCells(p.board):[];const b=matBounds(p.board,cells);const width=b.maxX-b.minX+1;
  let content='';for(let y=b.minY;y<=b.maxY;y++)for(let x=b.minX;x<=b.maxX;x++){
   const card=p.board.find(c=>c.x===x&&c.y===y),legal=cells.some(c=>c.x===x&&c.y===y);
   if(card){const planned=moves.findIndex(m=>m.x===x&&m.y===y);const front=!p.board.some(c=>c.x===x&&c.y<y);
@@ -237,7 +255,7 @@ function boardHTML(p,interactive){
   }else if(legal)content+=`<button class="cell candidate ${selected!==null?'can-place':''}" data-cell="${x},${y}" ${moves.length>=2||busy?'disabled':''} aria-label="${x},${y}に配置"><span style="font-size:1.6rem">＋</span></button>`;
   else content+='<div class="cell void" aria-hidden="true"></div>';
  }
- return `<div class="board-table"><div class="board-wrap"><div class="board" style="grid-template-columns:repeat(${width},minmax(0,1fr));${width===1?'max-width:140px':width===2?'max-width:300px':''}">${content}</div>${!p.board.length?'<div class="empty-help">最初のカードはここへ。<br>次から上下左右に広げられます。</div>':''}</div></div>`;
+ return `<div class="board-table"><div class="board-wrap"><div class="board" style="grid-template-columns:repeat(${width},minmax(0,1fr));${width===1?'max-width:140px':width===2?'max-width:300px':''}">${content}</div>${!p.board.length?'<div class="empty-help">最初のカードはここへ。<br>次から上下左右に広げられます。</div>':''}</div>${refreshmentsHTML()}</div>`;
 }
 function statsHTML(p){return `<div class="status-grid"><div class="stat vp"><span>勝利点</span><strong>${p.vp}<em>VP</em></strong></div><div class="stat gold"><span>お金</span><strong>${p.gold}<em>金</em></strong></div><div class="stat"><span>技術</span><strong>${p.tech}<em>Lv.${level(p.tech)}</em></strong></div><div class="stat"><span>信仰</span><strong>${p.faith}<em>Lv.${level(p.faith)}</em></strong></div></div>`;}
 function actionHTML(p){
@@ -247,18 +265,24 @@ function actionHTML(p){
  if(state.phase==='round')return `<div class="action-panel"><div class="action-buttons">${mode==='local'||myId===state.hostId?`<button id="nextButton" class="primary" ${busy?'disabled':''}>次のラウンドへ</button>`:'<span class="muted">部屋主が次のラウンドへ進めます。</span>'}</div></div>`;
  const own=state.players.find(x=>x.id===myId),locked=own.ready;
  const title=state.phase==='draw'?'捨てるカードを選ぶ':'配置するカードを選ぶ';
- const help=state.phase==='draw'?'選択したカードを捨て、手札を5枚まで補充します。':mobileLayout()?'カードをタップして選び、王国の「＋」をタップして配置します。最大2枚です。':'カードを王国の「＋」へドラッグして配置。カードを選んで「＋」を押しても配置できます。最大2枚です。';
+ const help=state.phase==='draw'?'選択したカードを捨て、手札を5枚まで補充します。':mobileLayout()?'カードを上下にドラッグして「＋」へ配置。カードを選んで「＋」をタップしても配置できます。最大2枚です。':'カードを王国の「＋」へドラッグして配置。カードを選んで「＋」を押しても配置できます。最大2枚です。';
  const hand=state.phase==='place'?p.hand:own.hand;
- return `<section id="handActions" class="action-panel"><div class="action-title"><div><h2>${title}</h2><span class="muted small">${state.phase==='place'?`${moves.length}/2枚`:`${discard.size}枚交換`}</span></div><div class="placement-gold" aria-live="polite"><span>現在のお金${state.phase==='place'&&moves.length?(locked?'（配置確定後）':'（仮配置後）'):''}</span><strong>${p.gold}<small>金</small></strong></div></div><p class="muted small">${locked?(state.phase==='place'?'配置確定済み。自分の配置を表示しています。ほかの参加者を待っています。':'確定済み。ほかの参加者を待っています。'):help}</p><div class="hand">${hand.map((id,i)=>`<div class="hand-entry"><button class="hand-card ${selected===i?'selected':''} ${discard.has(i)&&state.phase==='draw'?'discard':''}" data-hand="${i}" data-draggable="${state.phase==='place'&&!locked&&!busy&&moves.length<2&&CARD[id].cost<=p.gold}" ${locked||busy?'disabled':''} aria-label="${CARD[id].name}${state.phase==='draw'&&discard.has(i)?'、捨てる対象':''}" aria-pressed="${state.phase==='draw'?discard.has(i):selected===i}"><img src="${CARD[id].image}" draggable="false" alt="${CARD[id].name}">${state.phase==='place'&&CARD[id].cost>p.gold?'<span class="afford">お金不足</span>':''}</button><button class="hand-card-details mobile-only quiet" data-card="${id}" aria-label="${esc(CARD[id].name)}の詳細"><span>${esc(CARD[id].name)}</span><small>${CARD[id].cost}金 · 詳細</small></button></div>`).join('')}</div>${state.phase==='place'&&selected!==null&&hand[selected]?`<div class="selected-info"><strong>${CARD[hand[selected]].name}</strong>　${CARD[hand[selected]].cost}金 / 戦力${CARD[hand[selected]].power}<p>${CARD[hand[selected]].effects.map(effectText).join('<br>')}</p><button class="quiet" data-card="${hand[selected]}" style="padding:4px 8px">カードの詳細</button></div>`:''}<div class="hand-info">${state.phase==='place'?`配置しない枠の報酬：${2-moves.length}金（配置処理後に獲得）`:mobileLayout()?'手札は横にスワイプできます。カードの下の「詳細」で効果を確認。':'カードの画像を長押し・右クリックすると詳細を表示できます。'}</div><div class="action-buttons">${state.phase==='place'?`<button id="undoButton" ${!moves.length||locked||busy?'disabled':''}>最後の配置を戻す</button>`:`<button id="clearDiscard" ${!discard.size||locked||busy?'disabled':''}>選択を解除</button>`}<button id="confirmButton" class="primary" ${locked||busy?'disabled':''}>${locked?'全員の確定を待っています':state.phase==='draw'?(discard.size?'交換を確定':'交換せず補充'):moves.length?`${moves.length}枚の配置を確定`:'配置せず2金を獲得'}</button></div></section>`;
+ return `<section id="handActions" class="action-panel"><div class="action-title"><div><h2>${title}</h2><span class="muted small">${state.phase==='place'?`${moves.length}/2枚`:`${discard.size}枚交換`}</span></div><div class="placement-gold" aria-live="polite"><span>現在のお金${state.phase==='place'&&moves.length?(locked?'（配置確定後）':'（仮配置後）'):''}</span><strong>${p.gold}<small>金</small></strong></div></div><p class="muted small">${locked?(state.phase==='place'?'配置確定済み。自分の配置を表示しています。ほかの参加者を待っています。':'確定済み。ほかの参加者を待っています。'):help}</p><div class="hand">${hand.map((id,i)=>`<div class="hand-entry"><button class="hand-card ${selected===i?'selected':''} ${discard.has(i)&&state.phase==='draw'?'discard':''}" data-hand="${i}" data-draggable="${state.phase==='place'&&!locked&&!busy&&moves.length<2}" ${locked||busy?'disabled':''} aria-label="${CARD[id].name}${state.phase==='draw'&&discard.has(i)?'、捨てる対象':''}" aria-pressed="${state.phase==='draw'?discard.has(i):selected===i}"><img src="${CARD[id].image}" draggable="false" alt="${CARD[id].name}">${state.phase==='place'&&CARD[id].cost>p.gold?'<span class="afford">お金不足</span>':''}</button><button class="hand-card-details mobile-only quiet" data-card="${id}" aria-label="${esc(CARD[id].name)}の詳細"><span>${esc(CARD[id].name)}</span><small>${CARD[id].cost}金 · 詳細</small></button></div>`).join('')}</div>${state.phase==='place'&&selected!==null&&hand[selected]?`<div class="selected-info"><strong>${CARD[hand[selected]].name}</strong>　${CARD[hand[selected]].cost}金 / 戦力${CARD[hand[selected]].power}<p>${CARD[hand[selected]].effects.map(effectText).join('<br>')}</p><button class="quiet" data-card="${hand[selected]}" style="padding:4px 8px">カードの詳細</button></div>`:''}<div class="hand-info">${state.phase==='place'?`配置しない枠の報酬：${2-moves.length}金（配置処理後に獲得）`:mobileLayout()?'手札は横にスワイプできます。配置時はカードを上下にドラッグ。「詳細」で効果を確認。':'カードの画像を長押し・右クリックすると詳細を表示できます。'}</div><div class="action-buttons">${state.phase==='place'?`<button id="undoButton" ${!moves.length||locked||busy?'disabled':''}>最後の配置を戻す</button>`:`<button id="clearDiscard" ${!discard.size||locked||busy?'disabled':''}>選択を解除</button>`}<button id="confirmButton" class="primary" ${locked||busy?'disabled':''}>${locked?'全員の確定を待っています':state.phase==='draw'?(discard.size?'交換を確定':'交換せず補充'):moves.length?`${moves.length}枚の配置を確定`:'配置せず2金を獲得'}</button></div></section>`;
 }
 function resultsHTML(){
  if(!['round','ended'].includes(state.phase))return '';
  const ended=state.phase==='ended';const winner=state.players.filter(p=>state.winners.includes(p.id)).map(p=>esc(p.name)).join('・');
  return `<section class="results"><h2>${ended?`優勝：${winner}`:`ラウンド${state.round}の結果`}</h2>${ended?'<p class="small muted">残ったお金による得点を加算した最終結果です。</p>':''}<table class="score-table"><thead><tr><th>プレイヤー</th><th>戦力 / 順位</th><th>戦争VP</th><th>${ended?'最終VP':'現在VP'}</th></tr></thead><tbody>${[...state.players].sort((a,b)=>ended?b.vp-a.vp:a.rank-b.rank).map(p=>`<tr><td>${esc(p.name)}</td><td>${p.power} / ${p.rank}位</td><td>${p.warVP}</td><td><b>${p.vp}</b></td></tr>`).join('')}</tbody></table></section>`;
 }
+function placeAt(handIndex,x,y){
+ const own=state?.players.find(p=>p.id===myId);
+ if(playback||state?.phase!=='place'||boardId!==myId||!own||own.ready||busy||moves.length>=2)return;
+ const draft=currentDraft(),card=CARD[draft.hand[handIndex]];
+ if(card&&card.cost>draft.gold){moneyWarning();return;}
+ try{const proposed=[...moves,{handIndex,x,y}];const result=previewPlacement(own,proposed),placed=result.placed.at(-1);moves=proposed;selected=null;render();showNotice(`${own.name}が${CARD[placed.card].name}を仮配置`,placed.steps,'予定の増減です。確定前なら取り消せます。');}catch(e){toast(e.message);}
+}
 function renderGame(){
  if(mobileLayout()){mobileGalleryScroll=qs('.kingdom-gallery')?.scrollLeft??mobileGalleryScroll;mobileHandScroll=qs('.hand')?.scrollLeft??mobileHandScroll;}
- cleanupDrag?.();cleanupDrag=null;
  const state=playback?resolutionView({...globalState(),you:myId},playback.index):globalState();
  const draft=currentDraft();const own=state.players.find(p=>p.id===myId);const viewed=boardId===myId?draft:state.players.find(p=>p.id===boardId)||draft;
  const editing=!playback&&boardId===myId&&state.phase==='place'&&!own.ready;
@@ -280,21 +304,18 @@ function renderGame(){
  if(qs('#exitTutorial'))qs('#exitTutorial').onclick=()=>{game.tutorial=false;if(game.phase==='round')localNext();else{store.set('magnolia-local',game);render();}};
  if(mode==='local'&&game?.tutorial){const guide=tutorialGuide({round:state.round,phase:state.phase,moves:moves.length,replayPhase:playback?state.resolution.events[playback.index].phase:null});if(guide.target)qs(guide.target)?.classList.add('tutorial-focus');}
  qs('#backButton').onclick=returnSetup;
+ for(const button of document.querySelectorAll('[data-refreshment]'))button.onclick=()=>enjoyRefreshment(button.dataset.refreshment);
  if(qs('.round-review'))qs('.round-review').ontoggle=e=>{reviewOpen=e.target.open;};
  if(qs('#reviewRound'))qs('#reviewRound').onchange=e=>{reviewRound=Number(e.target.value);reviewOpen=true;render();};
  for(const el of document.querySelectorAll('[data-player]'))el.onclick=()=>{boardId=el.dataset.player;render();};
  for(const el of document.querySelectorAll('#app [data-card]'))el.onclick=()=>showCard(el.dataset.card);
- function placeAt(handIndex,x,y){
-  if(!editing||busy||moves.length>=2)return;
-  try{const proposed=[...moves,{handIndex,x,y}];const result=previewPlacement(own,proposed),placed=result.placed.at(-1);moves=proposed;selected=null;render();showNotice(`${own.name}が${CARD[placed.card].name}を仮配置`,placed.steps,'予定の増減です。確定前なら取り消せます。');}catch(e){toast(e.message);}
- }
  for(const el of document.querySelectorAll('[data-cell]'))el.onclick=()=>{
   if(selected===null)return;const[x,y]=el.dataset.cell.split(',').map(Number);placeAt(selected,x,y);
  };
- if(editing&&!busy&&moves.length<2)cleanupDrag=bindCardDrag(app,placeAt);
+ if(!cleanupDrag)cleanupDrag=bindCardDrag(app,placeAt);
  for(const el of document.querySelectorAll('[data-hand]')){
   const index=Number(el.dataset.hand);el.onclick=()=>{
-   if(state.phase==='draw'){discard.has(index)?discard.delete(index):discard.add(index);}else selected=selected===index?null:index;render();if(state.phase==='place'&&selected!==null)mobileJump('.mobile-selected-card');
+   if(state.phase==='draw'){discard.has(index)?discard.delete(index):discard.add(index);}else{if(CARD[draft.hand[index]].cost>draft.gold){moneyWarning();return;}selected=selected===index?null:index;}render();if(state.phase==='place'&&selected!==null)mobileJump('.mobile-selected-card');
   };
   el.oncontextmenu=e=>{e.preventDefault();showCard((state.phase==='place'?draft:own).hand[index]);};
  }
