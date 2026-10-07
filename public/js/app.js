@@ -1,10 +1,10 @@
 import {matBounds,createRefreshments,servingLabel} from './tavern.js?v=1';
 import {tutorialGame,tutorialGuide} from './tutorial.js?v=7';
-import {bindCardDrag} from './drag.js?v=6';
+import {bindCardDrag} from './drag.js?v=7';
 import {CARDS,CARD,RACES,JOBS,RACE_BONUS,JOB_BONUS,effectText} from './cards.js?v=3';
 import {newGame,submit,nextRound,publicView,previewPlacement,legalCells,bounds,power,level,CPU_LEVELS,normalizeCPU} from './engine.js?v=11';
 import {fillCPU} from './cpu.js?v=11';
-import {PHASE_NAMES,scoreRank,changeSentence,levelChangeSentence,levelProgress,battleRank,resolutionView,undoChanges} from './presentation.js?v=3';
+import {PHASE_NAMES,scoreRank,changeSentence,levelChangeSentence,levelProgress,battleRank,resolutionView,undoChanges,finalResultMessages} from './presentation.js?v=4';
 
 const app=document.querySelector('#app');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -24,6 +24,23 @@ function mobileJump(target){
 let moves=[],discard=new Set(),selected=null,draftKey='',busy=false,connection='';
 let playback=null,pendingView=null,playTimer=null,autoPlay=store.get('magnolia-auto-play',false),notice=null,noticeTimer=null;
 const seenResolutions=new Set();
+const seenFinalResults=new Set();
+let finalResultTimer=null;
+function clearFinalResults(){clearTimeout(finalResultTimer);qs("#finalResultNotice").hidden=true;}
+function announceFinalResults(){
+ if(state.phase!=="ended"||playback)return;
+ const key=state.gameId||state.resolution?.id||`${mode}:${state.room||""}:${state.round}`;
+ if(seenFinalResults.has(key))return;seenFinalResults.add(key);
+ const messages=finalResultMessages(state.players,myId),host=qs("#finalResultNotice");
+ function next(){
+  if(mode==="setup"||state.phase!=="ended"){clearFinalResults();return;}
+  const item=messages.shift();if(!item){host.hidden=true;return;}
+  host.hidden=false;host.className=`final-result-notice ${item.winner?"champion":""} ${item.own?"your-result":""}`;
+  host.innerHTML=`<div class="result-ornament" aria-hidden="true">${item.winner?"✦ 👑 ✦":"✦"}</div><p>${item.own?"あなたの最終結果":"最終結果"} · ${item.total}人対戦</p><h2>${esc(item.name)} · ${item.rank}位</h2><h3>${esc(item.title)}</h3><p>${esc(item.message)}</p><strong>${item.vp} VP</strong>`;
+  host.style.animation="none";void host.offsetWidth;host.style.animation="";
+  finalResultTimer=setTimeout(next,item.winner?4800:3600);
+ }next();
+}
 const initialParams=new URLSearchParams(location.search);
 const defaultServer=location.hostname==='papertrashpaper.github.io'?'https://magnolia-82c3.onrender.com':location.origin;
 let connecting=false,recovering=false,reconnectTimer=null,recoveryGeneration=0;
@@ -91,13 +108,13 @@ function miniKingdom(p,active){
  const b=bounds(p.board),width=b.maxX-b.minX+1;let html='';
  for(let y=b.minY;y<=b.maxY;y++)for(let x=b.minX;x<=b.maxX;x++){
   const cell=p.board.find(c=>c.x===x&&c.y===y);
-  html+=cell?`<button data-card="${cell.card}" class="mini-card ${active&&cell===p.board.at(-1)?'just-placed':''} ${playback&&state.resolution.events[playback.index].phase==='war'&&isCombatant(p,cell)?`war-combatant ${warStanding(p)===1?'war-survivor':'war-fallen'} ${state.resolution.events[playback.index].battle?'war-clash':'war-settled'}`:''}" aria-label="${esc(p.name)}の${CARD[cell.card].name}の詳細"><img src="${CARD[cell.card].image}" alt="${CARD[cell.card].name}"></button>`:'<span class="mini-empty"></span>';
+  html+=cell?`<button data-card="${cell.card}" class="mini-card ${!p.board.some(c=>c.x===x&&c.y<y)?'frontline':'rearline'} ${active&&cell===p.board.at(-1)?'just-placed':''} ${playback&&state.resolution.events[playback.index].phase==='war'&&isCombatant(p,cell)?`war-combatant ${warStanding(p)===1?'war-survivor':'war-fallen'} ${state.resolution.events[playback.index].battle?'war-clash':'war-settled'}`:''}" aria-label="${esc(p.name)}の${CARD[cell.card].name}の詳細"><img src="${CARD[cell.card].image}" alt="${CARD[cell.card].name}">${!p.board.some(c=>c.x===x&&c.y<y)?'<span class="mini-front-label" aria-hidden="true">⚑</span>':''}</button>`:'<span class="mini-empty"></span>';
  }
  return p.board.length?`<div class="mini-board" style="grid-template-columns:repeat(${width},var(--mini-width,40px))">${html}</div>`:'<span class="muted small">まだ配置なし</span>';
 }
 function kingdomGallery(view,draft){
  const players=view.players.map(p=>p.id===myId&&!playback?draft:p),event=playback?state.resolution.events[playback.index]:null;
- return `<section id="kingdomOverview" class="kingdom-overview ${mobileOverviewCompact?'mobile-overview-compact':''}" aria-label="全員の王国"><div class="overview-label"><b>全員の王国</b><span class="desktop-overview-hint">現在順位はVP順 ／ 上側が前方</span><span class="mobile-only">横にスワイプして全員を確認</span><button id="mobileOverviewToggle" class="mobile-only quiet" aria-expanded="${!mobileOverviewCompact}">${mobileOverviewCompact?'王国を広げる':'王国を小さく'}</button></div><div class="kingdom-gallery" style="--players:${players.length}">${players.map(p=>`<article class="kingdom-mini ${event?.playerId===p.id?'processing':''} ${p.id===myId?'my-kingdom':''}"><button class="kingdom-name" data-player="${p.id}"><b>${esc(p.name)}</b><span class="rank-badge">${scoreRank(players,p)}位</span></button><div class="kingdom-values"><b>${p.vp} VP</b><span>${p.gold}金</span><span class="power-value">戦力 ${power(p)}</span></div>${metersHTML(p)}<div class="mini-arena">${miniKingdom(p,event?.playerId===p.id&&event.phase==='place'&&!!event.card)}</div>${handBacksHTML(p,event)}${event?.phase==='war'?`<span class="war-placement">戦争 ${warStanding(p)}位</span>`:''}${event?.playerId===p.id?'<span class="processing-label">処理中</span>':p.id===myId&&moves.length&&!playback?`<span class="processing-label">${p.ready?'配置確定済み':'仮配置を含む'}</span>`:''}</article>`).join('')}</div><nav class="mobile-navigation mobile-only" aria-label="対戦中の移動"><button data-mobile-jump="board">自分の王国</button><button data-mobile-jump="hand">手札・操作</button></nav></section>`;
+ return `<section id="kingdomOverview" class="kingdom-overview ${mobileOverviewCompact?'mobile-overview-compact':''}" aria-label="全員の王国"><div class="overview-label"><b>全員の王国</b><span class="desktop-overview-hint">現在順位はVP順 ／ 上側が前方 ／ ⚑ 金色の枠が前線</span><span class="mobile-only">横にスワイプして全員を確認</span><button id="mobileOverviewToggle" class="mobile-only quiet" aria-expanded="${!mobileOverviewCompact}">${mobileOverviewCompact?'王国を広げる':'王国を小さく'}</button></div><div class="kingdom-gallery" style="--players:${players.length}">${players.map(p=>`<article class="kingdom-mini ${event?.playerId===p.id?'processing':''} ${p.id===myId?'my-kingdom':''}"><button class="kingdom-name" data-player="${p.id}"><b>${esc(p.name)}</b><span class="rank-badge">${scoreRank(players,p)}位</span></button><div class="kingdom-values"><b>${p.vp} VP</b><span>${p.gold}金</span><span class="power-value">戦力 ${power(p)}</span></div>${metersHTML(p)}<div class="mini-arena">${miniKingdom(p,event?.playerId===p.id&&event.phase==='place'&&!!event.card)}</div>${handBacksHTML(p,event)}${event?.phase==='war'?`<span class="war-placement">戦争 ${warStanding(p)}位</span>`:''}${event?.playerId===p.id?'<span class="processing-label">処理中</span>':p.id===myId&&moves.length&&!playback?`<span class="processing-label">${p.ready?'配置確定済み':'仮配置を含む'}</span>`:''}</article>`).join('')}</div><nav class="mobile-navigation mobile-only" aria-label="対戦中の移動"><button data-mobile-jump="board">自分の王国</button><button data-mobile-jump="hand">手札・操作</button></nav></section>`;
 }
 function showCard(id){
  const c=CARD[id];if(!c)return;
@@ -216,7 +233,7 @@ async function remote(route,extra={}){
 function applyView(view){
  if(mode==='online'&&view.backup){const saved=store.set(backupKey(),view.backup);if(backupSaved&&!saved)toast('ブラウザの空き容量が不足しているため、対戦を保存できません。');backupSaved=saved;}
  if(mode==='online'&&view.presence){state&&(state.presence=view.presence);pendingView&&(pendingView.presence=view.presence);}
- if(state?.gameId&&view.gameId&&state.gameId!==view.gameId){clearTimeout(playTimer);clearTimeout(noticeTimer);playback=null;pendingView=null;notice=null;seenResolutions.clear();boardId=myId;}
+ if(state?.gameId&&view.gameId&&state.gameId!==view.gameId){clearTimeout(playTimer);clearTimeout(noticeTimer);playback=null;pendingView=null;notice=null;seenResolutions.clear();boardId=myId;clearFinalResults();}
  if(playback&&view.resolution?.id!==playback.id){pendingView=view;return;}
  state=view;const key=`${mode}:${view.room||''}:${view.gameId||''}:${view.round||0}:${view.phase}`;
  if(key!==draftKey){draftKey=key;moves=[];discard=new Set();selected=null;}
@@ -225,7 +242,7 @@ function applyView(view){
  if(view.resolution?.events.length&&!seenResolutions.has(view.resolution.id)){seenResolutions.add(view.resolution.id);playback={id:view.resolution.id,index:0};notice=null;clearTimeout(noticeTimer);scheduleReplay();}
  render();
 }
-function returnSetup(){recoveryGeneration++;cleanupDrag?.();cleanupDrag=null;clearTimeout(playTimer);clearTimeout(noticeTimer);playback=null;pendingView=null;notice=null;seenResolutions.clear();stream?.close();clearTimeout(reconnectTimer);stream=null;mode='setup';game=null;state=null;moves=[];selected=null;draftKey='';renderSetup();renderCenter();}
+function returnSetup(){clearFinalResults();seenFinalResults.clear();recoveryGeneration++;cleanupDrag?.();cleanupDrag=null;clearTimeout(playTimer);clearTimeout(noticeTimer);playback=null;pendingView=null;notice=null;seenResolutions.clear();stream?.close();clearTimeout(reconnectTimer);stream=null;mode='setup';game=null;state=null;moves=[];selected=null;draftKey='';renderSetup();renderCenter();}
 function renderLobby(){
  app.innerHTML=`<section class="setup"><div class="setup-head"><h1>参加者を待っています</h1><button id="backButton" class="quiet">戻る</button></div><div class="setup-grid"><section class="panel"><p class="muted small">部屋番号</p><div class="room-code">${esc(state.room)}</div><div id="connection" class="connection">${connection}</div><ul class="lobby-members">${state.players.map(p=>`<li><b>${esc(p.name)}${p.id===myId?'（あなた）':''}</b><span>${presenceText(p)}</span><span class="muted small">${p.id===state.hostId?'部屋主':'参加者'}</span></li>`).join('')}${Array.from({length:state.total-state.players.length},()=>'<li class="muted">空席<span class="small">開始時にCPUで補充</span></li>').join('')}</ul><div class="room-actions"><button id="shareButton">招待リンクをコピー</button>${myId===state.hostId?`<button id="startOnline" class="primary" ${busy?'disabled':''}>${state.players.length<state.total?'空席をCPUで埋めて開始':'ゲーム開始'}</button>`:'<span class="muted small">部屋主が開始するまでお待ちください。</span>'}</div></section><aside class="panel"><h2>部屋の設定</h2><p>合計 ${state.total}人</p><p>CPUの強さ：${(state.settings.cpuDifficulties??[state.settings.cpuDifficulty]).map(d=>CPU_LEVELS[normalizeCPU(d)]).join(' / ')}</p><p class="small muted">保存した対戦には同じブラウザの「前回の部屋に再接続」から戻れます。</p><p>戦争VP：${state.settings.warVP.map((n,i)=>`${i+1}位 ${n}VP`).join(' / ')}</p><div class="note">ゲーム開始後は新しい参加者は入れません。切断時は同じブラウザで「前回の部屋に再接続」を選べます。</div></aside></div></section>`;
  qs('#backButton').onclick=returnSetup;qs('#shareButton').onclick=copyInvite;if(qs('#startOnline'))qs('#startOnline').onclick=()=>remote('start');updateConnection();
@@ -236,13 +253,12 @@ async function copyInvite(){
 }
 function currentDraft(){if(playback)return resolutionView({...state,you:myId},playback.index).players.find(p=>p.id===myId);const p=state.players.find(p=>p.id===myId);if(state.phase==='place')return previewPlacement(p,p.ready?(state.ownOrder?.moves||moves):moves).player;return p;}
 function refreshmentsHTML(){
- return `<div class="tavern-refreshments" aria-label="卓のパンとビール">${['bread','beer'].map(kind=>`<button class="tavern-prop ${kind}" data-refreshment="${kind}" aria-label="${servingLabel(kind,refreshments[kind])}" ${refreshments[kind]===3?'disabled':''}><span class="refreshment-previous refreshment-sprite" style="--stage:3" aria-hidden="true"></span><span class="refreshment-sprite serving-current" style="--stage:${refreshments[kind]}" aria-hidden="true"></span><span class="bite-fragment" aria-hidden="true"></span><span class="refill-stream" aria-hidden="true"></span><span class="drink-ripple" aria-hidden="true"></span><span class="refreshment-label">${refreshments[kind]===3?(kind==='bread'?'給仕しています…':'注いでいます…'):(kind==='bread'?'パンを食べる':'ビールを飲む')}</span></button>`).join('')}</div>`;
+ return `<div class="tavern-refreshments" aria-label="卓のパンとビール">${['bread','beer'].map(kind=>`<button class="tavern-prop ${kind}" data-refreshment="${kind}" aria-label="${servingLabel(kind,refreshments[kind])}" ${refreshments[kind]===3?'disabled':''}><span class="refreshment-previous refreshment-sprite" style="--stage:3" aria-hidden="true"></span><span class="refreshment-sprite serving-current" style="--stage:${refreshments[kind]}" aria-hidden="true"></span><span class="bite-fragment" aria-hidden="true"></span><span class="refill-stream" aria-hidden="true"></span><span class="drink-ripple" aria-hidden="true"></span><span class="refill-bottle" aria-hidden="true"></span></button>`).join('')}</div>`;
 }
 function updateRefreshment(kind,served=false){
  const button=qs(`[data-refreshment="${kind}"]`);if(!button)return;
  button.disabled=refreshments[kind]===3;button.setAttribute('aria-label',servingLabel(kind,refreshments[kind]));
  button.querySelector('.serving-current').style.setProperty('--stage',refreshments[kind]);
- button.querySelector('.refreshment-label').textContent=refreshments[kind]===3?(kind==='bread'?'給仕しています…':'注いでいます…'):(kind==='bread'?'パンを食べる':'ビールを飲む');
  button.classList.remove('taking-serving','fresh-serving');void button.offsetWidth;button.classList.add(served?'fresh-serving':'taking-serving');
 }
 function enjoyRefreshment(kind){refreshmentService.take(kind);}
@@ -251,7 +267,7 @@ function boardHTML(p,interactive){
  let content='';for(let y=b.minY;y<=b.maxY;y++)for(let x=b.minX;x<=b.maxX;x++){
   const card=p.board.find(c=>c.x===x&&c.y===y),legal=cells.some(c=>c.x===x&&c.y===y);
   if(card){const planned=moves.findIndex(m=>m.x===x&&m.y===y);const front=!p.board.some(c=>c.x===x&&c.y<y);
-   content+=`<button class="cell ${interactive&&planned>=0?'planned':''}" data-card="${card.card}" aria-label="${CARD[card.card].name}の詳細"><img src="${CARD[card.card].image}" alt="${CARD[card.card].name}">${interactive&&planned>=0?`<span class="number">${planned+1}</span>`:''}${front?'<span class="front-label">前線</span>':''}</button>`;
+   content+=`<button class="cell ${front?'frontline':'rearline'} ${interactive&&planned>=0?'planned':''}" data-card="${card.card}" aria-label="${CARD[card.card].name}の詳細"><img src="${CARD[card.card].image}" alt="${CARD[card.card].name}">${interactive&&planned>=0?`<span class="number">${planned+1}</span>`:''}${front?'<span class="front-label">⚑ 前線 · 戦争に参戦</span>':''}</button>`;
   }else if(legal)content+=`<button class="cell candidate ${selected!==null?'can-place':''}" data-cell="${x},${y}" ${moves.length>=2||busy?'disabled':''} aria-label="${x},${y}に配置"><span style="font-size:1.6rem">＋</span></button>`;
   else content+='<div class="cell void" aria-hidden="true"></div>';
  }
@@ -267,7 +283,7 @@ function actionHTML(p){
  const title=state.phase==='draw'?'捨てるカードを選ぶ':'配置するカードを選ぶ';
  const help=state.phase==='draw'?'選択したカードを捨て、手札を5枚まで補充します。':mobileLayout()?'カードを上下にドラッグして「＋」へ配置。カードを選んで「＋」をタップしても配置できます。最大2枚です。':'カードを王国の「＋」へドラッグして配置。カードを選んで「＋」を押しても配置できます。最大2枚です。';
  const hand=state.phase==='place'?p.hand:own.hand;
- return `<section id="handActions" class="action-panel"><div class="action-title"><div><h2>${title}</h2><span class="muted small">${state.phase==='place'?`${moves.length}/2枚`:`${discard.size}枚交換`}</span></div><div class="placement-gold" aria-live="polite"><span>現在のお金${state.phase==='place'&&moves.length?(locked?'（配置確定後）':'（仮配置後）'):''}</span><strong>${p.gold}<small>金</small></strong></div></div><p class="muted small">${locked?(state.phase==='place'?'配置確定済み。自分の配置を表示しています。ほかの参加者を待っています。':'確定済み。ほかの参加者を待っています。'):help}</p><div class="hand">${hand.map((id,i)=>`<div class="hand-entry"><button class="hand-card ${selected===i?'selected':''} ${discard.has(i)&&state.phase==='draw'?'discard':''}" data-hand="${i}" data-draggable="${state.phase==='place'&&!locked&&!busy&&moves.length<2}" ${locked||busy?'disabled':''} aria-label="${CARD[id].name}${state.phase==='draw'&&discard.has(i)?'、捨てる対象':''}" aria-pressed="${state.phase==='draw'?discard.has(i):selected===i}"><img src="${CARD[id].image}" draggable="false" alt="${CARD[id].name}">${state.phase==='place'&&CARD[id].cost>p.gold?'<span class="afford">お金不足</span>':''}</button><button class="hand-card-details mobile-only quiet" data-card="${id}" aria-label="${esc(CARD[id].name)}の詳細"><span>${esc(CARD[id].name)}</span><small>${CARD[id].cost}金 · 詳細</small></button></div>`).join('')}</div>${state.phase==='place'&&selected!==null&&hand[selected]?`<div class="selected-info"><strong>${CARD[hand[selected]].name}</strong>　${CARD[hand[selected]].cost}金 / 戦力${CARD[hand[selected]].power}<p>${CARD[hand[selected]].effects.map(effectText).join('<br>')}</p><button class="quiet" data-card="${hand[selected]}" style="padding:4px 8px">カードの詳細</button></div>`:''}<div class="hand-info">${state.phase==='place'?`配置しない枠の報酬：${2-moves.length}金（配置処理後に獲得）`:mobileLayout()?'手札は横にスワイプできます。配置時はカードを上下にドラッグ。「詳細」で効果を確認。':'カードの画像を長押し・右クリックすると詳細を表示できます。'}</div><div class="action-buttons">${state.phase==='place'?`<button id="undoButton" ${!moves.length||locked||busy?'disabled':''}>最後の配置を戻す</button>`:`<button id="clearDiscard" ${!discard.size||locked||busy?'disabled':''}>選択を解除</button>`}<button id="confirmButton" class="primary" ${locked||busy?'disabled':''}>${locked?'全員の確定を待っています':state.phase==='draw'?(discard.size?'交換を確定':'交換せず補充'):moves.length?`${moves.length}枚の配置を確定`:'配置せず2金を獲得'}</button></div></section>`;
+ return `<section id="handActions" class="action-panel"><div class="action-title"><div><h2>${title}</h2><span class="muted small">${state.phase==='place'?`${moves.length}/2枚`:`${discard.size}枚交換`}</span></div><div class="placement-gold" aria-live="polite"><span>現在のお金${state.phase==='place'&&moves.length?(locked?'（配置確定後）':'（仮配置後）'):''}</span><strong>${p.gold}<small>金</small></strong></div></div><p class="muted small">${locked?(state.phase==='place'?'配置確定済み。自分の配置を表示しています。ほかの参加者を待っています。':'確定済み。ほかの参加者を待っています。'):help}</p><div class="hand">${hand.map((id,i)=>`<div class="hand-entry"><button class="hand-card ${selected===i?'selected':''} ${discard.has(i)&&state.phase==='draw'?'discard':''}" data-hand="${i}" data-draggable="${state.phase==='place'&&!locked&&!busy&&moves.length<2&&CARD[id].cost<=p.gold}" data-drag-blocked="${state.phase==='place'&&!locked&&!busy&&moves.length<2&&CARD[id].cost>p.gold?'money':''}" ${locked||busy?'disabled':''} aria-label="${CARD[id].name}${state.phase==='draw'&&discard.has(i)?'、捨てる対象':''}" aria-pressed="${state.phase==='draw'?discard.has(i):selected===i}"><img src="${CARD[id].image}" draggable="false" alt="${CARD[id].name}">${state.phase==='place'&&CARD[id].cost>p.gold?'<span class="afford">お金不足</span>':''}</button><button class="hand-card-details mobile-only quiet" data-card="${id}" aria-label="${esc(CARD[id].name)}の詳細"><span>${esc(CARD[id].name)}</span><small>${CARD[id].cost}金 · 詳細</small></button></div>`).join('')}</div>${state.phase==='place'&&selected!==null&&hand[selected]?`<div class="selected-info"><strong>${CARD[hand[selected]].name}</strong>　${CARD[hand[selected]].cost}金 / 戦力${CARD[hand[selected]].power}<p>${CARD[hand[selected]].effects.map(effectText).join('<br>')}</p><button class="quiet" data-card="${hand[selected]}" style="padding:4px 8px">カードの詳細</button></div>`:''}<div class="hand-info">${state.phase==='place'?`配置しない枠の報酬：${2-moves.length}金（配置処理後に獲得）`:mobileLayout()?'手札は横にスワイプできます。配置時はカードを上下にドラッグ。「詳細」で効果を確認。':'カードの画像を長押し・右クリックすると詳細を表示できます。'}</div><div class="action-buttons">${state.phase==='place'?`<button id="undoButton" ${!moves.length||locked||busy?'disabled':''}>最後の配置を戻す</button>`:`<button id="clearDiscard" ${!discard.size||locked||busy?'disabled':''}>選択を解除</button>`}<button id="confirmButton" class="primary" ${locked||busy?'disabled':''}>${locked?'全員の確定を待っています':state.phase==='draw'?(discard.size?'交換を確定':'交換せず補充'):moves.length?`${moves.length}枚の配置を確定`:'配置せず2金を獲得'}</button></div></section>`;
 }
 function resultsHTML(){
  if(!['round','ended'].includes(state.phase))return '';
@@ -312,7 +328,7 @@ function renderGame(){
  for(const el of document.querySelectorAll('[data-cell]'))el.onclick=()=>{
   if(selected===null)return;const[x,y]=el.dataset.cell.split(',').map(Number);placeAt(selected,x,y);
  };
- if(!cleanupDrag)cleanupDrag=bindCardDrag(app,placeAt);
+ if(!cleanupDrag)cleanupDrag=bindCardDrag(app,placeAt,moneyWarning);
  for(const el of document.querySelectorAll('[data-hand]')){
   const index=Number(el.dataset.hand);el.onclick=()=>{
    if(state.phase==='draw'){discard.has(index)?discard.delete(index):discard.add(index);}else{if(CARD[draft.hand[index]].cost>draft.gold){moneyWarning();return;}selected=selected===index?null:index;}render();if(state.phase==='place'&&selected!==null)mobileJump('.mobile-selected-card');
@@ -326,7 +342,7 @@ function renderGame(){
  if(qs('#confirmButton'))qs('#confirmButton').onclick=confirmAction;
  if(qs('#nextButton'))qs('#nextButton').onclick=()=>mode==='online'?remote('next'):localNext();
  if(qs('#newButton'))qs('#newButton').onclick=returnSetup;
- updateConnection();renderCenter();
+ updateConnection();renderCenter();announceFinalResults();
 }
 async function confirmAction(){
  if(playback)return;

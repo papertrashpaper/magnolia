@@ -19,3 +19,12 @@ export function resolutionView(view,index){
  result.phase=r.events[index]?.phase??r.events[0]?.phase;return result;
 }
 export function undoChanges(before,after){return statChanges(before,after,'仮配置の取り消し');}
+
+export function finalResultMessages(players,you){
+ return [...players].sort((a,b)=>b.vp-a.vp).map(p=>{
+  const rank=scoreRank(players,p),total=players.length;
+  const title=rank===1?'王国に栄光あれ！ おめでとう！':rank===2?'あと一歩、見事な健闘！':rank===total?'次の冒険で、巻き返そう！':rank<=Math.ceil(total/2)?'堂々の上位！ よき戦いでした！':'王国の物語は、まだ続く！';
+  const message=rank===1?'今宵の卓を制した王国に、乾杯！':rank===2?'優勝まであと一歩。次の卓では、頂点へ！':rank===total?'この経験が、次の勝利の礎になる。もう一戦、乾杯！':'築いた王国に、乾杯。次の一戦も楽しもう！';
+  return {id:p.id,name:p.name,rank,total,vp:p.vp,title,message,winner:rank===1,own:p.id===you};
+ });
+}

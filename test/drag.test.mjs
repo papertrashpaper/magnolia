@@ -42,3 +42,14 @@ test('cancelled pointer gestures clean up and allow the next drag',t=>{
  f.down(true);f.move(100,360);f.emit(f.doc,'pointercancel');f.up();assert.deepEqual(drops,[]);
  f.down(true);f.move(100,360);f.up();assert.deepEqual(drops,[[0,0,0]]);
 });
+
+test('unaffordable cards warn on pointerdown and never create a drag or drop',t=>{
+ const f=fixture(t),drops=[],warnings=[];
+ const dispose=bindCardDrag(f.root,(...args)=>drops.push(args),i=>warnings.push(i));t.after(()=>{dispose();f.restore();});
+ const c=f.root.card;c.closest=selector=>selector==='[data-drag-blocked="money"]'?c:null;
+ f.emit(f.root,'pointerdown',{target:c,pointerId:1,clientX:100,clientY:400,button:0,isPrimary:true,pointerType:'touch'});
+ f.move(100,100);f.up();
+ assert.deepEqual(warnings,[0]);assert.deepEqual(drops,[]);assert.equal(f.root.classList.contains('dragging-card'),false);
+ assert.equal(f.emit(f.root,'click').defaultPrevented,true);
+ f.down();f.move(100,100);f.up();assert.deepEqual(drops,[[0,0,0]]);
+});

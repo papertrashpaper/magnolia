@@ -1,5 +1,5 @@
 // Pointer Events support both mouse and touch without exposing private hands.
-export function bindCardDrag(root,onDrop){
+export function bindCardDrag(root,onDrop,onBlocked=()=>{}){
  let gesture=null,ghost=null,target=null,frame=null,suppressUntil=0;
  const controller=new AbortController(),options={signal:controller.signal};
  function hover(){
@@ -21,6 +21,8 @@ export function bindCardDrag(root,onDrop){
   if(gesture){try{gesture.card.releasePointerCapture(gesture.id);}catch{}gesture=null;}
  }
  root.addEventListener('pointerdown',e=>{
+  const blocked=e.target.closest('[data-drag-blocked="money"]');
+  if(blocked&&e.button===0&&e.isPrimary){onBlocked(Number(blocked.dataset.hand));suppressUntil=Date.now()+500;return;}
   const card=e.target.closest('[data-draggable="true"]');
   if(!card||e.button!==0||!e.isPrimary||gesture)return;
   gesture={card,index:Number(card.dataset.hand),id:e.pointerId,startX:e.clientX,startY:e.clientY,x:e.clientX,y:e.clientY,active:false,touch:e.pointerType==='touch'};

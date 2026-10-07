@@ -168,3 +168,29 @@ body:has(#app.dragging-card) .preview-notice,body:has(#app.dragging-card) .previ
 @keyframes tavern-fill-beer{0%,15%{clip-path:inset(100% 0 0 0)}90%,100%{clip-path:inset(0 0 0 0)}}
 @keyframes tavern-pour{0%,100%{opacity:0;transform:rotate(-9deg) scaleY(0)}15%,80%{opacity:.9;transform:rotate(-9deg) scaleY(1)}}
 @media(prefers-reduced-motion:reduce){.tavern-prop .refreshment-sprite{animation:none!important}.bite-fragment,.refill-stream,.drink-ripple,.fresh-serving .refreshment-previous{display:none!important}}
+
+/* Front cards participate in war; mark the leading card of each column. */
+.board-table .cell.frontline{border:3px solid #ffd470;box-shadow:0 0 0 1px #6c431b,0 0 13px #f4c05b77}
+.board-table .cell.rearline{border-color:#b69c7c}
+.cell.frontline .front-label{bottom:0;left:0;right:0;padding:5px 2px;background:#5b3509f0;color:#fff1ad;font-weight:800;border-top:1px solid #ffd470;font-size:clamp(.55rem,1.1vw,.8rem)}
+.mini-card{position:relative}.mini-card.frontline{border:2px solid #ffd470;box-shadow:0 0 5px #ffd47088}.mini-front-label{position:absolute;top:0;left:0;min-width:13px;background:#684312ef;color:#ffe28b;font-size:11px;line-height:15px;border-radius:0 0 3px 0;pointer-events:none}
+.hand-card[data-drag-blocked="money"]{cursor:not-allowed;touch-action:pan-x}
+/* Leave the imagery itself as the tap target; keep names for screen readers. */
+.refreshment-label{display:none}.tavern-prop{overflow:visible}.tavern-refreshments{padding-top:8px}
+.beer .refreshment-sprite{clip-path:inset(8% 0 0 0)}
+.refill-bottle{display:none;position:absolute;pointer-events:none;width:210%;aspect-ratio:3/1;left:-155%;top:5%;background:url('assets/tavern-beer-bottle.webp') center / contain no-repeat;transform-origin:93% 50%;filter:drop-shadow(0 6px 5px #160c0777);z-index:3}
+.beer.fresh-serving .refill-bottle{display:block;animation:tavern-bottle-pour 2s ease-in-out forwards}
+.beer.fresh-serving .refill-stream{z-index:2;left:48%;top:34%;height:22%;width:5%;transform-origin:top;animation:tavern-bottle-stream 2s linear forwards}
+.beer.fresh-serving .refreshment-previous{animation:tavern-empty-glass 2s linear forwards}
+.beer.fresh-serving .serving-current{animation:tavern-fill-from-bottle 2s ease-in-out both}
+@keyframes tavern-bottle-pour{0%{opacity:0;transform:translateX(-75%) rotate(20deg) scaleX(-1)}20%{opacity:1;transform:translateX(0) rotate(10deg) scaleX(-1)}35%,75%{opacity:1;transform:translateX(0) rotate(-12deg) scaleX(-1)}85%{opacity:1;transform:translateX(0) rotate(10deg) scaleX(-1)}100%{opacity:0;transform:translateX(-75%) rotate(20deg) scaleX(-1)}}
+@keyframes tavern-bottle-stream{0%,32%,80%,100%{opacity:0;transform:rotate(-5deg) scaleY(0)}36%,75%{opacity:1;transform:rotate(-5deg) scaleY(1)}}
+@keyframes tavern-fill-from-bottle{0%,32%{clip-path:inset(100% 0 0 0)}78%,100%{clip-path:inset(8% 0 0 0)}}
+.final-result-notice{position:fixed;z-index:170;left:50%;top:50%;width:min(640px,calc(100vw - 32px));padding:24px 20px;text-align:center;background:linear-gradient(135deg,#392517f2,#1d1713f5);border:2px solid #b79353;border-radius:12px;color:#f9e6c0;box-shadow:0 15px 60px #12090399;pointer-events:none;animation:final-result-arrive 3.6s ease both;transform:translate(-50%,-50%)}
+.final-result-notice[hidden]{display:none}.final-result-notice h2{font-size:1.8rem;margin:8px 0}.final-result-notice h3{font-size:1.2rem;color:#f5d58b;margin:10px 0}.final-result-notice p{margin:8px 0;font-size:.9rem}.final-result-notice strong{display:block;font-size:1.5rem}.result-ornament{font-size:1.8rem;color:#e7bb5c}.final-result-notice.champion{border-color:#ffe19b;background:radial-gradient(ellipse at top,#745117f5,#281c12f5 75%);box-shadow:0 0 55px #e7b34e66,0 15px 60px #12090399;animation-duration:4.8s}.final-result-notice.champion:before,.final-result-notice.champion:after{content:'✦ · ✧ · ✦';position:absolute;left:8%;right:8%;color:#ffdd77;letter-spacing:1rem;pointer-events:none;animation:champion-sparkles 1.5s ease-in-out infinite alternate}.final-result-notice.champion:before{top:12px}.final-result-notice.champion:after{bottom:12px}.final-result-notice.your-result{outline:2px solid #fae7ae;outline-offset:4px}
+@keyframes final-result-arrive{0%{opacity:0;transform:translate(-50%,-35%) scale(.94)}12%,85%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-65%) scale(1)}}
+@keyframes champion-sparkles{from{opacity:.35;transform:translateY(-3px)}to{opacity:1;transform:translateY(3px)}}
+@media(max-width:760px){.cell.frontline .front-label{font-size:.55rem;padding:3px 1px}.final-result-notice{padding:22px 12px}.final-result-notice h2{font-size:1.4rem}.final-result-notice h3{font-size:1rem}.final-result-notice p{font-size:.8rem}}
+@media(prefers-reduced-motion:reduce){.refill-bottle{display:none!important}.final-result-notice,.final-result-notice.champion:before,.final-result-notice.champion:after{animation:none!important}.beer.fresh-serving .serving-current{clip-path:inset(8% 0 0 0)}}
+
+.board-table{overflow:hidden}
