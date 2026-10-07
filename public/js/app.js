@@ -50,10 +50,11 @@ function renderCenter(){
  if(qs('#autoReplayButton'))qs('#autoReplayButton').onclick=()=>{autoPlay=!autoPlay;store.set('magnolia-auto-play',autoPlay);renderCenter();scheduleReplay();};
  if(qs('#closeNoticeButton'))qs('#closeNoticeButton').onclick=()=>{clearTimeout(noticeTimer);notice=null;renderCenter();};
 }
+const LEVEL_RANGES=['0','1〜2','3〜6','7〜14','15'];
 function metersHTML(p){
  return `<div class="level-meters">${['tech','faith'].map(stat=>{
   const n=p[stat],m=levelProgress(n),name=stat==='tech'?'技術':'信仰';
-  return `<div class="level-meter ${stat}" role="meter" aria-label="${esc(p.name)}の${name}点とレベル" aria-valuemin="0" aria-valuemax="15" aria-valuenow="${n}" aria-valuetext="${n}点、レベル${m.level}${m.next===null?'、上限':`、次のレベルは${m.next}点`}"><div class="meter-heading"><b>${name} ${n}点</b><span>Lv.${m.level}</span></div><div class="meter-track"><span class="meter-fill" style="width:${m.percent}%"></span>${[0,1,3,7,15].map((n,i)=>`<i class="meter-tick" style="left:${i*25}%"><span>${n}</span></i>`).join('')}</div><small>${m.next===null?'上限 Lv.4':`次Lvまで ${m.remaining}点`}</small></div>`;
+  return `<div class="level-meter ${stat}" role="meter" aria-label="${esc(p.name)}の${name}点とレベル" aria-valuemin="0" aria-valuemax="15" aria-valuenow="${n}" aria-valuetext="${n}点、レベル${m.level}${m.next===null?'、上限':`、次のレベルは${m.next}点`}"><div class="meter-heading"><b>${name} ${n}点</b><span>現在 Lv.${m.level}</span></div><div class="level-scale">${LEVEL_RANGES.map((range,i)=>`<span class="level-stage ${i===m.level?'current':i<m.level?'reached':''}" ${i===m.level?'aria-current="step"':''}><b>Lv.${i}</b><small>${range}点</small></span>`).join('')}</div><small>${m.next===null?'上限：Lv.4・15点':`次は ${m.next}点でLv.${m.level+1}（あと${m.remaining}点）`}</small></div>`;
  }).join('')}</div>`;
 }
 function handBacksHTML(p,event){
@@ -293,5 +294,28 @@ async function confirmAction(){
 }
 function localNext(){if(playback)return;try{nextRound(game);fillCPU(game,submit);applyView(publicView(game,myId));}catch(e){toast(e.message);}}
 function globalState(){return state;}
-function render(){if(mode==='setup')renderSetup();else if(state.phase==='lobby')renderLobby();else renderGame();}
+// The original guide keeps its place; a compact copy follows the player only
+// while its top is clipped. Re-rendering a card must keep this copy up to date.
+let tutorialDockCollapsed=false,tutorialDockFrame=null;
+function updateTutorialDock(){
+ const dock=qs('#tutorialDock'),original=qs('.tutorial-guide');
+ const active=mode==='local'&&game?.tutorial&&original;
+ const visible=active&&original.getBoundingClientRect().top<0;
+ dock.hidden=!visible;
+ if(visible){
+  const guide=tutorialGuide({round:state.round,phase:state.phase,moves:moves.length,replayPhase:playback?state.resolution.events[playback.index].phase:null});
+  const html=`<div class="tutorial-dock-top"><b>手ほどき ${guide.step}/4 · ${esc(guide.title)}</b><button id="toggleTutorialDock" class="quiet" aria-expanded="${!tutorialDockCollapsed}">${tutorialDockCollapsed?'助言を開く':'小さくする'}</button></div>${tutorialDockCollapsed?'':`<p>${esc(guide.text)}</p>`}`;
+  if(dock.innerHTML!==html)dock.innerHTML=html;
+  qs('#toggleTutorialDock').onclick=()=>{tutorialDockCollapsed=!tutorialDockCollapsed;updateTutorialDock();};
+ }else if(!active){tutorialDockCollapsed=false;dock.innerHTML='';}
+ document.documentElement.style.setProperty('--tutorial-dock-height',visible?`${Math.ceil(dock.getBoundingClientRect().height)+24}px`:'0px');
+}
+function scheduleTutorialDock(){
+ if(tutorialDockFrame!==null)return;
+ tutorialDockFrame=requestAnimationFrame(()=>{tutorialDockFrame=null;updateTutorialDock();});
+}
+window.addEventListener('scroll',scheduleTutorialDock,{passive:true});
+window.addEventListener('resize',scheduleTutorialDock);
+new MutationObserver(scheduleTutorialDock).observe(app,{childList:true});
+function render(){if(mode==='setup')renderSetup();else if(state.phase==='lobby')renderLobby();else renderGame();updateTutorialDock();}
 render();
