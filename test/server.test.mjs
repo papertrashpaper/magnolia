@@ -5,12 +5,12 @@ test('実HTTPで作成・参加・CPU補充・手札秘匿・フェイズ同期�
  const server=makeServer();await new Promise(r=>server.listen(0,'127.0.0.1',r));const base=`http://127.0.0.1:${server.address().port}`;
  const post=async(route,body)=>{const r=await fetch(`${base}/api/${route}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});return {status:r.status,data:await r.json()};};
  try{
-  const a=(await post('create',{name:'A',total:3,cpuCount:1,settings:{warVP:[7,3,0]}})).data;
+  const a=(await post('create',{name:'A',total:3,cpuCount:1,settings:{warVP:[7,3,0],cpuDifficulty:'expert'}})).data;
   const b=(await post('join',{name:'B',room:a.state.room})).data;assert.equal(b.state.players.length,2);
   assert.equal((await post('join',{name:'C',room:a.state.room})).status,400);
   assert.equal((await post('start',{room:a.state.room,token:b.token})).status,400);
   let state=(await post('start',{room:a.state.room,token:a.token})).data;
-  assert.equal(state.players.length,3);assert.equal(state.players[2].cpu,true);assert.equal(state.players[1].hand,undefined);assert.equal(state.players[0].hand.length,5);
+  assert.equal(state.players.length,3);assert.equal(state.players[2].cpu,true);assert.equal(state.players[2].cpuDifficulty,'expert');assert.equal(state.players[1].hand,undefined);assert.equal(state.players[0].hand.length,5);
   assert.equal((await post('action',{room:a.state.room,token:'bad',phase:'draw',round:1,order:{discard:[]}})).status,400);
   const credentials={room:a.state.room,token:a.token};const other={room:a.state.room,token:b.token};
   state=(await post('action',{...credentials,phase:'draw',round:1,order:{discard:[]}})).data;assert.equal(state.phase,'draw');
@@ -34,7 +34,7 @@ test('確定配置は本人だけ復元でき、終了後は同じ部屋・参�
  const post=async(route,body)=>{const r=await fetch(`${base}/api/${route}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});return {status:r.status,data:await r.json()};};
  const get=async(c)=>await(await fetch(`${base}/api/state?${new URLSearchParams(c)}`)).json();
  try{
-  const a=(await post('create',{name:'A',total:3,cpuCount:1,settings:{warVP:[7,3,0]}})).data;
+  const a=(await post('create',{name:'A',total:3,cpuCount:1,settings:{warVP:[7,3,0],cpuDifficulty:'expert'}})).data;
   const b=(await post('join',{name:'B',room:a.state.room})).data;
   const ac={room:a.state.room,token:a.token},bc={room:a.state.room,token:b.token};
   let s=(await post('start',ac)).data;const gameId=s.gameId;
@@ -57,7 +57,7 @@ test('確定配置は本人だけ復元でき、終了後は同じ部屋・参�
   }
   assert.equal(checked,true);assert.equal(s.phase,'ended');const seats=s.players.map(({id,name,cpu})=>({id,name,cpu}));
   assert.equal((await post('rematch',{...bc,gameId})).status,400);
-  const fresh=(await post('rematch',{...ac,gameId})).data;assert.equal(fresh.room,a.state.room);assert.notEqual(fresh.gameId,gameId);assert.equal(fresh.round,1);assert.equal(fresh.phase,'draw');assert.deepEqual(fresh.settings.warVP,[7,3,0]);assert.deepEqual(fresh.players.map(({id,name,cpu})=>({id,name,cpu})),seats);
+  const fresh=(await post('rematch',{...ac,gameId})).data;assert.equal(fresh.room,a.state.room);assert.notEqual(fresh.gameId,gameId);assert.equal(fresh.round,1);assert.equal(fresh.phase,'draw');assert.deepEqual(fresh.settings.warVP,[7,3,0]);assert.equal(fresh.settings.cpuDifficulty,'expert');assert.equal(fresh.players.find(p=>p.cpu).cpuDifficulty,'expert');assert.deepEqual(fresh.players.map(({id,name,cpu})=>({id,name,cpu})),seats);
   for(const p of fresh.players){assert.equal(p.gold,5);assert.equal(p.vp,0);assert.equal(p.board.length,0);assert.equal(p.handCount,5);}
   const other=await get(bc);assert.equal(other.gameId,fresh.gameId);assert.equal(other.you,b.id);
   assert.equal((await post('action',{...ac,gameId,round:1,phase:'draw',order:{discard:[]}})).status,400);

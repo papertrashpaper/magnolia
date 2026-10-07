@@ -1,11 +1,13 @@
 import {CARD,CARDS,RACE_BONUS,JOB_BONUS} from './cards.js?v=3';
 export const level=n=>n===15?4:n>=7?3:n>=3?2:n>=1?1:0;
 export const clone=x=>structuredClone(x);
+export const CPU_LEVELS={easy:'弱い',normal:'普通',hard:'強い',expert:'凄腕'};
+export const normalizeCPU=value=>Object.hasOwn(CPU_LEVELS,value)?value:'normal';
 export const DEFAULT_SETTINGS={warVP:[5,3,0,0,0],targetVP:40};
 export function normalizeSettings(settings={},count=2){
  const warVP=settings.warVP??(count===2?[4,0]:[5,3,0,0,0]);
  if(!Array.isArray(warVP)||warVP.length<count||warVP.some(n=>!Number.isInteger(n)||n<0||n>50))throw Error('戦争VPは各順位に0～50の整数を設定してください。');
- return {warVP:warVP.slice(0,count),targetVP:40};
+ return {warVP:warVP.slice(0,count),targetVP:40,cpuDifficulty:normalizeCPU(settings.cpuDifficulty)};
 }
 export function shuffle(cards,rng=Math.random){
  const a=[...cards];for(let i=a.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;
@@ -13,7 +15,7 @@ export function shuffle(cards,rng=Math.random){
 export function makePlayer(id,name,cpu=false){return {id,name,cpu,gold:5,tech:0,faith:0,vp:0,hand:[],board:[],bonuses:[],power:0,rank:0,warVP:0};}
 export function newGame(seats,settings={},rng=Math.random){
  if(seats.length<2||seats.length>5)throw Error('人数は2～5人です。');
- const g={players:seats.map(s=>makePlayer(s.id,s.name,s.cpu)),settings:normalizeSettings(settings,seats.length),round:1,phase:'draw',deck:shuffle(CARDS.flatMap(c=>Array(c.copies).fill(c.id)),rng),discard:[],orders:{},logs:[],revision:0};
+ const g={players:seats.map(s=>({...makePlayer(s.id,s.name,s.cpu),cpuDifficulty:normalizeCPU(s.cpuDifficulty??settings.cpuDifficulty)})),settings:normalizeSettings(settings,seats.length),round:1,phase:'draw',deck:shuffle(CARDS.flatMap(c=>Array(c.copies).fill(c.id)),rng),discard:[],orders:{},logs:[],revision:0};
  for(const p of g.players)drawToFive(g,p,rng);return g;
 }
 function drawToFive(g,p,rng=Math.random){
