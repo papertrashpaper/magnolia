@@ -1,4 +1,4 @@
-import {CARD,CARDS,RACE_BONUS,JOB_BONUS} from './cards.js';
+import {CARD,CARDS,RACE_BONUS,JOB_BONUS} from './cards.js?v=3';
 export const level=n=>n===15?4:n>=7?3:n>=3?2:n>=1?1:0;
 export const clone=x=>structuredClone(x);
 export const DEFAULT_SETTINGS={warVP:[5,3,0,0,0],targetVP:40};
@@ -45,7 +45,7 @@ export function publicPlayer(p){const v=clone(p);v.handCount=p.hand.length;delet
 export function statChanges(before,after,source){return ['gold','tech','faith','vp'].filter(k=>before[k]!==after[k]).map(stat=>({stat,before:before[stat],after:after[stat],delta:after[stat]-before[stat],source}));}
 function record(g,phase,title,p=null,changes=[],extra={}){g.resolution?.events.push({phase,title,playerId:p?.id??null,changes,...extra,...(p?{after:publicPlayer(p)}:{})});}
 function beginResolution(g,phase){g.resolution={id:`${g.round}:${phase}:${g.revision}`,round:g.round,before:g.players.map(publicPlayer),events:[]};}
-function phaseStart(g,phase,title){record(g,phase,`${title}フェーズ`);return g.players.map(publicPlayer);}
+function phaseStart(g,phase,title,extra={}){record(g,phase,`${title}フェーズ`,null,[],extra);return g.players.map(publicPlayer);}
 function phaseEnd(g,phase,title,before){record(g,phase,`${title}フェーズの増減`,null,[],{summary:g.players.map((p,i)=>({id:p.id,name:p.name,changes:statChanges(before[i],p,title+'フェーズ')}))});}
 function effects(p,phase,changes=[]){
  for(const b of p.board){const c=CARD[b.card];for(const eff of c.effects)if(eff.phase===phase){
@@ -106,7 +106,7 @@ export function power(p){
 function log(g,message){g.logs.push({round:g.round,message});}
 export function resolveRound(g){
  if(!g.resolution)beginResolution(g,'place');
- const warBefore=phaseStart(g,'war','戦争');
+ const warBefore=phaseStart(g,'war','戦争',{battle:g.players.map(p=>({id:p.id,power:power(p),rank:1+g.players.filter(q=>power(q)>power(p)).length}))});
  for(const p of g.players)p.power=power(p);
  for(const p of g.players){
   p.rank=1+g.players.filter(q=>q.power>p.power).length;p.warVP=g.settings.warVP[p.rank-1]??0;
@@ -148,12 +148,17 @@ export function submit(g,id,order,rng=Math.random){
  g.revision++;
  if(!g.players.every(p=>g.orders[p.id]))return;
  if(g.phase==='draw'){
-  beginResolution(g,'draw');const before=phaseStart(g,'draw','ドロー');
-  const counts=g.players.map(p=>({discard:g.orders[p.id].discard.length,draw:5-p.hand.length+g.orders[p.id].discard.length}));
-  // 全員の捨て札を先に集めてから配る。手札は補充前に選ぶ。
-  for(const p of g.players){const remove=new Set(g.orders[p.id].discard);g.discard.push(...p.hand.filter((_,i)=>remove.has(i)));p.hand=p.hand.filter((_,i)=>!remove.has(i));}
-  for(const [i,p]of g.players.entries()){drawToFive(g,p,rng);record(g,'draw',`${p.name}：${counts[i].discard}枚捨てて${counts[i].draw}枚補充`,p,[],{note:'手札を5枚に補充しました。カードの内容は本人だけに表示します。'});}
-  phaseEnd(g,'draw','ドロー',before);g.phase='place';g.orders={};
+  beginResolution(g,'draw');
+  // 手札内容を公開せず、捨てる・補充する段階の枚数だけを演出する。
+  for(const p of g.players){
+   const from=p.hand.length,remove=new Set(g.orders[p.id].discard);
+   g.discard.push(...p.hand.filter((_,i)=>remove.has(i)));p.hand=p.hand.filter((_,i)=>!remove.has(i));
+   if(remove.size)record(g,'draw','',p,[],{handAnimation:{type:'discard',from,to:p.hand.length}});
+  }
+  for(const p of g.players){const from=p.hand.length;drawToFive(g,p,rng);
+   if(from!==p.hand.length)record(g,'draw','',p,[],{handAnimation:{type:'refill',from,to:p.hand.length}});
+  }
+  g.phase='place';g.orders={};
  }else{
   beginResolution(g,'place');const before=phaseStart(g,'place','配置');
   for(const p of g.players){const moves=g.orders[p.id].moves;

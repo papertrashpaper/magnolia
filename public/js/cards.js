@@ -45,7 +45,7 @@ const list=[
  ['demon_destroy','破壊のデーモン','demon','warrior',5,8,[e('war','vp',1)],'jpg'],
  ['demon_eye','眼のデーモン','demon','merchant',5,6,[e('income','gold',2)],'jpg'],
  ['demon_pest','疫病のデーモン','demon','artisan',5,4,[e('vp','vp',4)],'jpg'],
- ['demon_storm','嵐のデーモン','demon','ruler',2,13,[e('place','vp',1,'race'),e('persistent','doubleBonus',1)],'jpg'],
+ ['demon_storm','嵐のデーモン','demon','ruler',9,13,[e('place','vp',1,'race'),e('persistent','doubleBonus',1)],'jpg'],
 ];
 export const CARDS=list.map(([id,name,race,job,cost,power,effects,ext],index)=>({id,name,race,job,cost,power,effects,image:`assets/${id}.${ext}`,copies:race==='demon'?(id==='demon_eye'?2:1):job==='ruler'?1:race==='golem'?2:3,index}));
 export const CARD=Object.fromEntries(CARDS.map(c=>[c.id,c]));

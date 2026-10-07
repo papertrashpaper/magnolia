@@ -1,7 +1,7 @@
-import {CARDS,CARD,RACES,JOBS,RACE_BONUS,JOB_BONUS,effectText} from './cards.js';
-import {newGame,submit,nextRound,publicView,previewPlacement,legalCells,bounds,power,level} from './engine.js?v=2';
-import {fillCPU} from './cpu.js?v=2';
-import {PHASE_NAMES,scoreRank,changeSentence,resolutionView,undoChanges} from './presentation.js?v=2';
+import {CARDS,CARD,RACES,JOBS,RACE_BONUS,JOB_BONUS,effectText} from './cards.js?v=3';
+import {newGame,submit,nextRound,publicView,previewPlacement,legalCells,bounds,power,level} from './engine.js?v=3';
+import {fillCPU} from './cpu.js?v=3';
+import {PHASE_NAMES,scoreRank,changeSentence,levelChangeSentence,levelProgress,battleRank,resolutionView,undoChanges} from './presentation.js?v=3';
 
 const app=document.querySelector('#app');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -16,7 +16,7 @@ let setup={name:store.get('magnolia-name','あなた'),total:3,cpuCount:0,server
 if(initialParams.get('room'))setupTab='online';
 function toast(text){qs('#toast').textContent=text;qs('#toast').classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>qs('#toast').classList.remove('show'),4500);}
 function bonusText(b){return Object.entries(b).map(([s,n])=>`${n}${{gold:'金',tech:'技術点',faith:'信仰点',vp:'VP'}[s]}`).join(' ＋ ');}
-function scheduleReplay(){clearTimeout(playTimer);if(playback&&autoPlay)playTimer=setTimeout(advanceReplay,3200);}
+function scheduleReplay(){clearTimeout(playTimer);if(!playback)return;const drawing=state.resolution.events[playback.index].phase==='draw';if(drawing||autoPlay)playTimer=setTimeout(advanceReplay,drawing?1050:3200);}
 function advanceReplay(){
  if(!playback)return;clearTimeout(playTimer);
  if(++playback.index>=state.resolution.events.length){
@@ -31,29 +31,52 @@ function showNotice(title,changes,note){
  clearTimeout(noticeTimer);notice={title,changes,note};renderCenter();
  noticeTimer=setTimeout(()=>{notice=null;renderCenter();},6500);
 }
-function summaryHTML(summary){return `<div class="phase-summary">${summary.map(p=>`<div><b>${esc(p.name)}</b><span>${p.changes.length?p.changes.map(c=>`${{gold:'お金',tech:'技術',faith:'信仰',vp:'VP'}[c.stat]} ${c.before} → ${c.after} (${c.delta>0?'+':''}${c.delta})`).join(' ／ '):'増減なし'}</span></div>`).join('')}</div>`;}
+function changeHTML(c){const lv=levelChangeSentence(c);return `<li class="${c.delta>0?'gain':'loss'}">${esc(changeSentence(c))}${lv?`<small class="level-change">${esc(lv)}</small>`:''}</li>`;}
+function summaryHTML(summary){return `<div class="phase-summary">${summary.map(p=>`<div><b>${esc(p.name)}</b><span>${p.changes.length?p.changes.map(c=>`${{gold:'お金',tech:'技術',faith:'信仰',vp:'VP'}[c.stat]} ${c.before} → ${c.after} (${c.delta>0?'+':''}${c.delta})${['tech','faith'].includes(c.stat)?` · Lv.${level(c.before)} → Lv.${level(c.after)}`:''}`).join(' ／ '):'増減なし'}</span></div>`).join('')}</div>`;}
 function renderCenter(){
  const host=qs('#centerNotice');if(!host)return;
- if(mode==='setup'||(!playback&&!notice)){host.hidden=true;host.innerHTML='';return;}
+ if(mode==='setup'||(playback&&state.resolution.events[playback.index].phase==='draw')||(!playback&&!notice)){host.hidden=true;host.innerHTML='';return;}
  host.hidden=false;
  const event=playback?state.resolution.events[playback.index]:notice;
- host.className=`center-notice ${playback?'resolving':'preview-notice'}`;
- host.innerHTML=`<div class="center-message" role="status" aria-live="polite"><p class="eyebrow">${playback?`${PHASE_NAMES[event.phase]} · ${playback.index+1}/${state.resolution.events.length}`:'仮配置'}</p><h2>${esc(event.title)}</h2>${event.card?`<p class="source-card">${esc(CARD[event.card].name)}</p>`:''}${event.summary?summaryHTML(event.summary):event.changes.length?`<ul class="change-list">${event.changes.map(c=>`<li class="${c.delta>0?'gain':'loss'}">${esc(changeSentence(c))}</li>`).join('')}</ul>`:`<p class="muted">${event.playerId?'この処理によるお金・技術・信仰・VPの増減はありません。':'全員の処理を順番に確認します。'}</p>`}${event.note?`<p class="muted small">${esc(event.note)}</p>`:''}</div>${playback?`<div class="replay-controls"><button id="autoReplayButton" aria-pressed="${autoPlay}">${autoPlay?'自動再生を停止':'自動再生（ゆっくり）'}</button><button id="advanceReplayButton" class="primary">${playback.index===state.resolution.events.length-1?'確認を終える':'次の処理'}</button></div>`:'<button id="closeNoticeButton" class="quiet notice-close" aria-label="増減メッセージを閉じる">閉じる</button>'}`;
+ host.className=`center-notice ${playback?'resolving':'preview-notice'} ${event.battle?'battle-notice':''}`;
+ host.innerHTML=`<div class="center-message" role="status" aria-live="polite"><p class="eyebrow">${playback?`${PHASE_NAMES[event.phase]} · ${playback.index+1}/${state.resolution.events.length}`:'仮配置'}</p><h2>${esc(event.title)}</h2>${event.battle?battleHTML(event):''}${event.card?`<p class="source-card">${esc(CARD[event.card].name)}</p>`:''}${event.summary?summaryHTML(event.summary):event.changes.length?`<ul class="change-list">${event.changes.map(changeHTML).join('')}</ul>`:`<p class="muted">${event.battle?'戦力を比べて順位を決定します。同戦力は同順位です。':event.playerId?'この処理によるお金・技術・信仰・VPの増減はありません。':'全員の処理を順番に確認します。'}</p>`}${event.note?`<p class="muted small">${esc(event.note)}</p>`:''}</div>${playback?`<div class="replay-controls"><button id="autoReplayButton" aria-pressed="${autoPlay}">${autoPlay?'自動再生を停止':'自動再生（ゆっくり）'}</button><button id="advanceReplayButton" class="primary">${playback.index===state.resolution.events.length-1?'確認を終える':'次の処理'}</button></div>`:'<button id="closeNoticeButton" class="quiet notice-close" aria-label="増減メッセージを閉じる">閉じる</button>'}`;
  if(qs('#advanceReplayButton'))qs('#advanceReplayButton').onclick=advanceReplay;
  if(qs('#autoReplayButton'))qs('#autoReplayButton').onclick=()=>{autoPlay=!autoPlay;store.set('magnolia-auto-play',autoPlay);renderCenter();scheduleReplay();};
  if(qs('#closeNoticeButton'))qs('#closeNoticeButton').onclick=()=>{clearTimeout(noticeTimer);notice=null;renderCenter();};
+}
+function metersHTML(p){
+ return `<div class="level-meters">${['tech','faith'].map(stat=>{
+  const n=p[stat],m=levelProgress(n),name=stat==='tech'?'技術':'信仰';
+  return `<div class="level-meter ${stat}" role="meter" aria-label="${esc(p.name)}の${name}点とレベル" aria-valuemin="0" aria-valuemax="15" aria-valuenow="${n}" aria-valuetext="${n}点、レベル${m.level}${m.next===null?'、上限':`、次のレベルは${m.next}点`}"><div class="meter-heading"><b>${name} ${n}点</b><span>Lv.${m.level}</span></div><div class="meter-track"><span class="meter-fill" style="width:${m.percent}%"></span>${[0,1,3,7,15].map((n,i)=>`<i class="meter-tick" style="left:${i*25}%"><span>${n}</span></i>`).join('')}</div><small>${m.next===null?'上限 Lv.4':`次Lvまで ${m.remaining}点`}</small></div>`;
+ }).join('')}</div>`;
+}
+function handBacksHTML(p,event){
+ const count=playback?p.handCount:(p.hand?.length??p.handCount),animation=event?.playerId===p.id?event.handAnimation:null;
+ return `<div class="public-hand" aria-label="${esc(p.name)}の手札${count}枚"><span>手札 ${count}枚</span><div class="hand-backs">${Array.from({length:5},(_,i)=>{
+  const leaving=animation?.type==='discard'&&i>=animation.to&&i<animation.from,entering=animation?.type==='refill'&&i>=animation.from&&i<animation.to;
+  return `<span class="back-slot ${i<count||leaving?'filled':''} ${leaving?'back-leaving':entering?'back-entering':''}" style="--card-delay:${Math.max(0,i-(animation?.type==='discard'?animation.to:animation?.from??0))*65}ms">${i<count||leaving?'<img src="assets/card-back.png" alt="裏向きの手札">':''}</span>`;
+ }).join('')}</div></div>`;
+}
+function isCombatant(p,cell){return !p.board.some(c=>c.x===cell.x&&c.y<cell.y)||CARD[cell.card].effects.some(e=>e.phase==='alwaysPower');}
+function warStanding(p){const players=resolutionView({...state,you:myId},playback.index).players.map(q=>({...q,power:power(q)}));return battleRank(players,{power:power(p)});}
+function battleHTML(event){
+ const view=resolutionView({...state,you:myId},playback.index);
+ return `<div class="battle-arena" aria-label="各王国の戦争演出"><p class="battle-caption">前線と射手が参戦 · 演出によって王国のカードは失われません</p><div class="battle-armies" style="--players:${view.players.length}">${view.players.map(p=>{
+  const army=event.battle.find(a=>a.id===p.id),fighters=p.board.filter(c=>isCombatant(p,c));
+  return `<div class="battle-army ${army.rank===1?'battle-winner':'battle-defeated'}"><b>${esc(p.name)}</b><span class="army-power">戦力 ${army.power}</span><div class="army-units">${fighters.length?fighters.map((c,i)=>`<img src="${CARD[c.card].image}" alt="${CARD[c.card].name}" style="--unit-delay:${i*60}ms">`).join(''):'<span class="empty-army">配置なし</span>'}<span class="battle-impact" aria-hidden="true">⚔</span></div><strong class="army-result">戦争 ${army.rank}位${army.rank===1?' 👑':''}</strong></div>`;
+ }).join('')}</div></div>`;
 }
 function miniKingdom(p,active){
  const b=bounds(p.board),width=b.maxX-b.minX+1;let html='';
  for(let y=b.minY;y<=b.maxY;y++)for(let x=b.minX;x<=b.maxX;x++){
   const cell=p.board.find(c=>c.x===x&&c.y===y);
-  html+=cell?`<button data-card="${cell.card}" class="mini-card ${active&&cell===p.board.at(-1)?'just-placed':''}" aria-label="${esc(p.name)}の${CARD[cell.card].name}の詳細"><img src="${CARD[cell.card].image}" alt="${CARD[cell.card].name}"></button>`:'<span class="mini-empty"></span>';
+  html+=cell?`<button data-card="${cell.card}" class="mini-card ${active&&cell===p.board.at(-1)?'just-placed':''} ${playback&&state.resolution.events[playback.index].phase==='war'&&isCombatant(p,cell)?`war-combatant ${warStanding(p)===1?'war-survivor':'war-fallen'} ${state.resolution.events[playback.index].battle?'war-clash':'war-settled'}`:''}" aria-label="${esc(p.name)}の${CARD[cell.card].name}の詳細"><img src="${CARD[cell.card].image}" alt="${CARD[cell.card].name}"></button>`:'<span class="mini-empty"></span>';
  }
  return p.board.length?`<div class="mini-board" style="grid-template-columns:repeat(${width},var(--mini-width,40px))">${html}</div>`:'<span class="muted small">まだ配置なし</span>';
 }
 function kingdomGallery(view,draft){
  const players=view.players.map(p=>p.id===myId&&!playback?draft:p),event=playback?state.resolution.events[playback.index]:null;
- return `<section class="kingdom-overview" aria-label="全員の王国"><div class="overview-label"><b>全員の王国</b><span>現在順位はVP順 ／ 上側が前方</span></div><div class="kingdom-gallery" style="--players:${players.length}">${players.map(p=>`<article class="kingdom-mini ${event?.playerId===p.id?'processing':''} ${p.id===myId?'my-kingdom':''}"><button class="kingdom-name" data-player="${p.id}"><b>${esc(p.name)}</b><span class="rank-badge">${scoreRank(players,p)}位</span></button><div class="kingdom-values"><b>${p.vp} VP</b><span>${p.gold}金</span><span>技${p.tech} / 信${p.faith}</span></div><div class="mini-arena">${miniKingdom(p,event?.playerId===p.id&&event.phase==='place'&&!!event.card)}</div>${event?.playerId===p.id?'<span class="processing-label">処理中</span>':p.id===myId&&moves.length&&!playback?'<span class="processing-label">仮配置を含む</span>':''}</article>`).join('')}</div></section>`;
+ return `<section class="kingdom-overview" aria-label="全員の王国"><div class="overview-label"><b>全員の王国</b><span>現在順位はVP順 ／ 上側が前方</span></div><div class="kingdom-gallery" style="--players:${players.length}">${players.map(p=>`<article class="kingdom-mini ${event?.playerId===p.id?'processing':''} ${p.id===myId?'my-kingdom':''}"><button class="kingdom-name" data-player="${p.id}"><b>${esc(p.name)}</b><span class="rank-badge">${scoreRank(players,p)}位</span></button><div class="kingdom-values"><b>${p.vp} VP</b><span>${p.gold}金</span><span class="power-value">戦力 ${power(p)}</span></div>${metersHTML(p)}<div class="mini-arena">${miniKingdom(p,event?.playerId===p.id&&event.phase==='place'&&!!event.card)}</div>${handBacksHTML(p,event)}${event?.phase==='war'?`<span class="war-placement">戦争 ${warStanding(p)}位</span>`:''}${event?.playerId===p.id?'<span class="processing-label">処理中</span>':p.id===myId&&moves.length&&!playback?'<span class="processing-label">仮配置を含む</span>':''}</article>`).join('')}</div></section>`;
 }
 function showCard(id){
  const c=CARD[id];if(!c)return;
@@ -152,6 +175,7 @@ function boardHTML(p,interactive){
 }
 function statsHTML(p){return `<div class="status-grid"><div class="stat vp"><span>勝利点</span><strong>${p.vp}<em>VP</em></strong></div><div class="stat gold"><span>お金</span><strong>${p.gold}<em>金</em></strong></div><div class="stat"><span>技術</span><strong>${p.tech}<em>Lv.${level(p.tech)}</em></strong></div><div class="stat"><span>信仰</span><strong>${p.faith}<em>Lv.${level(p.faith)}</em></strong></div></div>`;}
 function actionHTML(p){
+ if(playback&&state.resolution.events[playback.index].phase==='draw')return '<div class="action-panel replay-hint">手札を交換・補充しています…</div>';
  if(playback)return `<div class="action-panel replay-hint">全員の処理を順番に確認しています。中央の「次の処理」で進めてください。</div>`;
  if(state.phase==='ended')return `<div class="action-panel"><button id="newButton">新しい対戦へ</button></div>`;
  if(state.phase==='round')return `<div class="action-panel"><div class="action-buttons">${mode==='local'||myId===state.hostId?`<button id="nextButton" class="primary" ${busy?'disabled':''}>次のラウンドへ</button>`:'<span class="muted">部屋主が次のラウンドへ進めます。</span>'}</div></div>`;
@@ -170,7 +194,7 @@ function renderGame(){
  const state=playback?resolutionView({...globalState(),you:myId},playback.index):globalState();
  const draft=currentDraft();const own=state.players.find(p=>p.id===myId);const viewed=boardId===myId?draft:state.players.find(p=>p.id===boardId)||draft;
  const editing=!playback&&boardId===myId&&state.phase==='place'&&!own.ready;
- app.innerHTML=`<div class="game-head"><div><p class="eyebrow">${mode==='online'?`部屋 ${state.room}`:'CPU対戦'}</p><h1>ラウンド ${state.round}${state.phase==='ended'&&!playback?' — 終了':''}</h1></div><div style="display:flex;align-items:center;gap:12px">${mode==='online'?`<span id="connection" class="connection">${connection}</span>`:''}<button id="backButton" class="quiet">対戦メニュー</button></div></div><div class="phase-strip">${['draw','place','war','develop','income','vp'].map((phase,i)=>`<span class="${state.phase===phase?'active':''}">${i+1}. ${PHASE_NAMES[phase]}</span>`).join('')}</div>${kingdomGallery(state,draft)}${playback?'':resultsHTML()}<div class="game-layout"><section class="panel play-panel"><div class="board-heading"><b>${esc(viewed.name)} · 現在${scoreRank(state.players,viewed)}位の王国${!playback&&boardId===myId&&moves.length&&!own.ready?'（配置予定）':''}</b><span>前方 ↑ ／ ${viewed.board.length}/9体 ／ 戦力 ${power(viewed)}</span></div>${statsHTML(viewed)}${boardHTML(viewed,editing)}${boardId!==myId?'<div class="action-buttons"><button id="myBoardButton">自分の王国に戻る</button></div>':actionHTML(draft)}</section><aside><section class="panel players-panel"><h2>参加者</h2>${state.players.map(p=>`<button class="player-row ${p.id===boardId?'active':''}" data-player="${p.id}"><span class="row-head"><strong>${esc(p.name)} · ${scoreRank(state.players,p)}位</strong>${p.ready?'<span class="ready">確定</span>':`<span class="player-type">${p.cpu?'CPU':p.id===myId?'あなた':'人間'}</span>`}</span><span class="details">${p.vp} VP ／ ${p.gold}金 ／ ${p.board.length}体<br>技術 ${p.tech}（Lv.${level(p.tech)}）・信仰 ${p.faith}（Lv.${level(p.faith)}）</span></button>`).join('')}</section><section class="panel log-panel"><h2>履歴</h2><ul class="logs">${state.logs.length?[...state.logs].reverse().slice(0,60).map(l=>`<li><b>R${l.round}</b> ${esc(l.message)}</li>`).join(''):'<li>手札を交換して、王国づくりを始めましょう。</li>'}</ul><p class="muted small" style="margin:14px 0 0">山札 ${state.deckCount}枚 ／ 捨て札 ${state.discardCount}枚</p></section></aside></div>`;
+ app.innerHTML=`<div class="game-head"><div><p class="eyebrow">${mode==='online'?`部屋 ${state.room}`:'CPU対戦'}</p><h1>ラウンド ${state.round}${state.phase==='ended'&&!playback?' — 終了':''}</h1></div><div style="display:flex;align-items:center;gap:12px">${mode==='online'?`<span id="connection" class="connection">${connection}</span>`:''}<button id="backButton" class="quiet">対戦メニュー</button></div></div><div class="phase-strip">${['draw','place','war','develop','income','vp'].map((phase,i)=>`<span class="${state.phase===phase?'active':''}">${i+1}. ${PHASE_NAMES[phase]}</span>`).join('')}</div>${kingdomGallery(state,draft)}${playback?'':resultsHTML()}<div class="game-layout"><section class="panel play-panel"><div class="board-heading"><b>${esc(viewed.name)} · 現在${scoreRank(state.players,viewed)}位の王国${!playback&&boardId===myId&&moves.length&&!own.ready?'（配置予定）':''}</b><span>前方 ↑ ／ ${viewed.board.length}/9体 ／ 戦力 ${power(viewed)}</span></div>${statsHTML(viewed)}${metersHTML(viewed)}${boardHTML(viewed,editing)}${boardId!==myId?'<div class="action-buttons"><button id="myBoardButton">自分の王国に戻る</button></div>':actionHTML(draft)}</section><aside><section class="panel players-panel"><h2>参加者</h2>${state.players.map(p=>`<button class="player-row ${p.id===boardId?'active':''}" data-player="${p.id}"><span class="row-head"><strong>${esc(p.name)} · ${scoreRank(state.players,p)}位</strong>${p.ready?'<span class="ready">確定</span>':`<span class="player-type">${p.cpu?'CPU':p.id===myId?'あなた':'人間'}</span>`}</span><span class="details">${p.vp} VP ／ ${p.gold}金 ／ ${p.board.length}体 ／ 戦力 ${power(p)}<br>技術 ${p.tech}（Lv.${level(p.tech)}）・信仰 ${p.faith}（Lv.${level(p.faith)}）</span></button>`).join('')}</section><section class="panel log-panel"><h2>履歴</h2><ul class="logs">${state.logs.length?[...state.logs].reverse().slice(0,60).map(l=>`<li><b>R${l.round}</b> ${esc(l.message)}</li>`).join(''):'<li>手札を交換して、王国づくりを始めましょう。</li>'}</ul><p class="muted small" style="margin:14px 0 0">山札 ${state.deckCount}枚 ／ 捨て札 ${state.discardCount}枚</p></section></aside></div>`;
  qs('#backButton').onclick=returnSetup;
  for(const el of document.querySelectorAll('[data-player]'))el.onclick=()=>{boardId=el.dataset.player;render();};
  for(const el of document.querySelectorAll('#app [data-card]'))el.onclick=()=>showCard(el.dataset.card);

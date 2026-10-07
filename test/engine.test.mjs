@@ -85,3 +85,9 @@ test('2～5人のCPUゲームが完走し、カード102枚を保存する',()=>
   }assert.equal(g.phase,'ended',`count=${count}, seed=${seed}`);assert.ok(g.winners.length);
  }
 });
+
+test('嵐のデーモンは9金未満では配置不可、9金で支払う',()=>{
+ assert.equal(CARD.demon_storm.cost,9);
+ assert.throws(()=>placeOne(player(['demon_storm'],8),{handIndex:0,x:0,y:0}),/コスト/);
+ const p=player(['demon_storm'],9);placeOne(p,{handIndex:0,x:0,y:0});assert.equal(p.gold,0);assert.equal(p.board[0].card,'demon_storm');
+});

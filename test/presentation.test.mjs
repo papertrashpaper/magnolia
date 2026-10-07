@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {newGame,submit,publicView,makePlayer,placeOne,clone} from '../public/js/engine.js';
-import {resolutionView,scoreRank,changeSentence,undoChanges} from '../public/js/presentation.js';
+import {newGame,submit,publicView,makePlayer,placeOne,clone,level,power} from '../public/js/engine.js';
+import {resolutionView,scoreRank,changeSentence,undoChanges,levelChangeSentence,levelProgress,battleRank} from '../public/js/presentation.js';
 function game(){return newGame([{id:'human',name:'あなた'},{id:'b',name:'B'}]);}
 test('カードごとの増減はコストと効果を相殺せず、理由と実際の値を記録',()=>{
  const p=makePlayer('human','あなた');p.hand=['golem_gold'];
@@ -39,4 +39,40 @@ test('点数上限の増減と、仮配置取り消しの値は正確',()=>{
 });
 test('現在順位はVP順、同点は同順位',()=>{
  const players=[{vp:10},{vp:10},{vp:4}];assert.deepEqual(players.map(p=>scoreRank(players,p)),[1,1,3]);
+});
+
+test('マリガンは枚数だけで消失・補充を表し、全員の捨て札処理後に補充する',()=>{
+ const g=game();g.players[1].hand.splice(3);const originals=g.players.map(p=>[...p.hand]);
+ submit(g,'human',{discard:[0,2]});assert.equal(publicView(g,'b').resolution,null);
+ submit(g,'b',{discard:[1]});const v=publicView(g,'human'),r=v.resolution;
+ assert.deepEqual(r.events.map(e=>[e.playerId,e.handAnimation.type,e.handAnimation.from,e.handAnimation.to]),[['human','discard',5,3],['b','discard',3,2],['human','refill',3,5],['b','refill',2,5]]);
+ assert.equal(r.events.some(e=>e.summary),false);assert.equal(g.logs.length,0);
+ let interim=resolutionView(v,0);assert.deepEqual(interim.players.map(p=>p.handCount),[3,3]);
+ interim=resolutionView(v,1);assert.deepEqual(interim.players.map(p=>p.handCount),[3,2]);
+ interim=resolutionView(v,3);assert.deepEqual(interim.players.map(p=>p.handCount),[5,5]);
+ for(const p of [...r.before,...r.events.map(e=>e.after)])assert.ok(!Object.hasOwn(p,'hand'));
+ assert.deepEqual(g.players[0].hand.slice(0,3),originals[0].filter((_,i)=>![0,2].includes(i)));
+});
+test('交換も補充もない場合にはマリガンの確認表示を作らない',()=>{
+ const g=game();submit(g,'human',{discard:[]});submit(g,'b',{discard:[]});assert.equal(g.resolution.events.length,0);assert.equal(g.phase,'place');
+});
+test('点数の全境界と上限・取り消しに合わせたレベル増減を伝える',()=>{
+ for(const [before,after] of [[0,1],[2,3],[6,7],[14,15],[15,14],[7,6],[3,2],[1,0]]){
+  const text=levelChangeSentence({stat:'faith',before,after});assert.ok(text.includes(`Lv.${level(before)} → Lv.${level(after)}`));assert.match(text,after>before?/上昇/:/低下/);
+ }
+ assert.match(levelChangeSentence({stat:'tech',before:3,after:6}),/Lv.2のまま/);
+ assert.equal(levelChangeSentence({stat:'gold',before:3,after:6}),'');
+});
+test('バーの目盛りは全レベル境界に一致し、次レベルまでの点数を正確に表示',()=>{
+ for(const [i,n] of [0,1,3,7,15].entries())assert.equal(levelProgress(n).percent,i*25);
+ let previous=-1;for(let n=0;n<=15;n++){const m=levelProgress(n);assert.equal(m.level,level(n));assert.ok(m.percent>previous);previous=m.percent;assert.equal(m.remaining,m.next===null?0:m.next-n);}
+ assert.deepEqual(levelProgress(15),{level:4,percent:100,next:null,remaining:0});
+});
+test('戦争演出は計算済みの戦力・同率順位を使用し、カードを失わない',()=>{
+ const g=game();g.phase='place';g.players.forEach(p=>{p.board=[{card:'human_knight',x:0,y:0}];p.hand=[];});
+ submit(g,'human',{moves:[]});submit(g,'b',{moves:[]});
+ const battle=g.resolution.events.find(e=>e.battle).battle;
+ assert.deepEqual(battle.map(a=>a.rank),[1,1]);assert.ok(battle.every(a=>a.power===power(g.players.find(p=>p.id===a.id))));
+ assert.deepEqual(g.players.map(p=>p.board.length),[1,1]);
+ const armies=[{power:7},{power:7},{power:4},{power:0}];assert.deepEqual(armies.map(p=>battleRank(armies,p)),[1,1,3,4]);
 });
