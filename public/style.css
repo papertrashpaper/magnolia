@@ -63,3 +63,9 @@ button{border-radius:5px;box-shadow:inset 0 1px 0 #ffffff0d,0 2px 3px #1b100f25}
 @media(max-width:760px){.tutorial-dock{padding:10px 12px}.tutorial-dock-top{gap:6px}.tutorial-dock-top b{font-size:.75rem}.tutorial-dock p{font-size:.75rem}.level-stage b{font-size:.65rem}.level-stage small{font-size:.6rem}.play-panel>.level-meters{gap:12px}}
 
 html{scroll-padding-bottom:calc(24px + var(--tutorial-dock-height,0px))}.action-buttons{scroll-margin-bottom:calc(24px + var(--tutorial-dock-height,0px))}
+
+/* Keep the original continuous point progress beside the level-range labels. */
+.meter-track.point-progress{height:10px;margin:8px 4px 9px}
+.point-progress .meter-tick{top:-2px;height:12px;opacity:.6}
+.meter-current-position{position:absolute;top:-3px;height:14px;width:3px;background:#fff6dd;border-radius:2px;transform:translateX(-50%);box-shadow:0 0 0 1px #4d3b24;transition:left .65s ease}
+.panel .meter-current-position{background:#604921;box-shadow:0 0 0 1px #fff4d9}
