@@ -296,7 +296,7 @@ function localNext(){if(playback)return;try{nextRound(game);fillCPU(game,submit)
 function globalState(){return state;}
 // The original guide keeps its place; a compact copy follows the player only
 // while its top is clipped. Re-rendering a card must keep this copy up to date.
-let tutorialDockCollapsed=false,tutorialDockFrame=null;
+let tutorialDockCollapsed=false,tutorialDockFrame=null,tutorialDockHeight=0;
 function updateTutorialDock(){
  const dock=qs('#tutorialDock'),original=qs('.tutorial-guide');
  const active=mode==='local'&&game?.tutorial&&original;
@@ -308,7 +308,16 @@ function updateTutorialDock(){
   if(dock.innerHTML!==html)dock.innerHTML=html;
   qs('#toggleTutorialDock').onclick=()=>{tutorialDockCollapsed=!tutorialDockCollapsed;updateTutorialDock();};
  }else if(!active){tutorialDockCollapsed=false;dock.innerHTML='';}
- document.documentElement.style.setProperty('--tutorial-dock-height',visible?`${Math.ceil(dock.getBoundingClientRect().height)+24}px`:'0px');
+ const height=visible?Math.ceil(dock.getBoundingClientRect().height)+24:0;
+ document.documentElement.style.setProperty('--tutorial-dock-height',`${height}px`);
+ // Opening the advice can otherwise cover a button that was already in view.
+ // Reserve room once when it grows, rather than moving the view on every scroll.
+ if(height>tutorialDockHeight){
+  const controls=qs('.action-buttons'),rect=controls?.getBoundingClientRect();
+  if(rect&&rect.top>0&&rect.bottom<=window.innerHeight&&rect.bottom>window.innerHeight-height)
+   window.scrollBy({top:rect.bottom-(window.innerHeight-height)+12,behavior:'instant'});
+ }
+ tutorialDockHeight=height;
 }
 function scheduleTutorialDock(){
  if(tutorialDockFrame!==null)return;
