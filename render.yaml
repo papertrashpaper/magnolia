@@ -12,3 +12,5 @@ services:
         value: 24.19.0
       - key: ALLOWED_ORIGINS
         value: https://papertrashpaper.github.io
+      - key: ROOM_BACKUP_KEY
+        sync: false

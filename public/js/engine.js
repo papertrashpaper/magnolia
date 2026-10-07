@@ -1,3 +1,4 @@
+import {roundReview} from './review.js?v=11';
 import {CARD,CARDS,RACE_BONUS,JOB_BONUS} from './cards.js?v=3';
 export const level=n=>n===15?4:n>=7?3:n>=3?2:n>=1?1:0;
 export const clone=x=>structuredClone(x);
@@ -7,7 +8,7 @@ export const DEFAULT_SETTINGS={warVP:[5,3,0,0,0],targetVP:40};
 export function normalizeSettings(settings={},count=2){
  const warVP=settings.warVP??(count===2?[4,0]:[5,3,0,0,0]);
  if(!Array.isArray(warVP)||warVP.length<count||warVP.some(n=>!Number.isInteger(n)||n<0||n>50))throw Error('戦争VPは各順位に0～50の整数を設定してください。');
- return {warVP:warVP.slice(0,count),targetVP:40,cpuDifficulty:normalizeCPU(settings.cpuDifficulty)};
+ return {warVP:warVP.slice(0,count),targetVP:40,cpuDifficulty:normalizeCPU(settings.cpuDifficulty),cpuDifficulties:Array.from({length:count-1},(_,i)=>normalizeCPU(settings.cpuDifficulties?.[i]??settings.cpuDifficulty))};
 }
 export function shuffle(cards,rng=Math.random){
  const a=[...cards];for(let i=a.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;
@@ -138,6 +139,7 @@ export function resolveRound(g){
   }phaseEnd(g,'final','最終得点',before);
   const best=Math.max(...g.players.map(p=>p.vp));g.winners=g.players.filter(p=>p.vp===best).map(p=>p.id);
  }else g.phase='round';g.orders={};
+ g.roundReviews??=[];g.roundReviews.push(roundReview(g));if(g.roundReviews.length>30)g.roundReviews.shift();
 }
 export function submit(g,id,order,rng=Math.random){
  if(!['draw','place'].includes(g.phase))throw Error('このフェイズでは操作できません。');
@@ -174,6 +176,7 @@ export function submit(g,id,order,rng=Math.random){
 export function nextRound(g){if(g.phase!=='round')throw Error('ラウンドの結果を確認してから進めてください。');g.round++;g.phase='draw';g.orders={};delete g.resolution;g.revision++;}
 export function publicView(g,id){
  const view={round:g.round,phase:g.phase,settings:clone(g.settings),logs:clone(g.logs),winners:g.winners??[],revision:g.revision,deckCount:g.deck.length,discardCount:g.discard.length};
+ view.roundReviews=clone(g.roundReviews??[]);
  view.resolution=g.resolution?clone(g.resolution):null;
  view.ownOrder=g.orders[id]?clone(g.orders[id]):null;
  view.players=g.players.map(p=>{const v=clone(p);v.handCount=v.hand.length;v.ready=!!g.orders[p.id];if(p.id!==id)delete v.hand;return v;});return view;

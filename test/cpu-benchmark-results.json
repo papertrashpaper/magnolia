@@ -1,0 +1,193 @@
+{
+  "seeds": 24,
+  "games": 172,
+  "maxThinkMs": 2122,
+  "pairs": [
+    {
+      "lower": "弱い",
+      "higher": "普通",
+      "higherWins": 20,
+      "lowerWins": 2,
+      "draws": 2,
+      "higherVP": 1093,
+      "lowerVP": 608,
+      "games": 24
+    },
+    {
+      "lower": "普通",
+      "higher": "強い",
+      "higherWins": 53,
+      "lowerWins": 24,
+      "draws": 3,
+      "higherVP": 3348,
+      "lowerVP": 2896,
+      "games": 80
+    },
+    {
+      "lower": "強い",
+      "higher": "凄腕",
+      "higherWins": 14,
+      "lowerWins": 9,
+      "draws": 1,
+      "higherVP": 967,
+      "lowerVP": 927,
+      "games": 24
+    },
+    {
+      "lower": "凄腕",
+      "higher": "覇王",
+      "higherWins": 14,
+      "lowerWins": 10,
+      "draws": 0,
+      "higherVP": 1042,
+      "lowerVP": 1008,
+      "games": 24
+    }
+  ],
+  "mixed": [
+    {
+      "count": 3,
+      "warVP": [
+        5,
+        3,
+        0
+      ],
+      "totals": {
+        "弱い": {
+          "games": 3,
+          "VP": 52,
+          "wins": 0
+        },
+        "普通": {
+          "games": 3,
+          "VP": 136,
+          "wins": 1
+        },
+        "強い": {
+          "games": 3,
+          "VP": 127,
+          "wins": 0
+        },
+        "凄腕": {
+          "games": 3,
+          "VP": 121,
+          "wins": 1
+        },
+        "覇王": {
+          "games": 3,
+          "VP": 144,
+          "wins": 3
+        }
+      }
+    },
+    {
+      "count": 3,
+      "warVP": [
+        8,
+        1,
+        0
+      ],
+      "totals": {
+        "弱い": {
+          "games": 3,
+          "VP": 42,
+          "wins": 0
+        },
+        "普通": {
+          "games": 3,
+          "VP": 115,
+          "wins": 1
+        },
+        "強い": {
+          "games": 3,
+          "VP": 108,
+          "wins": 0
+        },
+        "凄腕": {
+          "games": 3,
+          "VP": 126,
+          "wins": 2
+        },
+        "覇王": {
+          "games": 3,
+          "VP": 148,
+          "wins": 2
+        }
+      }
+    },
+    {
+      "count": 5,
+      "warVP": [
+        5,
+        3,
+        0,
+        0,
+        0
+      ],
+      "totals": {
+        "弱い": {
+          "games": 5,
+          "VP": 105,
+          "wins": 0
+        },
+        "普通": {
+          "games": 5,
+          "VP": 187,
+          "wins": 1
+        },
+        "強い": {
+          "games": 5,
+          "VP": 220,
+          "wins": 1
+        },
+        "凄腕": {
+          "games": 5,
+          "VP": 247,
+          "wins": 3
+        },
+        "覇王": {
+          "games": 5,
+          "VP": 238,
+          "wins": 0
+        }
+      }
+    },
+    {
+      "count": 5,
+      "warVP": [
+        8,
+        1,
+        0,
+        0,
+        0
+      ],
+      "totals": {
+        "弱い": {
+          "games": 5,
+          "VP": 64,
+          "wins": 0
+        },
+        "普通": {
+          "games": 5,
+          "VP": 162,
+          "wins": 0
+        },
+        "強い": {
+          "games": 5,
+          "VP": 161,
+          "wins": 1
+        },
+        "凄腕": {
+          "games": 5,
+          "VP": 172,
+          "wins": 1
+        },
+        "覇王": {
+          "games": 5,
+          "VP": 195,
+          "wins": 3
+        }
+      }
+    }
+  ]
+}

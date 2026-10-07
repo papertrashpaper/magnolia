@@ -1,5 +1,5 @@
 import {CARD,CARDS} from './cards.js?v=3';
-import {clone,legalCells,placeOne,power,level,amount,resolveRound,normalizeCPU} from './engine.js?v=10';
+import {clone,legalCells,placeOne,power,level,amount,resolveRound,normalizeCPU} from './engine.js?v=11';
 function potential(p){
  let score=0;
  for(const axis of ['x','y'])for(const type of ['race','job']){
@@ -15,9 +15,9 @@ function recurring(p){
   if(e.phase==='develop')result+=e.amount*1.2;
  }}return result;
 }
-export function cpuScore(p,opponents=[]){
+export function cpuScore(p,opponents=[],settings={}){
  const s=power(p);const rank=1+opponents.filter(q=>power(q)>s).length;
- return p.vp*3+p.gold*.9+p.tech*.8+p.faith*.8+s*.7+recurring(p)+potential(p)+(rank===1?5:rank===2?2:0)+p.board.length*1.5;
+ return p.vp*3+p.gold*.9+p.tech*.8+p.faith*.8+s*.7+recurring(p)+potential(p)+(settings.warVP?.[rank-1]??(rank===1?5:rank===2?2:0))+p.board.length*1.5;
 }
 export function cpuDraw(p,rng=Math.random){
  const difficulty=normalizeCPU(p.cpuDifficulty);
@@ -30,8 +30,8 @@ export function cpuDraw(p,rng=Math.random){
   if(!valuable||(!matching&&c.cost>p.gold&&discard.length<3))discard.push(i);
  }return {discard};
 }
-function normalPlace(p,opponents=[],beamWidth=14){
- const initial={p:clone(p),moves:[],score:cpuScore({...clone(p),gold:p.gold+2},opponents)};let best=initial;
+function normalPlace(p,opponents=[],beamWidth=14,settings={}){
+ const initial={p:clone(p),moves:[],score:cpuScore({...clone(p),gold:p.gold+2},opponents,settings)};let best=initial;
  let beam=[{p:clone(p),moves:[]}];
  for(let depth=0;depth<2;depth++){
   const candidates=[];
@@ -39,12 +39,32 @@ function normalPlace(p,opponents=[],beamWidth=14){
    if(CARD[entry.p.hand[i]].cost>entry.p.gold)continue;
    for(const cell of legalCells(entry.p.board)){
     const next=clone(entry.p),move={handIndex:i,...cell};placeOne(next,move);
-    const moves=[...entry.moves,move],score=cpuScore({...clone(next),gold:next.gold+2-moves.length},opponents);
+    const moves=[...entry.moves,move],score=cpuScore({...clone(next),gold:next.gold+2-moves.length},opponents,settings);
     const candidate={p:next,moves,score};candidates.push(candidate);if(score>best.score)best=candidate;
    }
   }
   candidates.sort((a,b)=>b.score-a.score);beam=candidates.slice(0,beamWidth);
  }return {moves:best.moves};
+}
+function ordinaryPlace(p,opponents,rng){
+ const draft=clone(p),moves=[];
+ for(let depth=0;depth<2;depth++){
+  const candidates=[];
+  for(let i=0;i<draft.hand.length;i++){
+   if(CARD[draft.hand[i]].cost>draft.gold)continue;
+   let best=null;
+   for(const cell of legalCells(draft.board)){
+    const next=clone(draft),move={handIndex:i,...cell};placeOne(next,move);
+    const score=cpuScore({...clone(next),gold:next.gold+1-depth},opponents);
+    if(!best||score>best.score)best={next,move,score};
+   }if(best)candidates.push(best);
+  }
+  candidates.sort((a,b)=>b.score-a.score);if(!candidates.length)break;
+  // Ordinary opponents usually prefer the best immediate option, but are
+  // less consistent than the exhaustive higher difficulties.
+  const index=rng()<.4?0:Math.floor(rng()*Math.min(3,candidates.length));
+  const chosen=candidates[index];Object.assign(draft,chosen.next);moves.push(chosen.move);
+ }return {moves};
 }
 // All search uses only this player's hand and opponents' public kingdoms.
 function forecast(p,opponents,settings){
@@ -56,7 +76,8 @@ function forecast(p,opponents,settings){
 }
 export function cpuPlace(p,opponents=[],settings={},rng=Math.random){
  const difficulty=normalizeCPU(p.cpuDifficulty);
- if(difficulty==='normal')return normalPlace(p,opponents);
+ if(difficulty==='normal')return ordinaryPlace(p,opponents,rng);
+ if(difficulty==='hard')return normalPlace(p,opponents,14,settings);
  if(difficulty==='easy'){
   const draft=clone(p),moves=[];
   for(let depth=0;depth<2;depth++){
@@ -87,17 +108,8 @@ export function cpuPlace(p,opponents=[],settings={},rng=Math.random){
   beam=['expert','overlord'].includes(difficulty)?nextBeam:nextBeam.slice(0,24);
  }
  candidates.sort((a,b)=>b.score-a.score);
+ if(difficulty==='expert')return overlordPlace(p,opponents,rules,candidates,{finalists:8,samples:4,rounds:1});
  if(difficulty==='overlord')return overlordPlace(p,opponents,rules,candidates);
- if(difficulty==='expert'){
-  // Look ahead using remaining known cards, never the deck or other hands.
-  const finalists=candidates.slice(0,8);
-  for(const c of finalists)if(!c.ended){
-   const next=clone(c.after),order=normalPlace(next,opponents);
-   for(const move of order.moves)placeOne(next,move);next.gold+=2-order.moves.length;
-   c.score+=.55*(forecast(next,opponents,rules).score-c.score);
-  }
-  finalists.sort((a,b)=>b.score-a.score);return {moves:finalists[0].moves};
- }
  return {moves:candidates[0].moves};
 }
 // Sample hypothetical unseen cards from the published card counts. This is
@@ -118,7 +130,7 @@ function hypotheticalDraw(p,pool,rng){
 }
 function simulatePlans(players,settings){
  // Decisions use the same pre-placement public boards, never another plan.
- const plans=players.map((p,i)=>normalPlace(p,players.filter(q=>q.id!==p.id),i===0?8:4));
+ const plans=players.map((p,i)=>normalPlace(p,players.filter(q=>q.id!==p.id),i===0?8:4,settings));
  for(let i=0;i<players.length;i++){
   for(const move of plans[i].moves)placeOne(players[i],move);
   players[i].gold+=2-plans[i].moves.length;
@@ -130,31 +142,31 @@ function rolloutValue(g){
  if(g.phase==='ended')return (g.winners.includes(p.id)?1200:-1200)+(p.vp-best)*15;
  return cpuScore(p,opponents)+(p.vp-best)*5+recurring(p)*2;
 }
-function overlordPlace(p,opponents,settings,candidates){
+function overlordPlace(p,opponents,settings,candidates,options={finalists:12,samples:4,rounds:2}){
  // Deduplicate equivalent outcomes so placement-order symmetry does not fill
  // all finalist slots.
  const unique=new Map();
  for(const c of candidates){
   const key=JSON.stringify([c.p.board.map(b=>[b.card,b.x,b.y]).sort(),c.p.hand,c.p.gold,c.p.tech,c.p.faith,c.p.vp]);
   if(!unique.has(key))unique.set(key,c);
-  if(unique.size===12)break;
+  if(unique.size===options.finalists)break;
  }
  const finalists=[...unique.values()],pool=unknownPool(p,opponents);
  for(const c of finalists){
   const values=[];
-  for(let sample=0;sample<4;sample++){
+  for(let sample=0;sample<options.samples;sample++){
    const rng=scenarioRng(p,opponents,sample),sampledPool=[...pool];
    const others=opponents.map(q=>({...clone(q),hand:[]}));
    for(const q of others)hypotheticalDraw(q,sampledPool,rng);
-   const plans=others.map(q=>normalPlace(q,[p,...others.filter(o=>o.id!==q.id)],4));
+   const plans=others.map(q=>normalPlace(q,[p,...others.filter(o=>o.id!==q.id)],4,settings));
    for(let i=0;i<others.length;i++){
     for(const move of plans[i].moves)placeOne(others[i],move);others[i].gold+=2-plans[i].moves.length;
    }
    const own=clone(c.p);own.gold+=2-c.moves.length;
    let g={players:[own,...others],settings,logs:[],round:1,orders:{}};resolveRound(g);
-   // Current round plus two future rounds, with shared sampled draws across
+   // Current round and bounded future rounds, with shared sampled draws across
    // candidates to reduce luck in the comparison.
-   for(let round=0;round<2&&g.phase!=='ended';round++){
+   for(let round=0;round<options.rounds&&g.phase!=='ended';round++){
     for(const q of g.players){
      const indices=new Set(cpuDraw({...q,cpuDifficulty:'expert'}).discard);
      const removed=q.hand.filter((_,i)=>indices.has(i));
