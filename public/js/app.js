@@ -12,7 +12,8 @@ const store={get(key,fallback=null){try{return JSON.parse(localStorage.getItem(k
 let mode='setup',setupTab='local',game=null,state=null,myId='human',boardId='human',session=null,stream=null;
 let cleanupDrag=null;
 const mobileLayout=()=>window.matchMedia('(max-width:760px)').matches;
-let mobileOverviewCompact=true,mobileGalleryScroll=0,mobileHandScroll=0;
+let mobileOverviewCompact=true,mobileGalleryScroll=0,mobileHandScroll=0,mobilePlaybackFocus=null;
+const tutorialText=text=>mobileLayout()?text.replace('手札のカードを「＋」にドラッグ、またはカードを選んで「＋」を押します。','手札を横にスワイプしてカードを選び、王国の「＋」をタップします。'):text;
 function mobileJump(target){
  if(!mobileLayout())return;
  requestAnimationFrame(()=>{updateTutorialDock();qs(target)?.scrollIntoView({block:'start',behavior:'instant'});});
@@ -151,7 +152,7 @@ function startTutorial(){
 function tutorialHTML(){
  if(mode!=='local'||!game?.tutorial)return '';
  const guide=tutorialGuide({round:state.round,phase:state.phase,moves:moves.length,replayPhase:playback?state.resolution.events[playback.index].phase:null});
- return `<section class="panel tutorial-guide" aria-label="チュートリアル" aria-live="polite"><div class="tutorial-top"><span class="eyebrow">宿屋の常連からの手ほどき · ${guide.step}/4</span><button id="exitTutorial" class="quiet">${guide.done?'練習を終えて対戦を続ける':'案内を閉じて対戦を続ける'}</button></div><h2>${guide.title}</h2><p>${guide.text}</p><div class="tutorial-progress" aria-hidden="true">${['手札交換','配置','処理の確認','完了'].map((title,i)=>`<span class="${i+1<=guide.step?'visited':''}">${title}</span>`).join('')}</div></section>`;
+ return `<section class="panel tutorial-guide" aria-label="チュートリアル" aria-live="polite"><div class="tutorial-top"><span class="eyebrow">宿屋の常連からの手ほどき · ${guide.step}/4</span><button id="exitTutorial" class="quiet">${guide.done?'練習を終えて対戦を続ける':'案内を閉じて対戦を続ける'}</button></div><h2>${guide.title}</h2><p>${esc(tutorialText(guide.text))}</p><div class="tutorial-progress" aria-hidden="true">${['手札交換','配置','処理の確認','完了'].map((title,i)=>`<span class="${i+1<=guide.step?'visited':''}">${title}</span>`).join('')}</div></section>`;
 }
 function startLocal(){
  try{
@@ -262,7 +263,17 @@ function renderGame(){
  const draft=currentDraft();const own=state.players.find(p=>p.id===myId);const viewed=boardId===myId?draft:state.players.find(p=>p.id===boardId)||draft;
  const editing=!playback&&boardId===myId&&state.phase==='place'&&!own.ready;
  app.innerHTML=`<div class="game-head"><div><p class="eyebrow">${mode==='online'?`部屋 ${state.room}`:'CPU対戦'}</p><h1>ラウンド ${state.round}${state.phase==='ended'&&!playback?' — 終了':''}</h1></div><div style="display:flex;align-items:center;gap:12px">${mode==='online'?`<span id="connection" class="connection">${connection}</span>`:''}<button id="backButton" class="quiet">対戦メニュー</button></div></div>${tutorialHTML()}${waitingHTML()}<div class="phase-strip">${['draw','place','war','develop','income','vp'].map((phase,i)=>`<span class="${state.phase===phase?'active':''}">${i+1}. ${PHASE_NAMES[phase]}</span>`).join('')}</div>${kingdomGallery(state,draft)}${playback?'':resultsHTML()}${reviewHTML()}<div class="game-layout"><section id="playerBoard" class="panel play-panel"><div class="board-heading"><b>${esc(viewed.name)} · 現在${scoreRank(state.players,viewed)}位の王国${!playback&&state.phase==='place'&&boardId===myId&&moves.length?(own.ready?'（配置確定済み）':'（配置予定）'):''}</b><span>前方 ↑ ／ ${viewed.board.length}/9体 ／ 戦力 ${power(viewed)}</span></div>${statsHTML(viewed)}${metersHTML(viewed)}${editing&&selected!==null?`<div class="mobile-selected-card mobile-only"><b>${esc(CARD[draft.hand[selected]].name)}</b><span>配置する「＋」をタップ</span><button id="mobileCancelSelection" class="quiet">選択を解除</button></div>`:''}${boardHTML(viewed,editing)}${boardId!==myId?'<div class="action-buttons"><button id="myBoardButton">自分の王国に戻る</button></div>':actionHTML(draft)}</section><aside><section class="panel players-panel"><h2>参加者</h2>${state.players.map(p=>p.id===myId?draft:p).map(p=>`<button class="player-row ${p.id===boardId?'active':''}" data-player="${p.id}"><span class="row-head"><strong>${esc(p.name)} · ${scoreRank(state.players,p)}位</strong><span class="player-type">${presenceText(p)}</span></span><span class="details">${p.vp} VP ／ ${p.gold}金 ／ ${p.board.length}体 ／ 戦力 ${power(p)}<br>技術 ${p.tech}（Lv.${level(p.tech)}）・信仰 ${p.faith}（Lv.${level(p.faith)}）</span></button>`).join('')}</section><section class="panel log-panel"><h2>履歴</h2><ul class="logs">${state.logs.length?[...state.logs].reverse().slice(0,60).map(l=>`<li><b>R${l.round}</b> ${esc(l.message)}</li>`).join(''):'<li>手札を交換して、王国づくりを始めましょう。</li>'}</ul><p class="muted small" style="margin:14px 0 0">山札 ${state.deckCount}枚 ／ 捨て札 ${state.discardCount}枚</p></section></aside></div>`;
- if(mobileLayout()){qs('.kingdom-gallery').scrollLeft=mobileGalleryScroll;if(qs('.hand'))qs('.hand').scrollLeft=mobileHandScroll;}
+ if(mobileLayout()){
+  const gallery=qs('.kingdom-gallery');gallery.scrollLeft=mobileGalleryScroll;
+  if(qs('.hand'))qs('.hand').scrollLeft=mobileHandScroll;
+  const event=playback?globalState().resolution.events[playback.index]:null;
+  const focus=event?.playerId?`${state.round}:${playback.index}`:null;
+  if(focus&&focus!==mobilePlaybackFocus){
+   const card=[...gallery.children].find(el=>el.querySelector('[data-player]')?.dataset.player===event.playerId);
+   if(card)gallery.scrollLeft+=card.getBoundingClientRect().left-gallery.getBoundingClientRect().left;
+  }
+  mobilePlaybackFocus=focus;
+ }
  qs('#mobileOverviewToggle').onclick=()=>{mobileOverviewCompact=!mobileOverviewCompact;render();};
  for(const button of document.querySelectorAll('[data-mobile-jump]'))button.onclick=()=>{boardId=myId;render();mobileJump(button.dataset.mobileJump==='hand'?'#handActions':'#playerBoard');};
  if(qs('#mobileCancelSelection'))qs('#mobileCancelSelection').onclick=()=>{selected=null;render();};
@@ -283,7 +294,7 @@ function renderGame(){
  if(editing&&!busy&&moves.length<2)cleanupDrag=bindCardDrag(app,placeAt);
  for(const el of document.querySelectorAll('[data-hand]')){
   const index=Number(el.dataset.hand);el.onclick=()=>{
-   if(state.phase==='draw'){discard.has(index)?discard.delete(index):discard.add(index);}else selected=selected===index?null:index;render();if(state.phase==='place'&&selected!==null)mobileJump('.board-wrap');
+   if(state.phase==='draw'){discard.has(index)?discard.delete(index):discard.add(index);}else selected=selected===index?null:index;render();if(state.phase==='place'&&selected!==null)mobileJump('.mobile-selected-card');
   };
   el.oncontextmenu=e=>{e.preventDefault();showCard((state.phase==='place'?draft:own).hand[index]);};
  }
@@ -310,14 +321,14 @@ function globalState(){return state;}
 let tutorialDockCollapsed=false,tutorialDockFrame=null,tutorialDockHeight=0;
 function updateTutorialDock(){
  const overview=qs('.kingdom-overview');
- if(mobileLayout())document.documentElement.style.setProperty('--mobile-overview-height',overview?`${Math.ceil(overview.getBoundingClientRect().height)}px`:'0px');
+ if(mobileLayout())document.documentElement.style.setProperty('--mobile-overview-height',overview&&getComputedStyle(overview).position==='sticky'?`${Math.ceil(overview.getBoundingClientRect().height)}px`:'0px');
  const dock=qs('#tutorialDock'),original=qs('.tutorial-guide');
  const active=mode==='local'&&game?.tutorial&&original;
  const visible=active&&original.getBoundingClientRect().top<0;
  dock.hidden=!visible;
  if(visible){
   const guide=tutorialGuide({round:state.round,phase:state.phase,moves:moves.length,replayPhase:playback?state.resolution.events[playback.index].phase:null});
-  const html=`<div class="tutorial-dock-top"><b>手ほどき ${guide.step}/4 · ${esc(guide.title)}</b><button id="toggleTutorialDock" class="quiet" aria-expanded="${!tutorialDockCollapsed}">${tutorialDockCollapsed?'助言を開く':'小さくする'}</button></div>${tutorialDockCollapsed?'':`<p>${esc(guide.text)}</p>`}`;
+  const html=`<div class="tutorial-dock-top"><b>手ほどき ${guide.step}/4 · ${esc(guide.title)}</b><button id="toggleTutorialDock" class="quiet" aria-expanded="${!tutorialDockCollapsed}">${tutorialDockCollapsed?'助言を開く':'小さくする'}</button></div>${tutorialDockCollapsed?'':`<p>${esc(tutorialText(guide.text))}</p>`}`;
   if(dock.innerHTML!==html)dock.innerHTML=html;
   qs('#toggleTutorialDock').onclick=()=>{tutorialDockCollapsed=!tutorialDockCollapsed;updateTutorialDock();};
  }else if(!active){tutorialDockCollapsed=false;dock.innerHTML='';}
