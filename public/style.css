@@ -197,3 +197,7 @@ body:has(#app.dragging-card) .preview-notice,body:has(#app.dragging-card) .previ
 
 /* Mirror only the sprite around its centre. The pouring rig pivots at the mouth. */
 .refill-bottle:before{content:"";position:absolute;inset:0;background:url("assets/tavern-beer-bottle.webp") center / contain no-repeat;transform:scaleX(-1);z-index:3}
+
+/* During placement drags the gallery must not cover the mat or intercept a drop. */
+#app.dragging-card .kingdom-overview{position:static;pointer-events:none}
+body:has(#app.dragging-card) .tutorial-dock{opacity:.15;pointer-events:none}

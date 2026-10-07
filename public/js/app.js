@@ -1,6 +1,6 @@
 import {matBounds,createRefreshments,servingLabel} from './tavern.js?v=1';
 import {tutorialGame,tutorialGuide} from './tutorial.js?v=7';
-import {bindCardDrag} from './drag.js?v=7';
+import {bindCardDrag} from './drag.js?v=8';
 import {CARDS,CARD,RACES,JOBS,RACE_BONUS,JOB_BONUS,effectText} from './cards.js?v=3';
 import {newGame,submit,nextRound,publicView,previewPlacement,legalCells,bounds,power,level,CPU_LEVELS,normalizeCPU} from './engine.js?v=11';
 import {fillCPU} from './cpu.js?v=11';

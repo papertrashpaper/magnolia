@@ -7,7 +7,7 @@ function fixture(t){
  const install=(key,value)=>{saved.set(key,Object.getOwnPropertyDescriptor(globalThis,key));Object.defineProperty(globalThis,key,{value,writable:true,configurable:true});};
  const classes=()=>{const values=new Set();return{add:x=>values.add(x),remove:x=>values.delete(x),contains:x=>values.has(x)};};
  const card=()=>({dataset:{hand:'0'},classList:classes(),setPointerCapture(){},releasePointerCapture(){},querySelector:()=>({cloneNode:()=>({})}),closest:()=>null});
- const root=new EventTarget();root.classList=classes();root.card=card();
+ const root=new EventTarget();root.classList=classes();root.card=card();root.setPointerCapture=id=>{root.captured=id;};root.releasePointerCapture=()=>{root.captured=null;};
  const cell={dataset:{cell:'0,0'},disabled:false,classList:classes(),closest:()=>cell};
  root.contains=x=>x===cell;root.querySelector=selector=>selector==='.drag-source'&&root.card.classList.contains('drag-source')?root.card:null;
  const doc=new EventTarget();doc.elementFromPoint=()=>cell;doc.body={append(){}};doc.createElement=()=>({style:{},setAttribute(){},append(){},remove(){}});
@@ -52,4 +52,19 @@ test('unaffordable cards warn on pointerdown and never create a drag or drop',t=
  assert.deepEqual(warnings,[0]);assert.deepEqual(drops,[]);assert.equal(f.root.classList.contains('dragging-card'),false);
  assert.equal(f.emit(f.root,'click').defaultPrevented,true);
  f.down();f.move(100,100);f.up();assert.deepEqual(drops,[[0,0,0]]);
+});
+
+
+test('drag capture stays on the root while an online update replaces hand cards',t=>{
+ const f=fixture(t),drops=[];const dispose=bindCardDrag(f.root,(...args)=>drops.push(args));t.after(()=>{dispose();f.restore();});
+ f.down();f.move(100,300);assert.equal(f.root.captured,1);
+ f.root.card=f.card();f.move(100,100);f.up();
+ assert.deepEqual(drops,[[0,0,0]]);assert.equal(f.root.captured,null);
+});
+
+test('lifting reveals the mat, while a normal tap does not scroll it',t=>{
+ const f=fixture(t),scrolls=[],lookup=f.root.querySelector;f.root.querySelector=selector=>selector==='#playerBoard .board-wrap'?{scrollIntoView:options=>scrolls.push(options)}:lookup(selector);
+ const dispose=bindCardDrag(f.root,()=>{});t.after(()=>{dispose();f.restore();});
+ f.down();f.up();assert.deepEqual(scrolls,[]);
+ f.down(true);f.move(100,360);assert.deepEqual(scrolls,[{block:'center',behavior:'instant'}]);f.up();
 });
