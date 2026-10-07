@@ -1,6 +1,7 @@
 import {CARDS,CARD,RACES,JOBS,RACE_BONUS,JOB_BONUS,effectText} from './cards.js';
 import {newGame,submit,nextRound,publicView,previewPlacement,legalCells,bounds,power,level} from './engine.js';
 import {fillCPU} from './cpu.js';
+import {PHASE_NAMES,scoreRank,changeSentence,resolutionView,undoChanges} from './presentation.js';
 
 const app=document.querySelector('#app');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -8,11 +9,52 @@ const qs=s=>document.querySelector(s);
 const store={get(key,fallback=null){try{return JSON.parse(localStorage.getItem(key))??fallback;}catch{return fallback;}},set(key,value){try{localStorage.setItem(key,JSON.stringify(value));}catch{}},remove(key){try{localStorage.removeItem(key);}catch{}}};
 let mode='setup',setupTab='local',game=null,state=null,myId='human',boardId='human',session=null,stream=null;
 let moves=[],discard=new Set(),selected=null,draftKey='',busy=false,connection='';
+let playback=null,pendingView=null,playTimer=null,autoPlay=store.get('magnolia-auto-play',false),notice=null,noticeTimer=null;
+const seenResolutions=new Set();
 const initialParams=new URLSearchParams(location.search);
 let setup={name:store.get('magnolia-name','あなた'),total:3,cpuCount:0,server:initialParams.get('server')||store.get('magnolia-server',location.hostname==='localhost'||location.hostname==='127.0.0.1'?location.origin:''),room:initialParams.get('room')||'',warVP:[5,3,0,0,0]};
 if(initialParams.get('room'))setupTab='online';
 function toast(text){qs('#toast').textContent=text;qs('#toast').classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>qs('#toast').classList.remove('show'),4500);}
 function bonusText(b){return Object.entries(b).map(([s,n])=>`${n}${{gold:'金',tech:'技術点',faith:'信仰点',vp:'VP'}[s]}`).join(' ＋ ');}
+function scheduleReplay(){clearTimeout(playTimer);if(playback&&autoPlay)playTimer=setTimeout(advanceReplay,3200);}
+function advanceReplay(){
+ if(!playback)return;clearTimeout(playTimer);
+ if(++playback.index>=state.resolution.events.length){
+  playback=null;boardId=myId;
+  if(pendingView){const next=pendingView;pendingView=null;applyView(next);}else render();
+  return;
+ }
+ const event=state.resolution.events[playback.index];if(event.playerId)boardId=event.playerId;
+ render();scheduleReplay();
+}
+function showNotice(title,changes,note){
+ clearTimeout(noticeTimer);notice={title,changes,note};renderCenter();
+ noticeTimer=setTimeout(()=>{notice=null;renderCenter();},6500);
+}
+function summaryHTML(summary){return `<div class="phase-summary">${summary.map(p=>`<div><b>${esc(p.name)}</b><span>${p.changes.length?p.changes.map(c=>`${{gold:'お金',tech:'技術',faith:'信仰',vp:'VP'}[c.stat]} ${c.before} → ${c.after} (${c.delta>0?'+':''}${c.delta})`).join(' ／ '):'増減なし'}</span></div>`).join('')}</div>`;}
+function renderCenter(){
+ const host=qs('#centerNotice');if(!host)return;
+ if(mode==='setup'||(!playback&&!notice)){host.hidden=true;host.innerHTML='';return;}
+ host.hidden=false;
+ const event=playback?state.resolution.events[playback.index]:notice;
+ host.className=`center-notice ${playback?'resolving':'preview-notice'}`;
+ host.innerHTML=`<div class="center-message" role="status" aria-live="polite"><p class="eyebrow">${playback?`${PHASE_NAMES[event.phase]} · ${playback.index+1}/${state.resolution.events.length}`:'仮配置'}</p><h2>${esc(event.title)}</h2>${event.card?`<p class="source-card">${esc(CARD[event.card].name)}</p>`:''}${event.summary?summaryHTML(event.summary):event.changes.length?`<ul class="change-list">${event.changes.map(c=>`<li class="${c.delta>0?'gain':'loss'}">${esc(changeSentence(c))}</li>`).join('')}</ul>`:`<p class="muted">${event.playerId?'この処理によるお金・技術・信仰・VPの増減はありません。':'全員の処理を順番に確認します。'}</p>`}${event.note?`<p class="muted small">${esc(event.note)}</p>`:''}</div>${playback?`<div class="replay-controls"><button id="autoReplayButton" aria-pressed="${autoPlay}">${autoPlay?'自動再生を停止':'自動再生（ゆっくり）'}</button><button id="advanceReplayButton" class="primary">${playback.index===state.resolution.events.length-1?'確認を終える':'次の処理'}</button></div>`:'<button id="closeNoticeButton" class="quiet notice-close" aria-label="増減メッセージを閉じる">閉じる</button>'}`;
+ if(qs('#advanceReplayButton'))qs('#advanceReplayButton').onclick=advanceReplay;
+ if(qs('#autoReplayButton'))qs('#autoReplayButton').onclick=()=>{autoPlay=!autoPlay;store.set('magnolia-auto-play',autoPlay);renderCenter();scheduleReplay();};
+ if(qs('#closeNoticeButton'))qs('#closeNoticeButton').onclick=()=>{clearTimeout(noticeTimer);notice=null;renderCenter();};
+}
+function miniKingdom(p,active){
+ const b=bounds(p.board),width=b.maxX-b.minX+1;let html='';
+ for(let y=b.minY;y<=b.maxY;y++)for(let x=b.minX;x<=b.maxX;x++){
+  const cell=p.board.find(c=>c.x===x&&c.y===y);
+  html+=cell?`<button data-card="${cell.card}" class="mini-card ${active&&cell===p.board.at(-1)?'just-placed':''}" aria-label="${esc(p.name)}の${CARD[cell.card].name}の詳細"><img src="${CARD[cell.card].image}" alt="${CARD[cell.card].name}"></button>`:'<span class="mini-empty"></span>';
+ }
+ return p.board.length?`<div class="mini-board" style="grid-template-columns:repeat(${width},var(--mini-width,40px))">${html}</div>`:'<span class="muted small">まだ配置なし</span>';
+}
+function kingdomGallery(view,draft){
+ const players=view.players.map(p=>p.id===myId&&!playback?draft:p),event=playback?state.resolution.events[playback.index]:null;
+ return `<section class="kingdom-overview" aria-label="全員の王国"><div class="overview-label"><b>全員の王国</b><span>現在順位はVP順 ／ 上側が前方</span></div><div class="kingdom-gallery" style="--players:${players.length}">${players.map(p=>`<article class="kingdom-mini ${event?.playerId===p.id?'processing':''} ${p.id===myId?'my-kingdom':''}"><button class="kingdom-name" data-player="${p.id}"><b>${esc(p.name)}</b><span class="rank-badge">${scoreRank(players,p)}位</span></button><div class="kingdom-values"><b>${p.vp} VP</b><span>${p.gold}金</span><span>技${p.tech} / 信${p.faith}</span></div><div class="mini-arena">${miniKingdom(p,event?.playerId===p.id&&event.phase==='place'&&!!event.card)}</div>${event?.playerId===p.id?'<span class="processing-label">処理中</span>':p.id===myId&&moves.length&&!playback?'<span class="processing-label">仮配置を含む</span>':''}</article>`).join('')}</div></section>`;
+}
 function showCard(id){
  const c=CARD[id];if(!c)return;
  qs('#detailBody').innerHTML=`<div class="detail-layout"><img src="${c.image}" alt="${esc(c.name)}"><div><p class="eyebrow">${RACES[c.race]} / ${JOBS[c.job]}</p><h2>${c.name}</h2><p>コスト <b>${c.cost}金</b>　基本戦力 <b>${c.power}</b></p><ul>${c.effects.map(e=>`<li>${effectText(e)}</li>`).join('')}</ul><h3>配置ボーナス</h3><p>種族：${bonusText(RACE_BONUS[c.race])}<br>職業：${bonusText(JOB_BONUS[c.job])}</p><p class="muted small">山札に${c.copies}枚（仮構成）</p></div></div>`;
@@ -80,11 +122,14 @@ async function remote(route,extra={}){
  try{const data=await request(session.server,route,{room:session.room,token:session.token,...extra});applyView(data);}catch(e){toast(e.message);}finally{busy=false;render();}
 }
 function applyView(view){
+ if(playback&&view.resolution?.id!==playback.id){pendingView=view;return;}
  state=view;const key=`${mode}:${view.room||''}:${view.round||0}:${view.phase}`;
  if(key!==draftKey){draftKey=key;moves=[];discard=new Set();selected=null;}
- if(mode==='local')store.set('magnolia-local',game);render();
+ if(mode==='local')store.set('magnolia-local',game);
+ if(view.resolution?.events.length&&!seenResolutions.has(view.resolution.id)){seenResolutions.add(view.resolution.id);playback={id:view.resolution.id,index:0};notice=null;clearTimeout(noticeTimer);scheduleReplay();}
+ render();
 }
-function returnSetup(){stream?.close();stream=null;mode='setup';game=null;state=null;moves=[];selected=null;draftKey='';renderSetup();}
+function returnSetup(){clearTimeout(playTimer);clearTimeout(noticeTimer);playback=null;pendingView=null;notice=null;seenResolutions.clear();stream?.close();stream=null;mode='setup';game=null;state=null;moves=[];selected=null;draftKey='';renderSetup();renderCenter();}
 function renderLobby(){
  app.innerHTML=`<section class="setup"><div class="setup-head"><h1>参加者を待っています</h1><button id="backButton" class="quiet">戻る</button></div><div class="setup-grid"><section class="panel"><p class="muted small">部屋番号</p><div class="room-code">${esc(state.room)}</div><div id="connection" class="connection">${connection}</div><ul class="lobby-members">${state.players.map(p=>`<li><b>${esc(p.name)}${p.id===myId?'（あなた）':''}</b><span class="muted small">${p.id===state.hostId?'部屋主':'参加者'}</span></li>`).join('')}${Array.from({length:state.total-state.players.length},()=>'<li class="muted">空席<span class="small">開始時にCPUで補充</span></li>').join('')}</ul><div class="room-actions"><button id="shareButton">招待リンクをコピー</button>${myId===state.hostId?`<button id="startOnline" class="primary" ${busy?'disabled':''}>${state.players.length<state.total?'空席をCPUで埋めて開始':'ゲーム開始'}</button>`:'<span class="muted small">部屋主が開始するまでお待ちください。</span>'}</div></section><aside class="panel"><h2>部屋の設定</h2><p>合計 ${state.total}人</p><p>戦争VP：${state.settings.warVP.map((n,i)=>`${i+1}位 ${n}VP`).join(' / ')}</p><div class="note">ゲーム開始後は新しい参加者は入れません。切断時は同じブラウザで「前回の部屋に再接続」を選べます。</div></aside></div></section>`;
  qs('#backButton').onclick=returnSetup;qs('#shareButton').onclick=copyInvite;if(qs('#startOnline'))qs('#startOnline').onclick=()=>remote('start');updateConnection();
@@ -93,7 +138,7 @@ async function copyInvite(){
  const url=new URL(location.href);url.search='';url.searchParams.set('room',session.room);url.searchParams.set('server',session.server);url.hash='';
  try{await navigator.clipboard.writeText(url.href);toast('招待リンクをコピーしました。');}catch{toast(`部屋番号：${session.room} ／ サーバー：${session.server}`);}
 }
-function currentDraft(){const p=state.players.find(p=>p.id===myId);if(state.phase==='place'&&!p.ready)return previewPlacement(p,moves).player;return p;}
+function currentDraft(){if(playback)return resolutionView({...state,you:myId},playback.index).players.find(p=>p.id===myId);const p=state.players.find(p=>p.id===myId);if(state.phase==='place'&&!p.ready)return previewPlacement(p,moves).player;return p;}
 function boardHTML(p,interactive){
  const cells=interactive?legalCells(p.board):[];const all=[...p.board,...cells];const b=bounds(all);const width=b.maxX-b.minX+1;
  let content='';for(let y=b.minY;y<=b.maxY;y++)for(let x=b.minX;x<=b.maxX;x++){
@@ -107,6 +152,7 @@ function boardHTML(p,interactive){
 }
 function statsHTML(p){return `<div class="status-grid"><div class="stat vp"><span>勝利点</span><strong>${p.vp}<em>VP</em></strong></div><div class="stat gold"><span>お金</span><strong>${p.gold}<em>金</em></strong></div><div class="stat"><span>技術</span><strong>${p.tech}<em>Lv.${level(p.tech)}</em></strong></div><div class="stat"><span>信仰</span><strong>${p.faith}<em>Lv.${level(p.faith)}</em></strong></div></div>`;}
 function actionHTML(p){
+ if(playback)return `<div class="action-panel replay-hint">全員の処理を順番に確認しています。中央の「次の処理」で進めてください。</div>`;
  if(state.phase==='ended')return `<div class="action-panel"><button id="newButton">新しい対戦へ</button></div>`;
  if(state.phase==='round')return `<div class="action-panel"><div class="action-buttons">${mode==='local'||myId===state.hostId?`<button id="nextButton" class="primary" ${busy?'disabled':''}>次のラウンドへ</button>`:'<span class="muted">部屋主が次のラウンドへ進めます。</span>'}</div></div>`;
  const own=state.players.find(x=>x.id===myId),locked=own.ready;
@@ -121,15 +167,16 @@ function resultsHTML(){
  return `<section class="results"><h2>${ended?`優勝：${winner}`:`ラウンド${state.round}の結果`}</h2>${ended?'<p class="small muted">残ったお金による得点を加算した最終結果です。</p>':''}<table class="score-table"><thead><tr><th>プレイヤー</th><th>戦力 / 順位</th><th>戦争VP</th><th>${ended?'最終VP':'現在VP'}</th></tr></thead><tbody>${[...state.players].sort((a,b)=>ended?b.vp-a.vp:a.rank-b.rank).map(p=>`<tr><td>${esc(p.name)}</td><td>${p.power} / ${p.rank}位</td><td>${p.warVP}</td><td><b>${p.vp}</b></td></tr>`).join('')}</tbody></table></section>`;
 }
 function renderGame(){
+ const state=playback?resolutionView({...globalState(),you:myId},playback.index):globalState();
  const draft=currentDraft();const own=state.players.find(p=>p.id===myId);const viewed=boardId===myId?draft:state.players.find(p=>p.id===boardId)||draft;
- const editing=boardId===myId&&state.phase==='place'&&!own.ready;
- app.innerHTML=`<div class="game-head"><div><p class="eyebrow">${mode==='online'?`部屋 ${state.room}`:'CPU対戦'}</p><h1>ラウンド ${state.round}${state.phase==='ended'?' — 終了':''}</h1></div><div style="display:flex;align-items:center;gap:12px">${mode==='online'?`<span id="connection" class="connection">${connection}</span>`:''}<button id="backButton" class="quiet">対戦メニュー</button></div></div><div class="phase-strip">${['ドロー','配置','戦争','発展','収入','VP'].map((s,i)=>`<span class="${state.phase==='draw'&&i===0||state.phase==='place'&&i===1||['round','ended'].includes(state.phase)&&i>=2?'active':''}">${i+1}. ${s}</span>`).join('')}</div>${resultsHTML()}<div class="game-layout"><section class="panel play-panel"><div class="board-heading"><b>${esc(viewed.name)}の王国${boardId===myId&&moves.length&&!own.ready?'（配置予定）':''}</b><span>前方 ↑ ／ ${viewed.board.length}/9体 ／ 戦力 ${power(viewed)}</span></div>${statsHTML(viewed)}${boardHTML(viewed,editing)}${boardId!==myId?'<div class="action-buttons"><button id="myBoardButton">自分の王国に戻る</button></div>':actionHTML(draft)}</section><aside><section class="panel players-panel"><h2>参加者</h2>${state.players.map(p=>`<button class="player-row ${p.id===boardId?'active':''}" data-player="${p.id}"><span class="row-head"><strong>${esc(p.name)}</strong>${p.ready?'<span class="ready">確定</span>':`<span class="player-type">${p.cpu?'CPU':p.id===myId?'あなた':'人間'}</span>`}</span><span class="details">${p.vp} VP ／ ${p.gold}金 ／ ${p.board.length}体<br>技術 ${p.tech}（Lv.${level(p.tech)}）・信仰 ${p.faith}（Lv.${level(p.faith)}）</span></button>`).join('')}</section><section class="panel log-panel"><h2>履歴</h2><ul class="logs">${state.logs.length?[...state.logs].reverse().slice(0,60).map(l=>`<li><b>R${l.round}</b> ${esc(l.message)}</li>`).join(''):'<li>手札を交換して、王国づくりを始めましょう。</li>'}</ul><p class="muted small" style="margin:14px 0 0">山札 ${state.deckCount}枚 ／ 捨て札 ${state.discardCount}枚</p></section></aside></div>`;
+ const editing=!playback&&boardId===myId&&state.phase==='place'&&!own.ready;
+ app.innerHTML=`<div class="game-head"><div><p class="eyebrow">${mode==='online'?`部屋 ${state.room}`:'CPU対戦'}</p><h1>ラウンド ${state.round}${state.phase==='ended'&&!playback?' — 終了':''}</h1></div><div style="display:flex;align-items:center;gap:12px">${mode==='online'?`<span id="connection" class="connection">${connection}</span>`:''}<button id="backButton" class="quiet">対戦メニュー</button></div></div><div class="phase-strip">${['draw','place','war','develop','income','vp'].map((phase,i)=>`<span class="${state.phase===phase?'active':''}">${i+1}. ${PHASE_NAMES[phase]}</span>`).join('')}</div>${kingdomGallery(state,draft)}${playback?'':resultsHTML()}<div class="game-layout"><section class="panel play-panel"><div class="board-heading"><b>${esc(viewed.name)} · 現在${scoreRank(state.players,viewed)}位の王国${!playback&&boardId===myId&&moves.length&&!own.ready?'（配置予定）':''}</b><span>前方 ↑ ／ ${viewed.board.length}/9体 ／ 戦力 ${power(viewed)}</span></div>${statsHTML(viewed)}${boardHTML(viewed,editing)}${boardId!==myId?'<div class="action-buttons"><button id="myBoardButton">自分の王国に戻る</button></div>':actionHTML(draft)}</section><aside><section class="panel players-panel"><h2>参加者</h2>${state.players.map(p=>`<button class="player-row ${p.id===boardId?'active':''}" data-player="${p.id}"><span class="row-head"><strong>${esc(p.name)} · ${scoreRank(state.players,p)}位</strong>${p.ready?'<span class="ready">確定</span>':`<span class="player-type">${p.cpu?'CPU':p.id===myId?'あなた':'人間'}</span>`}</span><span class="details">${p.vp} VP ／ ${p.gold}金 ／ ${p.board.length}体<br>技術 ${p.tech}（Lv.${level(p.tech)}）・信仰 ${p.faith}（Lv.${level(p.faith)}）</span></button>`).join('')}</section><section class="panel log-panel"><h2>履歴</h2><ul class="logs">${state.logs.length?[...state.logs].reverse().slice(0,60).map(l=>`<li><b>R${l.round}</b> ${esc(l.message)}</li>`).join(''):'<li>手札を交換して、王国づくりを始めましょう。</li>'}</ul><p class="muted small" style="margin:14px 0 0">山札 ${state.deckCount}枚 ／ 捨て札 ${state.discardCount}枚</p></section></aside></div>`;
  qs('#backButton').onclick=returnSetup;
  for(const el of document.querySelectorAll('[data-player]'))el.onclick=()=>{boardId=el.dataset.player;render();};
  for(const el of document.querySelectorAll('#app [data-card]'))el.onclick=()=>showCard(el.dataset.card);
  for(const el of document.querySelectorAll('[data-cell]'))el.onclick=()=>{
   if(selected===null)return;const[x,y]=el.dataset.cell.split(',').map(Number);
-  try{const proposed=[...moves,{handIndex:selected,x,y}];previewPlacement(own,proposed);moves=proposed;selected=null;render();}catch(e){toast(e.message);}
+  try{const proposed=[...moves,{handIndex:selected,x,y}];const result=previewPlacement(own,proposed),placed=result.placed.at(-1);moves=proposed;selected=null;render();showNotice(`${own.name}が${CARD[placed.card].name}を仮配置`,placed.steps,'予定の増減です。確定前なら取り消せます。');}catch(e){toast(e.message);}
  };
  for(const el of document.querySelectorAll('[data-hand]')){
   const index=Number(el.dataset.hand);el.onclick=()=>{
@@ -138,19 +185,21 @@ function renderGame(){
   el.oncontextmenu=e=>{e.preventDefault();showCard((state.phase==='place'?draft:own).hand[index]);};
  }
  if(qs('#myBoardButton'))qs('#myBoardButton').onclick=()=>{boardId=myId;render();};
- if(qs('#undoButton'))qs('#undoButton').onclick=()=>{moves.pop();selected=null;render();};
+ if(qs('#undoButton'))qs('#undoButton').onclick=()=>{const before=currentDraft();const removed=before.board.at(-1);moves.pop();selected=null;const after=currentDraft();render();showNotice(`${own.name}の${CARD[removed.card].name}の仮配置を取り消しました`,undoChanges(before,after),'このカードによる増加をキャンセルし、配置コストも元に戻しました。');};
  if(qs('#clearDiscard'))qs('#clearDiscard').onclick=()=>{discard.clear();render();};
  if(qs('#confirmButton'))qs('#confirmButton').onclick=confirmAction;
  if(qs('#nextButton'))qs('#nextButton').onclick=()=>mode==='online'?remote('next'):localNext();
  if(qs('#newButton'))qs('#newButton').onclick=returnSetup;
- updateConnection();
+ updateConnection();renderCenter();
 }
 async function confirmAction(){
+ if(playback)return;
  const order=state.phase==='draw'?{discard:[...discard]}:{moves:structuredClone(moves)};
  if(mode==='online'){await remote('action',{phase:state.phase,round:state.round,order});return;}
  if(busy)return;busy=true;render();await new Promise(resolve=>setTimeout(resolve,30));
  try{submit(game,myId,order);if(['draw','place'].includes(game.phase))fillCPU(game,submit);applyView(publicView(game,myId));}catch(e){toast(e.message);}finally{busy=false;render();}
 }
-function localNext(){try{nextRound(game);fillCPU(game,submit);applyView(publicView(game,myId));}catch(e){toast(e.message);}}
+function localNext(){if(playback)return;try{nextRound(game);fillCPU(game,submit);applyView(publicView(game,myId));}catch(e){toast(e.message);}}
+function globalState(){return state;}
 function render(){if(mode==='setup')renderSetup();else if(state.phase==='lobby')renderLobby();else renderGame();}
 render();
