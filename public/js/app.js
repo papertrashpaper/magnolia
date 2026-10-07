@@ -4,7 +4,7 @@ import {bindCardDrag} from './drag.js?v=8';
 import {CARDS,CARD,RACES,JOBS,RACE_BONUS,JOB_BONUS,effectText} from './cards.js?v=3';
 import {newGame,submit,nextRound,publicView,previewPlacement,legalCells,bounds,power,level,CPU_LEVELS,normalizeCPU} from './engine.js?v=11';
 import {fillCPU} from './cpu.js?v=11';
-import {PHASE_NAMES,scoreRank,changeSentence,levelChangeSentence,levelProgress,battleRank,resolutionView,undoChanges,finalResultMessages} from './presentation.js?v=4';
+import {PHASE_NAMES,scoreRank,changeSentence,levelChangeSentence,levelProgress,battleRank,resolutionView,undoChanges,finalResultMessages} from './presentation.js?v=5';
 
 const app=document.querySelector('#app');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -242,7 +242,7 @@ function applyView(view){
  if(view.resolution?.events.length&&!seenResolutions.has(view.resolution.id)){seenResolutions.add(view.resolution.id);playback={id:view.resolution.id,index:0};notice=null;clearTimeout(noticeTimer);scheduleReplay();}
  render();
 }
-function returnSetup(){clearFinalResults();seenFinalResults.clear();recoveryGeneration++;cleanupDrag?.();cleanupDrag=null;clearTimeout(playTimer);clearTimeout(noticeTimer);playback=null;pendingView=null;notice=null;seenResolutions.clear();stream?.close();clearTimeout(reconnectTimer);stream=null;mode='setup';game=null;state=null;moves=[];selected=null;draftKey='';renderSetup();renderCenter();}
+function returnSetup(){qs("#beerPourRig").classList.remove("is-pouring");clearFinalResults();seenFinalResults.clear();recoveryGeneration++;cleanupDrag?.();cleanupDrag=null;clearTimeout(playTimer);clearTimeout(noticeTimer);playback=null;pendingView=null;notice=null;seenResolutions.clear();stream?.close();clearTimeout(reconnectTimer);stream=null;mode='setup';game=null;state=null;moves=[];selected=null;draftKey='';renderSetup();renderCenter();}
 function renderLobby(){
  app.innerHTML=`<section class="setup"><div class="setup-head"><h1>参加者を待っています</h1><button id="backButton" class="quiet">戻る</button></div><div class="setup-grid"><section class="panel"><p class="muted small">部屋番号</p><div class="room-code">${esc(state.room)}</div><div id="connection" class="connection">${connection}</div><ul class="lobby-members">${state.players.map(p=>`<li><b>${esc(p.name)}${p.id===myId?'（あなた）':''}</b><span>${presenceText(p)}</span><span class="muted small">${p.id===state.hostId?'部屋主':'参加者'}</span></li>`).join('')}${Array.from({length:state.total-state.players.length},()=>'<li class="muted">空席<span class="small">開始時にCPUで補充</span></li>').join('')}</ul><div class="room-actions"><button id="shareButton">招待リンクをコピー</button>${myId===state.hostId?`<button id="startOnline" class="primary" ${busy?'disabled':''}>${state.players.length<state.total?'空席をCPUで埋めて開始':'ゲーム開始'}</button>`:'<span class="muted small">部屋主が開始するまでお待ちください。</span>'}</div></section><aside class="panel"><h2>部屋の設定</h2><p>合計 ${state.total}人</p><p>CPUの強さ：${(state.settings.cpuDifficulties??[state.settings.cpuDifficulty]).map(d=>CPU_LEVELS[normalizeCPU(d)]).join(' / ')}</p><p class="small muted">保存した対戦には同じブラウザの「前回の部屋に再接続」から戻れます。</p><p>戦争VP：${state.settings.warVP.map((n,i)=>`${i+1}位 ${n}VP`).join(' / ')}</p><div class="note">ゲーム開始後は新しい参加者は入れません。切断時は同じブラウザで「前回の部屋に再接続」を選べます。</div></aside></div></section>`;
  qs('#backButton').onclick=returnSetup;qs('#shareButton').onclick=copyInvite;if(qs('#startOnline'))qs('#startOnline').onclick=()=>remote('start');updateConnection();
@@ -253,10 +253,17 @@ async function copyInvite(){
 }
 function currentDraft(){if(playback)return resolutionView({...state,you:myId},playback.index).players.find(p=>p.id===myId);const p=state.players.find(p=>p.id===myId);if(state.phase==='place')return previewPlacement(p,p.ready?(state.ownOrder?.moves||moves):moves).player;return p;}
 function refreshmentsHTML(){
- return `<div class="tavern-refreshments" aria-label="卓のパンとビール">${['bread','beer'].map(kind=>`<button class="tavern-prop ${kind}" data-refreshment="${kind}" aria-label="${servingLabel(kind,refreshments[kind])}" ${refreshments[kind]===3?'disabled':''}><span class="refreshment-previous refreshment-sprite" style="--stage:3" aria-hidden="true"></span><span class="refreshment-sprite serving-current" style="--stage:${refreshments[kind]}" aria-hidden="true"></span><span class="bite-fragment" aria-hidden="true"></span><span class="drink-ripple" aria-hidden="true"></span><span class="refill-bottle" aria-hidden="true"><span class="refill-stream"></span></span></button>`).join('')}</div>`;
+ return `<div class="tavern-refreshments" aria-label="卓のパンとビール">${['bread','beer'].map(kind=>`<button class="tavern-prop ${kind}" data-refreshment="${kind}" aria-label="${servingLabel(kind,refreshments[kind])}" ${refreshments[kind]===3?'disabled':''}><span class="refreshment-previous refreshment-sprite" style="--stage:3" aria-hidden="true"></span><span class="refreshment-sprite serving-current" style="--stage:${refreshments[kind]}" aria-hidden="true"></span><span class="bite-fragment" aria-hidden="true"></span><span class="drink-ripple" aria-hidden="true"></span></button>`).join('')}</div>`;
 }
+function positionBeerPour(){
+ const button=qs('[data-refreshment="beer"]'),rig=qs('#beerPourRig');if(!button||!rig)return;
+ const rect=button.getBoundingClientRect();rig.style.left=`${rect.left+rect.width*.17}px`;rig.style.top=`${rect.top+rect.width*.05}px`;rig.style.width=`${rect.width*2.1}px`;
+}
+window.addEventListener('scroll',()=>{if(qs('#beerPourRig')?.classList.contains('is-pouring'))positionBeerPour();},{passive:true});
+window.addEventListener('resize',positionBeerPour);
 function updateRefreshment(kind,served=false){
  const button=qs(`[data-refreshment="${kind}"]`);if(!button)return;
+ if(kind==='beer'){const rig=qs('#beerPourRig');rig.classList.remove('is-pouring');if(served){positionBeerPour();void rig.offsetWidth;rig.classList.add('is-pouring');}}
  button.disabled=refreshments[kind]===3;button.setAttribute('aria-label',servingLabel(kind,refreshments[kind]));
  button.querySelector('.serving-current').style.setProperty('--stage',refreshments[kind]);
  button.classList.remove('taking-serving','fresh-serving');void button.offsetWidth;button.classList.add(served?'fresh-serving':'taking-serving');

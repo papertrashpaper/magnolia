@@ -201,3 +201,11 @@ body:has(#app.dragging-card) .preview-notice,body:has(#app.dragging-card) .previ
 /* During placement drags the gallery must not cover the mat or intercept a drop. */
 #app.dragging-card .kingdom-overview{position:static;pointer-events:none}
 body:has(#app.dragging-card) .tutorial-dock{opacity:.15;pointer-events:none}
+
+/* The unmirrored bottle enters from beyond the right viewport edge. */
+#beerPourViewport{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:90}
+#beerPourRig{position:absolute;left:0;top:0;width:0;transform-origin:12.7% 50.5%;z-index:90}
+#beerPourRig:before{transform:none}
+#beerPourRig.is-pouring{display:block;animation:tavern-pour-from-right 2s ease-in-out forwards}
+#beerPourRig.is-pouring .refill-stream{display:block;z-index:2;left:11.5%;top:50.5%;height:38%;width:2.4%;border-radius:3px;background:linear-gradient(90deg,#bd7016,#ffe2a0 45%,#d89628);transform-origin:top;animation:tavern-bottle-stream 2s linear forwards}
+@keyframes tavern-pour-from-right{0%{opacity:0;transform:translateX(calc(100vw + 100%)) rotate(10deg)}20%{opacity:1;transform:translateX(0) rotate(10deg)}35%,75%{opacity:1;transform:translateX(0) rotate(-12deg)}85%{opacity:1;transform:translateX(0) rotate(10deg)}100%{opacity:0;transform:translateX(calc(100vw + 100%)) rotate(10deg)}}
