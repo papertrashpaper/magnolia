@@ -1,7 +1,7 @@
 import {CARDS,CARD,RACES,JOBS,RACE_BONUS,JOB_BONUS,effectText} from './cards.js';
-import {newGame,submit,nextRound,publicView,previewPlacement,legalCells,bounds,power,level} from './engine.js';
-import {fillCPU} from './cpu.js';
-import {PHASE_NAMES,scoreRank,changeSentence,resolutionView,undoChanges} from './presentation.js';
+import {newGame,submit,nextRound,publicView,previewPlacement,legalCells,bounds,power,level} from './engine.js?v=2';
+import {fillCPU} from './cpu.js?v=2';
+import {PHASE_NAMES,scoreRank,changeSentence,resolutionView,undoChanges} from './presentation.js?v=2';
 
 const app=document.querySelector('#app');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
