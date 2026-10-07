@@ -53,7 +53,7 @@ function moneyWarning(){
  clearTimeout(moneyWarning.timer);moneyWarning.timer=setTimeout(()=>host.classList.remove('show'),2200);
 }
 function bonusText(b){return Object.entries(b).map(([s,n])=>`${n}${{gold:'金',tech:'技術点',faith:'信仰点',vp:'VP'}[s]}`).join(' ＋ ');}
-function scheduleReplay(){clearTimeout(playTimer);if(!playback)return;const drawing=state.resolution.events[playback.index].phase==='draw';if(drawing||autoPlay)playTimer=setTimeout(advanceReplay,drawing?1050:3200);}
+function scheduleReplay(){clearTimeout(playTimer);if(!playback||qs('#tutorialHandbookDialog').open)return;const drawing=state.resolution.events[playback.index].phase==='draw';if(drawing||autoPlay)playTimer=setTimeout(advanceReplay,drawing?1050:3200);}
 function advanceReplay(){
  if(!playback)return;clearTimeout(playTimer);
  if(++playback.index>=state.resolution.events.length){
@@ -173,10 +173,10 @@ function renderSetup(){
  if(qs('#joinButton'))qs('#joinButton').onclick=()=>connectRoom('join');
  if(qs('#resumeOnline'))qs('#resumeOnline').onclick=()=>resumeOnline(oldSession);
 }
-let tutorialDetails=new Set();
+
 function startTutorial(chapter=0){
  clearTimeout(playTimer);clearTimeout(noticeTimer);clearFinalResults();playback=null;pendingView=null;notice=null;
- game=tutorialGame(setup.name,chapter);autoPlay=false;fillCPU(game,submit);mode='local';myId='human';boardId=myId;draftKey='';state=null;moves=[];selected=null;seenResolutions.clear();seenFinalResults.clear();tutorialDetails=new Set();tutorialDockCollapsed=false;
+ game=tutorialGame(setup.name,chapter);autoPlay=false;fillCPU(game,submit);mode='local';myId='human';boardId=myId;draftKey='';state=null;moves=[];selected=null;seenResolutions.clear();seenFinalResults.clear();tutorialDockCollapsed=false;
  applyView(publicView(game,myId));requestAnimationFrame(()=>qs('.tutorial-guide')?.scrollIntoView({block:'start',behavior:'instant'}));
 }
 function tutorialGuideNow(){
@@ -188,11 +188,29 @@ function tutorialFinishControls(){
  const chapter=game.tutorialChapter??0;
  return `<div class="tutorial-finish-actions">${chapter<2?'<button data-tutorial-next class="primary">次の章を練習する</button>':'<button data-tutorial-play class="primary">通常のCPU対戦を始める</button>'}<button data-tutorial-retry>この章をもう一度</button><button data-tutorial-menu class="quiet">メニューへ戻る</button></div>`;
 }
+function tutorialBrief(guide){
+ if(guide.done)return (game.tutorialChapter??0)<2?'この章の練習は完了です。下のボタンで次の章へ進めます。':'練習は完了です。下のボタンから通常対戦を始められます。';
+ if(guide.step===1)return (game.tutorialChapter??0)===0?'VPが最も多い王国を目指します。使いたい手札を残し、不要なカードを選んで交換。そのまま補充してもOKです。':'途中盤面から始めます。手札のコストと効果を確認し、残すカードを選んで補充しましょう。';
+ if(guide.step===2)return moves?'増減を確認し、必要なら「最後の配置を戻す」。最大2枚置いたら配置を確定しましょう。':'カードを選んで「＋」へ配置。ドラッグでも置けます。まずは1枚、仮置きしてみましょう。';
+ const phase=state.resolution.events[playback.index].phase;
+ return {place:'代金を払ってから配置時効果・ボーナスを処理します。「次の処理」で確認しましょう。',war:'金色の前線の戦力を比べ、戦争順位に応じたVPを得ます。',develop:'発展効果で技術・信仰が増えます。レベルの変化も見てみましょう。',income:'基本3金に、カードの収入を加えます。',vp:'カードのVP効果を処理します。発展後のレベルを使います。',final:'残金3金につき1VPを加え、最終VPで勝敗を決めます。'}[phase]??guide.text;
+}
+function openTutorialHandbook(topic=0){
+ const dialog=qs('#tutorialHandbookDialog');clearTimeout(playTimer);
+ const active=mode==='local'&&game?.tutorial;
+ const lesson=active?TUTORIAL_CHAPTERS[game.tutorialChapter??0]:null,guide=active?tutorialGuideNow():null;
+ const sections=[...(active?[{key:'lesson',title:'この章の説明',paragraphs:[lesson.intro,lesson.goal,guide.text,...guide.personal]}]:[]),...(active&&!playback&&state.phase==='place'?[{key:'hints',title:'今の盤面を見るヒント',paragraphs:tutorialObservation(currentDraft(),state.players.filter(p=>p.id!==myId))}]:[]),...TUTORIAL_REFERENCE.map((t,i)=>({...t,key:String(i)}))];
+ const selected=sections.find(t=>t.key===String(topic))??sections[0];
+ qs('#tutorialHandbookBody').innerHTML=`<div class="handbook-layout"><nav class="handbook-topics" aria-label="解説の項目">${sections.map(t=>`<button data-handbook-topic="${t.key}" ${t===selected?'aria-current="page"':''}>${esc(t.title)}</button>`).join('')}</nav><article class="handbook-reading" tabindex="0"><h3>${esc(selected.title)}</h3>${selected.key==='2'?'<table class="tutorial-level-table"><thead><tr><th>点数</th><th>レベル</th></tr></thead><tbody><tr><td>0</td><td>Lv.0</td></tr><tr><td>1〜2</td><td>Lv.1</td></tr><tr><td>3〜6</td><td>Lv.2</td></tr><tr><td>7〜14</td><td>Lv.3</td></tr><tr><td>15</td><td>Lv.4</td></tr></tbody></table>':''}${selected.paragraphs.map(t=>`<p>${esc(t)}</p>`).join('')}${selected.key==='lesson'?'<p class="muted small">各章は独立した例題です。章を切り替えると、その章の初期盤面から始まります。</p>':''}</article></div>`;
+ for(const el of document.querySelectorAll('[data-handbook-topic]'))el.onclick=()=>openTutorialHandbook(el.dataset.handbookTopic);
+ if(!dialog.open)dialog.showModal();
+}
+qs('#tutorialHandbookButton').onclick=()=>openTutorialHandbook();
+qs('#tutorialHandbookDialog').addEventListener('close',()=>scheduleReplay());
 function tutorialHTML(){
  if(mode!=='local'||!game?.tutorial)return '';
- const chapter=game.tutorialChapter??0,guide=tutorialGuideNow(),lesson=TUTORIAL_CHAPTERS[chapter];
- const observation=state.phase==='place'&&!playback?tutorialObservation(currentDraft(),state.players.filter(p=>p.id!==myId)):[];
- return `<section class="panel tutorial-guide" aria-label="チュートリアル"><div class="tutorial-top"><span class="eyebrow">宿屋の手ほどき · 第${chapter+1}章 / 3 · 各章1ラウンド</span><button data-tutorial-menu class="quiet">練習を終了</button></div><nav class="tutorial-chapters" aria-label="練習する章">${TUTORIAL_CHAPTERS.map((c,i)=>`<button data-tutorial-chapter="${i}" ${chapter===i?'aria-current="step"':''}>${i+1}. ${c.title.split('：')[0]}</button>`).join('')}</nav><p class="muted small tutorial-chapter-note">どの章からでも練習できます。章を切り替えると、その章の初期盤面から始まります。</p><h2>${esc(lesson.title)}</h2><p class="tutorial-intro">${esc(lesson.intro)}</p><div class="tutorial-current" aria-live="polite"><h3>${esc(guide.title)}</h3><p>${esc(tutorialText(guide.text))}</p>${guide.personal.length?`<div class="tutorial-personal"><b>今回のあなたの王国では</b><ul>${guide.personal.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></div>`:''}</div>${guide.done?tutorialFinishControls():''}<div class="tutorial-progress" aria-label="この章の進み具合">${['手札交換','配置','処理の確認','完了'].map((title,i)=>`<span class="${i+1<=guide.step?'visited':''}">${title}</span>`).join('')}</div>${observation.length?`<details data-tutorial-detail="observation" ${tutorialDetails.has('observation')?'open':''}><summary>今の盤面を見るヒント</summary><ul>${observation.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></details>`:''}<div class="tutorial-handbook"><h3>気になるところから読める解説</h3>${TUTORIAL_REFERENCE.map((topic,i)=>`<details data-tutorial-detail="${i}" ${tutorialDetails.has(String(i))?'open':''}><summary>${esc(topic.title)}</summary>${i===2?'<table class="tutorial-level-table"><thead><tr><th>点数</th><th>レベル</th></tr></thead><tbody><tr><td>0</td><td>Lv.0</td></tr><tr><td>1〜2</td><td>Lv.1</td></tr><tr><td>3〜6</td><td>Lv.2</td></tr><tr><td>7〜14</td><td>Lv.3</td></tr><tr><td>15</td><td>Lv.4</td></tr></tbody></table>':''}${topic.paragraphs.map(t=>`<p>${esc(t)}</p>`).join('')}</details>`).join('')}</div></section>`;
+ const chapter=game.tutorialChapter??0,guide=tutorialGuideNow();
+ return `<section class="panel tutorial-guide tutorial-compact" aria-label="チュートリアル"><div class="tutorial-top"><span class="eyebrow">第${chapter+1}章 / 3 · 各章1ラウンド</span><button data-tutorial-menu class="quiet">練習を終了</button></div><nav class="tutorial-chapters" aria-label="練習する章">${TUTORIAL_CHAPTERS.map((c,i)=>`<button data-tutorial-chapter="${i}" ${chapter===i?'aria-current="step"':''}>${i+1}. ${c.title.split('：')[0]}</button>`).join('')}</nav><div class="tutorial-current" aria-live="polite"><h2>${esc(guide.title)}</h2><p>${esc(tutorialBrief(guide))}</p>${guide.personal.length?`<div class="tutorial-personal"><b>今回のあなたの王国では</b><p>${esc(guide.personal[0])}</p>${guide.personal.length>1?`<details><summary>ほかの増減（${guide.personal.length-1}件）</summary><ul>${guide.personal.slice(1).map(t=>`<li>${esc(t)}</li>`).join('')}</ul></details>`:''}</div>`:''}</div><div class="tutorial-reading-links"><button data-tutorial-read="lesson" class="quiet">この章の説明</button>${state.phase==='place'&&!playback?'<button data-tutorial-read="hints" class="quiet">盤面を見るヒント</button>':''}<button data-tutorial-read="0" class="quiet">解説集</button></div></section>`;
 }
 function startLocal(){
  try{
@@ -346,7 +364,7 @@ function renderGame(){
  for(const el of document.querySelectorAll('[data-tutorial-retry]'))el.onclick=()=>startTutorial(game.tutorialChapter??0);
  for(const el of document.querySelectorAll('[data-tutorial-menu]'))el.onclick=returnSetup;
  for(const el of document.querySelectorAll('[data-tutorial-play]'))el.onclick=()=>{returnSetup();startLocal();};
- for(const el of document.querySelectorAll('[data-tutorial-detail]'))el.ontoggle=()=>{el.open?tutorialDetails.add(el.dataset.tutorialDetail):tutorialDetails.delete(el.dataset.tutorialDetail);};
+ for(const el of document.querySelectorAll('[data-tutorial-read]'))el.onclick=()=>openTutorialHandbook(el.dataset.tutorialRead);
  if(mode==='local'&&game?.tutorial){const guide=tutorialGuideNow();if(guide.target)qs(guide.target)?.classList.add('tutorial-focus');}
  qs('#backButton').onclick=returnSetup;
  for(const button of document.querySelectorAll('[data-refreshment]'))button.onclick=()=>enjoyRefreshment(button.dataset.refreshment);
@@ -394,9 +412,9 @@ function updateTutorialDock(){
  dock.hidden=!visible;
  if(visible){
   const guide=tutorialGuideNow();
-  const html=`<div class="tutorial-dock-top"><b>第${(game.tutorialChapter??0)+1}章 · ${esc(guide.title)}</b><button id="toggleTutorialDock" class="quiet" aria-expanded="${!tutorialDockCollapsed}">${tutorialDockCollapsed?'助言を開く':'小さくする'}</button></div>${tutorialDockCollapsed?'':`<p>${esc(guide.personal?.[0]??tutorialText(guide.text))}</p><button id="tutorialReadMore" class="quiet">詳しい解説へ</button>`}`;
+  const html=`<div class="tutorial-dock-top"><b>第${(game.tutorialChapter??0)+1}章 · ${esc(guide.title)}</b><button id="toggleTutorialDock" class="quiet" aria-expanded="${!tutorialDockCollapsed}">${tutorialDockCollapsed?'助言を開く':'小さくする'}</button></div>${tutorialDockCollapsed?'':`<p>${esc(guide.personal?.[0]??tutorialBrief(guide))}</p><button id="tutorialReadMore" class="quiet">詳しい解説へ</button>`}`;
   if(dock.innerHTML!==html)dock.innerHTML=html;
-  if(qs('#tutorialReadMore'))qs('#tutorialReadMore').onclick=()=>qs('.tutorial-guide')?.scrollIntoView({block:'start',behavior:'instant'});
+  if(qs('#tutorialReadMore'))qs('#tutorialReadMore').onclick=()=>openTutorialHandbook('lesson');
   qs('#toggleTutorialDock').onclick=()=>{tutorialDockCollapsed=!tutorialDockCollapsed;updateTutorialDock();};
  }else if(!active){tutorialDockCollapsed=false;dock.innerHTML='';}
  const height=visible?Math.ceil(dock.getBoundingClientRect().height)+24:0;
