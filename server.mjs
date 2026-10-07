@@ -17,7 +17,7 @@ export function makeServer(){
   const room=rooms.get(String(roomCode??'').toUpperCase());if(!room)throw Error('部屋が見つかりません。サーバー再起動で消えた可能性があります。');
   const member=room.members.find(m=>m.token===token);if(!member)throw Error('この部屋の参加情報がありません。');room.updated=Date.now();return {room,member};
  }
- function view(room,member){return {room:room.code,total:room.total,hostId:room.hostId,you:member.id,...(room.game?publicView(room.game,member.id):{phase:'lobby',players:room.members.map(({id,name})=>({id,name,cpu:false})),settings:room.settings})};}
+ function view(room,member){return {room:room.code,total:room.total,hostId:room.hostId,you:member.id,gameId:room.gameId||null,...(room.game?publicView(room.game,member.id):{phase:'lobby',players:room.members.map(({id,name})=>({id,name,cpu:false})),settings:room.settings})};}
  function publish(room){for(const {res,member}of room.streams)res.write(`data: ${JSON.stringify(view(room,member))}\n\n`);}
  const server=http.createServer(async(req,res)=>{
   const origin=req.headers.origin;
@@ -62,10 +62,16 @@ export function makeServer(){
      json(200,{token:member.token,id:member.id,state:view(room,member)});return;
     }
     const {room,member}=find(body.room,body.token);
-    if(url.pathname==='/api/start'){
+    if(body.gameId&&body.gameId!==room.gameId)throw Error('対戦が更新されました。現在の画面を確認してください。');
+    if(url.pathname==='/api/rematch'){
+     if(member.id!==room.hostId)throw Error('部屋主のみ再対戦を開始できます。');
+     if(room.game?.phase!=='ended')throw Error('対戦終了後に再対戦できます。');
+     const seats=room.game.players.map(({id,name,cpu})=>({id,name,cpu}));
+     room.game=newGame(seats,room.settings);room.gameId=id();fillCPU(room.game,submit);
+    }else if(url.pathname==='/api/start'){
      if(member.id!==room.hostId)throw Error('部屋主のみ開始できます。');if(room.game)throw Error('ゲームは開始済みです。');
      const seats=room.members.map(m=>({id:m.id,name:m.name,cpu:false}));while(seats.length<room.total)seats.push({id:`cpu-${seats.length}`,name:`CPU ${seats.length-room.members.length+1}`,cpu:true});
-     room.game=newGame(seats,room.settings);fillCPU(room.game,submit);
+     room.game=newGame(seats,room.settings);room.gameId=id();fillCPU(room.game,submit);
     }else if(url.pathname==='/api/action'){
      if(!room.game)throw Error('ゲームが始まっていません。');
      if(body.phase!==room.game.phase||body.round!==room.game.round)throw Error('画面が更新されました。現在のフェイズを確認してください。');

@@ -173,5 +173,6 @@ export function nextRound(g){if(g.phase!=='round')throw Error('ラウンドの�
 export function publicView(g,id){
  const view={round:g.round,phase:g.phase,settings:clone(g.settings),logs:clone(g.logs),winners:g.winners??[],revision:g.revision,deckCount:g.deck.length,discardCount:g.discard.length};
  view.resolution=g.resolution?clone(g.resolution):null;
+ view.ownOrder=g.orders[id]?clone(g.orders[id]):null;
  view.players=g.players.map(p=>{const v=clone(p);v.handCount=v.hand.length;v.ready=!!g.orders[p.id];if(p.id!==id)delete v.hand;return v;});return view;
 }
