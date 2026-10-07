@@ -178,7 +178,7 @@ body:has(#app.dragging-card) .preview-notice,body:has(#app.dragging-card) .previ
 /* Leave the imagery itself as the tap target; keep names for screen readers. */
 .refreshment-label{display:none}.tavern-prop{overflow:visible}.tavern-refreshments{padding-top:8px}
 .beer .refreshment-sprite{clip-path:inset(8% 0 0 0)}
-.refill-bottle{display:none;position:absolute;pointer-events:none;width:210%;aspect-ratio:3/1;left:-155%;top:5%;background:url('assets/tavern-beer-bottle.webp') center / contain no-repeat;transform-origin:93% 50%;filter:drop-shadow(0 6px 5px #160c0777);z-index:3}
+.refill-bottle{display:none;position:absolute;pointer-events:none;width:210%;aspect-ratio:3/1;left:-139%;top:5%;background:url('assets/tavern-beer-bottle.webp') center / contain no-repeat;transform-origin:89% 50%;filter:drop-shadow(0 6px 5px #160c0777);z-index:3}
 .beer.fresh-serving .refill-bottle{display:block;animation:tavern-bottle-pour 2s ease-in-out forwards}
 .beer.fresh-serving .refill-stream{z-index:2;left:48%;top:34%;height:22%;width:5%;transform-origin:top;animation:tavern-bottle-stream 2s linear forwards}
 .beer.fresh-serving .refreshment-previous{animation:tavern-empty-glass 2s linear forwards}
