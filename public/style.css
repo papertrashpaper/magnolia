@@ -293,3 +293,17 @@ body:has(#app.dragging-card) .tutorial-dock{opacity:.15;pointer-events:none}
 @media(prefers-reduced-motion:reduce){.stat-delta,.log-arrived{animation:none}.stat-delta{opacity:1}.hand-card.selected{transform:none}}
 .hand-entry{display:block;min-width:0}.hand-entry .hand-card{width:100%}
 .kingdom-mini{color:#4b361f}.kingdom-mini .kingdom-name,.kingdom-mini .rank-badge,.kingdom-mini .kingdom-values,.kingdom-mini .meter-heading,.kingdom-mini .level-meter>small,.kingdom-mini .public-hand,.kingdom-mini .muted{color:#654a2c}.kingdom-mini .kingdom-values b{color:#246b60}.kingdom-mini .power-value{color:#8b4930}
+
+/* One card-derived palette across hints, success and completed groups. */
+.hand-card.combo-available{border-color:var(--combo-color);box-shadow:var(--combo-rings),0 0 12px color-mix(in srgb,var(--combo-color) 35%,transparent)}
+.combo-hand-label{background:var(--combo-band);color:#fff;text-shadow:0 1px 2px #000c}
+.board-table .cell.candidate.combo-candidate,.dragging-card .cell.candidate.combo-candidate{border:2px solid var(--combo-color);background:transparent!important;color:#fff5d5;box-shadow:var(--combo-rings),0 0 10px color-mix(in srgb,var(--combo-color) 25%,transparent);text-shadow:0 1px 3px #30220d}
+.combo-target-label{background:#3024179c;border-radius:3px;padding:3px;bottom:6px;color:#fff8dc;font-size:.7rem}
+.cell.combo-race::after,.cell.combo-job::before,.mini-card.combo-race::after,.mini-card.combo-job::before{display:none}
+.cell.combo-race,.cell.combo-job,.mini-card.combo-race,.mini-card.combo-job{box-shadow:var(--combo-rings),0 0 10px color-mix(in srgb,var(--combo-color) 25%,transparent)}
+.combo-mark.race,.combo-mark.job{background:var(--combo-color);border-color:var(--combo-color);color:white;text-shadow:0 1px 2px #000c}
+.panel .combo-chip.race,.panel .combo-chip.job,.combo-chip.race,.combo-chip.job{background:color-mix(in srgb,var(--combo-color) 18%,#fff8e8);border-color:var(--combo-color);color:#35291d}
+.panel .combo-chip.race:hover,.panel .combo-chip.job:hover{background:color-mix(in srgb,var(--combo-color) 30%,#fff8e8);border-color:var(--combo-color)}
+.combo-inspecting{outline-color:var(--combo-color)!important;filter:brightness(1.08)}
+.combo-card-marks{top:24%;gap:2px}.mini-combo-marks{top:auto}
+@media(prefers-reduced-motion:no-preference){.hand-card.combo-available{animation:combo-card-hint 2s ease-in-out infinite}.cell.combo-candidate{animation:none}.combo-celebrate{animation:combo-tone-success 1s ease-out 2}@keyframes combo-card-hint{50%{box-shadow:var(--combo-rings),0 0 18px color-mix(in srgb,var(--combo-color) 55%,transparent)}}@keyframes combo-tone-success{0%,100%{filter:brightness(1);box-shadow:var(--combo-rings)}35%{filter:brightness(1.15);box-shadow:var(--combo-rings),0 0 26px var(--combo-color);transform:translateY(-2px)}}}
