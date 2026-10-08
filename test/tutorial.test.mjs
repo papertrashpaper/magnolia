@@ -125,24 +125,24 @@ test('配置の狙いと、発展→収入→VPの因果を実際の記録から
  submit(g,'human',{moves});
  const find=phase=>g.resolution.events.findIndex(e=>e.phase===phase&&e.playerId==='human');
  const develop=tutorialFeedback(g.resolution,find('develop')).paragraphs.join(' ');
- assert.match(develop,/さっき置いたドワーフの料理人のおかげ.*技術点 0→1.*Lv.0→Lv.1/);
+ assert.match(develop,/今回置いたドワーフの料理人のおかげ.*技術点 0→1.*Lv.0→Lv.1/);
  const income=tutorialFeedback(g.resolution,find('income')).paragraphs.join(' ');
- assert.match(income,/さっき置いた人間の行商のおかげで＋1金/);assert.match(income,/2→6金/);
+ assert.match(income,/今回置いた人間の行商のおかげで＋1金/);assert.match(income,/基本収入3金/);
  const vp=tutorialFeedback(g.resolution,find('vp')).paragraphs.join(' ');
- assert.match(vp,/料理人のおかげで1VP/);assert.match(vp,/Lv.1×1＝1VP/);assert.match(vp,/料理人の効果.*レベルが上がった/);
+ assert.match(vp,/料理人で1VP/);assert.match(vp,/Lv.1×1＝1VP/);assert.match(vp,/育てた技術点.*得点/);
  assert.equal(tutorialFeedback(g.resolution,g.resolution.events.findIndex(e=>e.phase==='develop'&&e.playerId==='cpu-0')),null);
 });
 
-test('中盤の配置ボーナス・信仰レベルが、既存カードのVPも伸ばす',()=>{
+test('中盤の配置ボーナスと信奉者自身のVPを説明する',()=>{
  const g=tutorialGame('旅人',1);beginPlace(g);
  const moves=[{handIndex:0,x:2,y:0},{handIndex:0,x:2,y:1}];
- assert.match(tutorialPlacementFeedback(g.players[0],moves.slice(0,1),1).paragraphs.join(' '),/配置時効果.*種族ボーナス.*2点から5点/);
- assert.match(tutorialPlacementFeedback(g.players[0],moves,1).paragraphs.join(' '),/聖職者も1VP→2VP/);
+ assert.match(tutorialPlacementFeedback(g.players[0],moves.slice(0,1),1).paragraphs.join(' '),/技術点＋2.*配置時効果.*技術点 2→3/);
+ assert.match(tutorialPlacementFeedback(g.players[0],moves,1).paragraphs.join(' '),/聖職者.*信仰点＋2/);
  submit(g,'human',{moves});
  const i=g.resolution.events.findIndex(e=>e.phase==='vp'&&e.playerId==='human');
  const lesson=tutorialFeedback(g.resolution,i,1);
  assert.equal(lesson.card,'elf_follower');
- const text=lesson.paragraphs.join(' ');assert.match(text,/信奉者.*3VP/);assert.match(text,/信奉者の配置時効果.*信仰点 2→4/);assert.match(text,/最初から盤面にいた人間の聖職者/);
+ const text=lesson.paragraphs.join(' ');assert.match(text,/信奉者.*3VP/);assert.match(text,/配置で育てた信仰点/);assert(!text.includes('人間の聖職者'));
 });
 
 test('練習の履歴は現在の処理までを表示し、未来の発動や他人の効果を混ぜない',()=>{
@@ -158,7 +158,7 @@ test('練習の履歴は現在の処理までを表示し、未来の発動や�
  assert.equal(tutorialFeedback(g.resolution,start),null);
 });
 
-test('中盤は騎士の戦争時追加VPを確実に体験し、報酬との因果も伝える',()=>{
+test('中盤の戦争解説は今回置いた拳闘士を中心にする',()=>{
  for(let run=0;run<8;run++){
   const g=tutorialGame('旅人',1);beginPlace(g);
   submit(g,'human',{moves:[{handIndex:0,x:2,y:0},{handIndex:0,x:2,y:1}]});
@@ -166,7 +166,7 @@ test('中盤は騎士の戦争時追加VPを確実に体験し、報酬との因
   assert.equal(event.after.power,15);assert.equal(event.after.warVP,4);
   assert(event.changes.some(c=>c.source==='人間の騎士の効果'&&c.delta===1));
   const lesson=tutorialFeedback(g.resolution,i,1);
-  assert.equal(lesson.card,'human_knight');assert.match(lesson.paragraphs.join(' '),/報酬4VPを得たので.*騎士.*さらに1VP/);
+  assert.equal(lesson.card,'dwarf_pugilist');assert.match(lesson.paragraphs.join(' '),/拳闘士.*前線.*報酬4VP/);assert(!lesson.paragraphs.join(' ').includes('騎士'));
   assert(tutorialTrace(g.resolution,i).some(l=>l.eventIndex===i&&l.source==='人間の騎士の効果'));
   inventory(g);
  }
@@ -179,11 +179,25 @@ test('中盤は騎士の戦争時追加VPを確実に体験し、報酬との因
  assert.deepEqual(result.placed.map(p=>p.bonuses),[[{type:'race',value:'dwarf'}],[{type:'job',value:'priest'}]]);
  assert.equal(result.player.faith,6);assert.equal(level(result.player.faith),2);
  const race=tutorialPlacementFeedback(g.players[0],first,1).paragraphs.join(' ');
- for(const text of ['ドワーフの料理人','ドワーフの鉱石屋','ドワーフの拳闘士','職業は職人・商人・戦士','種族は全員「ドワーフ」','技術点＋2'])assert(race.includes(text),text);
+ for(const text of ['ドワーフの料理人','ドワーフの鉱石屋','ドワーフの拳闘士','職業は別々','種族は全員「ドワーフ」','技術点＋2'])assert(race.includes(text),text);
  const job=tutorialPlacementFeedback(g.players[0],moves,1).paragraphs.join(' ');
- for(const text of ['人間の聖職者','エルフの祈り手','エルフの信奉者','種族は人間・エルフ・エルフ','職業は全員「聖職者」','信仰点＋2','2→4','4→6','1回だけ'])assert(job.includes(text),text);
+ for(const text of ['人間の聖職者','エルフの祈り手','エルフの信奉者','種族は違って','職業は全員「聖職者」','信仰点＋2','2→4','1回だけ'])assert(job.includes(text),text);
  const draft=previewPlacement(g.players[0],first).player;
  assert.match(tutorialTask(1,'place',draft.hand,1).purpose,/職業だけの一致/);
  assert(!tutorialTask(1,'place',g.players[0].hand,0).purpose.includes('騎士'));
  submit(g,'human',{moves});inventory(g);
  });
+
+test('中盤・終盤の解説は既存カードを目的として紹介せず、短文で今回の配置を追う',()=>{
+ for(const chapter of [1,2]){
+  const g=tutorialGame('旅人',chapter);beginPlace(g);const own=g.players[0],moves=[];
+  for(let i=0;i<2;i++){const draft=previewPlacement(own,moves).player,t=tutorialTask(chapter,'place',draft.hand,i);moves.push({handIndex:t.handIndex,x:t.x,y:t.y});}
+  const added=previewPlacement(own,moves).placed.map(p=>p.card);submit(g,'human',{moves});
+  for(let i=0;i<g.resolution.events.length;i++){
+   const lesson=tutorialFeedback(g.resolution,i,chapter);if(!lesson)continue;
+   if(lesson.card)assert(added.includes(lesson.card));
+   assert(lesson.paragraphs.join('').length<300);
+   if(['develop','income','vp','war'].includes(g.resolution.events[i].phase))assert(!lesson.paragraphs.join('').includes('行商'));
+  }
+ }
+});
