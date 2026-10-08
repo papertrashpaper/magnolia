@@ -106,7 +106,7 @@ export function power(p){
   if(front||c.effects.some(e=>e.phase==='alwaysPower'))total+=c.power+c.effects.filter(e=>e.phase==='power').reduce((s,e)=>s+amount(p,c,e),0);
  }return total;
 }
-function log(g,message){g.logs.push({round:g.round,message});}
+function log(g,message,playerId=null){g.logs.push({round:g.round,message,playerId});}
 export function resolveRound(g){
  if(!g.resolution)beginResolution(g,'place');
  const warBefore=phaseStart(g,'war','戦争',{battle:g.players.map(p=>({id:p.id,power:power(p),rank:1+g.players.filter(q=>power(q)>power(p)).length}))});
@@ -117,7 +117,7 @@ export function resolveRound(g){
   const changes=statChanges(before,p,`戦争${p.rank}位の報酬`);
   effects(p,p.warVP>0?'war':'noWar',changes);
   record(g,'war',`${p.name}：戦力${p.power}・戦争${p.rank}位`,p,changes);
-  log(g,`${p.name}：戦力${p.power}・${p.rank}位、戦争${p.warVP}VP`);
+  log(g,`${p.name}：戦力${p.power}・${p.rank}位、戦争${p.warVP}VP`,p.id);
  }
  phaseEnd(g,'war','戦争',warBefore);
  for(const [phase,title]of [['develop','発展'],['income','収入'],['vp','VP']]){
@@ -126,7 +126,7 @@ export function resolveRound(g){
    const changes=[];
    if(phase==='income'){const b=clone(p);add(p,'gold',3);changes.push(...statChanges(b,p,'基本収入'));}
    effects(p,phase,changes);record(g,phase,`${p.name}の${title}`,p,changes);
-   for(const c of changes)log(g,`${p.name}：${c.source}によって${STAT_NAMES[c.stat]} ${c.delta>0?'+':''}${c.delta}`);
+   for(const c of changes)log(g,`${p.name}：${c.source}によって${STAT_NAMES[c.stat]} ${c.delta>0?'+':''}${c.delta}`,p.id);
   }
   phaseEnd(g,phase,title,before);
  }
@@ -135,7 +135,7 @@ export function resolveRound(g){
   for(const p of g.players){const kings=p.board.filter(b=>CARD[b.card].effects.some(e=>e.stat==='tripleGold')).length;
    p.finalGoldVP=Math.floor(p.gold/3)*3**kings;const b=clone(p);add(p,'vp',p.finalGoldVP);
    record(g,'final',`${p.name}の残金得点`,p,statChanges(b,p,`残金${p.gold}金の得点換算${kings?'（人間の君主の効果を適用）':''}`));
-   log(g,`${p.name}：残金${p.gold}金 → ${p.finalGoldVP}VP、最終${p.vp}VP`);
+   log(g,`${p.name}：残金${p.gold}金 → ${p.finalGoldVP}VP、最終${p.vp}VP`,p.id);
   }phaseEnd(g,'final','最終得点',before);
   const best=Math.max(...g.players.map(p=>p.vp));g.winners=g.players.filter(p=>p.vp===best).map(p=>p.id);
  }else g.phase='round';g.orders={};
@@ -167,7 +167,7 @@ export function submit(g,id,order,rng=Math.random){
   beginResolution(g,'place');const before=phaseStart(g,'place','配置');
   for(const p of g.players){const moves=g.orders[p.id].moves;
    for(const move of moves){const result=placeOne(p,move);record(g,'place',`${p.name}が${CARD[result.card].name}を配置`,p,result.steps,{card:result.card});
-    log(g,`${p.name}：${CARD[result.card].name}を配置`);
+    log(g,`${p.name}：${CARD[result.card].name}を配置`,p.id);
    }
    if(moves.length<2){const b=clone(p);p.gold+=2-moves.length;record(g,'place',`${p.name}の未配置枠の報酬`,p,statChanges(b,p,`${2-moves.length}枠を配置しなかった報酬`));}
   }phaseEnd(g,'place','配置',before);g.orders={};resolveRound(g);

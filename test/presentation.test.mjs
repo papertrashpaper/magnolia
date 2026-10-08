@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {newGame,submit,publicView,makePlayer,placeOne,clone,level,power} from '../public/js/engine.js';
-import {resolutionView,scoreRank,changeSentence,undoChanges,levelChangeSentence,levelProgress,battleRank} from '../public/js/presentation.js';
+import {resolutionView,scoreRank,changeSentence,undoChanges,levelChangeSentence,levelProgress,battleRank,logClassName} from '../public/js/presentation.js';
 function game(){return newGame([{id:'human',name:'あなた'},{id:'b',name:'B'}]);}
 test('カードごとの増減はコストと効果を相殺せず、理由と実際の値を記録',()=>{
  const p=makePlayer('human','あなた');p.hand=['golem_gold'];
@@ -75,4 +75,16 @@ test('戦争演出は計算済みの戦力・同率順位を使用し、カー�
  assert.deepEqual(battle.map(a=>a.rank),[1,1]);assert.ok(battle.every(a=>a.power===power(g.players.find(p=>p.id===a.id))));
  assert.deepEqual(g.players.map(p=>p.board.length),[1,1]);
  const armies=[{power:7},{power:7},{power:4},{power:0}];assert.deepEqual(armies.map(p=>battleRank(armies,p)),[1,1,3,4]);
+});
+
+test('ログの枠色はプレイヤーIDで分け、同じ名前でも混同しない',()=>{
+ const players=[{id:'human',name:'同じ名前'},{id:'b',name:'同じ名前'}];
+ assert.equal(logClassName({playerId:'human',message:'同じ名前：配置'},'human',players),'log-own');
+ assert.equal(logClassName({playerId:'b',message:'同じ名前：配置'},'human',players),'log-other');
+ assert.equal(logClassName({message:'同じ名前：配置'},'human',players),'log-system');
+ assert.equal(logClassName({message:'旅人：配置'},'human',[{id:'human',name:'旅人'}]),'log-own');
+ const g=game();submit(g,'human',{discard:[]});submit(g,'b',{discard:[]});
+ submit(g,'human',{moves:[]});submit(g,'b',{moves:[]});
+ assert(g.logs.some(l=>l.playerId==='human'));assert(g.logs.some(l=>l.playerId==='b'));
+ assert(g.logs.every(l=>['human','b'].includes(l.playerId)));
 });

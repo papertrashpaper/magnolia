@@ -1,4 +1,4 @@
-import {clone,STAT_NAMES,statChanges,level} from './engine.js?v=3';
+import {clone,STAT_NAMES,statChanges,level} from './engine.js?v=12';
 export const PHASE_NAMES={draw:'ドロー',place:'配置',war:'戦争',develop:'発展',income:'収入',vp:'VP',final:'最終得点'};
 export function scoreRank(players,player){return 1+players.filter(p=>p.vp>player.vp).length;}
 export function changeSentence(change){const {source,stat,delta,before,after}=change;return `${source}によって${STAT_NAMES[stat]}が${Math.abs(delta)}${delta>0?'増加':'減少'}！ (${before} → ${after})`;}
@@ -27,4 +27,10 @@ export function finalResultMessages(players,you){
   const message=rank===1?'今宵の卓を制した王国に、乾杯！':rank===2?'優勝まであと一歩。次の卓では、頂点へ！':rank===total?'この経験が、次の勝利の礎になる。もう一戦、乾杯！':'築いた王国に、乾杯。次の一戦も楽しもう！';
   return {id:p.id,name:p.name,rank,total,vp:p.vp,title,message,winner:rank===1,own:p.id===you};
  });
+}
+
+export function logClassName(entry,you,players=[]){
+ let id=entry.playerId;
+ if(id==null){const matches=players.filter(p=>entry.message.startsWith(p.name+'：'));if(matches.length===1)id=matches[0].id;}
+ return id==null?'log-system':id===you?'log-own':'log-other';
 }

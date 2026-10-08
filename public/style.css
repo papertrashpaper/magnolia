@@ -251,3 +251,5 @@ body:has(#app.dragging-card) .tutorial-dock{opacity:.15;pointer-events:none}
 
 /* Explanation controls and its scroll area must receive pointer input. */
 .center-notice:has(.tutorial-learning) .center-message{pointer-events:auto}.tutorial-effect-details summary{padding:10px 0;min-height:44px;touch-action:manipulation}
+
+.logs li.log-own{border:2px solid #487e9d;border-left-width:5px;border-radius:5px;padding:9px;background:#e5f0f3}.logs li.log-other{border:2px solid #ac684c;border-left-width:5px;border-radius:5px;padding:9px;background:#f4e6dc}.logs li.log-system{border:1px solid #b59a72;border-radius:5px;padding:9px}.logs li.log-own.tutorial-log-active{border-color:#487e9d!important}.logs li.log-other.tutorial-log-active{border-color:#ac684c!important}

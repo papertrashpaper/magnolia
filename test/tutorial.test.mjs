@@ -40,8 +40,8 @@ test('中盤は配置時効果とドワーフ3枚揃えで技術Lv.2になり、
 });
 test('終盤は9体の終了条件と残金得点を1ラウンドだけで確認できる',()=>{
  const g=tutorialGame('旅人',2);beginPlace(g);
- const moves=[{handIndex:0,x:1,y:2},{handIndex:1,x:2,y:2}];
- assert(legalCells(g.players[0].board).some(c=>c.x===1&&c.y===2));
+ const moves=[{handIndex:0,x:2,y:0},{handIndex:1,x:2,y:2}];
+ assert(legalCells(g.players[0].board).some(c=>c.x===2&&c.y===0));
  submit(g,'human',{moves});assert.equal(g.phase,'ended');assert.equal(g.players[0].board.length,9);inventory(g);
  assert.equal(g.players[0].finalGoldVP,Math.floor(g.players[0].gold/3));
  assert(g.resolution.events.some(e=>e.phase==='final'));assert(g.winners.length);
@@ -214,4 +214,20 @@ test('3枚揃えの解説は仮置きで表示し、確定後には繰り返さ�
  for(const i of indices){assert.equal(tutorialFeedback(g.resolution,i,1),null);assert(events[i].changes.some(c=>c.source.includes('ボーナス')));}
  const vp=events.findIndex(e=>e.phase==='vp'&&e.playerId==='human');
  assert.equal(tutorialFeedback(g.resolution,vp,1).card,'elf_follower');
+});
+
+test('終盤は今回置いた魔術師の戦争時効果と、9体未満の相手も終わることを体験する',()=>{
+ for(let run=0;run<8;run++){
+  const g=tutorialGame('旅人',2);beginPlace(g);const p=g.players[0];
+  const moves=[{handIndex:0,x:2,y:0},{handIndex:1,x:2,y:2}];
+  const draft=previewPlacement(p,moves).player;assert(draft.vp<40);
+  const lesson=tutorialPlacementFeedback(p,moves,2);
+  assert.match(lesson.title,/9体.*全員/);assert.match(lesson.paragraphs.join(' '),/他のプレイヤーが9体未満でも.*全員/);
+  assert(!lesson.paragraphs.join(' ').includes('配置時効果'));
+  submit(g,'human',{moves});assert.equal(g.phase,'ended');assert(g.players[1].board.length<9);
+  const i=g.resolution.events.findIndex(e=>e.phase==='war'&&e.playerId==='human'),event=g.resolution.events[i];
+  assert.equal(event.after.warVP,4);assert(event.changes.some(c=>c.source==='エルフの魔術師の効果'&&c.delta===3));
+  const war=tutorialFeedback(g.resolution,i,2);assert.equal(war.card,'elf_caster');assert.match(war.paragraphs.join(' '),/報酬4VP.*信仰Lv.3×1＝3VP/);
+  inventory(g);
+ }
 });
