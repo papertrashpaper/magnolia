@@ -117,7 +117,7 @@ function availableComboHints(p){
  return placementComboHints(p).filter(h=>tutorialHandAllowed(h.handIndex)&&tutorialCellAllowed(h.x,h.y));
 }
 function comboAnnouncementHTML(groups,preview){
- return groups.length?`<div class="combo-announcement"><strong>✦ ${preview?'仮配置で3枚揃い！':'3枚揃い成立！'} ✦</strong><div>${groups.map(g=>`<span class="combo-chip ${g.type}" style="${comboStyle([g])}">${esc(g.label)}</span>`).join('')}</div></div>`:'';
+ return groups.length?`<div class="combo-announcement" style="${comboStyle(groups)}"><strong>✦ ${preview?'仮配置で3枚揃い！':'3枚揃い成立！'} ✦</strong><div>${groups.map(g=>`<span class="combo-chip ${g.type}" style="${comboStyle([g])}">${esc(g.label)}</span>`).join('')}</div></div>`:'';
 }
 function logOwnerLabel(entry){const kind=logClassName(entry,myId,state.players);return kind==='log-own'?'あなた':kind==='log-other'?'他プレイヤー':'全体';}
 function renderCenter(){
