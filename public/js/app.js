@@ -462,19 +462,20 @@ function objectiveMailboxHTML(){
 }
 function objectiveAchievementsHTML(p){
  const goals=(displayedObjectiveView().objectives??[]).filter(g=>g.claimedBy?.includes(p.id));
- return goals.map(g=>`<span class="objective-achievement ${playback&&state.resolution.events[playback.index]?.objectiveId===g.id?'fresh':''}" aria-label="追加目標達成：${esc(OBJECTIVE[g.id].title)}、${OBJECTIVE[g.id].vp}VP獲得"><span class="achievement-phase">${objectivePhaseIcon(OBJECTIVE[g.id].phase)}</span><span class="achievement-title">${esc(OBJECTIVE[g.id].title)}</span><b class="achievement-award">＋${OBJECTIVE[g.id].vp}<small>VP</small></b><span class="achievement-complete">達成</span></span>`).join('');
+ return goals.map(g=>`<span class="objective-achievement ${playback&&state.resolution.events[playback.index]?.objectiveId===g.id?'fresh':''}" aria-label="追加目標達成：${esc(OBJECTIVE[g.id].title)}、${OBJECTIVE[g.id].vp}VP獲得"><span class="achievement-phase">${objectivePhaseIcon(OBJECTIVE[g.id].phase)}</span><span class="achievement-title">${objectiveLetterTitle(OBJECTIVE[g.id])}</span><b class="achievement-award">＋${OBJECTIVE[g.id].vp}<small>VP</small></b><span class="achievement-complete">達成</span></span>`).join('');
 }
 function objectivePhaseIcon(phase){
  const paths={place:'<path d="M5 21h9l1-4 3-4c1-2 0-4-2-4l-2 1 1-3 7-3c2-1 1-3-1-3l-10 3-3 5-4 4 2 5Z"/><path d="m13 7 5-2M11 11l4-2" fill="none" stroke="var(--letter-paper,#ead59c)" stroke-width="1"/>',war:'<path d="m4 23 4-4-3-3-4 4Zm4-9 3 3L25 3l1-3-4 1Z"/><path d="m4 12 12 12 2-2L6 10Z"/>',income:'<path d="M3 24h6l3-2h7l5-6c1-2-1-3-2-1l-4 4h-5l4-2c2-1 1-3-1-2l-6 1-4 4H3Z"/><ellipse cx="12" cy="5" rx="2" ry="4" transform="rotate(-24 12 5)"/><ellipse cx="20" cy="10" rx="2" ry="3" transform="rotate(20 20 10)"/><path d="M5 9 7 13M20 2l-2 3" fill="none" stroke="currentColor" stroke-width="1.5"/>',all:'<path d="M23 19A12 12 0 1 0 7 25l2-4A8 8 0 1 1 20 17l-4-2 2 11 9-7Z"/>'};
  return `<svg class="objective-phase-icon" viewBox="0 0 28 28" fill="currentColor" aria-hidden="true">${paths[phase]??paths.all}</svg>`;
 }
 function objectivePhaseBadge(o){const label={place:'配置フェイズ',war:'戦争フェイズ',income:'収入フェイズ',all:'全てのフェイズ'};return `<span class="letter-phase" title="${OBJECTIVE_PHASES[o.phase]}" aria-label="${OBJECTIVE_PHASES[o.phase]}">${objectivePhaseIcon(o.phase)}<span>${label[o.phase]}</span></span>`;}
+function objectiveLetterTitle(o){const lines={cheap3:['コスト3以下の','ユニット3体'],expensive3:['コスト5以上の','ユニット3体'],columns2:['縦に3体置かれた','列2つ'],levels2:['技術レベル2かつ','信仰レベル2'],income7:['収入7金','（基本収入を含む）'],power15:['合計戦力15','（能力を含む）']};return (lines[o.id]??[o.title]).map(esc).join('<br>');}
 function objectivesHTML(view){
  if(!view.objectives?.length)return '';
  return `<section class="objective-panel" aria-label="追加目標"><div class="objective-heading"><b>追加目標</b><span>各3VP・先着（同時達成は全員）</span></div><div class="objective-grid">${view.objectives.map(goal=>{
   const o=OBJECTIVE[goal.id];if(!o)return '';
   const claimed=goal.claimedBy?.length;
-  return `<article class="objective-card letter-card ${claimed?'claimed':''}" aria-label="${esc(o.title)}、${o.vp}VP、${claimed?'達成済み':'未達成'}"><img src="assets/objective-letter.svg?v=2" alt="" aria-hidden="true"><div class="letter-content">${objectivePhaseBadge(o)}<b class="letter-title">${esc(o.title)}</b><span class="letter-award">${o.vp}<small>VP</small></span><span class="letter-achievers">${claimed?`達成：${goal.claimedBy.map(id=>esc(view.players.find(p=>p.id===id)?.name??id)).join('・')}`:'未達成'}</span></div></article>`;
+  return `<article class="objective-card letter-card ${claimed?'claimed':''}" aria-label="${esc(o.title)}、${o.vp}VP、${claimed?'達成済み':'未達成'}"><img src="assets/objective-letter.svg?v=2" alt="" aria-hidden="true"><div class="letter-content">${objectivePhaseBadge(o)}<b class="letter-title">${objectiveLetterTitle(o)}</b><span class="letter-award">${o.vp}<small>VP</small></span><span class="letter-achievers">${claimed?`達成：${goal.claimedBy.map(id=>esc(view.players.find(p=>p.id===id)?.name??id)).join('・')}`:'未達成'}</span></div></article>`;
  }).join('')}</div></section>`;
 }
 function openObjectiveMail(kind){
