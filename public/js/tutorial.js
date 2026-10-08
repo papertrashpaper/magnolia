@@ -3,12 +3,12 @@ import {CARD,RACES,JOBS} from './cards.js?v=3';
 
 export const TUTORIAL_CHAPTERS=[
  {title:'序盤：王国をつくる',intro:'マグノリアは、カードを王国に配置して勝利点（VP）を稼ぐゲームです。最後に最もVPが多い人が勝ちます。第1章は何もない王国から、手札交換・配置・各フェーズを1回ずつ試します。',goal:'最初の例：人間の行商を置き、その後ろにドワーフの料理人を置いてみましょう。行商の収入、料理人の発展とVPを1ラウンドで確認できます。この練習では、案内したカードと場所だけ操作できます。'},
- {title:'中盤：育てて組み合わせる',intro:'第2章は練習用に準備した途中盤面です。前の章の続きではありません。技術2点・信仰2点、7金から始めます。どちらもあと1点でLv.2。同じ種族を並べることと、レベルに応じたカード効果を試しましょう。',goal:'ドワーフが横に2体並んでいます。3体目を同じ横列に置くと技術ボーナス。信仰を伸ばすカードや、レベルで強くなるカードも比べてみましょう。'},
+ {title:'中盤：育てて組み合わせる',intro:'第2章は練習用に準備した途中盤面です。前の章の続きではありません。技術2点・信仰2点、7金から始めます。どちらもあと1点でLv.2。同じ種族の3枚揃え、レベルを使う効果、前線の騎士の戦争時効果を試しましょう。',goal:'拳闘士でドワーフを横に3体揃え、信奉者で信仰を育てます。前線には人間の騎士を用意しました。戦争報酬を得ると、騎士の効果で追加1VPも獲得できます。'},
  {title:'終盤：勝ち切るタイミング',intro:'第3章も独立した例題です。王国は7体、技術・信仰はLv.3、VPは39。得点用のカードが既にあるため、この1ラウンドで終了条件に到達します。最後の配置を考え、残金を含む最終得点まで確認しましょう。',goal:'戦力を増やす・今すぐVPを増やす・お金を残す、どれがよさそうでしょうか。9体になると終了することも意識して、指定の2枚を置き、終了まで確認してください。'},
 ];
 const specs=[
  {gold:5,tech:0,faith:0,vp:0,board:[],hand:['human_marchant','dwarf_cook','dwarf_pugilist','elf_marchant','demon_storm'],enemy:[],enemyHand:['human_marchant','goblin_soldier','elf_marchant','dwarf_cook','elf_saint']},
- {gold:7,tech:2,faith:2,vp:12,board:[['dwarf_cook',0,0],['dwarf_gem',1,0],['human_saint',0,1],['elf_mistic',1,1]],hand:['dwarf_pugilist','elf_follower','golem_iron','elf_artist','human_great_marchant'],enemy:[['human_knight',0,0],['human_marchant',1,0],['elf_saint',0,1]],enemyHand:['goblin_soldier','elf_marchant','human_great_marchant','dwarf_cook','elf_artist']},
+ {gold:7,tech:2,faith:2,vp:12,board:[['dwarf_cook',0,0],['dwarf_gem',1,0],['human_saint',0,1],['elf_mistic',1,1],['human_knight',0,-1]],hand:['dwarf_pugilist','elf_follower','golem_iron','elf_artist','human_great_marchant'],enemy:[['human_knight',0,0],['human_marchant',1,0],['elf_saint',0,1]],enemyHand:['goblin_soldier','elf_marchant','human_great_marchant','dwarf_cook','elf_artist']},
  {gold:8,tech:7,faith:7,vp:39,board:[['golem_iron',0,0],['human_knight',1,0],['elf_mistic',2,0],['dwarf_cook',0,1],['human_saint',1,1],['elf_artist',2,1],['human_marchant',0,2]],hand:['elf_follower','dwarf_beer','elf_saint','human_great_marchant','demon_destroy'],enemy:[['demon_pest',0,0],['goblin_great_soldier',1,0],['elf_archer',2,0],['human_great_marchant',0,1]],enemyHand:['goblin_soldier','elf_marchant','human_saint','dwarf_cook','golem_gold']},
 ];
 export function tutorialGame(name,chapter=0){
@@ -96,7 +96,7 @@ export function tutorialTask(chapter,phase,hand=[],moves=0,discard=[]){
  if(phase==='draw'){
   const index=chapter===0?hand.indexOf('demon_storm'):-1;
   const ready=chapter===0?discard.length===1&&discard[0]===index:discard.length===0;
-  return {handIndex:index,canConfirm:ready,text:chapter===0?'まず9金の「嵐のデーモン」を選び、「交換を確定」を押しましょう。今は5金なので、使えるカードに交換します。':'この章は用意した手札を使います。「交換せず補充」を押して配置へ進みましょう。'};
+  return {handIndex:index,canConfirm:ready,purpose:['今は5金なので、9金のデーモンを交換します。行商と料理人は残し、このラウンドから収入・発展・VPを働かせる準備をしましょう。','拳闘士で3枚揃えと前線強化、信奉者で信仰Lv.2を狙うため、この2枚を残します。戦争報酬を得たときに、用意した騎士の追加1VPも発動することを確かめましょう。','信奉者と祈り手で最後のVPを増やし、9体配置から最終得点まで確認するため、今回は手札を交換しません。'][chapter],text:chapter===0?'まず9金の「嵐のデーモン」を選び、「交換を確定」を押しましょう。今は5金なので、使えるカードに交換します。':'この章は用意した手札を使います。「交換せず補充」を押して配置へ進みましょう。'};
  }
  if(phase!=='place')return null;
  const steps=[
@@ -105,8 +105,8 @@ export function tutorialTask(chapter,phase,hand=[],moves=0,discard=[]){
   [['elf_follower',1,2,'「エルフの信奉者」を下段中央へ。信仰を増やし、VPを得るカードを加えます。'],['elf_saint',2,2,'「エルフの祈り手」を下段右へ。配置時VPを確認し、9体になった王国の最終ラウンドを見届けましょう。']]
  ][chapter];
  const step=steps?.[moves];
- if(!step)return {handIndex:-1,canConfirm:moves===2,text:'2枚置けました。お金と効果の変化を確認し、「2枚の配置を確定」を押しましょう。取り消すと前の手順へ戻れます。'};
- return {card:step[0],handIndex:hand.indexOf(step[0]),x:step[1],y:step[2],canConfirm:false,text:step[3]};
+ if(!step)return {handIndex:-1,canConfirm:moves===2,purpose:'行動を確定して、置いたカードが戦争・発展・収入・VPでどう働くかを順番に確認します。',text:'2枚置けました。お金と効果の変化を確認し、「2枚の配置を確定」を押しましょう。取り消すと前の手順へ戻れます。'};
+ return {card:step[0],handIndex:hand.indexOf(step[0]),x:step[1],y:step[2],canConfirm:false,text:step[3],purpose:placementPurpose(step[0])};
 }
 export function tutorialPlacementAllowed(task,handIndex,x,y){return !!task?.card&&task.handIndex===handIndex&&task.x===x&&task.y===y;}
 // Staggered columns show that the front is decided independently in each column.
@@ -129,3 +129,95 @@ export const TUTORIAL_SLIDES=[
  {title:'技術・信仰って、何に使うの？',text:'点数が1・3・7・15になるとレベルが上がり、そのレベルを参照するカードの効果が強くなります。支払い用のお金と違い、効果を使っても点数は消費しません。技術・信仰そのものは得点にならないので、対応するカードと組み合わせましょう。',kind:'levels',section:'技術と信仰'},
  {title:'では、実際の盤面でやってみましょう！',text:'光るカードと光る＋を順番に操作します。まず手札交換、そのあと2枚配置。続く戦争・発展・収入・VPは一つずつ進め、何によって増えたのか確認しましょう。詳しい説明はいつでも「解説集」で読めます。',kind:'practice',section:'盤面で練習'}
 ];
+
+const placementPurposes={
+ human_marchant:'行商を早く置くと、この後の収入で毎ラウンド＋1金。次のカードを買うための土台をつくる練習です。',
+ dwarf_cook:'料理人は発展で技術＋1、その技術レベルを使ってVPを生みます。「点数を育てる→得点にする」つながりと、後方でも効果が働くことを確かめます。',
+ dwarf_pugilist:'拳闘士の配置時技術＋1に、ドワーフ3枚揃えの技術＋2を重ねます。置く場所によって、カード単体以上の効果が得られる練習です。さらに戦力を増やし、前線の騎士の「戦争VP獲得時：追加1VP」も発動させましょう。',
+ elf_follower:'信奉者は置いた瞬間に信仰＋2。その信仰レベルを使って、自身や聖職者がVPを生みます。レベルを育てるカードと得点するカードを組み合わせます。',
+ elf_saint:'祈り手は置いた瞬間に信仰レベル分のVPを得ます。今回は9体目にして、終了条件に届いても発展・収入・VPまで処理することを確かめます。'
+};
+function placementPurpose(card){return placementPurposes[card]??'カードを置いた後、効果と増減の理由を確認しましょう。';}
+const changeValue=c=>`${STAT_NAMES[c.stat]} ${c.before}→${c.after}${['tech','faith'].includes(c.stat)?`（Lv.${level(c.before)}→Lv.${level(c.after)}）`:''}`;
+function eventLearning(event,past,chapter,you,preview=false){
+ if(!event||event.playerId!==you||!event.after||event.phase==='draw')return null;
+ const p=event.after,changes=event.changes??[];
+ const placed=new Set(past.filter(e=>e.phase==='place'&&e.playerId===you&&e.card).map(e=>e.card));
+ const origin=card=>preview?'いま仮に置いた':placed.has(card)?'さっき置いた':'最初から盤面にいた';
+ let card=event.card??null,title='',paragraphs=[];
+ if(event.phase==='place'&&card){
+  const c=CARD[card],cost=changes.find(x=>x.source===c.name+'の配置コスト');
+  const effects=changes.filter(x=>!x.source.endsWith('の配置コスト'));
+  const pos=p.board.find(b=>b.card===card),front=pos&&!p.board.some(b=>b.x===pos.x&&b.y<pos.y);
+  title=`${c.name}を置いた目的を確認`;
+  if(effects.length){
+   paragraphs.push(`${origin(card)}${c.name}のおかげで、${effects.map(changeValue).join('、')}になりました。`);
+   if(card==='dwarf_pugilist')paragraphs.push('配置時効果で技術＋1、横に並べたドワーフ3枚の種族ボーナスでさらに＋2。配置前の技術2点から5点へ進み、Lv.1→2になりました。');
+   else if(card==='elf_follower')paragraphs.push(level(effects[0].before)!==level(effects[0].after)?'信仰が3点の境目を越えてLv.2に。後のVPでは、信奉者だけでなく、最初からいた人間の聖職者も1VP→2VPを生むようになります。':'信仰の点数は増えましたが、レベルはそのまま。VPを決めるのはレベルなので、今回の信奉者のVP効果はまだ増えません。');
+   else if(card==='elf_saint')paragraphs.push(`祈り手の「配置時：信仰レベル×1VP」は、置いた今だけ発動します。これで王国が${p.board.length}体に。9体なら、このラウンドの最後まで処理して終了します。`);
+  }else if(card==='human_marchant'){
+   paragraphs.push(`${origin(card)}行商は、今すぐお金を増やすカードではありません。${cost?`${changeValue(cost)}で代金を払いました。`:''}この後の「収入」で＋1金を得るために置きました。`);
+   paragraphs.push(`行商は前線なので戦力3で参戦します。収入の土台をつくりながら、前線の戦力も用意できました。`);
+  }else if(card==='dwarf_cook'){
+   paragraphs.push(`${origin(card)}料理人は、後方にいても「発展：技術＋1」と「VP：技術レベル×1VP」が働きます。${cost?`${changeValue(cost)}で代金を払いました。`:''}`);
+   paragraphs.push('いま技術は0なので、VP効果も0の状態です。次の発展で技術が1点・Lv.1になり、その後のVPで1VPを生む流れを見ましょう。');
+  }else paragraphs.push(placementPurpose(card));
+  if(!front&&card==='dwarf_cook')paragraphs.push('後方の料理人は戦力に加算されません。前で戦う行商と、後ろで王国を育てる料理人の役割を分けました。');
+ }else if(event.phase==='war'){
+  const fronts=p.board.filter(b=>!p.board.some(other=>other.x===b.x&&other.y<b.y));
+  card=fronts.find(b=>placed.has(b.card))?.card??fronts[0]?.card;
+  const warEffects=changes.filter(change=>p.board.some(b=>change.source===CARD[b.card].name+'の効果'&&CARD[b.card].effects.some(e=>e.phase==='war')));
+  if(warEffects.length)card=p.board.find(b=>warEffects.some(c=>c.source===CARD[b.card].name+'の効果'))?.card;
+  title=warEffects.length?'戦争の報酬が、騎士の追加VPも発動させました':'置き場所が、戦うカードを決めました';
+  paragraphs.push(`今回の前線は${fronts.map(b=>CARD[b.card].name).join('・')||'なし'}。その戦力を合計した${p.power}で戦争${p.rank}位、報酬${p.warVP}VPになりました。`);
+  for(const extra of warEffects){const id=p.board.find(b=>extra.source===CARD[b.card].name+'の効果').card;paragraphs.push(`戦争の報酬${p.warVP}VPを得たので、${origin(id)}${CARD[id].name}の「戦争VP獲得時」の効果も発動！ さらに${extra.delta}VPを得ました（VP ${extra.before}→${extra.after}）。戦争報酬が0VPなら、この追加効果は発動しません。`);}
+  if(chapter===0&&p.board.some(b=>b.card==='dwarf_cook'))paragraphs.push('さっき置いた行商が前で戦い、後方の料理人は参戦していません。料理人を後ろに置いた目的は、この後の発展とVPで王国を支えることです。');
+  else paragraphs.push('前線だけで比べるため、後ろに高戦力カードを置いても原則として戦力は増えません。この後は後方のカードも効果を発揮します。');
+ }else if(event.phase==='income'){
+  const earning=changes.filter(x=>x.stat==='gold'),extra=earning.filter(x=>x.source!=='基本収入');
+  card=p.board.find(b=>extra.some(x=>x.source===CARD[b.card].name+'の効果')&&placed.has(b.card))?.card??p.board.find(b=>extra.some(x=>x.source===CARD[b.card].name+'の効果'))?.card;
+  title=card?`${CARD[card].name}を置いた狙いが、収入になりました`:'基本収入で、次の資金を得ました';
+  paragraphs.push(extra.length?`${extra.map(x=>{const b=p.board.find(b=>x.source===CARD[b.card].name+'の効果');return `${b?origin(b.card)+CARD[b.card].name:x.source}のおかげで＋${x.delta}金`;}).join('、')}。基本収入3金に上乗せされ、今回のお金は${earning[0].before}→${p.gold}金になりました。`:`カードの収入がなくても、基本収入3金でお金は${earning[0]?.before??p.gold}→${p.gold}金になります。`);
+  paragraphs.push(chapter===2?'最後の収入も残金に含まれます。この後の最終得点で、3金につき1VPへ換算します。':'収入は配置時だけではなく、毎ラウンド繰り返します。早く置いた行商が、この先に買えるカードを増やしてくれます。');
+ }else if(['develop','vp'].includes(event.phase)&&changes.length){
+  const effects=changes.map(change=>({change,card:p.board.find(b=>change.source===CARD[b.card].name+'の効果')?.card}));
+  effects.sort((a,b)=>Number(placed.has(b.card))-Number(placed.has(a.card)));
+  card=effects.find(x=>x.card)?.card;
+  title=event.phase==='develop'?'育てるために置いたカードが、働きました':'育てたレベルが、カードのVPになりました';
+  for(const item of effects){
+   const c=item.change;if(!item.card){paragraphs.push(`${c.source}によって${changeValue(c)}になりました。`);continue;}
+   const name=CARD[item.card].name,eff=CARD[item.card].effects.find(e=>e.phase===event.phase&&e.stat===c.stat);
+   if(event.phase==='develop'){
+    const raised=level(c.before)!==level(c.after);
+    paragraphs.push(`${origin(item.card)}${name}のおかげで、${changeValue(c)}になりました。${raised?'レベルの境目を越えたので、この後のVP効果が強くなります。':'点数は増えましたが、レベルは同じです。次の境目に近づきました。'}`);
+    if(chapter===0&&item.card==='dwarf_cook')paragraphs.push('料理人を後ろに置いた狙いはこれです。参戦していなくても技術を育て、すぐ後のVPで技術Lv.1×1＝1VPを得られる状態になりました。');
+   }else{
+    const stat=eff?.scale==='techLevel'?'tech':eff?.scale==='faithLevel'?'faith':null;
+    const grown=stat?past.flatMap(e=>e.playerId===you?(e.changes??[]):[]).find(x=>x.stat===stat&&level(x.before)<level(x.after)):null;
+    paragraphs.push(`${origin(item.card)}${name}のおかげで${c.delta}VPを獲得しました（VP ${c.before}→${c.after}）。${stat?`${STAT_NAMES[stat]}${p[stat]}点＝Lv.${level(p[stat])}を使い、Lv.${level(p[stat])}×${eff.amount}＝${c.delta}VPです。`:''}`);
+    if(grown)paragraphs.push(`ここにつながったのが「${grown.source}」です。${changeValue(grown)}でレベルが上がったため、${name}が生むVPも増えました。点数は得点に使っても消費しません。`);
+   }
+  }
+ }else if(event.phase==='final'){
+  card=p.board.at(-1)?.card;title='9体目を置いて、最後の収入まで得点にしました';
+  paragraphs.push(`さっき置いた${CARD[card]?.name??'カード'}で王国が${p.board.length}体になりました。すぐ終了せず、戦争・発展・収入・VPをすべて処理した後の結果です。`);
+  paragraphs.push(`最後の収入も含む残金${p.gold}金を、3金につき1VPへ換算。${p.finalGoldVP??Math.floor(p.gold/3)}VPを加え、最終${p.vp}VPになりました。`);
+ }
+ if(!paragraphs.length){paragraphs=tutorialPhaseOutcome({events:[event]},event.phase,you);title='今回、このフェーズで変化しない理由';}
+ return paragraphs.length?{card,title,paragraphs}:null;
+}
+export function tutorialFeedback(resolution,eventIndex,chapter=0,you='human'){
+ const past=resolution?.events?.slice(0,eventIndex+1)??[];
+ return eventLearning(past.at(-1),past,chapter,you);
+}
+export function tutorialPlacementFeedback(player,moves,chapter=0){
+ if(!moves.length)return null;
+ const result=previewPlacement(player,moves),last=result.placed.at(-1);
+ const event={phase:'place',playerId:player.id,card:last.card,changes:last.steps,after:result.player};
+ return eventLearning(event,[],chapter,player.id,true);
+}
+
+// Only expose records that have already been presented, never later effects.
+export function tutorialTrace(resolution,eventIndex,you='human'){
+ return (resolution?.events??[]).slice(0,eventIndex+1).flatMap((event,index)=>event.playerId===you&&event.phase!=='draw'?((event.changes??[]).length?event.changes.map(change=>({round:resolution.round,eventIndex:index,stat:change.stat,source:change.source,message:`${event.after.name}：${change.source}によって${STAT_NAMES[change.stat]} ${change.before}→${change.after}（${change.delta>0?'+':''}${change.delta}）`})):[{round:resolution.round,eventIndex:index,message:`${event.title}：この処理での値の増減はありません。`}]):[]);
+}

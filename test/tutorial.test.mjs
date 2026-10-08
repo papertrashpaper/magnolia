@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {tutorialGame,tutorialGuide,tutorialObservation,tutorialPhaseOutcome,TUTORIAL_REFERENCE,tutorialTask,tutorialPlacementAllowed,TUTORIAL_SLIDES,TUTORIAL_FRONTLINE} from '../public/js/tutorial.js';
+import {tutorialGame,tutorialGuide,tutorialObservation,tutorialPhaseOutcome,TUTORIAL_REFERENCE,tutorialTask,tutorialPlacementAllowed,TUTORIAL_SLIDES,TUTORIAL_FRONTLINE,tutorialFeedback,tutorialPlacementFeedback,tutorialTrace} from '../public/js/tutorial.js';
 import {CARDS} from '../public/js/cards.js';
-import {submit,publicView,previewPlacement,level,power,legalCells} from '../public/js/engine.js';
+import {submit,publicView,previewPlacement,level,power,legalCells,bounds} from '../public/js/engine.js';
 import {fillCPU} from '../public/js/cpu.js';
 function inventory(g){
  const all=[...g.deck,...g.discard,...g.players.flatMap(p=>[...p.hand,...p.board.map(b=>b.card)])];
@@ -12,7 +12,7 @@ function beginPlace(g){fillCPU(g,submit);submit(g,'human',{discard:[]});assert.e
 test('3つの独立した例題は実在するカード枚数と合法な3×3盤面を保つ',()=>{
  for(let chapter=0;chapter<3;chapter++){
   const g=tutorialGame('旅人',chapter);assert.equal(g.tutorial,true);assert.equal(g.tutorialChapter,chapter);inventory(g);
-  for(const p of g.players){assert.equal(p.hand.length,5);assert(p.board.every(c=>c.x>=0&&c.x<=2&&c.y>=0&&c.y<=2));assert.equal(p.power,power(p));}
+  for(const p of g.players){assert.equal(p.hand.length,5);const b=bounds(p.board);assert(b.maxX-b.minX<=2&&b.maxY-b.minY<=2);assert.equal(p.power,power(p));}
   beginPlace(g);submit(g,'human',{moves:[]});assert.equal(g.phase,chapter===2?'ended':'round');inventory(g);
   assert.equal(tutorialGuide({chapter,phase:g.phase}).done,true);
   assert(publicView(g,'human').resolution.events.length>0);
@@ -114,4 +114,60 @@ test('階段状の前線は各縦列の先頭で、後列と区別できる合�
  assert.equal(TUTORIAL_FRONTLINE.length-fronts.length,3);
  const placed=[];
  for(const c of TUTORIAL_FRONTLINE){assert(legalCells(placed).some(cell=>cell.x===c.x&&cell.y===c.y));placed.push(c);}
+});
+
+test('配置の狙いと、発展→収入→VPの因果を実際の記録から説明する',()=>{
+ const g=tutorialGame('旅人');beginPlace(g);
+ const first=[{handIndex:0,x:0,y:0}],moves=[...first,{handIndex:0,x:0,y:1}];
+ assert.match(tutorialTask(0,'place',g.players[0].hand,0).purpose,/毎ラウンド.*1金/);
+ assert.match(tutorialPlacementFeedback(g.players[0],first).paragraphs.join(' '),/今すぐお金を増やす.*収入/);
+ assert.match(tutorialPlacementFeedback(g.players[0],moves).paragraphs.join(' '),/後方.*発展.*VP/);
+ submit(g,'human',{moves});
+ const find=phase=>g.resolution.events.findIndex(e=>e.phase===phase&&e.playerId==='human');
+ const develop=tutorialFeedback(g.resolution,find('develop')).paragraphs.join(' ');
+ assert.match(develop,/さっき置いたドワーフの料理人のおかげ.*技術点 0→1.*Lv.0→Lv.1/);
+ const income=tutorialFeedback(g.resolution,find('income')).paragraphs.join(' ');
+ assert.match(income,/さっき置いた人間の行商のおかげで＋1金/);assert.match(income,/2→6金/);
+ const vp=tutorialFeedback(g.resolution,find('vp')).paragraphs.join(' ');
+ assert.match(vp,/料理人のおかげで1VP/);assert.match(vp,/Lv.1×1＝1VP/);assert.match(vp,/料理人の効果.*レベルが上がった/);
+ assert.equal(tutorialFeedback(g.resolution,g.resolution.events.findIndex(e=>e.phase==='develop'&&e.playerId==='cpu-0')),null);
+});
+
+test('中盤の配置ボーナス・信仰レベルが、既存カードのVPも伸ばす',()=>{
+ const g=tutorialGame('旅人',1);beginPlace(g);
+ const moves=[{handIndex:0,x:2,y:0},{handIndex:0,x:2,y:1}];
+ assert.match(tutorialPlacementFeedback(g.players[0],moves.slice(0,1),1).paragraphs.join(' '),/配置時効果.*種族ボーナス.*2点から5点/);
+ assert.match(tutorialPlacementFeedback(g.players[0],moves,1).paragraphs.join(' '),/聖職者も1VP→2VP/);
+ submit(g,'human',{moves});
+ const i=g.resolution.events.findIndex(e=>e.phase==='vp'&&e.playerId==='human');
+ const lesson=tutorialFeedback(g.resolution,i,1);
+ assert.equal(lesson.card,'elf_follower');
+ const text=lesson.paragraphs.join(' ');assert.match(text,/信奉者.*2VP/);assert.match(text,/信奉者の配置時効果.*信仰点 2→4/);assert.match(text,/最初から盤面にいた人間の聖職者/);
+});
+
+test('練習の履歴は現在の処理までを表示し、未来の発動や他人の効果を混ぜない',()=>{
+ const g=tutorialGame('旅人');beginPlace(g);submit(g,'human',{moves:[{handIndex:0,x:0,y:0},{handIndex:0,x:0,y:1}]});
+ const develop=g.resolution.events.findIndex(e=>e.phase==='develop'&&e.playerId==='human');
+ const trace=tutorialTrace(g.resolution,develop);
+ assert(trace.every(l=>l.eventIndex<=develop&&l.message.startsWith('旅人：')));
+ assert(trace.some(l=>/料理人の効果.*技術点 0→1/.test(l.message)));
+ assert(!trace.some(l=>/行商の効果.*お金/.test(l.message)));
+ const income=g.resolution.events.findIndex(e=>e.phase==='income'&&e.playerId==='human');
+ assert(tutorialTrace(g.resolution,income).some(l=>l.eventIndex===income&&/行商の効果.*お金 5→6/.test(l.message)));
+ const start=g.resolution.events.findIndex(e=>e.phase==='develop'&&!e.playerId);
+ assert.equal(tutorialFeedback(g.resolution,start),null);
+});
+
+test('中盤は騎士の戦争時追加VPを確実に体験し、報酬との因果も伝える',()=>{
+ for(let run=0;run<8;run++){
+  const g=tutorialGame('旅人',1);beginPlace(g);
+  submit(g,'human',{moves:[{handIndex:0,x:2,y:0},{handIndex:0,x:2,y:1}]});
+  const i=g.resolution.events.findIndex(e=>e.phase==='war'&&e.playerId==='human'),event=g.resolution.events[i];
+  assert.equal(event.after.power,15);assert.equal(event.after.warVP,4);
+  assert(event.changes.some(c=>c.source==='人間の騎士の効果'&&c.delta===1));
+  const lesson=tutorialFeedback(g.resolution,i,1);
+  assert.equal(lesson.card,'human_knight');assert.match(lesson.paragraphs.join(' '),/報酬4VPを得たので.*騎士.*さらに1VP/);
+  assert(tutorialTrace(g.resolution,i).some(l=>l.eventIndex===i&&l.source==='人間の騎士の効果'));
+  inventory(g);
+ }
 });

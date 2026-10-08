@@ -1,5 +1,5 @@
 import {matBounds,createRefreshments,servingLabel} from './tavern.js?v=1';
-import {tutorialGame,tutorialGuide,tutorialObservation,tutorialPhaseOutcome,TUTORIAL_CHAPTERS,TUTORIAL_REFERENCE,tutorialTask,tutorialPlacementAllowed,TUTORIAL_SLIDES,TUTORIAL_FRONTLINE} from './tutorial.js?v=12';
+import {tutorialGame,tutorialGuide,tutorialObservation,tutorialPhaseOutcome,TUTORIAL_CHAPTERS,TUTORIAL_REFERENCE,tutorialTask,tutorialPlacementAllowed,TUTORIAL_SLIDES,TUTORIAL_FRONTLINE,tutorialFeedback,tutorialPlacementFeedback,tutorialTrace} from './tutorial.js?v=13';
 import {bindCardDrag} from './drag.js?v=8';
 import {CARDS,CARD,RACES,JOBS,RACE_BONUS,JOB_BONUS,effectText} from './cards.js?v=3';
 import {newGame,submit,nextRound,publicView,previewPlacement,legalCells,bounds,power,level,CPU_LEVELS,normalizeCPU} from './engine.js?v=11';
@@ -75,8 +75,10 @@ function renderCenter(){
  if(mode==='setup'||(playback&&state.resolution.events[playback.index].phase==='draw')||(!playback&&!notice)){host.hidden=true;host.innerHTML='';return;}
  host.hidden=false;
  const event=playback?state.resolution.events[playback.index]:notice;
+ const learning=mode==='local'&&game?.tutorial?(playback?tutorialFeedback(state.resolution,playback.index,game.tutorialChapter??0,myId):state.phase==='place'&&!event.title.includes('取り消し')?tutorialPlacementFeedback(state.players.find(p=>p.id===myId),moves,game.tutorialChapter??0):null):null;
  host.className=`center-notice ${playback?'resolving':'preview-notice'} ${event.battle?'battle-notice':''}`;
- host.innerHTML=`<div class="center-message" role="status" aria-live="polite"><p class="eyebrow">${playback?`${PHASE_NAMES[event.phase]} · ${playback.index+1}/${state.resolution.events.length}`:'仮配置'}</p><h2>${esc(event.title)}</h2>${event.battle?battleHTML(event):''}${event.card?`<p class="source-card">${esc(CARD[event.card].name)}</p>`:''}${event.summary?summaryHTML(event.summary):event.changes.length?`<ul class="change-list">${event.changes.map(changeHTML).join('')}</ul>`:`<p class="muted">${event.battle?'戦力を比べて順位を決定します。同戦力は同順位です。':event.playerId?'この処理によるお金・技術・信仰・VPの増減はありません。':'全員の処理を順番に確認します。'}</p>`}${event.note?`<p class="muted small">${esc(event.note)}</p>`:''}</div>${playback?`<div class="replay-controls"><button id="autoReplayButton" aria-pressed="${autoPlay}">${autoPlay?'自動再生を停止':'自動再生（ゆっくり）'}</button><button id="advanceReplayButton" class="primary">${playback.index===state.resolution.events.length-1?'確認を終える':'次の処理'}</button></div>`:'<button id="closeNoticeButton" class="quiet notice-close" aria-label="増減メッセージを閉じる">閉じる</button>'}`;
+ host.innerHTML=`<div class="center-message" role="status" aria-live="polite"><p class="eyebrow">${playback?`${PHASE_NAMES[event.phase]} · ${playback.index+1}/${state.resolution.events.length}`:'仮配置'}</p><h2>${esc(event.title)}</h2>${event.battle?battleHTML(event):''}${event.card?`<p class="source-card">${esc(CARD[event.card].name)}</p>`:''}${learning?`${tutorialLearningHTML(learning)}${event.changes.length?`<details class="tutorial-effect-details"><summary>増減の内訳</summary><ul class="change-list">${event.changes.map(changeHTML).join('')}</ul></details>`:''}`:event.summary?summaryHTML(event.summary):event.changes.length?`<ul class="change-list">${event.changes.map(changeHTML).join('')}</ul>`:`<p class="muted">${event.battle?'戦力を比べて順位を決定します。同戦力は同順位です。':event.playerId?'この処理によるお金・技術・信仰・VPの増減はありません。':'全員の処理を順番に確認します。'}</p>`}${learning&&playback?'<button id="tutorialShowLog" class="quiet tutorial-log-link">発動した履歴を見る</button>':''}${event.note?`<p class="muted small">${esc(event.note)}</p>`:''}</div>${playback?`<div class="replay-controls"><button id="autoReplayButton" aria-pressed="${autoPlay}">${autoPlay?'自動再生を停止':'自動再生（ゆっくり）'}</button><button id="advanceReplayButton" class="primary">${playback.index===state.resolution.events.length-1?'確認を終える':'次の処理'}</button></div>`:'<button id="closeNoticeButton" class="quiet notice-close" aria-label="増減メッセージを閉じる">閉じる</button>'}`;
+ if(qs('#tutorialShowLog'))qs('#tutorialShowLog').onclick=()=>tutorialScrollTo(qs('.logs .tutorial-log-active')??qs('.log-panel'));
  if(qs('#advanceReplayButton'))qs('#advanceReplayButton').onclick=advanceReplay;
  if(qs('#autoReplayButton'))qs('#autoReplayButton').onclick=()=>{autoPlay=!autoPlay;store.set('magnolia-auto-play',autoPlay);renderCenter();scheduleReplay();};
  if(qs('#closeNoticeButton'))qs('#closeNoticeButton').onclick=()=>{clearTimeout(noticeTimer);notice=null;renderCenter();};
@@ -180,7 +182,7 @@ function tutorialTaskNow(){
 }
 function tutorialHandAllowed(index){const task=tutorialTaskNow();return !task||task.handIndex===index;}
 function tutorialCellAllowed(x,y){const task=tutorialTaskNow();return !task||tutorialPlacementAllowed(task,task.handIndex,x,y);}
-let tutorialSlide=0,tutorialHandFocusKey=null;
+let tutorialSlide=0,tutorialHandFocusKey=null,tutorialEffectFocusKey=null;
 function openTutorialIntro(index=0){
  tutorialSlide=index;const slide=TUTORIAL_SLIDES[index];
  const image=id=>`<img src="${CARD[id].image}" alt="${esc(CARD[id].name)}">`;
@@ -209,13 +211,16 @@ function openTutorialIntro(index=0){
 }
 function startTutorial(chapter=0){
  clearTimeout(playTimer);clearTimeout(noticeTimer);clearFinalResults();playback=null;pendingView=null;notice=null;
- game=tutorialGame(setup.name,chapter);tutorialHandFocusKey=null;autoPlay=false;fillCPU(game,submit);mode='local';myId='human';boardId=myId;draftKey='';state=null;moves=[];selected=null;seenResolutions.clear();seenFinalResults.clear();tutorialDockCollapsed=false;
+ game=tutorialGame(setup.name,chapter);tutorialHandFocusKey=null;tutorialEffectFocusKey=null;autoPlay=false;fillCPU(game,submit);mode='local';myId='human';boardId=myId;draftKey='';state=null;moves=[];selected=null;seenResolutions.clear();seenFinalResults.clear();tutorialDockCollapsed=false;
  applyView(publicView(game,myId));requestAnimationFrame(()=>qs('.tutorial-guide')?.scrollIntoView({block:'start',behavior:'instant'}));
 }
 function tutorialGuideNow(){
  const replayPhase=playback?state.resolution.events[playback.index].phase:null;
  const guide=tutorialGuide({chapter:game?.tutorialChapter??0,phase:state.phase,moves:moves.length,replayPhase});
- guide.personal=replayPhase?tutorialPhaseOutcome(state.resolution,replayPhase,myId):[];return guide;
+ const event=playback?state.resolution.events[playback.index]:null;
+ guide.personal=event?tutorialPhaseOutcome({events:[event]},replayPhase,myId):[];
+ guide.learning=playback?tutorialFeedback(state.resolution,playback.index,game.tutorialChapter??0,myId):state.phase==='place'?tutorialPlacementFeedback(state.players.find(p=>p.id===myId),moves,game.tutorialChapter??0):null;
+ return guide;
 }
 function tutorialFinishControls(){
  const chapter=game.tutorialChapter??0;
@@ -231,7 +236,7 @@ function openTutorialHandbook(topic=0){
  const dialog=qs('#tutorialHandbookDialog');clearTimeout(playTimer);
  const active=mode==='local'&&game?.tutorial;
  const lesson=active?TUTORIAL_CHAPTERS[game.tutorialChapter??0]:null,guide=active?tutorialGuideNow():null;
- const sections=[...(active?[{key:'lesson',title:'この章の説明',paragraphs:[lesson.intro,lesson.goal,guide.text,...guide.personal]}]:[]),...(active&&!playback&&state.phase==='place'?[{key:'hints',title:'今の盤面を見るヒント',paragraphs:tutorialObservation(currentDraft(),state.players.filter(p=>p.id!==myId))}]:[]),...TUTORIAL_REFERENCE.map((t,i)=>({...t,key:String(i)}))];
+ const sections=[...(active?[{key:'lesson',title:'この章の説明',paragraphs:[lesson.intro,lesson.goal,guide.text,...(guide.learning?.paragraphs??guide.personal)]}]:[]),...(active&&!playback&&state.phase==='place'?[{key:'hints',title:'今の盤面を見るヒント',paragraphs:tutorialObservation(currentDraft(),state.players.filter(p=>p.id!==myId))}]:[]),...TUTORIAL_REFERENCE.map((t,i)=>({...t,key:String(i)}))];
  const selected=sections.find(t=>t.key===String(topic))??sections[0];
  qs('#tutorialHandbookBody').innerHTML=`<div class="handbook-layout"><nav class="handbook-topics" aria-label="解説の項目">${sections.map(t=>`<button data-handbook-topic="${t.key}" ${t===selected?'aria-current="page"':''}>${esc(t.title)}</button>`).join('')}</nav><article class="handbook-reading" tabindex="0"><h3>${esc(selected.title)}</h3>${selected.key==='2'?'<table class="tutorial-level-table"><thead><tr><th>点数</th><th>レベル</th></tr></thead><tbody><tr><td>0</td><td>Lv.0</td></tr><tr><td>1〜2</td><td>Lv.1</td></tr><tr><td>3〜6</td><td>Lv.2</td></tr><tr><td>7〜14</td><td>Lv.3</td></tr><tr><td>15</td><td>Lv.4</td></tr></tbody></table>':''}${selected.paragraphs.map(t=>`<p>${esc(t)}</p>`).join('')}${selected.key==='lesson'?'<p class="muted small">各章は独立した例題です。章を切り替えると、その章の初期盤面から始まります。</p>':''}</article></div>`;
  for(const el of document.querySelectorAll('[data-handbook-topic]'))el.onclick=()=>openTutorialHandbook(el.dataset.handbookTopic);
@@ -239,10 +244,14 @@ function openTutorialHandbook(topic=0){
 }
 qs('#tutorialHandbookButton').onclick=()=>openTutorialHandbook();
 qs('#tutorialHandbookDialog').addEventListener('close',()=>scheduleReplay());
+function tutorialLearningHTML(learning,compact=false){
+ if(!learning)return '';
+ const card=CARD[learning.card];return `<div class="tutorial-learning ${compact?'compact':''}">${card?`<img src="${card.image}" alt="${esc(card.name)}">`:''}<div><b>${esc(learning.title)}</b>${(compact?learning.paragraphs.slice(0,1):learning.paragraphs).map(text=>`<p>${esc(text)}</p>`).join('')}</div></div>`;
+}
 function tutorialHTML(){
  if(mode!=='local'||!game?.tutorial)return '';
  const chapter=game.tutorialChapter??0,guide=tutorialGuideNow();
- return `<section class="panel tutorial-guide tutorial-compact" aria-label="チュートリアル"><div class="tutorial-top"><span class="eyebrow">第${chapter+1}章 / 3 · 各章1ラウンド</span><button data-tutorial-menu class="quiet">練習を終了</button></div><nav class="tutorial-chapters" aria-label="練習する章">${TUTORIAL_CHAPTERS.map((c,i)=>`<button data-tutorial-chapter="${i}" ${chapter===i?'aria-current="step"':''}>${i+1}. ${c.title.split('：')[0]}</button>`).join('')}</nav><div class="tutorial-current" aria-live="polite"><h2>${esc(guide.title)}</h2><p>${esc(tutorialBrief(guide))}</p>${guide.personal.length?`<div class="tutorial-personal"><b>今回のあなたの王国では</b><p>${esc(guide.personal[0])}</p>${guide.personal.length>1?`<details><summary>ほかの増減（${guide.personal.length-1}件）</summary><ul>${guide.personal.slice(1).map(t=>`<li>${esc(t)}</li>`).join('')}</ul></details>`:''}</div>`:''}</div><div class="tutorial-reading-links"><button data-tutorial-read="lesson" class="quiet">この章の説明</button>${state.phase==='place'&&!playback?'<button data-tutorial-read="hints" class="quiet">盤面を見るヒント</button>':''}<button data-tutorial-read="0" class="quiet">解説集</button></div></section>`;
+ return `<section class="panel tutorial-guide tutorial-compact" aria-label="チュートリアル"><div class="tutorial-top"><span class="eyebrow">第${chapter+1}章 / 3 · 各章1ラウンド</span><button data-tutorial-menu class="quiet">練習を終了</button></div><nav class="tutorial-chapters" aria-label="練習する章">${TUTORIAL_CHAPTERS.map((c,i)=>`<button data-tutorial-chapter="${i}" ${chapter===i?'aria-current="step"':''}>${i+1}. ${c.title.split('：')[0]}</button>`).join('')}</nav><div class="tutorial-current" aria-live="polite"><h2>${esc(guide.title)}</h2><p>${esc(tutorialBrief(guide))}</p>${tutorialLearningHTML(guide.learning,true)}${tutorialTaskNow()?.purpose?`<div class="tutorial-purpose"><b>この配置で学ぶこと</b><p>${esc(tutorialTaskNow().purpose)}</p></div>`:''}${!guide.learning&&guide.personal.length?`<div class="tutorial-personal"><b>今回のあなたの王国では</b><p>${esc(guide.personal[0])}</p>${guide.personal.length>1?`<details><summary>ほかの増減（${guide.personal.length-1}件）</summary><ul>${guide.personal.slice(1).map(t=>`<li>${esc(t)}</li>`).join('')}</ul></details>`:''}</div>`:''}</div><div class="tutorial-reading-links"><button data-tutorial-read="lesson" class="quiet">この章の説明</button>${state.phase==='place'&&!playback?'<button data-tutorial-read="hints" class="quiet">盤面を見るヒント</button>':''}<button data-tutorial-read="0" class="quiet">解説集</button></div></section>`;
 }
 function startLocal(){
  try{
@@ -346,7 +355,7 @@ function boardHTML(p,interactive){
  }
  return `<div class="board-table"><div class="board-wrap"><div class="board" style="grid-template-columns:repeat(${width},minmax(0,1fr));${width===1?'max-width:140px':width===2?'max-width:300px':''}">${content}</div>${!p.board.length?'<div class="empty-help">最初のカードはここへ。<br>次から上下左右に広げられます。</div>':''}</div>${refreshmentsHTML()}</div>`;
 }
-function statsHTML(p){return `<div class="status-grid"><div class="stat vp"><span>勝利点</span><strong>${p.vp}<em>VP</em></strong></div><div class="stat gold"><span>お金</span><strong>${p.gold}<em>金</em></strong></div><div class="stat"><span>技術</span><strong>${p.tech}<em>Lv.${level(p.tech)}</em></strong></div><div class="stat"><span>信仰</span><strong>${p.faith}<em>Lv.${level(p.faith)}</em></strong></div></div>`;}
+function statsHTML(p){return `<div class="status-grid"><div class="stat vp" data-stat="vp"><span>勝利点</span><strong>${p.vp}<em>VP</em></strong></div><div class="stat gold" data-stat="gold"><span>お金</span><strong>${p.gold}<em>金</em></strong></div><div class="stat" data-stat="tech"><span>技術</span><strong>${p.tech}<em>Lv.${level(p.tech)}</em></strong></div><div class="stat" data-stat="faith"><span>信仰</span><strong>${p.faith}<em>Lv.${level(p.faith)}</em></strong></div></div>`;}
 function actionHTML(p){
  if(playback&&state.resolution.events[playback.index].phase==='draw')return '<div class="action-panel replay-hint">手札を交換・補充しています…</div>';
  if(playback)return `<div class="action-panel replay-hint">全員の処理を順番に確認しています。中央の「次の処理」で進めてください。</div>`;
@@ -357,7 +366,7 @@ function actionHTML(p){
  const title=state.phase==='draw'?'捨てるカードを選ぶ':'配置するカードを選ぶ';
  const help=state.phase==='draw'?'選択したカードを捨て、手札を5枚まで補充します。':mobileLayout()?'カードを上下にドラッグして「＋」へ配置。カードを選んで「＋」をタップしても配置できます。最大2枚です。':'カードを王国の「＋」へドラッグして配置。カードを選んで「＋」を押しても配置できます。最大2枚です。';
  const hand=state.phase==='place'?p.hand:own.hand;
- return `<section id="handActions" class="action-panel"><div class="action-title"><div><h2>${title}</h2><span class="muted small">${state.phase==='place'?`${moves.length}/2枚`:`${discard.size}枚交換`}</span></div><div class="placement-gold" aria-live="polite"><span>現在のお金${state.phase==='place'&&moves.length?(locked?'（配置確定後）':'（仮配置後）'):''}</span><strong>${p.gold}<small>金</small></strong></div></div><p class="muted small">${locked?(state.phase==='place'?'配置確定済み。自分の配置を表示しています。ほかの参加者を待っています。':'確定済み。ほかの参加者を待っています。'):help}</p><div class="hand">${hand.map((id,i)=>`<div class="hand-entry"><button class="hand-card ${selected===i?'selected':''} ${tutorialTaskNow()&&tutorialHandAllowed(i)?'tutorial-required':''} ${discard.has(i)&&state.phase==='draw'?'discard':''}" data-hand="${i}" data-draggable="${state.phase==='place'&&!locked&&!busy&&moves.length<2&&tutorialHandAllowed(i)&&CARD[id].cost<=p.gold}" data-drag-blocked="${state.phase==='place'&&!locked&&!busy&&moves.length<2&&tutorialHandAllowed(i)&&CARD[id].cost>p.gold?'money':''}" ${locked||busy||!tutorialHandAllowed(i)?'disabled':''} aria-label="${CARD[id].name}${state.phase==='draw'&&discard.has(i)?'、捨てる対象':''}" aria-pressed="${state.phase==='draw'?discard.has(i):selected===i}"><img src="${CARD[id].image}" draggable="false" alt="${CARD[id].name}">${state.phase==='place'&&CARD[id].cost>p.gold?'<span class="afford">お金不足</span>':''}</button><button class="hand-card-details mobile-only quiet" data-card="${id}" aria-label="${esc(CARD[id].name)}の詳細"><span>${esc(CARD[id].name)}</span><small>${CARD[id].cost}金 · 詳細</small></button></div>`).join('')}</div>${state.phase==='place'&&selected!==null&&hand[selected]?`<div class="selected-info"><strong>${CARD[hand[selected]].name}</strong>　${CARD[hand[selected]].cost}金 / 戦力${CARD[hand[selected]].power}<p>${CARD[hand[selected]].effects.map(effectText).join('<br>')}</p><button class="quiet" data-card="${hand[selected]}" style="padding:4px 8px">カードの詳細</button></div>`:''}<div class="hand-info">${state.phase==='place'?`配置しない枠の報酬：${2-moves.length}金（配置処理後に獲得）`:mobileLayout()?'手札は横にスワイプできます。配置時はカードを上下にドラッグ。「詳細」で効果を確認。':'カードの画像を長押し・右クリックすると詳細を表示できます。'}</div><div class="action-buttons">${state.phase==='place'?`<button id="undoButton" ${!moves.length||locked||busy?'disabled':''}>最後の配置を戻す</button>`:`<button id="clearDiscard" ${!discard.size||locked||busy?'disabled':''}>選択を解除</button>`}<button id="confirmButton" class="primary" ${locked||busy||(tutorialTaskNow()&&!tutorialTaskNow().canConfirm)?'disabled':''}>${locked?'全員の確定を待っています':state.phase==='draw'?(discard.size?'交換を確定':'交換せず補充'):moves.length?`${moves.length}枚の配置を確定`:'配置せず2金を獲得'}</button></div></section>`;
+ return `<section id="handActions" class="action-panel"><div class="action-title"><div><h2>${title}</h2><span class="muted small">${state.phase==='place'?`${moves.length}/2枚`:`${discard.size}枚交換`}</span></div><div class="placement-gold" aria-live="polite"><span>現在のお金${state.phase==='place'&&moves.length?(locked?'（配置確定後）':'（仮配置後）'):''}</span><strong>${p.gold}<small>金</small></strong></div></div><p class="muted small">${locked?(state.phase==='place'?'配置確定済み。自分の配置を表示しています。ほかの参加者を待っています。':'確定済み。ほかの参加者を待っています。'):help}</p>${tutorialTaskNow()?.purpose?`<div class="tutorial-purpose tutorial-action-purpose"><b>操作前に：なぜこの手順？</b><p>${esc(tutorialTaskNow().purpose)}</p></div>`:''}<div class="hand">${hand.map((id,i)=>`<div class="hand-entry"><button class="hand-card ${selected===i?'selected':''} ${tutorialTaskNow()&&tutorialHandAllowed(i)?'tutorial-required':''} ${discard.has(i)&&state.phase==='draw'?'discard':''}" data-hand="${i}" data-draggable="${state.phase==='place'&&!locked&&!busy&&moves.length<2&&tutorialHandAllowed(i)&&CARD[id].cost<=p.gold}" data-drag-blocked="${state.phase==='place'&&!locked&&!busy&&moves.length<2&&tutorialHandAllowed(i)&&CARD[id].cost>p.gold?'money':''}" ${locked||busy||!tutorialHandAllowed(i)?'disabled':''} aria-label="${CARD[id].name}${state.phase==='draw'&&discard.has(i)?'、捨てる対象':''}" aria-pressed="${state.phase==='draw'?discard.has(i):selected===i}"><img src="${CARD[id].image}" draggable="false" alt="${CARD[id].name}">${state.phase==='place'&&CARD[id].cost>p.gold?'<span class="afford">お金不足</span>':''}</button><button class="hand-card-details mobile-only quiet" data-card="${id}" aria-label="${esc(CARD[id].name)}の詳細"><span>${esc(CARD[id].name)}</span><small>${CARD[id].cost}金 · 詳細</small></button></div>`).join('')}</div>${state.phase==='place'&&selected!==null&&hand[selected]?`<div class="selected-info"><strong>${CARD[hand[selected]].name}</strong>　${CARD[hand[selected]].cost}金 / 戦力${CARD[hand[selected]].power}<p>${CARD[hand[selected]].effects.map(effectText).join('<br>')}</p><button class="quiet" data-card="${hand[selected]}" style="padding:4px 8px">カードの詳細</button></div>`:''}<div class="hand-info">${state.phase==='place'?`配置しない枠の報酬：${2-moves.length}金（配置処理後に獲得）`:mobileLayout()?'手札は横にスワイプできます。配置時はカードを上下にドラッグ。「詳細」で効果を確認。':'カードの画像を長押し・右クリックすると詳細を表示できます。'}</div><div class="action-buttons">${state.phase==='place'?`<button id="undoButton" ${!moves.length||locked||busy?'disabled':''}>最後の配置を戻す</button>`:`<button id="clearDiscard" ${!discard.size||locked||busy?'disabled':''}>選択を解除</button>`}<button id="confirmButton" class="primary" ${locked||busy||(tutorialTaskNow()&&!tutorialTaskNow().canConfirm)?'disabled':''}>${locked?'全員の確定を待っています':state.phase==='draw'?(discard.size?'交換を確定':'交換せず補充'):moves.length?`${moves.length}枚の配置を確定`:'配置せず2金を獲得'}</button></div></section>`;
 }
 function resultsHTML(){
  if(!['round','ended'].includes(state.phase))return '';
@@ -377,7 +386,8 @@ function renderGame(){
  const state=playback?resolutionView({...globalState(),you:myId},playback.index):globalState();
  const draft=currentDraft();const own=state.players.find(p=>p.id===myId);const viewed=boardId===myId?draft:state.players.find(p=>p.id===boardId)||draft;
  const editing=!playback&&boardId===myId&&state.phase==='place'&&!own.ready;
- app.innerHTML=`<div class="game-head"><div><p class="eyebrow">${mode==='online'?`部屋 ${state.room}`:'CPU対戦'}</p><h1>ラウンド ${state.round}${state.phase==='ended'&&!playback?' — 終了':''}</h1></div><div style="display:flex;align-items:center;gap:12px">${mode==='online'?`<span id="connection" class="connection">${connection}</span>`:''}<button id="backButton" class="quiet">対戦メニュー</button></div></div>${tutorialHTML()}${waitingHTML()}<div class="phase-strip">${['draw','place','war','develop','income','vp'].map((phase,i)=>`<span class="${state.phase===phase?'active':''}">${i+1}. ${PHASE_NAMES[phase]}</span>`).join('')}</div>${kingdomGallery(state,draft)}${playback?'':resultsHTML()}${reviewHTML()}<div class="game-layout"><section id="playerBoard" class="panel play-panel"><div class="board-heading"><b>${esc(viewed.name)} · 現在${scoreRank(state.players,viewed)}位の王国${!playback&&state.phase==='place'&&boardId===myId&&moves.length?(own.ready?'（配置確定済み）':'（配置予定）'):''}</b><span>前方 ↑ ／ ${viewed.board.length}/9体 ／ 戦力 ${power(viewed)}</span></div>${statsHTML(viewed)}${metersHTML(viewed)}${editing&&selected!==null?`<div class="mobile-selected-card mobile-only"><b>${esc(CARD[draft.hand[selected]].name)}</b><span>配置する「＋」をタップ</span><button id="mobileCancelSelection" class="quiet">選択を解除</button></div>`:''}${boardHTML(viewed,editing)}${boardId!==myId?'<div class="action-buttons"><button id="myBoardButton">自分の王国に戻る</button></div>':actionHTML(draft)}</section><aside><section class="panel players-panel"><h2>参加者</h2>${state.players.map(p=>p.id===myId?draft:p).map(p=>`<button class="player-row ${p.id===boardId?'active':''}" data-player="${p.id}"><span class="row-head"><strong>${esc(p.name)} · ${scoreRank(state.players,p)}位</strong><span class="player-type">${presenceText(p)}</span></span><span class="details">${p.vp} VP ／ ${p.gold}金 ／ ${p.board.length}体 ／ 戦力 ${power(p)}<br>技術 ${p.tech}（Lv.${level(p.tech)}）・信仰 ${p.faith}（Lv.${level(p.faith)}）</span></button>`).join('')}</section><section class="panel log-panel"><h2>履歴</h2><ul class="logs">${state.logs.length?[...state.logs].reverse().slice(0,60).map(l=>`<li><b>R${l.round}</b> ${esc(l.message)}</li>`).join(''):'<li>手札を交換して、王国づくりを始めましょう。</li>'}</ul><p class="muted small" style="margin:14px 0 0">山札 ${state.deckCount}枚 ／ 捨て札 ${state.discardCount}枚</p></section></aside></div>`;
+ const displayLogs=game?.tutorial&&playback?[...state.logs,...tutorialTrace(globalState().resolution,playback.index,myId)]:state.logs;
+ app.innerHTML=`<div class="game-head"><div><p class="eyebrow">${mode==='online'?`部屋 ${state.room}`:'CPU対戦'}</p><h1>ラウンド ${state.round}${state.phase==='ended'&&!playback?' — 終了':''}</h1></div><div style="display:flex;align-items:center;gap:12px">${mode==='online'?`<span id="connection" class="connection">${connection}</span>`:''}<button id="backButton" class="quiet">対戦メニュー</button></div></div>${tutorialHTML()}${waitingHTML()}<div class="phase-strip">${['draw','place','war','develop','income','vp'].map((phase,i)=>`<span class="${state.phase===phase?'active':''}">${i+1}. ${PHASE_NAMES[phase]}</span>`).join('')}</div>${kingdomGallery(state,draft)}${playback?'':resultsHTML()}${reviewHTML()}<div class="game-layout"><section id="playerBoard" class="panel play-panel"><div class="board-heading"><b>${esc(viewed.name)} · 現在${scoreRank(state.players,viewed)}位の王国${!playback&&state.phase==='place'&&boardId===myId&&moves.length?(own.ready?'（配置確定済み）':'（配置予定）'):''}</b><span>前方 ↑ ／ ${viewed.board.length}/9体 ／ 戦力 ${power(viewed)}</span></div>${statsHTML(viewed)}${metersHTML(viewed)}${editing&&selected!==null?`<div class="mobile-selected-card mobile-only"><b>${esc(CARD[draft.hand[selected]].name)}</b><span>配置する「＋」をタップ</span><button id="mobileCancelSelection" class="quiet">選択を解除</button></div>`:''}${boardHTML(viewed,editing)}${boardId!==myId?'<div class="action-buttons"><button id="myBoardButton">自分の王国に戻る</button></div>':actionHTML(draft)}</section><aside><section class="panel players-panel"><h2>参加者</h2>${state.players.map(p=>p.id===myId?draft:p).map(p=>`<button class="player-row ${p.id===boardId?'active':''}" data-player="${p.id}"><span class="row-head"><strong>${esc(p.name)} · ${scoreRank(state.players,p)}位</strong><span class="player-type">${presenceText(p)}</span></span><span class="details">${p.vp} VP ／ ${p.gold}金 ／ ${p.board.length}体 ／ 戦力 ${power(p)}<br>技術 ${p.tech}（Lv.${level(p.tech)}）・信仰 ${p.faith}（Lv.${level(p.faith)}）</span></button>`).join('')}</section><section class="panel log-panel"><h2>履歴</h2><ul class="logs">${displayLogs.length?[...displayLogs].reverse().slice(0,60).map(l=>`<li class="${playback&&l.eventIndex===playback.index?'tutorial-log-active':''}"><b>R${l.round}</b>${playback&&l.eventIndex===playback.index?'<span class="tutorial-log-tag">いま発動した効果</span>':''} ${esc(l.message)}</li>`).join(''):'<li>手札を交換して、王国づくりを始めましょう。</li>'}</ul><p class="muted small" style="margin:14px 0 0">山札 ${state.deckCount}枚 ／ 捨て札 ${state.discardCount}枚</p></section></aside></div>`;
  if(mobileLayout()){
   const gallery=qs('.kingdom-gallery');gallery.scrollLeft=mobileGalleryScroll;
   if(qs('.hand'))qs('.hand').scrollLeft=mobileHandScroll;
@@ -401,7 +411,7 @@ function renderGame(){
  for(const el of document.querySelectorAll('[data-tutorial-menu]'))el.onclick=returnSetup;
  for(const el of document.querySelectorAll('[data-tutorial-play]'))el.onclick=()=>{returnSetup();startLocal();};
  for(const el of document.querySelectorAll('[data-tutorial-read]'))el.onclick=()=>openTutorialHandbook(el.dataset.tutorialRead);
- if(mode==='local'&&game?.tutorial){const guide=tutorialGuideNow();if(guide.target)qs(guide.target)?.classList.add('tutorial-focus');}
+ if(mode==='local'&&game?.tutorial){const guide=tutorialGuideNow();if(guide.target)qs(guide.target)?.classList.add('tutorial-focus');if(guide.learning?.card)qs(`#playerBoard [data-card="${guide.learning.card}"]`)?.classList.add('tutorial-source-card');}
  qs('#backButton').onclick=returnSetup;
  for(const button of document.querySelectorAll('[data-refreshment]'))button.onclick=()=>enjoyRefreshment(button.dataset.refreshment);
  if(qs('.round-review'))qs('.round-review').ontoggle=e=>{reviewOpen=e.target.open;};
@@ -437,6 +447,22 @@ async function confirmAction(){
  try{submit(game,myId,order);if(['draw','place'].includes(game.phase))fillCPU(game,submit);applyView(publicView(game,myId));}catch(e){toast(e.message);}finally{busy=false;render();}
 }
 function localNext(){if(playback)return;try{nextRound(game);fillCPU(game,submit);applyView(publicView(game,myId));}catch(e){toast(e.message);}}
+function tutorialScrollTo(target){
+ if(!target)return;
+ const overview=qs('#kingdomOverview'),offset=overview&&getComputedStyle(overview).position==='sticky'?overview.getBoundingClientRect().height+18:18;
+ target.style.scrollMarginTop=`${offset}px`;
+ target.scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+}
+function focusTutorialEffect(){
+ if(mode!=='local'||!game?.tutorial||!playback)return;
+ const event=state.resolution.events[playback.index],learning=tutorialFeedback(state.resolution,playback.index,game.tutorialChapter??0,myId);
+ if(!learning)return;
+ const positive=event.changes.filter(c=>c.delta>0),changes=positive.length?positive:event.changes;
+ for(const change of changes)qs(`#playerBoard [data-stat="${change.stat}"]`)?.classList.add('tutorial-stat-changed');
+ const primary=changes.find(c=>learning.card&&c.source.startsWith(CARD[learning.card].name))??changes[0];
+ const key=`${state.resolution.id}:${playback.index}`;
+ if(primary&&key!==tutorialEffectFocusKey){tutorialEffectFocusKey=key;requestAnimationFrame(()=>tutorialScrollTo(qs(`#playerBoard [data-stat="${primary.stat}"]`)));}
+}
 function globalState(){return state;}
 // The original guide keeps its place; a compact copy follows the player only
 // while its top is clipped. Re-rendering a card must keep this copy up to date.
@@ -445,12 +471,12 @@ function updateTutorialDock(){
  const overview=qs('.kingdom-overview');
  if(mobileLayout())document.documentElement.style.setProperty('--mobile-overview-height',overview&&getComputedStyle(overview).position==='sticky'?`${Math.ceil(overview.getBoundingClientRect().height)}px`:'0px');
  const dock=qs('#tutorialDock'),original=qs('.tutorial-guide');
- const active=mode==='local'&&game?.tutorial&&original;
+ const active=mode==='local'&&game?.tutorial&&original&&!playback;
  const visible=active&&original.getBoundingClientRect().top<0;
  dock.hidden=!visible;
  if(visible){
   const guide=tutorialGuideNow();
-  const html=`<div class="tutorial-dock-top"><b>第${(game.tutorialChapter??0)+1}章 · ${esc(guide.title)}</b><button id="toggleTutorialDock" class="quiet" aria-expanded="${!tutorialDockCollapsed}">${tutorialDockCollapsed?'助言を開く':'小さくする'}</button></div>${tutorialDockCollapsed?'':`<p>${esc(guide.personal?.[0]??tutorialBrief(guide))}</p><button id="tutorialReadMore" class="quiet">詳しい解説へ</button>`}`;
+  const html=`<div class="tutorial-dock-top"><b>第${(game.tutorialChapter??0)+1}章 · ${esc(guide.title)}</b><button id="toggleTutorialDock" class="quiet" aria-expanded="${!tutorialDockCollapsed}">${tutorialDockCollapsed?'助言を開く':'小さくする'}</button></div>${tutorialDockCollapsed?'':`<p>${esc(guide.learning?.paragraphs[0]??guide.personal?.[0]??tutorialBrief(guide))}</p><button id="tutorialReadMore" class="quiet">詳しい解説へ</button>`}`;
   if(dock.innerHTML!==html)dock.innerHTML=html;
   if(qs('#tutorialReadMore'))qs('#tutorialReadMore').onclick=()=>openTutorialHandbook('lesson');
   qs('#toggleTutorialDock').onclick=()=>{tutorialDockCollapsed=!tutorialDockCollapsed;updateTutorialDock();};
@@ -473,5 +499,5 @@ function scheduleTutorialDock(){
 window.addEventListener('scroll',scheduleTutorialDock,{passive:true});
 window.addEventListener('resize',scheduleTutorialDock);
 new MutationObserver(scheduleTutorialDock).observe(app,{childList:true});
-function render(){if(mode==='setup')renderSetup();else if(state.phase==='lobby')renderLobby();else renderGame();updateTutorialDock();}
+function render(){if(mode==='setup')renderSetup();else if(state.phase==='lobby')renderLobby();else renderGame();updateTutorialDock();focusTutorialEffect();}
 render();
