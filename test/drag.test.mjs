@@ -40,9 +40,9 @@ test('combo hints follow the lifted card and reset on drop or cancellation',t=>{
  f.down();f.move(100,100);f.emit(f.doc,'pointercancel',{pointerId:1});assert.deepEqual(changes,[0,null,0,null]);
 });
 
-test('touch swipes scroll the hand while vertical touch drags place a card',t=>{
+test('touch swipes stay native while long-held touch drags place a card',t=>{
  const f=fixture(t),drops=[];const dispose=bindCardDrag(f.root,(...args)=>drops.push(args));t.after(()=>{dispose();f.restore();});
- f.down(true);assert.equal(f.move(150,402).defaultPrevented,true);assert.equal(f.hand.scrollLeft,50);f.up();assert.deepEqual(drops,[]);
+ f.down(true);assert.equal(f.move(150,402).defaultPrevented,false);assert.equal(f.hand.scrollLeft,100);f.up();assert.deepEqual(drops,[]);
  f.down(true);f.hold();assert.equal(f.move(101,360).defaultPrevented,true);assert.equal(f.root.classList.contains('dragging-card'),true);
  f.up();assert.deepEqual(drops,[[0,0,0]]);assert.equal(f.root.classList.contains('dragging-card'),false);
 });
@@ -57,7 +57,7 @@ test('unaffordable cards warn on pointerdown and never create a drag or drop',t=
  const f=fixture(t),drops=[],warnings=[];
  const dispose=bindCardDrag(f.root,(...args)=>drops.push(args),i=>warnings.push(i));t.after(()=>{dispose();f.restore();});
  const c=f.root.card;c.closest=selector=>selector==='[data-drag-blocked="money"]'?c:null;
- f.emit(f.root,'pointerdown',{target:c,pointerId:1,clientX:100,clientY:400,button:0,isPrimary:true,pointerType:'touch'});
+ f.emit(f.root,'pointerdown',{target:c,pointerId:1,clientX:100,clientY:400,button:0,isPrimary:true,pointerType:'mouse'});
  f.move(100,100);f.up();
  assert.deepEqual(warnings,[0]);assert.deepEqual(drops,[]);assert.equal(f.root.classList.contains('dragging-card'),false);
  assert.equal(f.emit(f.root,'click').defaultPrevented,true);
@@ -82,7 +82,7 @@ test('lifting reveals the mat, while a normal tap does not scroll it',t=>{
 
 test('a swipe never turns into a drag even when held or redirected afterwards',t=>{
  const f=fixture(t),drops=[];const dispose=bindCardDrag(f.root,(...args)=>drops.push(args));t.after(()=>{dispose();f.restore();});
- f.down(true);f.move(112,403);assert.equal(f.hand.scrollLeft,88);assert.equal(f.root.classList.contains('dragging-card'),false);
+ f.down(true);f.move(112,403);assert.equal(f.hand.scrollLeft,100);assert.equal(f.root.classList.contains('dragging-card'),false);
  f.hold();f.move(114,365);assert.equal(f.root.classList.contains('dragging-card'),false);f.up();assert.deepEqual(drops,[]);
 });
 
@@ -106,10 +106,10 @@ test('swipe, normal tap, invalid cell and disabled cell do not accidentally plac
  f.doc.elementFromPoint=()=>null;f.down(true);f.hold();f.move(100,360);f.up();assert.equal(drops.length,0);
 });
 
-test('mobile CSS leaves card touch gestures to the shared drag controller',async()=>{
+test('mobile CSS allows native swipes on draggable and unaffordable cards',async()=>{
  const {readFile}=await import('node:fs/promises');const css=await readFile(new URL('../public/style.css',import.meta.url),'utf8');
  const rules=[...css.matchAll(/\.hand-card\[data-draggable="true"\]\{([^}]+)\}/g)];assert.ok(rules.length>=2);
- for(const [,rule]of rules)assert.match(rule,/touch-action:none/);
+ for(const [,rule]of rules)assert.match(rule,/touch-action:pan-x pan-y/);
 });
 
 
@@ -129,9 +129,34 @@ test('a touch needs a stationary 450ms hold before lifting; release alone never 
 
 test('vertical scrolling, a short tap, cancellation and blur cancel the hold timer',t=>{
  const f=fixture(t),drops=[];const dispose=bindCardDrag(f.root,(...args)=>drops.push(args));t.after(()=>{dispose();f.restore();});
- f.down(true);f.move(101,360);f.hold();assert.equal(f.root.classList.contains('dragging-card'),false);assert.deepEqual(f.scrolls,[[0,40]]);f.up();
+ f.down(true);f.move(101,360);f.hold();assert.equal(f.root.classList.contains('dragging-card'),false);assert.deepEqual(f.scrolls,[]);f.up();
  f.down(true);f.up();f.hold();assert.equal(f.root.classList.contains('dragging-card'),false);
  f.down(true);f.emit(f.doc,'pointercancel',{pointerId:1});f.hold();assert.equal(f.root.classList.contains('dragging-card'),false);
  f.down(true);f.emit(window,'blur');f.hold();assert.equal(f.root.classList.contains('dragging-card'),false);
  assert.deepEqual(drops,[]);
+});
+
+
+test('native touch panning is blocked only after the long hold lifts a card',t=>{
+ const f=fixture(t),drops=[];const dispose=bindCardDrag(f.root,(...args)=>drops.push(args));t.after(()=>{dispose();f.restore();});
+ f.down(true);assert.equal(f.emit(f.doc,'touchmove').defaultPrevented,false);
+ f.move(125,401);f.hold();assert.equal(f.emit(f.doc,'touchmove').defaultPrevented,false);f.up();assert.deepEqual(drops,[]);
+ f.down(true);f.hold();assert.equal(f.emit(f.doc,'touchmove').defaultPrevented,true);
+ f.move(100,360);f.up();assert.deepEqual(drops,[[0,0,0]]);
+ assert.equal(f.emit(f.doc,'touchmove').defaultPrevented,false);
+});
+
+test('native scroll cancellation stops the hold and leaves the next gesture usable',t=>{
+ const f=fixture(t),drops=[];const dispose=bindCardDrag(f.root,(...args)=>drops.push(args));t.after(()=>{dispose();f.restore();});
+ f.down(true);f.move(135,401);f.emit(f.doc,'pointercancel',{pointerId:1});f.hold();
+ assert.equal(f.root.classList.contains('dragging-card'),false);assert.equal(f.emit(f.doc,'touchmove').defaultPrevented,false);
+ f.down(true);f.hold();f.move(100,360);f.up();assert.deepEqual(drops,[[0,0,0]]);
+});
+
+test('touching an unaffordable card leaves swiping intact without a pointerdown warning',t=>{
+ const f=fixture(t),warnings=[];const dispose=bindCardDrag(f.root,()=>{},i=>warnings.push(i));t.after(()=>{dispose();f.restore();});
+ const c=f.root.card;c.closest=selector=>selector==='[data-drag-blocked="money"]'?c:null;
+ f.emit(f.root,'pointerdown',{target:c,pointerId:1,clientX:100,clientY:400,button:0,isPrimary:true,pointerType:'touch'});
+ assert.equal(f.move(140,400).defaultPrevented,false);assert.equal(f.emit(f.doc,'touchmove').defaultPrevented,false);
+ assert.deepEqual(warnings,[]);assert.equal(f.emit(f.root,'click').defaultPrevented,false);
 });

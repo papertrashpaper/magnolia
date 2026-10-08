@@ -34,32 +34,34 @@ export function bindCardDrag(root,onDrop,onBlocked=()=>{},onDragChange=()=>{}){
  }
  root.addEventListener('pointerdown',e=>{
   const blocked=e.target.closest('[data-drag-blocked="money"]');
-  if(blocked&&e.button===0&&e.isPrimary){onBlocked(Number(blocked.dataset.hand));suppressUntil=Date.now()+500;return;}
+  if(blocked&&e.button===0&&e.isPrimary&&e.pointerType!=='touch'){onBlocked(Number(blocked.dataset.hand));suppressUntil=Date.now()+500;return;}
   const card=e.target.closest('[data-draggable="true"]');
   if(!card||e.button!==0||!e.isPrimary||gesture)return;
-  gesture={card,index:Number(card.dataset.hand),id:e.pointerId,startX:e.clientX,startY:e.clientY,x:e.clientX,y:e.clientY,active:false,touch:e.pointerType==='touch',hand:card.closest('.hand'),lastX:e.clientX,lastY:e.clientY,scrolling:false,scrollAxis:null,moved:false};
+  gesture={card,index:Number(card.dataset.hand),id:e.pointerId,startX:e.clientX,startY:e.clientY,x:e.clientX,y:e.clientY,active:false,touch:e.pointerType==='touch',scrolling:false,moved:false};
   try{card.setPointerCapture(e.pointerId);}catch{}
   if(gesture.touch)holdTimer=setTimeout(()=>{holdTimer=null;lift();},450);
  },options);
  root.addEventListener('dragstart',e=>{if(e.target.closest('[data-hand]'))e.preventDefault();},options);
  document.addEventListener('pointermove',e=>{
   if(!gesture||e.pointerId!==gesture.id)return;
-  const stepX=e.clientX-gesture.lastX,stepY=e.clientY-gesture.lastY;
-  gesture.x=e.clientX;gesture.y=e.clientY;gesture.lastX=e.clientX;gesture.lastY=e.clientY;
+  gesture.x=e.clientX;gesture.y=e.clientY;
   const dx=Math.abs(gesture.x-gesture.startX),dy=Math.abs(gesture.y-gesture.startY);
   if(gesture.touch&&!gesture.active){
-   // Moving before the hold finishes is a scroll, never a delayed drag.
-   e.preventDefault();
+   // Let native scrolling (including momentum and nested scrollers) handle swipes.
    if(!gesture.scrolling&&Math.hypot(dx,dy)<10)return;
    clearTimeout(holdTimer);holdTimer=null;
-   if(!gesture.scrolling){gesture.scrolling=true;gesture.scrollAxis=dx>dy&&gesture.hand?'x':'y';}
-   if(gesture.scrollAxis==='x')gesture.hand.scrollLeft-=stepX;else window.scrollBy(0,-stepY);
+   gesture.scrolling=true;
    return;
   }
   if(!gesture.active){if(Math.hypot(dx,dy)<8)return;lift();}
   if(Math.hypot(dx,dy)>=8)gesture.moved=true;
   e.preventDefault();
   ghost.style.left=`${e.clientX}px`;ghost.style.top=`${e.clientY}px`;hover();
+ },{...options,passive:false});
+ // Pointer preventDefault alone does not stop native touch panning. Block it
+ // only after a stationary hold has lifted the card.
+ document.addEventListener('touchmove',e=>{
+  if(gesture?.touch&&gesture.active&&e.cancelable)e.preventDefault();
  },{...options,passive:false});
  document.addEventListener('pointerup',e=>{
   if(!gesture||e.pointerId!==gesture.id)return;
