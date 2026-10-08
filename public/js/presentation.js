@@ -1,4 +1,4 @@
-import {clone,STAT_NAMES,statChanges,level} from './engine.js?v=15';
+import {clone,STAT_NAMES,statChanges,level} from './engine.js?v=16';
 export const PHASE_NAMES={draw:'ドロー',place:'配置',war:'戦争',develop:'発展',income:'収入',vp:'VP',final:'最終得点'};
 export function scoreRank(players,player){return 1+players.filter(p=>p.vp>player.vp).length;}
 export function changeSentence(change){const {source,stat,delta,before,after}=change;return `${source}によって${STAT_NAMES[stat]}が${Math.abs(delta)}${delta>0?'増加':'減少'}！ (${before} → ${after})`;}

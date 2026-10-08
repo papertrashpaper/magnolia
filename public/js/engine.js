@@ -1,4 +1,4 @@
-import {OBJECTIVE,objectiveProgress} from './objectives.js?v=2';
+import {OBJECTIVE,objectiveProgress} from './objectives.js?v=3';
 import {roundReview} from './review.js?v=11';
 import {CARD,CARDS,RACE_BONUS,JOB_BONUS} from './cards.js?v=4';
 export const level=n=>n===15?4:n>=7?3:n>=3?2:n>=1?1:0;
@@ -15,7 +15,7 @@ export function normalizeSettings(settings={},count=2){
 export function shuffle(cards,rng=Math.random){
  const a=[...cards];for(let i=a.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;
 }
-export function makePlayer(id,name,cpu=false){return {id,name,cpu,gold:5,tech:0,faith:0,vp:0,hand:[],board:[],bonuses:[],power:0,rank:0,warVP:0};}
+export function makePlayer(id,name,cpu=false){return {id,name,cpu,gold:5,tech:0,faith:0,vp:0,hand:[],board:[],bonuses:[],bonusRewards:{},power:0,rank:0,warVP:0};}
 export function newGame(seats,settings={},rng=Math.random){
  if(seats.length<2||seats.length>5)throw Error('人数は2～5人です。');
  const g={players:seats.map(s=>({...makePlayer(s.id,s.name,s.cpu),cpuDifficulty:normalizeCPU(s.cpuDifficulty??settings.cpuDifficulty)})),settings:normalizeSettings(settings,seats.length),round:1,phase:'draw',deck:shuffle(CARDS.flatMap(c=>Array(c.copies).fill(c.id)),rng),discard:[],orders:{},logs:[],revision:0};
@@ -95,17 +95,20 @@ export function placeOne(p,move){
   steps.push(...statChanges(before,p,c.name+'の配置時効果'));
  }
  // 成立した全列の報酬を同時に集計してから付与する。
- const rewards={gold:0,tech:0,faith:0,vp:0},newBonuses=[];
+ const rewards={gold:0,tech:0,faith:0,vp:0},newBonuses=[],newBonusKeys=[];
  for(const line of bonusLines(p))for(const type of ['race','job']){
   const value=CARD[line.cards[0].card][type],key=`${line.key}:${type}:${value}`;
   if(p.bonuses.includes(key)||!line.cards.every(b=>CARD[b.card][type]===value))continue;
-  p.bonuses.push(key);newBonuses.push({type,value});
+  p.bonuses.push(key);newBonuses.push({type,value});newBonusKeys.push(key);
   const reward=(type==='race'?RACE_BONUS:JOB_BONUS)[value];
   for(const [stat,n]of Object.entries(reward))rewards[stat]+=n*bonusMultiplier(p);
  }
- for(const bonus of newBonuses){
+ for(const [bonusIndex,bonus] of newBonuses.entries()){
   const reward=(bonus.type==='race'?RACE_BONUS:JOB_BONUS)[bonus.value];const before=clone(p);
   for(const [stat,n]of Object.entries(reward))add(p,stat,n*bonusMultiplier(p));
+  const actualReward=Object.fromEntries(Object.keys(reward).map(stat=>[stat,p[stat]-before[stat]]));
+  const limited=Object.keys(reward).filter(stat=>actualReward[stat]<reward[stat]*bonusMultiplier(p));
+  (p.bonusRewards??={})[newBonusKeys[bonusIndex]]={reward:actualReward,multiplier:bonusMultiplier(p),limited};
   const names={human:'人間',dwarf:'ドワーフ',elf:'エルフ',goblin:'ゴブリン',golem:'ゴーレム',demon:'デーモン',warrior:'戦士',merchant:'商人',artisan:'職人',priest:'聖職者',mage:'魔術師',ruler:'君主'};
   steps.push(...statChanges(before,p,`${names[bonus.value]}の${bonus.type==='race'?'種族':'職業'}ボーナス${bonusMultiplier(p)>1?`（嵐のデーモンにより${bonusMultiplier(p)}倍）`:''}`));
  }

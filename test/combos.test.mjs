@@ -2,7 +2,7 @@ import {CARDS,RACES,JOBS} from '../public/js/cards.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {makePlayer,placeOne,clone,previewPlacement} from '../public/js/engine.js';
-import {completedCombos,newCombos,placementComboHints,COMBO_COLORS,comboStyle} from '../public/js/combos.js';
+import {completedCombos,newCombos,placementComboHints,COMBO_COLORS,comboStyle,comboRewardText} from '../public/js/combos.js';
 
 function pair(){
  const p=makePlayer('human','あなた');p.gold=30;p.hand=['dwarf_pugilist','dwarf_cook','dwarf_saint','human_marchant'];
@@ -45,4 +45,22 @@ test('全6種族・全6職業で、自分・CPU・他参加者の候補と成立
   assert.equal(comboStyle([predicted]),comboStyle([group]));assert.ok(comboStyle([group]).includes(COMBO_COLORS[type][value]));
   assert.equal(newCombos(p,after).find(g=>g.key===expected).cells.length,3);assert.equal(after.id,id);
  }
+});
+
+
+test('揃いの報酬表示は倍増と上限を含む実増分を保存し、後の状態変化で書き換えない',()=>{
+ const p=pair();p.board.push({card:'demon_storm',x:0,y:1});p.tech=0;
+ placeOne(p,{handIndex:0,x:-2,y:0});
+ const combo=completedCombos(p).find(c=>c.type==='race'&&c.value==='dwarf');
+ assert.deepEqual(combo.reward,{tech:4});assert.equal(comboRewardText(combo),'技術＋4');
+ p.tech=15;p.board=p.board.filter(b=>b.card!=='demon_storm');assert.equal(comboRewardText(completedCombos(p).find(c=>c.key===combo.key)),'技術＋4');
+ for(const [start,expected] of [[14,1],[15,0]]){
+  const q=pair();q.tech=start;placeOne(q,{handIndex:0,x:-2,y:0});const group=completedCombos(q)[0];
+  assert.deepEqual(group.reward,{tech:expected});assert.equal(comboRewardText(group),`技術＋${expected}（上限）`);
+ }
+});
+
+test('古い対戦の未記録ボーナスは実増分と区別して基本報酬を表示する',()=>{
+ const p=pair();placeOne(p,{handIndex:0,x:-2,y:0});delete p.bonusRewards;
+ assert.equal(comboRewardText(completedCombos(p)[0]),'基本：技術＋2');
 });

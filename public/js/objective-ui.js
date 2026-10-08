@@ -1,4 +1,4 @@
-import {OBJECTIVE,objectiveProgress} from './objectives.js?v=2';
+import {OBJECTIVE,objectiveProgress} from './objectives.js?v=3';
 // Only public numbers and board counts trigger a letter; no hand search or route suggestions.
 export function objectiveAlerts(view,you,draft,{playback=false}={}){
  if(playback||view.phase==='ended')return {own:[],rivals:[]};

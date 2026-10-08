@@ -1,5 +1,5 @@
-import {CARD,RACES,JOBS} from './cards.js?v=4';
-import {previewPlacement,legalCells} from './engine.js?v=15';
+import {CARD,RACES,JOBS,RACE_BONUS,JOB_BONUS} from './cards.js?v=4';
+import {previewPlacement,legalCells} from './engine.js?v=16';
 
 // Colors follow the race diamonds and job shields printed on the cards.
 export const COMBO_COLORS={race:{human:'#c79235',dwarf:'#969b98',elf:'#729b43',goblin:'#b84b48',golem:'#a79c64',demon:'#956598'},job:{warrior:'#bb473c',merchant:'#c6ac3d',artisan:'#788e89',priest:'#4f8e52',mage:'#79589b',ruler:'#507baf'}};
@@ -17,7 +17,8 @@ export function completedCombos(player){
   if(!['x','y'].includes(axis)||!['race','job'].includes(type))return [];
   const cells=player.board.filter(c=>c[axis]===coordinate);
   if(cells.length!==3||!cells.every(c=>CARD[c.card]?.[type]===value))return [];
-  return [{key,axis,coordinate,type,value,label:`${type==='race'?'種族':'職業'}揃い・${(type==='race'?RACES:JOBS)[value]}`,direction:axis==='y'?'横':'縦',cells}];
+  const receipt=player.bonusRewards?.[key];
+  return [{key,axis,coordinate,type,value,reward:receipt?.reward??(type==='race'?RACE_BONUS:JOB_BONUS)[value],limited:receipt?.limited??[],rewardRecorded:!!receipt,multiplier:receipt?.multiplier??1,label:`${type==='race'?'種族':'職業'}揃い・${(type==='race'?RACES:JOBS)[value]}`,direction:axis==='y'?'横':'縦',cells}];
  });
 }
 export function newCombos(before,after){
@@ -35,4 +36,10 @@ export function placementComboHints(player){
   }
  }
  return hints;
+}
+
+export function comboRewardText(group){
+ const names={gold:'お金',tech:'技術',faith:'信仰',vp:'VP'};
+ const parts=Object.entries(group.reward??{}).map(([stat,n])=>`${names[stat]??stat}${n>=0?'＋':'−'}${Math.abs(n)}${group.limited?.includes(stat)?'（上限）':''}`);
+ return `${group.rewardRecorded?'':'基本：'}${parts.join('・')}`;
 }

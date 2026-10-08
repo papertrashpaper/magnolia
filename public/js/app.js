@@ -1,13 +1,13 @@
-import {objectiveAlerts} from './objective-ui.js?v=1';
-import {OBJECTIVE,OBJECTIVE_PHASES,objectiveProgress} from './objectives.js?v=2';
-import {matBounds,createRefreshments,servingLabel} from './tavern.js?v=5';
-import {tutorialGame,tutorialGuide,tutorialObservation,tutorialPhaseOutcome,TUTORIAL_CHAPTERS,TUTORIAL_REFERENCE,tutorialTask,tutorialPlacementAllowed,TUTORIAL_SLIDES,TUTORIAL_FRONTLINE,tutorialFeedback,tutorialPlacementFeedback,tutorialTrace} from './tutorial.js?v=21';
+import {objectiveAlerts} from './objective-ui.js?v=2';
+import {OBJECTIVE,OBJECTIVE_PHASES,objectiveProgress} from './objectives.js?v=3';
+import {matBounds,createRefreshments,servingLabel} from './tavern.js?v=6';
+import {tutorialGame,tutorialGuide,tutorialObservation,tutorialPhaseOutcome,TUTORIAL_CHAPTERS,TUTORIAL_REFERENCE,tutorialTask,tutorialPlacementAllowed,TUTORIAL_SLIDES,TUTORIAL_FRONTLINE,tutorialFeedback,tutorialPlacementFeedback,tutorialTrace} from './tutorial.js?v=22';
 import {bindCardDrag} from './drag.js?v=9';
 import {CARDS,CARD,RACES,JOBS,RACE_BONUS,JOB_BONUS,effectText} from './cards.js?v=4';
-import {newGame,submit,nextRound,publicView,previewPlacement,legalCells,bounds,power,level,CPU_LEVELS,normalizeCPU} from './engine.js?v=15';
-import {fillCPU} from './cpu.js?v=15';
-import {PHASE_NAMES,scoreRank,changeSentence,levelChangeSentence,levelProgress,battleRank,resolutionView,undoChanges,finalResultMessages,logClassName} from './presentation.js?v=10';
-import {completedCombos,newCombos,placementComboHints,comboStyle} from './combos.js?v=5';
+import {newGame,submit,nextRound,publicView,previewPlacement,legalCells,bounds,power,level,CPU_LEVELS,normalizeCPU} from './engine.js?v=16';
+import {fillCPU} from './cpu.js?v=16';
+import {PHASE_NAMES,scoreRank,changeSentence,levelChangeSentence,levelProgress,battleRank,resolutionView,undoChanges,finalResultMessages,logClassName} from './presentation.js?v=11';
+import {completedCombos,newCombos,placementComboHints,comboStyle,comboRewardText} from './combos.js?v=6';
 
 const app=document.querySelector('#app');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -115,14 +115,19 @@ function comboCardDecoration(p,cell,mini=false){
 function comboLedgerHTML(p){
  const groups=completedCombos(p),achievements=objectiveAchievementsHTML(p);if(!groups.length&&!achievements)return '';
  const actual=state.players.find(q=>q.id===p.id)?.bonuses??[];
- return `<div class="combo-ledger">${groups.length?'<b>✦ 3枚揃い</b>':'<b>✉ 追加目標達成</b>'}<div>${groups.map(g=>`<button class="combo-chip ${g.type}" style="${comboStyle([g])}" data-combo="${g.key}" data-combo-player="${p.id}" title="${esc(g.cells.map(c=>CARD[c.card].name).join('・'))}" aria-label="${esc(g.label)}の3枚を強調">${esc(g.label)}（${g.direction}）${!playback&&!actual.includes(g.key)?'（仮）':' ✓'}</button>`).join('')}${achievements}</div>${groups.length?'<small>名前に触れると3枚を強調します。</small>':''}</div>`;
+ return `<div class="combo-ledger">${groups.length?'<b>✦ 3枚揃い</b>':'<b>✉ 追加目標達成</b>'}<div>${groups.map(g=>`<button class="combo-chip ${g.type}" style="${comboStyle([g])}" data-combo="${g.key}" data-combo-player="${p.id}" title="${esc(g.cells.map(c=>CARD[c.card].name).join('・'))}" aria-label="${esc(g.label)}の3枚を強調">${esc(g.label)}（${g.direction}）<span class="combo-reward">${esc(comboRewardText(g))}</span>${!playback&&!actual.includes(g.key)?'（仮）':' ✓'}</button>`).join('')}${achievements}</div>${groups.length?'<small>名前に触れると3枚を強調します。</small>':''}</div>`;
 }
 function availableComboHints(p){
  if(playback||state.phase!=='place'||p.ready||moves.length>=2||busy)return [];
  return placementComboHints(p).filter(h=>tutorialHandAllowed(h.handIndex)&&tutorialCellAllowed(h.x,h.y));
 }
 function comboAnnouncementHTML(groups,preview){
- return groups.length?`<div class="combo-announcement" style="${comboStyle(groups)}"><strong>✦ ${preview?'仮配置で3枚揃い！':'3枚揃い成立！'} ✦</strong><div>${groups.map(g=>`<span class="combo-chip ${g.type}" style="${comboStyle([g])}">${esc(g.label)}</span>`).join('')}</div></div>`:'';
+ return groups.length?`<div class="combo-announcement" style="${comboStyle(groups)}"><strong>✦ ${preview?'仮配置で3枚揃い！':'3枚揃い成立！'} ✦</strong><div>${groups.map(g=>`<span class="combo-chip ${g.type}" style="${comboStyle([g])}">${esc(g.label)}<span class="combo-reward">${esc(comboRewardText(g))}</span></span>`).join('')}</div></div>`:'';
+}
+function objectiveAnnouncementHTML(event){
+ const o=OBJECTIVE[event.objectiveId];if(!o)return '';
+ const own=event.playerId===myId,name=own?'あなた':state.players.find(p=>p.id===event.playerId)?.name??'相手';
+ return `<div class="objective-announcement ${own?'own':'rival'}"><div class="achievement-letter-scene" aria-hidden="true"><span class="achievement-letter-paper">${objectivePhaseIcon(o.phase)}<b>＋${o.vp}<small>VP</small></b></span><img class="achievement-letter-envelope" src="assets/objective-letter.svg?v=2" alt=""><span class="achievement-letter-flap"></span><span class="achievement-letter-seal">M</span><span class="achievement-letter-sparks">${Array.from({length:6},(_,i)=>`<i style="--letter-spark:${i};--letter-x:${[-34,34,-44,44,-22,22][i]}px;--letter-y:${[-28,-28,-8,-8,-42,-42][i]}px"></i>`).join('')}</span></div><div class="achievement-letter-message"><small>${esc(name)}に届いた達成の手紙</small><strong>追加目標達成！</strong><span>${esc(o.title)}</span><b class="achievement-letter-vp">＋${o.vp}VP</b></div></div>`;
 }
 function logOwnerLabel(entry){const kind=logClassName(entry,myId,state.players);return kind==='log-own'?'あなた':kind==='log-other'?'他プレイヤー':'全体';}
 function renderCenter(){
@@ -135,7 +140,7 @@ function renderCenter(){
  const foldNotice=mobileLayout()&&!tutorialNotice;
  host.style.left='';host.style.right='';host.style.transform='';
  host.className=`center-notice ${tutorialNotice?'tutorial-notice':''} ${playback?'resolving':'preview-notice'} ${event.battle?'battle-notice':''} ${event.playerId?logClassName(event,myId,state.players):!playback?'log-own':''}`;
- host.innerHTML=`<div class="center-message" role="status" aria-live="polite"><p class="notice-owner">${event.playerId?logOwnerLabel(event):!playback?'あなた':'全体'}の行動</p>${comboAnnouncementHTML(playback&&event.after?celebratingCombos(event.after):event.combos??[],!playback)}<p class="eyebrow">${playback?`${PHASE_NAMES[event.phase]} · ${playback.index+1}/${state.resolution.events.length}`:'仮配置'}</p><h2>${esc(event.title)}</h2>${foldNotice?'<details class="notice-details"><summary>効果・解説を表示</summary>':''}${event.battle&&!learning?battleHTML(event):''}${event.card?`<p class="source-card">${esc(CARD[event.card].name)}</p>`:''}${learning?`${tutorialLearningHTML(learning)}${event.battle?`<details class="tutorial-effect-details"><summary>戦力・順位の詳細</summary>${battleHTML(event)}</details>`:''}${event.changes.length?`<details class="tutorial-effect-details"><summary>増減の内訳</summary><ul class="change-list">${event.changes.map(changeHTML).join('')}</ul></details>`:''}`:event.summary?summaryHTML(event.summary):event.changes.length?`<ul class="change-list">${event.changes.map(changeHTML).join('')}</ul>`:`<p class="muted">${event.battle?'戦力を比べて順位を決定します。同戦力は同順位です。':event.playerId?'この処理によるお金・技術・信仰・VPの増減はありません。':'全員の処理を順番に確認します。'}</p>`}${learning&&playback?'<button id="tutorialShowLog" class="quiet tutorial-log-link">発動した履歴を見る</button>':''}${event.note?`<p class="muted small">${esc(event.note)}</p>`:''}${foldNotice?'</details>':''}</div>${playback?`<div class="replay-controls"><button id="autoReplayButton" aria-pressed="${autoPlay}">${autoPlay?'自動再生を停止':'自動再生（ゆっくり）'}</button><button id="advanceReplayButton" class="primary">${learning&&game?.tutorial?'解説を閉じて次へ':playback.index===state.resolution.events.length-1?'確認を終える':'次の処理'}</button></div>`:'<button id="closeNoticeButton" class="quiet notice-close" aria-label="増減メッセージを閉じる">解説を閉じる</button>'}`;
+ host.innerHTML=`<div class="center-message" role="status" aria-live="polite"><p class="notice-owner">${event.playerId?logOwnerLabel(event):!playback?'あなた':'全体'}の行動</p>${comboAnnouncementHTML(playback&&event.after?celebratingCombos(event.after):event.combos??[],!playback)}${objectiveAnnouncementHTML(event)}<p class="eyebrow">${playback?`${PHASE_NAMES[event.phase]} · ${playback.index+1}/${state.resolution.events.length}`:'仮配置'}</p><h2>${esc(event.title)}</h2>${foldNotice?'<details class="notice-details"><summary>効果・解説を表示</summary>':''}${event.battle&&!learning?battleHTML(event):''}${event.card?`<p class="source-card">${esc(CARD[event.card].name)}</p>`:''}${learning?`${tutorialLearningHTML(learning)}${event.battle?`<details class="tutorial-effect-details"><summary>戦力・順位の詳細</summary>${battleHTML(event)}</details>`:''}${event.changes.length?`<details class="tutorial-effect-details"><summary>増減の内訳</summary><ul class="change-list">${event.changes.map(changeHTML).join('')}</ul></details>`:''}`:event.summary?summaryHTML(event.summary):event.changes.length?`<ul class="change-list">${event.changes.map(changeHTML).join('')}</ul>`:`<p class="muted">${event.battle?'戦力を比べて順位を決定します。同戦力は同順位です。':event.playerId?'この処理によるお金・技術・信仰・VPの増減はありません。':'全員の処理を順番に確認します。'}</p>`}${learning&&playback?'<button id="tutorialShowLog" class="quiet tutorial-log-link">発動した履歴を見る</button>':''}${event.note?`<p class="muted small">${esc(event.note)}</p>`:''}${foldNotice?'</details>':''}</div>${playback?`<div class="replay-controls"><button id="autoReplayButton" aria-pressed="${autoPlay}">${autoPlay?'自動再生を停止':'自動再生（ゆっくり）'}</button><button id="advanceReplayButton" class="primary">${learning&&game?.tutorial?'解説を閉じて次へ':playback.index===state.resolution.events.length-1?'確認を終える':'次の処理'}</button></div>`:'<button id="closeNoticeButton" class="quiet notice-close" aria-label="増減メッセージを閉じる">解説を閉じる</button>'}`;
  if(qs('#tutorialShowLog'))qs('#tutorialShowLog').onclick=()=>{mobileLogsOpen=true;const fold=qs('.log-fold');if(fold)fold.open=true;tutorialScrollTo(qs('.logs .tutorial-log-active')??qs('.log-panel'));};
  if(qs('#advanceReplayButton'))qs('#advanceReplayButton').onclick=advanceReplay;
  if(qs('#autoReplayButton'))qs('#autoReplayButton').onclick=()=>{autoPlay=!autoPlay;store.set('magnolia-auto-play',autoPlay);renderCenter();scheduleReplay();};
@@ -462,7 +467,7 @@ function objectiveMailboxHTML(){
 }
 function objectiveAchievementsHTML(p){
  const goals=(displayedObjectiveView().objectives??[]).filter(g=>g.claimedBy?.includes(p.id));
- return goals.map(g=>`<span class="objective-achievement ${playback&&state.resolution.events[playback.index]?.objectiveId===g.id?'fresh':''}" aria-label="追加目標達成：${esc(OBJECTIVE[g.id].title)}、${OBJECTIVE[g.id].vp}VP獲得"><span class="achievement-phase">${objectivePhaseIcon(OBJECTIVE[g.id].phase)}</span><span class="achievement-title">${esc(OBJECTIVE[g.id].title)}</span><b class="achievement-award">＋${OBJECTIVE[g.id].vp}<small>VP</small></b><span class="achievement-complete">達成</span></span>`).join('');
+ return goals.map(g=>`<span class="objective-achievement ${playback&&state.resolution.events[playback.index]?.objectiveId===g.id&&state.resolution.events[playback.index]?.playerId===p.id?'fresh':''}" aria-label="追加目標達成：${esc(OBJECTIVE[g.id].title)}、${OBJECTIVE[g.id].vp}VP獲得"><span class="achievement-phase">${objectivePhaseIcon(OBJECTIVE[g.id].phase)}</span><span class="achievement-title">${esc(OBJECTIVE[g.id].title)}</span><b class="achievement-award">＋${OBJECTIVE[g.id].vp}<small>VP</small></b><span class="achievement-complete">達成</span></span>`).join('');
 }
 function objectivePhaseIcon(phase){
  const paths={place:'<path d="M5 21h9l1-4 3-4c1-2 0-4-2-4l-2 1 1-3 7-3c2-1 1-3-1-3l-10 3-3 5-4 4 2 5Z"/><path d="m13 7 5-2M11 11l4-2" fill="none" stroke="var(--letter-paper,#ead59c)" stroke-width="1"/>',war:'<path d="m4 23 4-4-3-3-4 4Zm4-9 3 3L25 3l1-3-4 1Z"/><path d="m4 12 12 12 2-2L6 10Z"/>',income:'<path d="M3 24h6l3-2h7l5-6c1-2-1-3-2-1l-4 4h-5l4-2c2-1 1-3-1-2l-6 1-4 4H3Z"/><ellipse cx="12" cy="5" rx="2" ry="4" transform="rotate(-24 12 5)"/><ellipse cx="20" cy="10" rx="2" ry="3" transform="rotate(20 20 10)"/><path d="M5 9 7 13M20 2l-2 3" fill="none" stroke="currentColor" stroke-width="1.5"/>',all:'<path d="M23 19A12 12 0 1 0 7 25l2-4A8 8 0 1 1 20 17l-4-2 2 11 9-7Z"/>'};

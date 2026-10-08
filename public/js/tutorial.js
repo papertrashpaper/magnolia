@@ -1,5 +1,5 @@
-import {OBJECTIVE} from './objectives.js?v=2';
-import {newGame,level,power,previewPlacement,legalCells,STAT_NAMES} from './engine.js?v=15';
+import {OBJECTIVE} from './objectives.js?v=3';
+import {newGame,level,power,previewPlacement,legalCells,STAT_NAMES} from './engine.js?v=16';
 import {CARD,RACES,JOBS} from './cards.js?v=4';
 
 export const TUTORIAL_CHAPTERS=[
