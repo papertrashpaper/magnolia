@@ -464,12 +464,16 @@ function objectiveAchievementsHTML(p){
  const goals=(displayedObjectiveView().objectives??[]).filter(g=>g.claimedBy?.includes(p.id));
  return goals.map(g=>`<span class="objective-achievement ${playback&&state.resolution.events[playback.index]?.objectiveId===g.id?'fresh':''}" aria-label="追加目標達成：${esc(OBJECTIVE[g.id].title)}、${OBJECTIVE[g.id].vp}VP獲得"><span aria-hidden="true">✉</span> ${esc(OBJECTIVE[g.id].title)} 達成 <b>＋${OBJECTIVE[g.id].vp}VP</b></span>`).join('');
 }
+function objectivePhaseIcon(phase){
+ const paths={place:'<path d="M4 21 20 3c4 7-1 13-10 12M7 18l2-6 7-3M11 14l-1-5"/>',war:'<path d="m5 20 4-4M4 15l5 5M8 16 20 4v6L11 19M3 21l2-2"/>',income:'<path d="M7 20c-4-7 1-7 1-12 3 2 3 4 3 5 4-6 0-7 3-11 0 7 7 9 6 14-1 5-9 7-13 4Z"/>',all:'<path d="M20 9a8 8 0 1 0-2 10M20 3v6h-6"/>'};
+ return `<svg class="objective-phase-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[phase]??paths.all}</svg>`;
+}
 function objectivesHTML(view){
  if(!view.objectives?.length)return '';
  return `<section class="objective-panel" aria-label="追加目標"><div class="objective-heading"><b>追加目標</b><span>各3VP・先着（同時達成は全員）</span></div><div class="objective-grid">${view.objectives.map(goal=>{
   const o=OBJECTIVE[goal.id];if(!o)return '';
   const claimed=goal.claimedBy?.length;
-  return `<article class="objective-card letter-card ${claimed?'claimed':''}" aria-label="${esc(o.title)}、${o.vp}VP、${claimed?'達成済み':'未達成'}"><img src="assets/objective-letter.svg" alt="" aria-hidden="true"><div class="letter-content"><small>${OBJECTIVE_PHASES[o.phase]}${o.exact?'・ちょうど':''}</small><b class="letter-title">${esc(o.title)}</b><span class="letter-award">${o.vp}<small>VP</small></span><span class="letter-achievers">${claimed?`達成：${goal.claimedBy.map(id=>esc(view.players.find(p=>p.id===id)?.name??id)).join('・')}`:'未達成'}</span></div></article>`;
+  return `<article class="objective-card letter-card ${claimed?'claimed':''}" aria-label="${esc(o.title)}、${o.vp}VP、${claimed?'達成済み':'未達成'}"><img src="assets/objective-letter.svg" alt="" aria-hidden="true"><div class="letter-content"><small>${objectivePhaseIcon(o.phase)}${OBJECTIVE_PHASES[o.phase]}${o.exact?'・ちょうど':''}</small><b class="letter-title">${esc(o.title)}</b><span class="letter-award">${o.vp}<small>VP</small></span><span class="letter-achievers">${claimed?`達成：${goal.claimedBy.map(id=>esc(view.players.find(p=>p.id===id)?.name??id)).join('・')}`:'未達成'}</span></div></article>`;
  }).join('')}</div></section>`;
 }
 function openObjectiveMail(kind){
@@ -479,7 +483,7 @@ function openObjectiveMail(kind){
  const title=kind==='own'?'青い手紙 — あなたが狙える目標':'赤い手紙 — 相手が近づいている目標';
  qs('#objectiveMailTitle').textContent=title;
 
- qs('#objectiveMailBody').innerHTML=`<div class="mail-reading ${kind}">${entries.map(entry=>`<article><h3>${esc(entry.o.title)} <span>＋${entry.o.vp}VP</span></h3><p class="mail-phase">${OBJECTIVE_PHASES[entry.o.phase]}</p>${kind==='own'?`<p><b>${entry.progress.met?'条件を満たしています（判定待ち）':'達成まであと少し'}</b></p><p>${esc(entry.progress.detail)}</p><p>現在の数値での進捗です。指定フェイズ終了時に条件を満たしているか確認します。</p>`:`<ul>${entry.players.map(p=>`<li><b>${esc(p.name)}</b>：${p.progress.met?'条件を満たしています（判定待ち）':'あと少し'}<br>${esc(p.progress.detail)}</li>`).join('')}</ul>`}</article>`).join('')}<p class="mail-reading-note">${kind==='own'?'仮配置中は、その時点の数値を表示します。所持金は未配置枠の報酬を加え、指定フェイズ終了時の金額で判定します。':'相手の公開盤面だけで判断しています。非公開の手札による次の配置は断定できません。'}先に達成された目標は得点できません。同じ判定時の達成は全員が得点します。</p></div>`;
+ qs('#objectiveMailBody').innerHTML=`<div class="mail-reading ${kind}">${entries.map(entry=>`<article><h3>${esc(entry.o.title)} <span>＋${entry.o.vp}VP</span></h3><p class="mail-phase">${objectivePhaseIcon(entry.o.phase)}${OBJECTIVE_PHASES[entry.o.phase]}</p>${kind==='own'?`<p><b>${entry.progress.met?'条件を満たしています（判定待ち）':'達成まであと少し'}</b></p><p>${esc(entry.progress.detail)}</p><p>現在の数値での進捗です。指定フェイズ終了時に条件を満たしているか確認します。</p>`:`<ul>${entry.players.map(p=>`<li><b>${esc(p.name)}</b>：${p.progress.met?'条件を満たしています（判定待ち）':'あと少し'}<br>${esc(p.progress.detail)}</li>`).join('')}</ul>`}</article>`).join('')}<p class="mail-reading-note">${kind==='own'?'仮配置中は、その時点の数値を表示します。所持金は未配置枠の報酬を加え、指定フェイズ終了時の金額で判定します。':'相手の公開盤面だけで判断しています。非公開の手札による次の配置は断定できません。'}先に達成された目標は得点できません。同じ判定時の達成は全員が得点します。</p></div>`;
  if(game?.tutorial&&game.tutorialChapter===3){game.tutorialLettersRead??=[];if(!game.tutorialLettersRead.includes(kind))game.tutorialLettersRead.push(kind);}
  qs('#objectiveMailDialog').showModal();
 }
