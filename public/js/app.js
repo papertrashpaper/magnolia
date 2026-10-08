@@ -25,9 +25,11 @@ function mobileJump(target){
 let moves=[],discard=new Set(),selected=null,draftKey='',busy=false,connection='';
 let playback=null,pendingView=null,playTimer=null,autoPlay=store.get('magnolia-auto-play',false),notice=null,noticeTimer=null;
 let placementCelebration=null;
-let visualGameKey=null,visualValues=new Map(),visualDeltas=new Map(),latestLogKey='';
+let visualGameKey=null,visualPlaybackActive=false,visualValues=new Map(),visualDeltas=new Map(),latestLogKey='';
 function updateVisualValues(players){
  const key=globalState().gameId??game;if(key!==visualGameKey){visualGameKey=key;visualValues.clear();visualDeltas.clear();latestLogKey='';}
+ // Switching from the placement preview to replay is a view reset, not a resource loss.
+ if(visualPlaybackActive!==!!playback){visualPlaybackActive=!!playback;visualValues.clear();visualDeltas.clear();}
  const now=Date.now();
  for(const p of players){const values={vp:p.vp,gold:p.gold,tech:p.tech,faith:p.faith,power:power(p),units:p.board.length};
  const before=visualValues.get(p.id);if(before)for(const stat of Object.keys(values))if(values[stat]!==before[stat])visualDeltas.set(`${p.id}:${stat}`,{delta:values[stat]-before[stat],until:now+1800});visualValues.set(p.id,values);}

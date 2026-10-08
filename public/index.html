@@ -7,7 +7,7 @@
   <meta name="description" content="マグノリアのCPU対戦・2〜5人のオンライン対戦">
   <title>Magnolia — マグノリア</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23101e31'/%3E%3Ctext x='32' y='46' text-anchor='middle' fill='%23e4bf76' font-size='44' font-family='serif'%3EM%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="style.css?v=56">
+  <link rel="stylesheet" href="style.css?v=57">
 </head>
 <body>
   <header class="topbar"><a class="brand" href="./"><span class="brand-mark">M</span><span>MAGNOLIA<small>マグノリア · 冒険者の宿</small></span></a><nav><button id="catalogButton" class="quiet">カード一覧</button><button id="rulesButton" class="quiet">遊び方</button><button id="tutorialHandbookButton" class="quiet">解説集</button></nav></header>
@@ -23,6 +23,6 @@
   <dialog id="detailDialog"><button class="dialog-close" aria-label="閉じる">×</button><div id="detailBody"></div></dialog>
   <dialog id="catalogDialog"><button class="dialog-close" aria-label="閉じる">×</button><h2>カード一覧</h2><p class="muted">41種類・102枚（仮構成）。カードを押すと効果を確認できます。</p><div id="catalogBody" class="catalog"></div></dialog>
   <dialog id="rulesDialog"><button class="dialog-close" aria-label="閉じる">×</button><h2>遊び方</h2><div class="rules"><p>5金・手札5枚、VP・技術点・信仰点は0で開始します。人間とCPUを合わせて2〜5人です。</p><ol><li><b>ドロー：</b>残っている手札から好きな枚数を捨て、5枚まで引きます。交換は1回。最初のラウンドも交換できます。</li><li><b>配置：</b>最大2枚を順に配置します。1枚ごとにコストを払い、配置時効果、配置ボーナスの順に処理します。配置しなかった枠1つにつき1金を、配置処理後に受け取ります。</li><li><b>戦争：</b>各縦列の最前線の戦力を合計し、順位別のVPを獲得します。同戦力なら同順位で、次の順位は飛ばします。</li><li><b>発展：</b>カードの発展効果で技術点・信仰点が増えます。</li><li><b>収入：</b>基本の3金と、カードの収入を受け取ります。</li><li><b>VP：</b>カードのVP効果を処理します。</li></ol><h3>王国の配置</h3><p>最初のカードから上下左右につなげ、王国全体の幅・高さをそれぞれ3マス以内にします。最初のカードの前後左右の位置は、後の配置で決まります。配置済みカードの移動・置き換えはできません。画面上で上側が前方です。</p><p>縦・横に同じ種族や職業が3枚揃うとボーナスを得ます。同時に揃った列と種類はすべて発動します。同じ列の同じボーナスは1回のみです。</p><h3>技術・信仰レベル</h3><table><tr><th>点数</th><td>0</td><td>1〜2</td><td>3〜6</td><td>7〜14</td><td>15</td></tr><tr><th>レベル</th><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td></tr></table><p>点数の上限は15です。</p><h3>終了</h3><p>誰かが40VP以上、または9体配置したラウンドの最後に終了します。残金3金につき1VPを加算し、最もVPが多い人が勝ちです。同点は同時優勝です。</p><h3>カードの補足</h3><p>種族を数える効果は自身を含みます。戦争でVPを獲得したときの追加効果は後列でも発動します。レベルによる戦力強化は自身の戦力に加算するため、原則として前列のみ有効です。エルフの射手は後列でも参加し、前列では二重加算しません。葬儀屋によるVPは戦争の勝利VPには含めません。</p><p>人間の君主は端数を切り捨てたお金のVPを3倍にします。嵐のデーモンの配置ボーナス2倍は、他の列にも継続して適用されます。同じ効果が複数ある場合は重複する今回のルールを採用しています。</p><p>追加目標カードは使用しません。</p><p class="muted">参照：<a href="https://arclightgames.jp/%E3%80%90faq%E3%80%91%E3%83%9E%E3%82%B0%E3%83%8E%E3%83%AA%E3%82%A2/" target="_blank" rel="noreferrer">公式FAQ</a> ／ <a href="https://boardgamer.exblog.jp/30456491/" target="_blank" rel="noreferrer">ルール紹介</a></p></div></dialog>
-  <script type="module" src="js/app.js?v=56"></script>
+  <script type="module" src="js/app.js?v=57"></script>
 </body>
 </html>
