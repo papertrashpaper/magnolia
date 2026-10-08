@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {bindCardDrag} from '../public/js/drag.js';
 
 function fixture(t){
+ t.mock.timers.enable({apis:['setTimeout']});
  const saved=new Map();
  const install=(key,value)=>{saved.set(key,Object.getOwnPropertyDescriptor(globalThis,key));Object.defineProperty(globalThis,key,{value,writable:true,configurable:true});};
  const classes=()=>{const values=new Set();return{add:x=>values.add(x),remove:x=>values.delete(x),contains:x=>values.has(x)};};
@@ -11,7 +12,7 @@ function fixture(t){
  const cell={dataset:{cell:'0,0'},disabled:false,classList:classes(),closest:()=>cell};
  root.contains=x=>x===cell;root.querySelector=selector=>selector==='[data-hand="0"]'||selector==='.drag-source'&&root.card.classList.contains('drag-source')?root.card:null;
  const doc=new EventTarget();doc.elementFromPoint=()=>cell;doc.body={append(){}};doc.createElement=()=>({style:{},setAttribute(){},append(){},remove(){}});
- const win=new EventTarget();win.scrollBy=()=>{};
+ const scrolls=[];const win=new EventTarget();win.scrollBy=(...args)=>scrolls.push(args);
  install('document',doc);install('window',win);install('requestAnimationFrame',()=>1);install('cancelAnimationFrame',()=>{});
  const emit=(host,type,props={})=>{const e=new Event(type,{cancelable:true});for(const [key,value]of Object.entries(props))Object.defineProperty(e,key,{value});host.dispatchEvent(e);return e;};
  const hand={scrollLeft:100};
@@ -19,7 +20,7 @@ function fixture(t){
  const move=(x,y)=>emit(doc,'pointermove',{pointerId:1,clientX:x,clientY:y});
  const up=()=>emit(doc,'pointerup',{pointerId:1,clientX:100,clientY:100});
  const restore=()=>{for(const[key,descriptor]of saved)if(descriptor)Object.defineProperty(globalThis,key,descriptor);else delete globalThis[key];};
- return {root,doc,cell,card,hand,emit,down,move,up,restore};
+ return {root,doc,cell,card,hand,scrolls,emit,down,move,up,restore,hold:()=>t.mock.timers.tick(450)};
 }
 
 test('two mouse drops survive replacement of the hand and suppress the generated click',t=>{
@@ -42,14 +43,14 @@ test('combo hints follow the lifted card and reset on drop or cancellation',t=>{
 test('touch swipes scroll the hand while vertical touch drags place a card',t=>{
  const f=fixture(t),drops=[];const dispose=bindCardDrag(f.root,(...args)=>drops.push(args));t.after(()=>{dispose();f.restore();});
  f.down(true);assert.equal(f.move(150,402).defaultPrevented,true);assert.equal(f.hand.scrollLeft,50);f.up();assert.deepEqual(drops,[]);
- f.down(true);assert.equal(f.move(101,360).defaultPrevented,true);assert.equal(f.root.classList.contains('dragging-card'),true);
+ f.down(true);f.hold();assert.equal(f.move(101,360).defaultPrevented,true);assert.equal(f.root.classList.contains('dragging-card'),true);
  f.up();assert.deepEqual(drops,[[0,0,0]]);assert.equal(f.root.classList.contains('dragging-card'),false);
 });
 
 test('cancelled pointer gestures clean up and allow the next drag',t=>{
  const f=fixture(t),drops=[];const dispose=bindCardDrag(f.root,(...args)=>drops.push(args));t.after(()=>{dispose();f.restore();});
- f.down(true);f.move(100,360);f.emit(f.doc,'pointercancel',{pointerId:1});f.up();assert.deepEqual(drops,[]);
- f.down(true);f.move(100,360);f.up();assert.deepEqual(drops,[[0,0,0]]);
+ f.down(true);f.hold();f.move(100,360);f.emit(f.doc,'pointercancel',{pointerId:1});f.up();assert.deepEqual(drops,[]);
+ f.down(true);f.hold();f.move(100,360);f.up();assert.deepEqual(drops,[[0,0,0]]);
 });
 
 test('unaffordable cards warn on pointerdown and never create a drag or drop',t=>{
@@ -75,34 +76,34 @@ test('lifting reveals the mat, while a normal tap does not scroll it',t=>{
  const f=fixture(t),scrolls=[],lookup=f.root.querySelector;f.root.querySelector=selector=>selector==='#playerBoard .board-wrap'?{scrollIntoView:options=>scrolls.push(options)}:lookup(selector);
  const dispose=bindCardDrag(f.root,()=>{});t.after(()=>{dispose();f.restore();});
  f.down();f.up();assert.deepEqual(scrolls,[]);
- f.down(true);f.move(100,360);assert.deepEqual(scrolls,[{block:'center',behavior:'instant'}]);f.up();
+ f.down(true);f.hold();f.move(100,360);assert.deepEqual(scrolls,[{block:'center',behavior:'instant'}]);f.up();
 });
 
 
-test('a diagonal hand swipe can turn upwards into a card drop without a second touch',t=>{
+test('a swipe never turns into a drag even when held or redirected afterwards',t=>{
  const f=fixture(t),drops=[];const dispose=bindCardDrag(f.root,(...args)=>drops.push(args));t.after(()=>{dispose();f.restore();});
  f.down(true);f.move(112,403);assert.equal(f.hand.scrollLeft,88);assert.equal(f.root.classList.contains('dragging-card'),false);
- f.move(114,365);assert.equal(f.root.classList.contains('dragging-card'),true);f.up();assert.deepEqual(drops,[[0,0,0]]);
+ f.hold();f.move(114,365);assert.equal(f.root.classList.contains('dragging-card'),false);f.up();assert.deepEqual(drops,[]);
 });
 
 test('touch capture survives an online update before the first movement',t=>{
  const f=fixture(t),drops=[];const dispose=bindCardDrag(f.root,(...args)=>drops.push(args));t.after(()=>{dispose();f.restore();});
- f.down(true);f.root.card=f.card();f.move(110,350);assert.equal(f.root.captured,1);f.up();assert.deepEqual(drops,[[0,0,0]]);
+ f.down(true);f.root.card=f.card();f.hold();f.move(110,350);assert.equal(f.root.captured,1);f.up();assert.deepEqual(drops,[[0,0,0]]);
 });
 
 test('lost capture and an unrelated pointer cancellation do not leave a stuck gesture',t=>{
  const f=fixture(t),drops=[];const dispose=bindCardDrag(f.root,(...args)=>drops.push(args));t.after(()=>{dispose();f.restore();});
- f.down(true);f.move(100,360);f.emit(f.doc,'pointercancel',{pointerId:2});f.up();assert.equal(drops.length,1);
- f.down(true);f.move(100,360);f.emit(f.root,'lostpointercapture',{pointerId:1});f.up();assert.equal(drops.length,1);
- f.down(true);f.move(100,360);f.up();assert.equal(drops.length,2);
+ f.down(true);f.hold();f.move(100,360);f.emit(f.doc,'pointercancel',{pointerId:2});f.up();assert.equal(drops.length,1);
+ f.down(true);f.hold();f.move(100,360);f.emit(f.root,'lostpointercapture',{pointerId:1});f.up();assert.equal(drops.length,1);
+ f.down(true);f.hold();f.move(100,360);f.up();assert.equal(drops.length,2);
 });
 
 test('swipe, normal tap, invalid cell and disabled cell do not accidentally place a card',t=>{
  const f=fixture(t),drops=[];const dispose=bindCardDrag(f.root,(...args)=>drops.push(args));t.after(()=>{dispose();f.restore();});
  f.down(true);f.move(140,400);f.up();assert.equal(f.emit(f.root,'click').defaultPrevented,true);
  f.down(true);f.up();assert.equal(drops.length,0);
- f.cell.disabled=true;f.down(true);f.move(100,360);f.up();assert.equal(drops.length,0);
- f.doc.elementFromPoint=()=>null;f.down(true);f.move(100,360);f.up();assert.equal(drops.length,0);
+ f.cell.disabled=true;f.down(true);f.hold();f.move(100,360);f.up();assert.equal(drops.length,0);
+ f.doc.elementFromPoint=()=>null;f.down(true);f.hold();f.move(100,360);f.up();assert.equal(drops.length,0);
 });
 
 test('mobile CSS leaves card touch gestures to the shared drag controller',async()=>{
@@ -116,4 +117,21 @@ test('ordinary taps remain native, with no synthesized extra card click',t=>{
  const f=fixture(t);const dispose=bindCardDrag(f.root,()=>{});t.after(()=>{dispose();f.restore();});
  f.down(true);f.up();assert.equal(f.root.card.taps,0);assert.equal(f.emit(f.root,'click').defaultPrevented,false);
  f.down();f.up();assert.equal(f.root.card.taps,0);assert.equal(f.emit(f.root,'click').defaultPrevented,false);
+});
+
+
+test('a touch needs a stationary 450ms hold before lifting; release alone never drops',t=>{
+ const f=fixture(t),drops=[];const dispose=bindCardDrag(f.root,(...args)=>drops.push(args));t.after(()=>{dispose();f.restore();});
+ f.down(true);t.mock.timers.tick(449);assert.equal(f.root.classList.contains('dragging-card'),false);
+ t.mock.timers.tick(1);assert.equal(f.root.classList.contains('dragging-card'),true);f.up();assert.deepEqual(drops,[]);
+ f.down(true);f.hold();f.move(140,320);f.up();assert.deepEqual(drops,[[0,0,0]]);
+});
+
+test('vertical scrolling, a short tap, cancellation and blur cancel the hold timer',t=>{
+ const f=fixture(t),drops=[];const dispose=bindCardDrag(f.root,(...args)=>drops.push(args));t.after(()=>{dispose();f.restore();});
+ f.down(true);f.move(101,360);f.hold();assert.equal(f.root.classList.contains('dragging-card'),false);assert.deepEqual(f.scrolls,[[0,40]]);f.up();
+ f.down(true);f.up();f.hold();assert.equal(f.root.classList.contains('dragging-card'),false);
+ f.down(true);f.emit(f.doc,'pointercancel',{pointerId:1});f.hold();assert.equal(f.root.classList.contains('dragging-card'),false);
+ f.down(true);f.emit(window,'blur');f.hold();assert.equal(f.root.classList.contains('dragging-card'),false);
+ assert.deepEqual(drops,[]);
 });
