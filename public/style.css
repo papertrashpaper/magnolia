@@ -383,3 +383,17 @@ body:has(#app.dragging-card) .tutorial-dock{opacity:.15;pointer-events:none}
  .center-notice:has(.notice-details:not([open])){max-height:40dvh}.center-notice:has(.notice-details[open]){max-height:68dvh}.center-notice .notice-owner{font-size:.65rem;padding:3px 6px;margin-bottom:5px}.center-notice .center-message>.eyebrow{font-size:.62rem;margin:5px 0}.center-notice h2{font-size:.88rem;margin-bottom:5px;line-height:1.45}.center-notice .combo-announcement{padding:18px 6px 8px;margin:0 0 5px}.center-notice .combo-announcement>strong{font-size:.95rem;margin-bottom:5px}.center-notice .combo-chip{font-size:.65rem;padding:3px 6px}.center-notice .combo-announcement::after{font-size:.7rem}.center-notice .replay-controls{padding-top:6px;margin-top:6px}
 }
 @media(max-width:760px) and (orientation:landscape){.center-notice:has(.notice-details:not([open])){max-height:64dvh}.center-notice:has(.notice-details[open]){max-height:calc(100dvh - 20px)}}
+
+/* Tutorial explanations stay visible; numerical breakdowns remain optional. */
+@media(max-width:760px){
+ .center-notice.tutorial-notice{max-height:min(58dvh,calc(100dvh - 60px))}
+ .tutorial-notice .source-card{display:none}
+ .tutorial-notice .tutorial-learning{margin-top:7px;padding:9px;gap:9px}
+ .tutorial-notice .tutorial-learning>img{width:42px}
+ .tutorial-notice .tutorial-learning b{font-size:.85rem}
+ .tutorial-notice .tutorial-learning p{font-size:.82rem;line-height:1.65;margin-top:6px}
+ .tutorial-notice .tutorial-effect-details{margin-top:6px}
+ .tutorial-notice .tutorial-log-link{margin-top:5px;min-height:40px}
+ .tutorial-notice .combo-announcement{padding:12px 6px 8px}
+}
+@media(max-width:760px) and (orientation:landscape){.center-notice.tutorial-notice{max-height:calc(100dvh - 20px)}}
