@@ -1,5 +1,6 @@
+import {objectiveProgress} from './objectives.js?v=1';
 import {CARD,CARDS} from './cards.js?v=4';
-import {clone,legalCells,placeOne,power,level,amount,resolveRound,normalizeCPU} from './engine.js?v=13';
+import {clone,legalCells,placeOne,power,level,amount,resolveRound,normalizeCPU} from './engine.js?v=14';
 function potential(p){
  let score=0;
  for(const axis of ['x','y'])for(const type of ['race','job']){
@@ -17,7 +18,8 @@ function recurring(p){
 }
 export function cpuScore(p,opponents=[],settings={}){
  const s=power(p);const rank=1+opponents.filter(q=>power(q)>s).length;
- return p.vp*3+p.gold*.9+p.tech*.8+p.faith*.8+s*.7+recurring(p)+potential(p)+(settings.warVP?.[rank-1]??(rank===1?5:rank===2?2:0))+p.board.length*1.5;
+ const goals=(settings.objectives??[]).filter(o=>!o.claimedBy?.length).reduce((score,o)=>{const progress=objectiveProgress(p,o.id);return score+(progress?.met?9:(progress?.ratio??0)*3);},0);
+ return goals+p.vp*3+p.gold*.9+p.tech*.8+p.faith*.8+s*.7+recurring(p)+potential(p)+(settings.warVP?.[rank-1]??(rank===1?5:rank===2?2:0))+p.board.length*1.5;
 }
 export function cpuDraw(p,rng=Math.random){
  const difficulty=normalizeCPU(p.cpuDifficulty);
@@ -46,7 +48,7 @@ function normalPlace(p,opponents=[],beamWidth=14,settings={}){
   candidates.sort((a,b)=>b.score-a.score);beam=candidates.slice(0,beamWidth);
  }return {moves:best.moves};
 }
-function ordinaryPlace(p,opponents,rng){
+function ordinaryPlace(p,opponents,rng,settings={}){
  const draft=clone(p),moves=[];
  for(let depth=0;depth<2;depth++){
   const candidates=[];
@@ -55,7 +57,7 @@ function ordinaryPlace(p,opponents,rng){
    let best=null;
    for(const cell of legalCells(draft.board)){
     const next=clone(draft),move={handIndex:i,...cell};placeOne(next,move);
-    const score=cpuScore({...clone(next),gold:next.gold+1-depth},opponents);
+    const score=cpuScore({...clone(next),gold:next.gold+1-depth},opponents,settings);
     if(!best||score>best.score)best={next,move,score};
    }if(best)candidates.push(best);
   }
@@ -69,14 +71,14 @@ function ordinaryPlace(p,opponents,rng){
 // All search uses only this player's hand and opponents' public kingdoms.
 function forecast(p,opponents,settings){
  const players=[clone(p),...opponents.map(q=>({...clone(q),hand:[]}))];
- const g={players,settings,logs:[],round:1,orders:{}};resolveRound(g);
+ const g={players,settings,objectives:clone(settings.objectives??[]),logs:[],round:1,orders:{}};resolveRound(g);
  const after=g.players[0];
  if(g.phase==='ended')return {score:1000+after.vp*10+(g.winners.includes(after.id)?500:0),after,ended:true};
- return {score:cpuScore(after,g.players.slice(1))+after.vp+recurring(after)*2+potential(after),after,ended:false};
+ return {score:cpuScore(after,g.players.slice(1),{...settings,objectives:g.objectives})+after.vp+recurring(after)*2+potential(after),after,ended:false};
 }
 export function cpuPlace(p,opponents=[],settings={},rng=Math.random){
  const difficulty=normalizeCPU(p.cpuDifficulty);
- if(difficulty==='normal')return ordinaryPlace(p,opponents,rng);
+ if(difficulty==='normal')return ordinaryPlace(p,opponents,rng,settings);
  if(difficulty==='hard')return normalPlace(p,opponents,14,settings);
  if(difficulty==='easy'){
   const draft=clone(p),moves=[];
@@ -87,7 +89,7 @@ export function cpuPlace(p,opponents=[],settings={},rng=Math.random){
    placeOne(draft,move);moves.push(move);
   }return {moves};
  }
- const rules={warVP:settings.warVP??(opponents.length===1?[4,0]:[5,3,0,0,0])};
+ const rules={...settings,warVP:settings.warVP??(opponents.length===1?[4,0]:[5,3,0,0,0])};
  const evaluate=(entry)=>{
   const rewarded=clone(entry.p);rewarded.gold+=2-entry.moves.length;
   const result=forecast(rewarded,opponents,rules);
@@ -135,7 +137,7 @@ function simulatePlans(players,settings){
   for(const move of plans[i].moves)placeOne(players[i],move);
   players[i].gold+=2-plans[i].moves.length;
  }
- const g={players,settings,logs:[],round:1,orders:{}};resolveRound(g);return g;
+ const g={players,settings,objectives:clone(settings.objectives??[]),logs:[],round:1,orders:{}};resolveRound(g);return g;
 }
 function rolloutValue(g){
  const p=g.players[0],opponents=g.players.slice(1),best=Math.max(...opponents.map(q=>q.vp));
@@ -163,7 +165,7 @@ function overlordPlace(p,opponents,settings,candidates,options={finalists:12,sam
     for(const move of plans[i].moves)placeOne(others[i],move);others[i].gold+=2-plans[i].moves.length;
    }
    const own=clone(c.p);own.gold+=2-c.moves.length;
-   let g={players:[own,...others],settings,logs:[],round:1,orders:{}};resolveRound(g);
+   let g={players:[own,...others],settings,objectives:clone(settings.objectives??[]),logs:[],round:1,orders:{}};resolveRound(g);
    // Current round and bounded future rounds, with shared sampled draws across
    // candidates to reduce luck in the comparison.
    for(let round=0;round<options.rounds&&g.phase!=='ended';round++){
@@ -172,7 +174,7 @@ function overlordPlace(p,opponents,settings,candidates,options={finalists:12,sam
      const removed=q.hand.filter((_,i)=>indices.has(i));
      q.hand=q.hand.filter((_,i)=>!indices.has(i));hypotheticalDraw(q,sampledPool,rng);sampledPool.push(...removed);
     }
-    g=simulatePlans(g.players,settings);
+    g=simulatePlans(g.players,{...settings,objectives:g.objectives});
    }
    values.push(rolloutValue(g));
   }
@@ -182,5 +184,5 @@ function overlordPlace(p,opponents,settings,candidates,options={finalists:12,sam
  finalists.sort((a,b)=>b.rollout-a.rollout);return {moves:finalists[0].moves};
 }
 export function fillCPU(g,submit){
- const phase=g.phase;for(const p of g.players){if(g.phase!==phase)break;if(p.cpu&&!g.orders[p.id])submit(g,p.id,phase==='draw'?cpuDraw(p):cpuPlace(p,g.players.filter(q=>q.id!==p.id),g.settings));}
+ const phase=g.phase;for(const p of g.players){if(g.phase!==phase)break;if(p.cpu&&!g.orders[p.id])submit(g,p.id,phase==='draw'?cpuDraw(p):cpuPlace(p,g.players.filter(q=>q.id!==p.id),{...g.settings,objectives:g.objectives}));}
 }

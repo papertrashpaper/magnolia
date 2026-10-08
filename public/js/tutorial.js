@@ -1,4 +1,4 @@
-import {newGame,level,power,previewPlacement,legalCells,STAT_NAMES} from './engine.js?v=13';
+import {newGame,level,power,previewPlacement,legalCells,STAT_NAMES} from './engine.js?v=14';
 import {CARD,RACES,JOBS} from './cards.js?v=4';
 
 export const TUTORIAL_CHAPTERS=[

@@ -1,5 +1,5 @@
 import {CARD,RACES,JOBS} from './cards.js?v=4';
-import {previewPlacement,legalCells} from './engine.js?v=13';
+import {previewPlacement,legalCells} from './engine.js?v=14';
 
 // Colors follow the race diamonds and job shields printed on the cards.
 export const COMBO_COLORS={race:{human:'#c79235',dwarf:'#969b98',elf:'#729b43',goblin:'#b84b48',golem:'#a79c64',demon:'#956598'},job:{warrior:'#bb473c',merchant:'#c6ac3d',artisan:'#788e89',priest:'#4f8e52',mage:'#79589b',ruler:'#507baf'}};

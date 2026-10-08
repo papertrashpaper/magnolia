@@ -1,3 +1,4 @@
+import {OBJECTIVE,objectiveProgress} from './objectives.js?v=1';
 import {roundReview} from './review.js?v=11';
 import {CARD,CARDS,RACE_BONUS,JOB_BONUS} from './cards.js?v=4';
 export const level=n=>n===15?4:n>=7?3:n>=3?2:n>=1?1:0;
@@ -6,9 +7,10 @@ export const CPU_LEVELS={easy:'弱い',normal:'普通',hard:'強い',expert:'凄
 export const normalizeCPU=value=>Object.hasOwn(CPU_LEVELS,value)?value:'normal';
 export const DEFAULT_SETTINGS={warVP:[5,3,0,0,0],targetVP:40};
 export function normalizeSettings(settings={},count=2){
+ if(settings.additionalObjectives!==undefined&&typeof settings.additionalObjectives!=='boolean')throw Error('追加目標の設定が不正です。');
  const warVP=settings.warVP??(count===2?[4,0]:[5,3,0,0,0]);
  if(!Array.isArray(warVP)||warVP.length<count||warVP.some(n=>!Number.isInteger(n)||n<0||n>50))throw Error('戦争VPは各順位に0～50の整数を設定してください。');
- return {warVP:warVP.slice(0,count),targetVP:40,cpuDifficulty:normalizeCPU(settings.cpuDifficulty),cpuDifficulties:Array.from({length:count-1},(_,i)=>normalizeCPU(settings.cpuDifficulties?.[i]??settings.cpuDifficulty))};
+ return {additionalObjectives:settings.additionalObjectives===true,warVP:warVP.slice(0,count),targetVP:40,cpuDifficulty:normalizeCPU(settings.cpuDifficulty),cpuDifficulties:Array.from({length:count-1},(_,i)=>normalizeCPU(settings.cpuDifficulties?.[i]??settings.cpuDifficulty))};
 }
 export function shuffle(cards,rng=Math.random){
  const a=[...cards];for(let i=a.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;
@@ -17,6 +19,7 @@ export function makePlayer(id,name,cpu=false){return {id,name,cpu,gold:5,tech:0,
 export function newGame(seats,settings={},rng=Math.random){
  if(seats.length<2||seats.length>5)throw Error('人数は2～5人です。');
  const g={players:seats.map(s=>({...makePlayer(s.id,s.name,s.cpu),cpuDifficulty:normalizeCPU(s.cpuDifficulty??settings.cpuDifficulty)})),settings:normalizeSettings(settings,seats.length),round:1,phase:'draw',deck:shuffle(CARDS.flatMap(c=>Array(c.copies).fill(c.id)),rng),discard:[],orders:{},logs:[],revision:0};
+ g.objectives=g.settings.additionalObjectives?shuffle(Object.keys(OBJECTIVE),rng).slice(0,4).map(id=>({id,claimedBy:[]})):[];
  for(const p of g.players)drawToFive(g,p,rng);return g;
 }
 function drawToFive(g,p,rng=Math.random){
@@ -47,9 +50,22 @@ export const STAT_NAMES={gold:'お金',tech:'技術点',faith:'信仰点',vp:'VP
 export function publicPlayer(p){const v=clone(p);v.handCount=p.hand.length;delete v.hand;return v;}
 export function statChanges(before,after,source){return ['gold','tech','faith','vp'].filter(k=>before[k]!==after[k]).map(stat=>({stat,before:before[stat],after:after[stat],delta:after[stat]-before[stat],source}));}
 function record(g,phase,title,p=null,changes=[],extra={}){g.resolution?.events.push({phase,title,playerId:p?.id??null,changes,...extra,...(p?{after:publicPlayer(p)}:{})});}
-function beginResolution(g,phase){g.resolution={id:`${g.round}:${phase}:${g.revision}`,round:g.round,before:g.players.map(publicPlayer),events:[]};}
+function beginResolution(g,phase){g.resolution={id:`${g.round}:${phase}:${g.revision}`,round:g.round,before:g.players.map(publicPlayer),beforeObjectives:clone(g.objectives??[]),events:[]};}
 function phaseStart(g,phase,title,extra={}){record(g,phase,`${title}フェーズ`,null,[],extra);return g.players.map(publicPlayer);}
-function phaseEnd(g,phase,title,before){record(g,phase,`${title}フェーズの増減`,null,[],{summary:g.players.map((p,i)=>({id:p.id,name:p.name,changes:statChanges(before[i],p,title+'フェーズ')}))});}
+function phaseEnd(g,phase,title,before){checkObjectives(g,phase,before);record(g,phase,`${title}フェーズの増減`,null,[],{summary:g.players.map((p,i)=>({id:p.id,name:p.name,changes:statChanges(before[i],p,title+'フェーズ')}))});}
+export function checkObjectives(g,phase,before=g.players){
+ if(phase==='final')return;
+ for(const goal of g.objectives??[]){
+  const o=OBJECTIVE[goal.id];if(!o||goal.claimedBy?.length||(o.phase!=='all'&&o.phase!==phase))continue;
+  const achievers=g.players.filter((p,i)=>objectiveProgress(p,goal.id,{...(phase==='income'?{income:p.gold-before[i].gold}:{})}).met);
+  if(!achievers.length)continue;
+  goal.claimedBy=achievers.map(p=>p.id);goal.round=g.round;goal.phase=phase;
+  for(const p of achievers){const b=clone(p);add(p,'vp',o.vp);
+   record(g,phase,`${p.name}：追加目標「${o.title}」達成`,p,statChanges(b,p,`追加目標「${o.title}」`),{objectiveId:goal.id,objectives:clone(g.objectives)});
+   log(g,`${p.name}：追加目標「${o.title}」達成、+${o.vp}VP`,p.id);
+  }
+ }
+}
 function effects(p,phase,changes=[]){
  for(const b of p.board){const c=CARD[b.card];for(const eff of c.effects)if(eff.phase===phase){
   const before=clone(p);
@@ -100,6 +116,28 @@ export function previewPlacement(player,moves){
  const p=clone(player),placed=[];for(const move of moves)placed.push(placeOne(p,move));
  return {player:p,placed};
 }
+export function objectivePlacementHints(player,goals){
+ const open=(goals??[]).filter(g=>!g.claimedBy?.length),hints={};
+ function inspect(p,moves){
+  const projected=clone(p);projected.gold+=2-moves.length;
+  for(const goal of open){const o=OBJECTIVE[goal.id];if(hints[goal.id])continue;
+   if(o.phase!=='income'&&objectiveProgress(projected,goal.id).met)hints[goal.id]={moves:clone(moves),detail:objectiveProgress(projected,goal.id).detail,phase:o.phase==='war'?'war':'place'};
+   else if(o.phase==='income'||['tech3','faith3','levels2'].includes(goal.id)){
+    const developed=clone(projected);effects(developed,'develop');
+    if(objectiveProgress(developed,goal.id).met)hints[goal.id]={moves:clone(moves),detail:objectiveProgress(developed,goal.id).detail,phase:o.phase==='income'?'income':'develop'};
+   }
+  }
+ }
+ inspect(player,[]);if(open.every(g=>hints[g.id]))return hints;
+ const first=[];
+ for(let i=0;i<player.hand.length;i++)if(CARD[player.hand[i]].cost<=player.gold)for(const cell of legalCells(player.board)){
+  const p=clone(player),move={handIndex:i,...cell},name=CARD[p.hand[i]].name;placeOne(p,move);const moves=[{...move,name}];inspect(p,moves);first.push({p,moves});
+ }
+ for(const entry of first)for(let i=0;i<entry.p.hand.length;i++)if(CARD[entry.p.hand[i]].cost<=entry.p.gold)for(const cell of legalCells(entry.p.board)){
+  const p=clone(entry.p),move={handIndex:i,...cell},name=CARD[p.hand[i]].name;placeOne(p,move);inspect(p,[...entry.moves,{...move,name}]);
+ }
+ return hints;
+}
 export function power(p){
  let total=0;
  for(const b of p.board){const c=CARD[b.card];const front=!p.board.some(other=>other.x===b.x&&other.y<b.y);
@@ -109,6 +147,7 @@ export function power(p){
 function log(g,message,playerId=null){g.logs.push({round:g.round,message,playerId});}
 export function resolveRound(g){
  if(!g.resolution)beginResolution(g,'place');
+ checkObjectives(g,'place');
  const warBefore=phaseStart(g,'war','戦争',{battle:g.players.map(p=>({id:p.id,power:power(p),rank:1+g.players.filter(q=>power(q)>power(p)).length}))});
  for(const p of g.players)p.power=power(p);
  for(const p of g.players){
@@ -162,7 +201,7 @@ export function submit(g,id,order,rng=Math.random){
   for(const p of g.players){const from=p.hand.length;drawToFive(g,p,rng);
    if(from!==p.hand.length)record(g,'draw','',p,[],{handAnimation:{type:'refill',from,to:p.hand.length}});
   }
-  g.phase='place';g.orders={};
+  checkObjectives(g,'draw');g.phase='place';g.orders={};
  }else{
   beginResolution(g,'place');const before=phaseStart(g,'place','配置');
   for(const p of g.players){const moves=g.orders[p.id].moves;
@@ -176,6 +215,7 @@ export function submit(g,id,order,rng=Math.random){
 export function nextRound(g){if(g.phase!=='round')throw Error('ラウンドの結果を確認してから進めてください。');g.round++;g.phase='draw';g.orders={};delete g.resolution;g.revision++;}
 export function publicView(g,id){
  const view={round:g.round,phase:g.phase,settings:clone(g.settings),logs:clone(g.logs),winners:g.winners??[],revision:g.revision,deckCount:g.deck.length,discardCount:g.discard.length};
+ view.objectives=clone(g.objectives??[]);
  view.roundReviews=clone(g.roundReviews??[]);
  view.resolution=g.resolution?clone(g.resolution):null;
  view.ownOrder=g.orders[id]?clone(g.orders[id]):null;
