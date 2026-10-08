@@ -333,3 +333,14 @@ body:has(#app.dragging-card) .tutorial-dock{opacity:.15;pointer-events:none}
  @keyframes combo-stars{0%{opacity:0;transform:translateY(12px) scale(.7)}35%{opacity:1;transform:translateY(0) scale(1.2)}100%{opacity:.8;transform:scale(1)}}
 }
 @media(prefers-reduced-motion:reduce){.cell.candidate.combo-candidate::before{opacity:.75}.cell.candidate.combo-candidate::after{opacity:.2}.combo-announcement::before{opacity:.3}}
+
+/* Hands and completed groups breathe through their colored halo, without a fill. */
+.hand-card.combo-available.tutorial-required{box-shadow:var(--combo-rings),0 0 18px color-mix(in srgb,var(--combo-color) 55%,transparent)!important}
+.cell.combo-race:not(.combo-celebrate),.cell.combo-job:not(.combo-celebrate),.mini-card.combo-race:not(.combo-celebrate),.mini-card.combo-job:not(.combo-celebrate){box-shadow:var(--combo-rings),0 0 18px color-mix(in srgb,var(--combo-color) 55%,transparent)}
+@media(prefers-reduced-motion:no-preference){
+ .hand-card.combo-available{animation:combo-hand-halo 2.8s ease-in-out infinite}
+ .cell.combo-race:not(.combo-celebrate),.cell.combo-job:not(.combo-celebrate),.mini-card.combo-race:not(.combo-celebrate),.mini-card.combo-job:not(.combo-celebrate){animation:combo-settled-halo 2.8s ease-in-out infinite}
+ .combo-celebrate{animation:combo-burst 1.4s ease-out 2,combo-settled-halo 2.8s ease-in-out 2.8s infinite}
+ @keyframes combo-hand-halo{0%,100%{filter:drop-shadow(0 0 3px var(--combo-color));box-shadow:var(--combo-rings),0 0 14px color-mix(in srgb,var(--combo-color) 40%,transparent)}50%{filter:drop-shadow(0 0 7px var(--combo-color));box-shadow:var(--combo-rings),0 0 30px color-mix(in srgb,var(--combo-color) 85%,transparent)}}
+ @keyframes combo-settled-halo{0%,100%{box-shadow:var(--combo-rings),0 0 10px color-mix(in srgb,var(--combo-color) 35%,transparent)}50%{box-shadow:var(--combo-rings),0 0 25px color-mix(in srgb,var(--combo-color) 80%,transparent)}}
+}
