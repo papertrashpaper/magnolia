@@ -1,0 +1,300 @@
+{
+  "schema": 1,
+  "totalCards": 102,
+  "decks": 10000,
+  "handObservations": 20000,
+  "seedStart": 100000,
+  "seedEnd": 109999,
+  "firstCardTypes": 41,
+  "maxDeviation": 0.005857047175305663,
+  "cards": [
+    {
+      "id": "human_knight",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.141,
+      "difference": -0.0002929528246943536
+    },
+    {
+      "id": "human_marchant",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.1447,
+      "difference": 0.0034070471753056553
+    },
+    {
+      "id": "human_saint",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.1417,
+      "difference": 0.0004070471753056526
+    },
+    {
+      "id": "human_sorcerer",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.143,
+      "difference": 0.0017070471753056482
+    },
+    {
+      "id": "human_smith",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.142,
+      "difference": 0.0007070471753056473
+    },
+    {
+      "id": "human_great_marchant",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.1389,
+      "difference": -0.0023929528246943443
+    },
+    {
+      "id": "human_undertaker",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.1391,
+      "difference": -0.0021929528246943386
+    },
+    {
+      "id": "human_king",
+      "copies": 1,
+      "expected": 0.04901960784313708,
+      "observed": 0.0478,
+      "difference": -0.0012196078431370785
+    },
+    {
+      "id": "dwarf_pugilist",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.14575,
+      "difference": 0.004457047175305651
+    },
+    {
+      "id": "dwarf_gem",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.13805,
+      "difference": -0.003242952824694334
+    },
+    {
+      "id": "dwarf_cook",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.1375,
+      "difference": -0.003792952824694329
+    },
+    {
+      "id": "dwarf_saint",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.14295,
+      "difference": 0.0016570471753056537
+    },
+    {
+      "id": "dwarf_alchemist",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.14125,
+      "difference": -0.00004295282469435335
+    },
+    {
+      "id": "dwarf_beer",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.13905,
+      "difference": -0.002242952824694333
+    },
+    {
+      "id": "dwarf_gardian",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.13895,
+      "difference": -0.00234295282469435
+    },
+    {
+      "id": "dwarf_king",
+      "copies": 1,
+      "expected": 0.04901960784313708,
+      "observed": 0.048,
+      "difference": -0.0010196078431370798
+    },
+    {
+      "id": "elf_archer",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.13695,
+      "difference": -0.004342952824694352
+    },
+    {
+      "id": "elf_marchant",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.1412,
+      "difference": -0.00009295282469434785
+    },
+    {
+      "id": "elf_artist",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.14715,
+      "difference": 0.005857047175305663
+    },
+    {
+      "id": "elf_mistic",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.14125,
+      "difference": -0.00004295282469435335
+    },
+    {
+      "id": "elf_saint",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.1394,
+      "difference": -0.001892952824694344
+    },
+    {
+      "id": "elf_caster",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.1377,
+      "difference": -0.003592952824694351
+    },
+    {
+      "id": "elf_queen",
+      "copies": 1,
+      "expected": 0.04901960784313708,
+      "observed": 0.0499,
+      "difference": 0.0008803921568629192
+    },
+    {
+      "id": "elf_follower",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.1443,
+      "difference": 0.0030070471753056716
+    },
+    {
+      "id": "goblin_soldier",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.13885,
+      "difference": -0.002442952824694339
+    },
+    {
+      "id": "goblin_scavenger",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.1414,
+      "difference": 0.00010704717530565788
+    },
+    {
+      "id": "goblin_junk",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.14345,
+      "difference": 0.002157047175305654
+    },
+    {
+      "id": "goblin_saint",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.14525,
+      "difference": 0.00395704717530565
+    },
+    {
+      "id": "goblin_lunatic",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.14305,
+      "difference": 0.0017570471753056705
+    },
+    {
+      "id": "goblin_great_soldier",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.13825,
+      "difference": -0.0030429528246943283
+    },
+    {
+      "id": "goblin_strategist",
+      "copies": 3,
+      "expected": 0.14129295282469434,
+      "observed": 0.1374,
+      "difference": -0.0038929528246943457
+    },
+    {
+      "id": "goblin_king",
+      "copies": 1,
+      "expected": 0.04901960784313708,
+      "observed": 0.0469,
+      "difference": -0.0021196078431370835
+    },
+    {
+      "id": "golem_iron",
+      "copies": 2,
+      "expected": 0.09609784507862562,
+      "observed": 0.1008,
+      "difference": 0.00470215492137438
+    },
+    {
+      "id": "golem_gold",
+      "copies": 2,
+      "expected": 0.09609784507862562,
+      "observed": 0.0983,
+      "difference": 0.0022021549213743774
+    },
+    {
+      "id": "golem_stollow",
+      "copies": 2,
+      "expected": 0.09609784507862562,
+      "observed": 0.0933,
+      "difference": -0.002797845078625627
+    },
+    {
+      "id": "golem_cristal",
+      "copies": 2,
+      "expected": 0.09609784507862562,
+      "observed": 0.0947,
+      "difference": -0.0013978450786256147
+    },
+    {
+      "id": "golem_king",
+      "copies": 1,
+      "expected": 0.04901960784313708,
+      "observed": 0.04855,
+      "difference": -0.0004696078431370779
+    },
+    {
+      "id": "demon_destroy",
+      "copies": 1,
+      "expected": 0.04901960784313708,
+      "observed": 0.0498,
+      "difference": 0.0007803921568629163
+    },
+    {
+      "id": "demon_eye",
+      "copies": 2,
+      "expected": 0.09609784507862562,
+      "observed": 0.0961,
+      "difference": 0.000002154921374383778
+    },
+    {
+      "id": "demon_pest",
+      "copies": 1,
+      "expected": 0.04901960784313708,
+      "observed": 0.0488,
+      "difference": -0.00021960784313707765
+    },
+    {
+      "id": "demon_storm",
+      "copies": 1,
+      "expected": 0.04901960784313708,
+      "observed": 0.04855,
+      "difference": -0.0004696078431370779
+    }
+  ],
+  "note": "Seed is SHA-256 mixed before LCG initialization. Deterministic distribution sanity check, not proof of perfect randomness."
+}

@@ -130,6 +130,10 @@ npm test
 
 `npm run analyze:strategies` で保存データを再集計し、`npm run replay:strategy -- 0` で対戦IDから再現できます。`npm run benchmark:strategies` は全比較を再実行します。条件とソースのハッシュ、全対戦の圧縮記録、JSON・CSV集計も同じフォルダに保存しています。これは同じ探索予算の固定方針CPUの比較であり、人間の最適戦術を断定するものではありません。
 
+固定方針比較の配札条件については [補足](research/strategy-comparison/ERRATA.md) があります。
+
+[手札から戦術を選ぶ追加比較](research/adaptive-strategy-comparison/README.md) では、戦術の採用率と最終成績、完成形の出現率、君主など9種類のカードを初手に残す／交換する対照実験を記録しています。[考察](research/adaptive-strategy-comparison/FINDINGS.md) に使いどころをまとめました。`npm run analyze:adaptive` で再集計、`npm run replay:adaptive -- 0` で対戦再現、`npm run benchmark:adaptive` で再実行できます。
+
 ## 対戦保存と再接続
 
 無料のRenderサービスには永続ディスクがないため、各参加者のブラウザにサーバーが作成した暗号化・認証付きバックアップを自動保存します。サーバー再起動後、同じサイト・同じブラウザから「前回の部屋に再接続」を選ぶと、その参加者が保存した最新状態から部屋を復元します。確定済みの操作・部屋番号・メンバー・手札・CPU設定・振り返りも保持します。接続が途切れた場合は自動で再接続を試みます。

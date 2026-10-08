@@ -1,0 +1,3561 @@
+{
+  "schema": 1,
+  "config": {
+    "schema": 1,
+    "createdAt": "2026-10-08T04:58:42.183Z",
+    "seeds": 64,
+    "cardSeeds": 32,
+    "options": {
+      "worlds": 2,
+      "horizon": 1,
+      "beam": 2
+    },
+    "games": 1664,
+    "pilot": false,
+    "source": {
+      "public/js/engine.js": "70e545457dd17d6a97be635f6f3a126f682d5b07f92a2bfa26ab02254a5a70b4",
+      "public/js/cards.js": "6ec270f9c8fece819042d3ec581f7cd0c41e2e8a69c61443a21dc43f5135c562",
+      "scripts/strategy-policies.mjs": "689a6f6cb9eca6080b02b6ef2dda885af038c4e167381335d2a5fbab33172849",
+      "scripts/adaptive-strategies.mjs": "41636deb581fa175907fdd2a3ae5fd5b7fe71add0ac5fd55b9286a64c765947a",
+      "scripts/benchmark-adaptive-strategies.mjs": "d2b689d0874c29d9f8c4a8142bf5fd348fa8494682b03a0949afc925ab0e5a8d"
+    },
+    "targets": [
+      "human_king",
+      "dwarf_king",
+      "elf_queen",
+      "goblin_king",
+      "golem_king",
+      "demon_storm",
+      "golem_cristal",
+      "dwarf_beer",
+      "elf_caster"
+    ],
+    "notes": "Natural all-adaptive games; matched focal adaptive vs fixed savings, balanced opponents; offered-card first-mulligan keep vs exchange, balanced opponents. No real hidden cards or game seed given to planner."
+  },
+  "validationConfig": {
+    "schema": 1,
+    "createdAt": "2026-10-08T05:03:42.310Z",
+    "games": 768,
+    "seeds": 64,
+    "targets": [
+      "human_king",
+      "golem_cristal",
+      "golem_king"
+    ],
+    "options": {
+      "worlds": 2,
+      "horizon": 1,
+      "beam": 2
+    },
+    "source": {
+      "public/js/engine.js": "70e545457dd17d6a97be635f6f3a126f682d5b07f92a2bfa26ab02254a5a70b4",
+      "public/js/cards.js": "6ec270f9c8fece819042d3ec581f7cd0c41e2e8a69c61443a21dc43f5135c562",
+      "scripts/strategy-policies.mjs": "689a6f6cb9eca6080b02b6ef2dda885af038c4e167381335d2a5fbab33172849",
+      "scripts/adaptive-strategies.mjs": "41636deb581fa175907fdd2a3ae5fd5b7fe71add0ac5fd55b9286a64c765947a",
+      "scripts/benchmark-adaptive-strategies.mjs": "d2b689d0874c29d9f8c4a8142bf5fd348fa8494682b03a0949afc925ab0e5a8d",
+      "scripts/validate-adaptive-retention.mjs": "8457220249efe1bd5da8b15ab643d4b7e49bdc97342b912a61b7438634281855"
+    },
+    "notes": "Independent seeds 400000..400063, selected 3 cards after discovery. Same first-mulligan keep/exchange intervention; balanced opponents."
+  },
+  "royalConfig": {
+    "schema": 1,
+    "createdAt": "2026-10-08T05:15:27.724Z",
+    "games": 512,
+    "seeds": 64,
+    "hand": [
+      "human_great_marchant",
+      "human_marchant",
+      "human_king",
+      "demon_storm",
+      "golem_king"
+    ],
+    "handProbability": 1.0805402268918368e-7,
+    "options": {
+      "worlds": 2,
+      "horizon": 1,
+      "beam": 2
+    },
+    "source": {
+      "public/js/engine.js": "70e545457dd17d6a97be635f6f3a126f682d5b07f92a2bfa26ab02254a5a70b4",
+      "public/js/cards.js": "6ec270f9c8fece819042d3ec581f7cd0c41e2e8a69c61443a21dc43f5135c562",
+      "scripts/strategy-policies.mjs": "689a6f6cb9eca6080b02b6ef2dda885af038c4e167381335d2a5fbab33172849",
+      "scripts/adaptive-strategies.mjs": "41636deb581fa175907fdd2a3ae5fd5b7fe71add0ac5fd55b9286a64c765947a",
+      "scripts/benchmark-royal-route.mjs": "aa65c01a4883ec063da9ce2269df59084f6812b62439ee346fbc541307728915"
+    },
+    "notes": "Ideal starting 5 cards, first 4 rounds scripted vs adaptive on the same ideal hand; balanced opponents. Natural acquisition rate is not measured by this offered-hand experiment."
+  },
+  "royal": {
+    "2": {
+      "pairs": 64,
+      "a": 1,
+      "b": 0.765625,
+      "difference": 0.234375,
+      "ci": [
+        0.140625,
+        0.34375
+      ],
+      "meanVPDifference": 19.25,
+      "aOutright": 64,
+      "bOutright": 49,
+      "aPlaced": null,
+      "bPlaced": null,
+      "completionRate": 1,
+      "completed": 64,
+      "winWhenCompleted": 1,
+      "meanRouteVP": 73.546875,
+      "meanRouteBonusVP": 38.3125
+    },
+    "3": {
+      "pairs": 64,
+      "a": 0.921875,
+      "b": 0.5859375,
+      "difference": 0.3359375,
+      "ci": [
+        0.21875,
+        0.4609375
+      ],
+      "meanVPDifference": 0.046875,
+      "aOutright": 59,
+      "bOutright": 37,
+      "aPlaced": null,
+      "bPlaced": null,
+      "completionRate": 1,
+      "completed": 64,
+      "winWhenCompleted": 0.921875,
+      "meanRouteVP": 48.9375,
+      "meanRouteBonusVP": 18.46875
+    },
+    "4": {
+      "pairs": 64,
+      "a": 0.953125,
+      "b": 0.5052083333333333,
+      "difference": 0.4479166666666667,
+      "ci": [
+        0.3229166666666667,
+        0.578125
+      ],
+      "meanVPDifference": 0.328125,
+      "aOutright": 61,
+      "bOutright": 31,
+      "aPlaced": null,
+      "bPlaced": null,
+      "completionRate": 1,
+      "completed": 64,
+      "winWhenCompleted": 0.953125,
+      "meanRouteVP": 49.6875,
+      "meanRouteBonusVP": 18.9375
+    },
+    "5": {
+      "pairs": 64,
+      "a": 0.953125,
+      "b": 0.6015625,
+      "difference": 0.3515625,
+      "ci": [
+        0.2109375,
+        0.484375
+      ],
+      "meanVPDifference": -0.59375,
+      "aOutright": 60,
+      "bOutright": 38,
+      "aPlaced": null,
+      "bPlaced": null,
+      "completionRate": 1,
+      "completed": 64,
+      "winWhenCompleted": 0.953125,
+      "meanRouteVP": 51.671875,
+      "meanRouteBonusVP": 20.96875
+    }
+  },
+  "supportRetention": {
+    "2": [
+      {
+        "card": "human_king",
+        "support": true,
+        "pairs": 43,
+        "a": 0.6395348837209303,
+        "b": 0.6976744186046512,
+        "difference": -0.05813953488372093,
+        "ci": [
+          -0.19767441860465115,
+          0.08139534883720931
+        ],
+        "meanVPDifference": 2.13953488372093,
+        "aOutright": 27,
+        "bOutright": 29,
+        "aPlaced": 0.5348837209302325,
+        "bPlaced": 0
+      },
+      {
+        "card": "human_king",
+        "support": false,
+        "pairs": 21,
+        "a": 0.5952380952380952,
+        "b": 0.5476190476190477,
+        "difference": 0.047619047619047616,
+        "ci": [
+          -0.2619047619047619,
+          0.3333333333333333
+        ],
+        "meanVPDifference": -2.7142857142857144,
+        "aOutright": 12,
+        "bOutright": 11,
+        "aPlaced": 0.3333333333333333,
+        "bPlaced": 0
+      },
+      {
+        "card": "golem_cristal",
+        "support": true,
+        "pairs": 25,
+        "a": 0.58,
+        "b": 0.5,
+        "difference": 0.08,
+        "ci": [
+          -0.18,
+          0.34
+        ],
+        "meanVPDifference": 3.8,
+        "aOutright": 14,
+        "bOutright": 12,
+        "aPlaced": 0.52,
+        "bPlaced": 0.08
+      },
+      {
+        "card": "golem_cristal",
+        "support": false,
+        "pairs": 39,
+        "a": 0.5512820512820513,
+        "b": 0.7307692307692307,
+        "difference": -0.1794871794871795,
+        "ci": [
+          -0.358974358974359,
+          0
+        ],
+        "meanVPDifference": -4.333333333333333,
+        "aOutright": 20,
+        "bOutright": 28,
+        "aPlaced": 0.5128205128205128,
+        "bPlaced": 0.15384615384615385
+      },
+      {
+        "card": "golem_king",
+        "support": true,
+        "pairs": 58,
+        "a": 0.5775862068965517,
+        "b": 0.646551724137931,
+        "difference": -0.06896551724137931,
+        "ci": [
+          -0.23275862068965517,
+          0.10344827586206896
+        ],
+        "meanVPDifference": -1.7241379310344827,
+        "aOutright": 33,
+        "bOutright": 35,
+        "aPlaced": 0.13793103448275862,
+        "bPlaced": 0
+      },
+      {
+        "card": "golem_king",
+        "support": false,
+        "pairs": 6,
+        "a": 1,
+        "b": 0.8333333333333334,
+        "difference": 0.16666666666666666,
+        "ci": [
+          0,
+          0.5
+        ],
+        "meanVPDifference": 2.1666666666666665,
+        "aOutright": 6,
+        "bOutright": 5,
+        "aPlaced": 0.3333333333333333,
+        "bPlaced": 0
+      }
+    ],
+    "5": [
+      {
+        "card": "human_king",
+        "support": true,
+        "pairs": 43,
+        "a": 0.45348837209302323,
+        "b": 0.36046511627906974,
+        "difference": 0.09302325581395349,
+        "ci": [
+          -0.13953488372093023,
+          0.29069767441860467
+        ],
+        "meanVPDifference": 8.511627906976743,
+        "aOutright": 19,
+        "bOutright": 15,
+        "aPlaced": 0.6511627906976745,
+        "bPlaced": 0
+      },
+      {
+        "card": "human_king",
+        "support": false,
+        "pairs": 21,
+        "a": 0.3333333333333333,
+        "b": 0.42857142857142855,
+        "difference": -0.09523809523809523,
+        "ci": [
+          -0.38095238095238093,
+          0.19047619047619047
+        ],
+        "meanVPDifference": -2.5714285714285716,
+        "aOutright": 7,
+        "bOutright": 9,
+        "aPlaced": 0.38095238095238093,
+        "bPlaced": 0
+      },
+      {
+        "card": "golem_cristal",
+        "support": true,
+        "pairs": 33,
+        "a": 0.36363636363636365,
+        "b": 0.4090909090909091,
+        "difference": -0.045454545454545456,
+        "ci": [
+          -0.2878787878787879,
+          0.18181818181818182
+        ],
+        "meanVPDifference": -3,
+        "aOutright": 11,
+        "bOutright": 12,
+        "aPlaced": 0.5757575757575758,
+        "bPlaced": 0.030303030303030304
+      },
+      {
+        "card": "golem_cristal",
+        "support": false,
+        "pairs": 31,
+        "a": 0.3870967741935484,
+        "b": 0.3225806451612903,
+        "difference": 0.06451612903225806,
+        "ci": [
+          -0.16129032258064516,
+          0.2903225806451613
+        ],
+        "meanVPDifference": 1.7096774193548387,
+        "aOutright": 11,
+        "bOutright": 9,
+        "aPlaced": 0.6129032258064516,
+        "bPlaced": 0.1935483870967742
+      },
+      {
+        "card": "golem_king",
+        "support": true,
+        "pairs": 62,
+        "a": 0.29838709677419356,
+        "b": 0.3951612903225806,
+        "difference": -0.0967741935483871,
+        "ci": [
+          -0.22580645161290322,
+          0.04032258064516129
+        ],
+        "meanVPDifference": 1.1612903225806452,
+        "aOutright": 18,
+        "bOutright": 23,
+        "aPlaced": 0.1774193548387097,
+        "bPlaced": 0
+      },
+      {
+        "card": "golem_king",
+        "support": false,
+        "pairs": 2,
+        "a": 0.25,
+        "b": 0.5,
+        "difference": -0.25,
+        "ci": [
+          -0.5,
+          0
+        ],
+        "meanVPDifference": -1,
+        "aOutright": 0,
+        "bOutright": 1,
+        "aPlaced": 0,
+        "bPlaced": 0
+      }
+    ]
+  },
+  "games": 2944,
+  "discoveryGames": 1664,
+  "validationGames": 768,
+  "royalGames": 512,
+  "natural": {
+    "2": {
+      "games": 64,
+      "participants": 128,
+      "tieRate": 0.484375,
+      "strategies": [
+        {
+          "key": "economy",
+          "name": "収入先行型",
+          "actual": {
+            "n": 12,
+            "gamesWithMatch": 11,
+            "frequency": 0.09375,
+            "winShare": 0.6666666666666666,
+            "ci": [
+              0.4,
+              0.9166666666666666
+            ],
+            "outrightWins": 8
+          },
+          "credit": {
+            "n": 13.548809523809522,
+            "gamesWithMatch": 33,
+            "frequency": 0.10585007440476189,
+            "winShare": 0.6183990861962922,
+            "ci": [
+              0.4155543196143864,
+              0.7742276208080273
+            ],
+            "outrightWins": 8.37857142857143
+          },
+          "allRoundSelectionRate": 0.11604095563139932
+        },
+        {
+          "key": "tech",
+          "name": "技術得点型",
+          "actual": {
+            "n": 18,
+            "gamesWithMatch": 16,
+            "frequency": 0.140625,
+            "winShare": 0.5555555555555556,
+            "ci": [
+              0.3333333333333333,
+              0.7692307692307693
+            ],
+            "outrightWins": 10
+          },
+          "credit": {
+            "n": 15.674999999999997,
+            "gamesWithMatch": 33,
+            "frequency": 0.12246093749999998,
+            "winShare": 0.4925951241740717,
+            "ci": [
+              0.33011951390981237,
+              0.6511542012927054
+            ],
+            "outrightWins": 7.721428571428572
+          },
+          "allRoundSelectionRate": 0.10580204778156997
+        },
+        {
+          "key": "bonus",
+          "name": "3枚揃え型",
+          "actual": {
+            "n": 9,
+            "gamesWithMatch": 8,
+            "frequency": 0.0703125,
+            "winShare": 0.5555555555555556,
+            "ci": [
+              0.2222222222222222,
+              0.875
+            ],
+            "outrightWins": 5
+          },
+          "credit": {
+            "n": 9.78214285714286,
+            "gamesWithMatch": 30,
+            "frequency": 0.0764229910714286,
+            "winShare": 0.5422903736156747,
+            "ci": [
+              0.34098837209302313,
+              0.725421348314607
+            ],
+            "outrightWins": 5.3047619047619055
+          },
+          "allRoundSelectionRate": 0.10409556313993173
+        },
+        {
+          "key": "savings",
+          "name": "貯金・君主型",
+          "actual": {
+            "n": 25,
+            "gamesWithMatch": 22,
+            "frequency": 0.1953125,
+            "winShare": 0.52,
+            "ci": [
+              0.34782608695652173,
+              0.7
+            ],
+            "outrightWins": 13
+          },
+          "credit": {
+            "n": 25.703571428571426,
+            "gamesWithMatch": 32,
+            "frequency": 0.20080915178571426,
+            "winShare": 0.5039136677319254,
+            "ci": [
+              0.35791134700903743,
+              0.6448866659572204
+            ],
+            "outrightWins": 12.952380952380953
+          },
+          "allRoundSelectionRate": 0.16723549488054607
+        },
+        {
+          "key": "war",
+          "name": "戦争特化型",
+          "actual": {
+            "n": 26,
+            "gamesWithMatch": 24,
+            "frequency": 0.203125,
+            "winShare": 0.46153846153846156,
+            "ci": [
+              0.2727272727272727,
+              0.64
+            ],
+            "outrightWins": 12
+          },
+          "credit": {
+            "n": 21.94166666666666,
+            "gamesWithMatch": 37,
+            "frequency": 0.17141927083333328,
+            "winShare": 0.49622917910042885,
+            "ci": [
+              0.35955185955185964,
+              0.6424669175670754
+            ],
+            "outrightWins": 10.88809523809524
+          },
+          "allRoundSelectionRate": 0.20477815699658702
+        },
+        {
+          "key": "balanced",
+          "name": "均衡評価型（旧「適応型」）",
+          "actual": {
+            "n": 11,
+            "gamesWithMatch": 11,
+            "frequency": 0.0859375,
+            "winShare": 0.45454545454545453,
+            "ci": [
+              0.16666666666666666,
+              0.8
+            ],
+            "outrightWins": 5
+          },
+          "credit": {
+            "n": 12.624999999999996,
+            "gamesWithMatch": 37,
+            "frequency": 0.09863281249999997,
+            "winShare": 0.5284299858557288,
+            "ci": [
+              0.342717258261934,
+              0.6901684642124969
+            ],
+            "outrightWins": 6.6714285714285735
+          },
+          "allRoundSelectionRate": 0.08703071672354949
+        },
+        {
+          "key": "rush",
+          "name": "9体早期終了型",
+          "actual": {
+            "n": 19,
+            "gamesWithMatch": 18,
+            "frequency": 0.1484375,
+            "winShare": 0.42105263157894735,
+            "ci": [
+              0.2,
+              0.65
+            ],
+            "outrightWins": 8
+          },
+          "credit": {
+            "n": 17.415476190476188,
+            "gamesWithMatch": 37,
+            "frequency": 0.13605840773809522,
+            "winShare": 0.43037801626905475,
+            "ci": [
+              0.2795622004435225,
+              0.602277348515657
+            ],
+            "outrightWins": 7.495238095238096
+          },
+          "allRoundSelectionRate": 0.12457337883959044
+        },
+        {
+          "key": "faith",
+          "name": "信仰戦力型",
+          "actual": {
+            "n": 8,
+            "gamesWithMatch": 8,
+            "frequency": 0.0625,
+            "winShare": 0.375,
+            "ci": [
+              0,
+              0.75
+            ],
+            "outrightWins": 3
+          },
+          "credit": {
+            "n": 11.308333333333335,
+            "gamesWithMatch": 30,
+            "frequency": 0.08834635416666668,
+            "winShare": 0.40572691862301286,
+            "ci": [
+              0.2225106182161397,
+              0.6335604960339627
+            ],
+            "outrightWins": 4.588095238095238
+          },
+          "allRoundSelectionRate": 0.09044368600682594
+        }
+      ]
+    },
+    "3": {
+      "games": 64,
+      "participants": 192,
+      "tieRate": 0.328125,
+      "strategies": [
+        {
+          "key": "war",
+          "name": "戦争特化型",
+          "actual": {
+            "n": 30,
+            "gamesWithMatch": 26,
+            "frequency": 0.15625,
+            "winShare": 0.45,
+            "ci": [
+              0.2916666666666667,
+              0.625
+            ],
+            "outrightWins": 13
+          },
+          "credit": {
+            "n": 31.84166666666667,
+            "gamesWithMatch": 38,
+            "frequency": 0.1658420138888889,
+            "winShare": 0.39896063109881474,
+            "ci": [
+              0.2758685270156382,
+              0.525822556883287
+            ],
+            "outrightWins": 12.036904761904763
+          },
+          "allRoundSelectionRate": 0.19607843137254902
+        },
+        {
+          "key": "faith",
+          "name": "信仰戦力型",
+          "actual": {
+            "n": 21,
+            "gamesWithMatch": 19,
+            "frequency": 0.109375,
+            "winShare": 0.38095238095238093,
+            "ci": [
+              0.2,
+              0.5666666666666667
+            ],
+            "outrightWins": 7
+          },
+          "credit": {
+            "n": 23.234523809523804,
+            "gamesWithMatch": 42,
+            "frequency": 0.1210131448412698,
+            "winShare": 0.380335092483476,
+            "ci": [
+              0.2381581430458578,
+              0.5281215795234487
+            ],
+            "outrightWins": 7.836904761904761
+          },
+          "allRoundSelectionRate": 0.10294117647058823
+        },
+        {
+          "key": "bonus",
+          "name": "3枚揃え型",
+          "actual": {
+            "n": 11,
+            "gamesWithMatch": 11,
+            "frequency": 0.057291666666666664,
+            "winShare": 0.36363636363636365,
+            "ci": [
+              0.09090909090909091,
+              0.6875
+            ],
+            "outrightWins": 4
+          },
+          "credit": {
+            "n": 13.651190476190473,
+            "gamesWithMatch": 33,
+            "frequency": 0.07109995039682539,
+            "winShare": 0.4178076218714573,
+            "ci": [
+              0.22019867549668873,
+              0.6227361096899622
+            ],
+            "outrightWins": 5.453571428571428
+          },
+          "allRoundSelectionRate": 0.10661764705882353
+        },
+        {
+          "key": "rush",
+          "name": "9体早期終了型",
+          "actual": {
+            "n": 17,
+            "gamesWithMatch": 17,
+            "frequency": 0.08854166666666667,
+            "winShare": 0.35294117647058826,
+            "ci": [
+              0.13333333333333333,
+              0.6
+            ],
+            "outrightWins": 6
+          },
+          "credit": {
+            "n": 12.225,
+            "gamesWithMatch": 31,
+            "frequency": 0.063671875,
+            "winShare": 0.42292336157366833,
+            "ci": [
+              0.22648959081119882,
+              0.6420201353358641
+            ],
+            "outrightWins": 5.003571428571428
+          },
+          "allRoundSelectionRate": 0.11887254901960784
+        },
+        {
+          "key": "savings",
+          "name": "貯金・君主型",
+          "actual": {
+            "n": 40,
+            "gamesWithMatch": 31,
+            "frequency": 0.20833333333333334,
+            "winShare": 0.3,
+            "ci": [
+              0.18292682926829268,
+              0.43023255813953487
+            ],
+            "outrightWins": 11
+          },
+          "credit": {
+            "n": 42.886904761904766,
+            "gamesWithMatch": 39,
+            "frequency": 0.22336929563492067,
+            "winShare": 0.300208188757807,
+            "ci": [
+              0.19521033559161804,
+              0.417779632721202
+            ],
+            "outrightWins": 11.875
+          },
+          "allRoundSelectionRate": 0.1642156862745098
+        },
+        {
+          "key": "economy",
+          "name": "収入先行型",
+          "actual": {
+            "n": 30,
+            "gamesWithMatch": 29,
+            "frequency": 0.15625,
+            "winShare": 0.2833333333333333,
+            "ci": [
+              0.12962962962962962,
+              0.45588235294117646
+            ],
+            "outrightWins": 8
+          },
+          "credit": {
+            "n": 27.941666666666666,
+            "gamesWithMatch": 41,
+            "frequency": 0.14552951388888888,
+            "winShare": 0.23573771888713732,
+            "ci": [
+              0.12082710513203787,
+              0.37666780704755387
+            ],
+            "outrightWins": 6.086904761904762
+          },
+          "allRoundSelectionRate": 0.11029411764705882
+        },
+        {
+          "key": "balanced",
+          "name": "均衡評価型（旧「適応型」）",
+          "actual": {
+            "n": 16,
+            "gamesWithMatch": 15,
+            "frequency": 0.08333333333333333,
+            "winShare": 0.28125,
+            "ci": [
+              0.08333333333333333,
+              0.5
+            ],
+            "outrightWins": 4
+          },
+          "credit": {
+            "n": 12.517857142857139,
+            "gamesWithMatch": 32,
+            "frequency": 0.0651971726190476,
+            "winShare": 0.2625772705658584,
+            "ci": [
+              0.13589211618257263,
+              0.42975799835931083
+            ],
+            "outrightWins": 3.1202380952380953
+          },
+          "allRoundSelectionRate": 0.10049019607843138
+        },
+        {
+          "key": "tech",
+          "name": "技術得点型",
+          "actual": {
+            "n": 27,
+            "gamesWithMatch": 25,
+            "frequency": 0.140625,
+            "winShare": 0.2777777777777778,
+            "ci": [
+              0.11666666666666667,
+              0.4523809523809524
+            ],
+            "outrightWins": 6
+          },
+          "credit": {
+            "n": 27.701190476190476,
+            "gamesWithMatch": 38,
+            "frequency": 0.14427703373015874,
+            "winShare": 0.31900812239460224,
+            "ci": [
+              0.1847791475230861,
+              0.4630342102526775
+            ],
+            "outrightWins": 7.586904761904762
+          },
+          "allRoundSelectionRate": 0.10049019607843138
+        }
+      ]
+    },
+    "4": {
+      "games": 64,
+      "participants": 256,
+      "tieRate": 0.40625,
+      "strategies": [
+        {
+          "key": "tech",
+          "name": "技術得点型",
+          "actual": {
+            "n": 24,
+            "gamesWithMatch": 20,
+            "frequency": 0.09375,
+            "winShare": 0.5,
+            "ci": [
+              0.3181818181818182,
+              0.7058823529411765
+            ],
+            "outrightWins": 12
+          },
+          "credit": {
+            "n": 24.35238095238095,
+            "gamesWithMatch": 41,
+            "frequency": 0.09512648809523809,
+            "winShare": 0.37646656237778653,
+            "ci": [
+              0.22776718049182867,
+              0.5385737439222045
+            ],
+            "outrightWins": 9.167857142857144
+          },
+          "allRoundSelectionRate": 0.09296028880866426
+        },
+        {
+          "key": "economy",
+          "name": "収入先行型",
+          "actual": {
+            "n": 37,
+            "gamesWithMatch": 29,
+            "frequency": 0.14453125,
+            "winShare": 0.2972972972972973,
+            "ci": [
+              0.1568627450980392,
+              0.43333333333333335
+            ],
+            "outrightWins": 11
+          },
+          "credit": {
+            "n": 32.44285714285714,
+            "gamesWithMatch": 46,
+            "frequency": 0.12672991071428572,
+            "winShare": 0.2723102891530897,
+            "ci": [
+              0.1625793421811887,
+              0.38639186461729547
+            ],
+            "outrightWins": 8.83452380952381
+          },
+          "allRoundSelectionRate": 0.1164259927797834
+        },
+        {
+          "key": "war",
+          "name": "戦争特化型",
+          "actual": {
+            "n": 34,
+            "gamesWithMatch": 30,
+            "frequency": 0.1328125,
+            "winShare": 0.2647058823529412,
+            "ci": [
+              0.12903225806451613,
+              0.41935483870967744
+            ],
+            "outrightWins": 9
+          },
+          "credit": {
+            "n": 34.214285714285715,
+            "gamesWithMatch": 45,
+            "frequency": 0.13364955357142858,
+            "winShare": 0.24916492693110642,
+            "ci": [
+              0.1361098338041122,
+              0.36745340721018926
+            ],
+            "outrightWins": 8.524999999999999
+          },
+          "allRoundSelectionRate": 0.20216606498194944
+        },
+        {
+          "key": "rush",
+          "name": "9体早期終了型",
+          "actual": {
+            "n": 36,
+            "gamesWithMatch": 30,
+            "frequency": 0.140625,
+            "winShare": 0.25,
+            "ci": [
+              0.11764705882352941,
+              0.38235294117647056
+            ],
+            "outrightWins": 9
+          },
+          "credit": {
+            "n": 36.58571428571428,
+            "gamesWithMatch": 47,
+            "frequency": 0.1429129464285714,
+            "winShare": 0.224163738123129,
+            "ci": [
+              0.12237267582861769,
+              0.3275582024905252
+            ],
+            "outrightWins": 8.201190476190476
+          },
+          "allRoundSelectionRate": 0.12093862815884476
+        },
+        {
+          "key": "balanced",
+          "name": "均衡評価型（旧「適応型」）",
+          "actual": {
+            "n": 17,
+            "gamesWithMatch": 14,
+            "frequency": 0.06640625,
+            "winShare": 0.23529411764705882,
+            "ci": [
+              0.05555555555555555,
+              0.42857142857142855
+            ],
+            "outrightWins": 4
+          },
+          "credit": {
+            "n": 16.619047619047613,
+            "gamesWithMatch": 46,
+            "frequency": 0.06491815476190474,
+            "winShare": 0.24777936962750724,
+            "ci": [
+              0.13934759068760158,
+              0.3706014075495842
+            ],
+            "outrightWins": 4.117857142857143
+          },
+          "allRoundSelectionRate": 0.08032490974729242
+        },
+        {
+          "key": "savings",
+          "name": "貯金・君主型",
+          "actual": {
+            "n": 47,
+            "gamesWithMatch": 35,
+            "frequency": 0.18359375,
+            "winShare": 0.23404255319148937,
+            "ci": [
+              0.13157894736842105,
+              0.3333333333333333
+            ],
+            "outrightWins": 11
+          },
+          "credit": {
+            "n": 50.78095238095239,
+            "gamesWithMatch": 49,
+            "frequency": 0.19836309523809528,
+            "winShare": 0.2602916354088521,
+            "ci": [
+              0.1695520450119022,
+              0.3533086829019508
+            ],
+            "outrightWins": 13.21785714285714
+          },
+          "allRoundSelectionRate": 0.16877256317689532
+        },
+        {
+          "key": "faith",
+          "name": "信仰戦力型",
+          "actual": {
+            "n": 27,
+            "gamesWithMatch": 22,
+            "frequency": 0.10546875,
+            "winShare": 0.18518518518518517,
+            "ci": [
+              0.05,
+              0.3333333333333333
+            ],
+            "outrightWins": 5
+          },
+          "credit": {
+            "n": 26.20238095238095,
+            "gamesWithMatch": 44,
+            "frequency": 0.10235305059523808,
+            "winShare": 0.24366197183098598,
+            "ci": [
+              0.11351030949659176,
+              0.3856261826336815
+            ],
+            "outrightWins": 6.38452380952381
+          },
+          "allRoundSelectionRate": 0.10830324909747292
+        },
+        {
+          "key": "bonus",
+          "name": "3枚揃え型",
+          "actual": {
+            "n": 34,
+            "gamesWithMatch": 29,
+            "frequency": 0.1328125,
+            "winShare": 0.08823529411764706,
+            "ci": [
+              0,
+              0.17647058823529413
+            ],
+            "outrightWins": 3
+          },
+          "credit": {
+            "n": 34.80238095238095,
+            "gamesWithMatch": 54,
+            "frequency": 0.1359468005952381,
+            "winShare": 0.15950605459396594,
+            "ci": [
+              0.07074923883361059,
+              0.25657057281916895
+            ],
+            "outrightWins": 5.5511904761904765
+          },
+          "allRoundSelectionRate": 0.11010830324909747
+        }
+      ]
+    },
+    "5": {
+      "games": 64,
+      "participants": 320,
+      "tieRate": 0.428125,
+      "strategies": [
+        {
+          "key": "bonus",
+          "name": "3枚揃え型",
+          "actual": {
+            "n": 25,
+            "gamesWithMatch": 22,
+            "frequency": 0.078125,
+            "winShare": 0.32,
+            "ci": [
+              0.15789473684210525,
+              0.5
+            ],
+            "outrightWins": 7
+          },
+          "credit": {
+            "n": 28.272619047619035,
+            "gamesWithMatch": 51,
+            "frequency": 0.08835193452380949,
+            "winShare": 0.25727399048381,
+            "ci": [
+              0.14528670819880865,
+              0.385919039318226
+            ],
+            "outrightWins": 6.5238095238095255
+          },
+          "allRoundSelectionRate": 0.10068493150684932
+        },
+        {
+          "key": "war",
+          "name": "戦争特化型",
+          "actual": {
+            "n": 43,
+            "gamesWithMatch": 30,
+            "frequency": 0.134375,
+            "winShare": 0.313953488372093,
+            "ci": [
+              0.20588235294117646,
+              0.43243243243243246
+            ],
+            "outrightWins": 13
+          },
+          "credit": {
+            "n": 43.97738095238095,
+            "gamesWithMatch": 47,
+            "frequency": 0.13742931547619047,
+            "winShare": 0.29441541918193875,
+            "ci": [
+              0.2076288725443372,
+              0.38530011574712
+            ],
+            "outrightWins": 12.280952380952382
+          },
+          "allRoundSelectionRate": 0.18424657534246575
+        },
+        {
+          "key": "savings",
+          "name": "貯金・君主型",
+          "actual": {
+            "n": 53,
+            "gamesWithMatch": 40,
+            "frequency": 0.165625,
+            "winShare": 0.23270440251572325,
+            "ci": [
+              0.12994350282485875,
+              0.35555555555555557
+            ],
+            "outrightWins": 12
+          },
+          "credit": {
+            "n": 50.66309523809524,
+            "gamesWithMatch": 48,
+            "frequency": 0.15832217261904763,
+            "winShare": 0.19033296519961462,
+            "ci": [
+              0.10003284252011603,
+              0.2924372274845888
+            ],
+            "outrightWins": 9.30952380952381
+          },
+          "allRoundSelectionRate": 0.1643835616438356
+        },
+        {
+          "key": "economy",
+          "name": "収入先行型",
+          "actual": {
+            "n": 37,
+            "gamesWithMatch": 32,
+            "frequency": 0.115625,
+            "winShare": 0.2252252252252252,
+            "ci": [
+              0.10964912280701755,
+              0.3602150537634408
+            ],
+            "outrightWins": 7
+          },
+          "credit": {
+            "n": 39.8297619047619,
+            "gamesWithMatch": 52,
+            "frequency": 0.12446800595238094,
+            "winShare": 0.20605553396897516,
+            "ci": [
+              0.12872597089267648,
+              0.2980752736130647
+            ],
+            "outrightWins": 7.290476190476192
+          },
+          "allRoundSelectionRate": 0.10342465753424658
+        },
+        {
+          "key": "tech",
+          "name": "技術得点型",
+          "actual": {
+            "n": 43,
+            "gamesWithMatch": 32,
+            "frequency": 0.134375,
+            "winShare": 0.16279069767441862,
+            "ci": [
+              0.06,
+              0.27450980392156865
+            ],
+            "outrightWins": 7
+          },
+          "credit": {
+            "n": 37.1892857142857,
+            "gamesWithMatch": 48,
+            "frequency": 0.11621651785714282,
+            "winShare": 0.16914753993405687,
+            "ci": [
+              0.08930108324677252,
+              0.2634099328373941
+            ],
+            "outrightWins": 6.040476190476191
+          },
+          "allRoundSelectionRate": 0.10684931506849316
+        },
+        {
+          "key": "rush",
+          "name": "9体早期終了型",
+          "actual": {
+            "n": 39,
+            "gamesWithMatch": 31,
+            "frequency": 0.121875,
+            "winShare": 0.14957264957264957,
+            "ci": [
+              0.05238095238095238,
+              0.2638888888888889
+            ],
+            "outrightWins": 5
+          },
+          "credit": {
+            "n": 33.60595238095237,
+            "gamesWithMatch": 54,
+            "frequency": 0.10501860119047615,
+            "winShare": 0.15147543306528752,
+            "ci": [
+              0.0894616209889788,
+              0.22423471052803348
+            ],
+            "outrightWins": 4.59047619047619
+          },
+          "allRoundSelectionRate": 0.13835616438356163
+        },
+        {
+          "key": "balanced",
+          "name": "均衡評価型（旧「適応型」）",
+          "actual": {
+            "n": 33,
+            "gamesWithMatch": 27,
+            "frequency": 0.103125,
+            "winShare": 0.12121212121212122,
+            "ci": [
+              0.029411764705882353,
+              0.23076923076923078
+            ],
+            "outrightWins": 4
+          },
+          "credit": {
+            "n": 31.322619047619035,
+            "gamesWithMatch": 54,
+            "frequency": 0.09788318452380948,
+            "winShare": 0.17688419292311214,
+            "ci": [
+              0.0993711183156908,
+              0.2699564054658023
+            ],
+            "outrightWins": 5.290476190476192
+          },
+          "allRoundSelectionRate": 0.08561643835616438
+        },
+        {
+          "key": "faith",
+          "name": "信仰戦力型",
+          "actual": {
+            "n": 47,
+            "gamesWithMatch": 38,
+            "frequency": 0.146875,
+            "winShare": 0.10638297872340426,
+            "ci": [
+              0.025,
+              0.20454545454545456
+            ],
+            "outrightWins": 5
+          },
+          "credit": {
+            "n": 55.13928571428572,
+            "gamesWithMatch": 53,
+            "frequency": 0.17231026785714287,
+            "winShare": 0.16335254874020338,
+            "ci": [
+              0.10201017762093238,
+              0.23717314812685408
+            ],
+            "outrightWins": 8.673809523809524
+          },
+          "allRoundSelectionRate": 0.11643835616438356
+        }
+      ]
+    }
+  },
+  "packages": {
+    "2": [
+      {
+        "key": "dualCrystal",
+        "name": "水晶＋技術・信仰ともLv.3",
+        "n": 1,
+        "gamesWithMatch": 1,
+        "frequency": 0.0078125,
+        "winShare": 1,
+        "ci": [
+          1,
+          1
+        ],
+        "outrightWins": 1
+      },
+      {
+        "key": "twoBonuses",
+        "name": "3枚揃え2件以上",
+        "n": 65,
+        "gamesWithMatch": 49,
+        "frequency": 0.5078125,
+        "winShare": 0.6461538461538462,
+        "ci": [
+          0.5675675675675675,
+          0.7333333333333333
+        ],
+        "outrightWins": 42
+      },
+      {
+        "key": "warStack",
+        "name": "戦争時VPカード3体以上",
+        "n": 31,
+        "gamesWithMatch": 27,
+        "frequency": 0.2421875,
+        "winShare": 0.6451612903225806,
+        "ci": [
+          0.5,
+          0.7931034482758621
+        ],
+        "outrightWins": 20
+      },
+      {
+        "key": "nine",
+        "name": "9体配置",
+        "n": 20,
+        "gamesWithMatch": 17,
+        "frequency": 0.15625,
+        "winShare": 0.6,
+        "ci": [
+          0.4090909090909091,
+          0.7894736842105263
+        ],
+        "outrightWins": 12
+      },
+      {
+        "key": "techEngine",
+        "name": "技術Lv.3＋技術VP係数2以上",
+        "n": 22,
+        "gamesWithMatch": 22,
+        "frequency": 0.171875,
+        "winShare": 0.5909090909090909,
+        "ci": [
+          0.375,
+          0.8
+        ],
+        "outrightWins": 13
+      },
+      {
+        "key": "incomeEngine",
+        "name": "追加収入3金以上",
+        "n": 67,
+        "gamesWithMatch": 49,
+        "frequency": 0.5234375,
+        "winShare": 0.5671641791044776,
+        "ci": [
+          0.48333333333333334,
+          0.65625
+        ],
+        "outrightWins": 38
+      },
+      {
+        "key": "faithEngine",
+        "name": "信仰Lv.3＋信仰VPカード",
+        "n": 37,
+        "gamesWithMatch": 34,
+        "frequency": 0.2890625,
+        "winShare": 0.4594594594594595,
+        "ci": [
+          0.3125,
+          0.6060606060606061
+        ],
+        "outrightWins": 17
+      },
+      {
+        "key": "humanGold",
+        "name": "人間の君主＋残金12以上",
+        "n": 3,
+        "gamesWithMatch": 3,
+        "frequency": 0.0234375,
+        "winShare": 0.3333333333333333,
+        "ci": [
+          0,
+          1
+        ],
+        "outrightWins": 1
+      },
+      {
+        "key": "doubleBonus",
+        "name": "嵐のデーモン＋揃え2件以上",
+        "n": 0,
+        "gamesWithMatch": 0,
+        "frequency": 0,
+        "winShare": null,
+        "ci": [
+          null,
+          null
+        ],
+        "outrightWins": 0
+      }
+    ],
+    "3": [
+      {
+        "key": "warStack",
+        "name": "戦争時VPカード3体以上",
+        "n": 35,
+        "gamesWithMatch": 31,
+        "frequency": 0.18229166666666666,
+        "winShare": 0.5285714285714286,
+        "ci": [
+          0.38571428571428573,
+          0.6774193548387096
+        ],
+        "outrightWins": 17
+      },
+      {
+        "key": "humanGold",
+        "name": "人間の君主＋残金12以上",
+        "n": 2,
+        "gamesWithMatch": 2,
+        "frequency": 0.010416666666666666,
+        "winShare": 0.5,
+        "ci": [
+          0,
+          1
+        ],
+        "outrightWins": 1
+      },
+      {
+        "key": "twoBonuses",
+        "name": "3枚揃え2件以上",
+        "n": 74,
+        "gamesWithMatch": 48,
+        "frequency": 0.3854166666666667,
+        "winShare": 0.4594594594594595,
+        "ci": [
+          0.391025641025641,
+          0.5285714285714286
+        ],
+        "outrightWins": 32
+      },
+      {
+        "key": "techEngine",
+        "name": "技術Lv.3＋技術VP係数2以上",
+        "n": 21,
+        "gamesWithMatch": 21,
+        "frequency": 0.109375,
+        "winShare": 0.40476190476190477,
+        "ci": [
+          0.19230769230769232,
+          0.6346153846153846
+        ],
+        "outrightWins": 8
+      },
+      {
+        "key": "incomeEngine",
+        "name": "追加収入3金以上",
+        "n": 98,
+        "gamesWithMatch": 57,
+        "frequency": 0.5104166666666666,
+        "winShare": 0.3469387755102041,
+        "ci": [
+          0.28921568627450983,
+          0.4052631578947368
+        ],
+        "outrightWins": 31
+      },
+      {
+        "key": "faithEngine",
+        "name": "信仰Lv.3＋信仰VPカード",
+        "n": 47,
+        "gamesWithMatch": 36,
+        "frequency": 0.24479166666666666,
+        "winShare": 0.3404255319148936,
+        "ci": [
+          0.21818181818181817,
+          0.4649122807017544
+        ],
+        "outrightWins": 15
+      },
+      {
+        "key": "nine",
+        "name": "9体配置",
+        "n": 17,
+        "gamesWithMatch": 13,
+        "frequency": 0.08854166666666667,
+        "winShare": 0.29411764705882354,
+        "ci": [
+          0.1,
+          0.5
+        ],
+        "outrightWins": 5
+      },
+      {
+        "key": "doubleBonus",
+        "name": "嵐のデーモン＋揃え2件以上",
+        "n": 0,
+        "gamesWithMatch": 0,
+        "frequency": 0,
+        "winShare": null,
+        "ci": [
+          null,
+          null
+        ],
+        "outrightWins": 0
+      },
+      {
+        "key": "dualCrystal",
+        "name": "水晶＋技術・信仰ともLv.3",
+        "n": 0,
+        "gamesWithMatch": 0,
+        "frequency": 0,
+        "winShare": null,
+        "ci": [
+          null,
+          null
+        ],
+        "outrightWins": 0
+      }
+    ],
+    "4": [
+      {
+        "key": "twoBonuses",
+        "name": "3枚揃え2件以上",
+        "n": 114,
+        "gamesWithMatch": 61,
+        "frequency": 0.4453125,
+        "winShare": 0.38596491228070173,
+        "ci": [
+          0.3185840707964602,
+          0.4672897196261682
+        ],
+        "outrightWins": 44
+      },
+      {
+        "key": "humanGold",
+        "name": "人間の君主＋残金12以上",
+        "n": 8,
+        "gamesWithMatch": 8,
+        "frequency": 0.03125,
+        "winShare": 0.375,
+        "ci": [
+          0,
+          0.75
+        ],
+        "outrightWins": 3
+      },
+      {
+        "key": "techEngine",
+        "name": "技術Lv.3＋技術VP係数2以上",
+        "n": 22,
+        "gamesWithMatch": 20,
+        "frequency": 0.0859375,
+        "winShare": 0.36363636363636365,
+        "ci": [
+          0.17647058823529413,
+          0.5833333333333334
+        ],
+        "outrightWins": 8
+      },
+      {
+        "key": "warStack",
+        "name": "戦争時VPカード3体以上",
+        "n": 51,
+        "gamesWithMatch": 38,
+        "frequency": 0.19921875,
+        "winShare": 0.35294117647058826,
+        "ci": [
+          0.23529411764705882,
+          0.46938775510204084
+        ],
+        "outrightWins": 18
+      },
+      {
+        "key": "faithEngine",
+        "name": "信仰Lv.3＋信仰VPカード",
+        "n": 61,
+        "gamesWithMatch": 44,
+        "frequency": 0.23828125,
+        "winShare": 0.32786885245901637,
+        "ci": [
+          0.23214285714285715,
+          0.43333333333333335
+        ],
+        "outrightWins": 20
+      },
+      {
+        "key": "incomeEngine",
+        "name": "追加収入3金以上",
+        "n": 122,
+        "gamesWithMatch": 59,
+        "frequency": 0.4765625,
+        "winShare": 0.28688524590163933,
+        "ci": [
+          0.224,
+          0.3515625
+        ],
+        "outrightWins": 35
+      },
+      {
+        "key": "nine",
+        "name": "9体配置",
+        "n": 26,
+        "gamesWithMatch": 17,
+        "frequency": 0.1015625,
+        "winShare": 0.23076923076923078,
+        "ci": [
+          0.10526315789473684,
+          0.35
+        ],
+        "outrightWins": 6
+      },
+      {
+        "key": "dualCrystal",
+        "name": "水晶＋技術・信仰ともLv.3",
+        "n": 1,
+        "gamesWithMatch": 1,
+        "frequency": 0.00390625,
+        "winShare": 0,
+        "ci": [
+          0,
+          0
+        ],
+        "outrightWins": 0
+      },
+      {
+        "key": "doubleBonus",
+        "name": "嵐のデーモン＋揃え2件以上",
+        "n": 0,
+        "gamesWithMatch": 0,
+        "frequency": 0,
+        "winShare": null,
+        "ci": [
+          null,
+          null
+        ],
+        "outrightWins": 0
+      }
+    ],
+    "5": [
+      {
+        "key": "warStack",
+        "name": "戦争時VPカード3体以上",
+        "n": 62,
+        "gamesWithMatch": 46,
+        "frequency": 0.19375,
+        "winShare": 0.2903225806451613,
+        "ci": [
+          0.2,
+          0.38235294117647056
+        ],
+        "outrightWins": 17
+      },
+      {
+        "key": "humanGold",
+        "name": "人間の君主＋残金12以上",
+        "n": 14,
+        "gamesWithMatch": 14,
+        "frequency": 0.04375,
+        "winShare": 0.2857142857142857,
+        "ci": [
+          0.06666666666666667,
+          0.5625
+        ],
+        "outrightWins": 4
+      },
+      {
+        "key": "twoBonuses",
+        "name": "3枚揃え2件以上",
+        "n": 149,
+        "gamesWithMatch": 61,
+        "frequency": 0.465625,
+        "winShare": 0.24496644295302014,
+        "ci": [
+          0.2,
+          0.2913907284768212
+        ],
+        "outrightWins": 35
+      },
+      {
+        "key": "faithEngine",
+        "name": "信仰Lv.3＋信仰VPカード",
+        "n": 85,
+        "gamesWithMatch": 51,
+        "frequency": 0.265625,
+        "winShare": 0.23529411764705882,
+        "ci": [
+          0.16455696202531644,
+          0.3058823529411765
+        ],
+        "outrightWins": 19
+      },
+      {
+        "key": "techEngine",
+        "name": "技術Lv.3＋技術VP係数2以上",
+        "n": 31,
+        "gamesWithMatch": 23,
+        "frequency": 0.096875,
+        "winShare": 0.20967741935483872,
+        "ci": [
+          0.08333333333333333,
+          0.35294117647058826
+        ],
+        "outrightWins": 6
+      },
+      {
+        "key": "incomeEngine",
+        "name": "追加収入3金以上",
+        "n": 163,
+        "gamesWithMatch": 64,
+        "frequency": 0.509375,
+        "winShare": 0.17689161554192231,
+        "ci": [
+          0.13400900900900903,
+          0.21951219512195122
+        ],
+        "outrightWins": 27
+      },
+      {
+        "key": "nine",
+        "name": "9体配置",
+        "n": 56,
+        "gamesWithMatch": 31,
+        "frequency": 0.175,
+        "winShare": 0.14285714285714285,
+        "ci": [
+          0.06896551724137931,
+          0.22448979591836735
+        ],
+        "outrightWins": 8
+      },
+      {
+        "key": "doubleBonus",
+        "name": "嵐のデーモン＋揃え2件以上",
+        "n": 2,
+        "gamesWithMatch": 2,
+        "frequency": 0.00625,
+        "winShare": 0,
+        "ci": [
+          0,
+          0
+        ],
+        "outrightWins": 0
+      },
+      {
+        "key": "dualCrystal",
+        "name": "水晶＋技術・信仰ともLv.3",
+        "n": 0,
+        "gamesWithMatch": 0,
+        "frequency": 0,
+        "winShare": null,
+        "ci": [
+          null,
+          null
+        ],
+        "outrightWins": 0
+      }
+    ]
+  },
+  "cards": {
+    "2": [
+      {
+        "id": "human_king",
+        "initial": {
+          "n": 7,
+          "gamesWithMatch": 7,
+          "frequency": 0.0546875,
+          "winShare": 0.5714285714285714,
+          "ci": [
+            0.16666666666666666,
+            1
+          ],
+          "outrightWins": 4
+        },
+        "seen": {
+          "n": 20,
+          "gamesWithMatch": 20,
+          "frequency": 0.15625,
+          "winShare": 0.4,
+          "ci": [
+            0.1875,
+            0.625
+          ],
+          "outrightWins": 8
+        },
+        "placed": {
+          "n": 6,
+          "gamesWithMatch": 6,
+          "frequency": 0.046875,
+          "winShare": 0.16666666666666666,
+          "ci": [
+            0,
+            0.5
+          ],
+          "outrightWins": 1
+        },
+        "seenBeforeMulligan": 27,
+        "keptBeforeMulligan": 17
+      },
+      {
+        "id": "dwarf_king",
+        "initial": {
+          "n": 8,
+          "gamesWithMatch": 8,
+          "frequency": 0.0625,
+          "winShare": 0.375,
+          "ci": [
+            0,
+            0.7777777777777778
+          ],
+          "outrightWins": 3
+        },
+        "seen": {
+          "n": 26,
+          "gamesWithMatch": 26,
+          "frequency": 0.203125,
+          "winShare": 0.46153846153846156,
+          "ci": [
+            0.2692307692307692,
+            0.6666666666666666
+          ],
+          "outrightWins": 12
+        },
+        "placed": {
+          "n": 8,
+          "gamesWithMatch": 8,
+          "frequency": 0.0625,
+          "winShare": 0.375,
+          "ci": [
+            0,
+            0.7272727272727273
+          ],
+          "outrightWins": 3
+        },
+        "seenBeforeMulligan": 39,
+        "keptBeforeMulligan": 26
+      },
+      {
+        "id": "elf_queen",
+        "initial": {
+          "n": 3,
+          "gamesWithMatch": 3,
+          "frequency": 0.0234375,
+          "winShare": 0.6666666666666666,
+          "ci": [
+            0,
+            1
+          ],
+          "outrightWins": 2
+        },
+        "seen": {
+          "n": 19,
+          "gamesWithMatch": 19,
+          "frequency": 0.1484375,
+          "winShare": 0.5263157894736842,
+          "ci": [
+            0.3076923076923077,
+            0.75
+          ],
+          "outrightWins": 10
+        },
+        "placed": {
+          "n": 2,
+          "gamesWithMatch": 2,
+          "frequency": 0.015625,
+          "winShare": 1,
+          "ci": [
+            1,
+            1
+          ],
+          "outrightWins": 2
+        },
+        "seenBeforeMulligan": 21,
+        "keptBeforeMulligan": 13
+      },
+      {
+        "id": "goblin_king",
+        "initial": {
+          "n": 5,
+          "gamesWithMatch": 5,
+          "frequency": 0.0390625,
+          "winShare": 0.8,
+          "ci": [
+            0.3333333333333333,
+            1
+          ],
+          "outrightWins": 4
+        },
+        "seen": {
+          "n": 21,
+          "gamesWithMatch": 21,
+          "frequency": 0.1640625,
+          "winShare": 0.5238095238095238,
+          "ci": [
+            0.3,
+            0.7368421052631579
+          ],
+          "outrightWins": 11
+        },
+        "placed": {
+          "n": 8,
+          "gamesWithMatch": 8,
+          "frequency": 0.0625,
+          "winShare": 0.5,
+          "ci": [
+            0.14285714285714285,
+            0.8571428571428571
+          ],
+          "outrightWins": 4
+        },
+        "seenBeforeMulligan": 22,
+        "keptBeforeMulligan": 17
+      },
+      {
+        "id": "golem_king",
+        "initial": {
+          "n": 3,
+          "gamesWithMatch": 3,
+          "frequency": 0.0234375,
+          "winShare": 0.6666666666666666,
+          "ci": [
+            0,
+            1
+          ],
+          "outrightWins": 2
+        },
+        "seen": {
+          "n": 16,
+          "gamesWithMatch": 16,
+          "frequency": 0.125,
+          "winShare": 0.375,
+          "ci": [
+            0.13333333333333333,
+            0.6153846153846154
+          ],
+          "outrightWins": 6
+        },
+        "placed": {
+          "n": 6,
+          "gamesWithMatch": 6,
+          "frequency": 0.046875,
+          "winShare": 0.5,
+          "ci": [
+            0,
+            1
+          ],
+          "outrightWins": 3
+        },
+        "seenBeforeMulligan": 20,
+        "keptBeforeMulligan": 17
+      },
+      {
+        "id": "demon_storm",
+        "initial": {
+          "n": 4,
+          "gamesWithMatch": 4,
+          "frequency": 0.03125,
+          "winShare": 0.25,
+          "ci": [
+            0,
+            1
+          ],
+          "outrightWins": 1
+        },
+        "seen": {
+          "n": 17,
+          "gamesWithMatch": 17,
+          "frequency": 0.1328125,
+          "winShare": 0.35294117647058826,
+          "ci": [
+            0.13333333333333333,
+            0.6111111111111112
+          ],
+          "outrightWins": 6
+        },
+        "placed": {
+          "n": 0,
+          "gamesWithMatch": 0,
+          "frequency": 0,
+          "winShare": null,
+          "ci": [
+            null,
+            null
+          ],
+          "outrightWins": 0
+        },
+        "seenBeforeMulligan": 17,
+        "keptBeforeMulligan": 4
+      },
+      {
+        "id": "golem_cristal",
+        "initial": {
+          "n": 10,
+          "gamesWithMatch": 10,
+          "frequency": 0.078125,
+          "winShare": 0.4,
+          "ci": [
+            0.09090909090909091,
+            0.7272727272727273
+          ],
+          "outrightWins": 4
+        },
+        "seen": {
+          "n": 41,
+          "gamesWithMatch": 38,
+          "frequency": 0.3203125,
+          "winShare": 0.5365853658536586,
+          "ci": [
+            0.39473684210526316,
+            0.6764705882352942
+          ],
+          "outrightWins": 22
+        },
+        "placed": {
+          "n": 18,
+          "gamesWithMatch": 17,
+          "frequency": 0.140625,
+          "winShare": 0.4444444444444444,
+          "ci": [
+            0.23076923076923078,
+            0.6666666666666666
+          ],
+          "outrightWins": 8
+        },
+        "seenBeforeMulligan": 44,
+        "keptBeforeMulligan": 30
+      },
+      {
+        "id": "dwarf_beer",
+        "initial": {
+          "n": 12,
+          "gamesWithMatch": 12,
+          "frequency": 0.09375,
+          "winShare": 0.4166666666666667,
+          "ci": [
+            0.11764705882352941,
+            0.7
+          ],
+          "outrightWins": 5
+        },
+        "seen": {
+          "n": 46,
+          "gamesWithMatch": 40,
+          "frequency": 0.359375,
+          "winShare": 0.5,
+          "ci": [
+            0.3673469387755102,
+            0.627906976744186
+          ],
+          "outrightWins": 23
+        },
+        "placed": {
+          "n": 11,
+          "gamesWithMatch": 11,
+          "frequency": 0.0859375,
+          "winShare": 0.6363636363636364,
+          "ci": [
+            0.3333333333333333,
+            0.9090909090909091
+          ],
+          "outrightWins": 7
+        },
+        "seenBeforeMulligan": 53,
+        "keptBeforeMulligan": 23
+      },
+      {
+        "id": "elf_caster",
+        "initial": {
+          "n": 19,
+          "gamesWithMatch": 18,
+          "frequency": 0.1484375,
+          "winShare": 0.42105263157894735,
+          "ci": [
+            0.2,
+            0.65
+          ],
+          "outrightWins": 8
+        },
+        "seen": {
+          "n": 51,
+          "gamesWithMatch": 39,
+          "frequency": 0.3984375,
+          "winShare": 0.5490196078431373,
+          "ci": [
+            0.45454545454545453,
+            0.6538461538461539
+          ],
+          "outrightWins": 28
+        },
+        "placed": {
+          "n": 9,
+          "gamesWithMatch": 9,
+          "frequency": 0.0703125,
+          "winShare": 0.4444444444444444,
+          "ci": [
+            0.1,
+            0.8
+          ],
+          "outrightWins": 4
+        },
+        "seenBeforeMulligan": 53,
+        "keptBeforeMulligan": 16
+      }
+    ],
+    "3": [
+      {
+        "id": "human_king",
+        "initial": {
+          "n": 10,
+          "gamesWithMatch": 10,
+          "frequency": 0.052083333333333336,
+          "winShare": 0.1,
+          "ci": [
+            0,
+            0.3333333333333333
+          ],
+          "outrightWins": 1
+        },
+        "seen": {
+          "n": 28,
+          "gamesWithMatch": 28,
+          "frequency": 0.14583333333333334,
+          "winShare": 0.23214285714285715,
+          "ci": [
+            0.08928571428571429,
+            0.39705882352941174
+          ],
+          "outrightWins": 6
+        },
+        "placed": {
+          "n": 11,
+          "gamesWithMatch": 11,
+          "frequency": 0.057291666666666664,
+          "winShare": 0.45454545454545453,
+          "ci": [
+            0.14285714285714285,
+            0.75
+          ],
+          "outrightWins": 5
+        },
+        "seenBeforeMulligan": 35,
+        "keptBeforeMulligan": 24
+      },
+      {
+        "id": "dwarf_king",
+        "initial": {
+          "n": 14,
+          "gamesWithMatch": 14,
+          "frequency": 0.07291666666666667,
+          "winShare": 0.39285714285714285,
+          "ci": [
+            0.14285714285714285,
+            0.65
+          ],
+          "outrightWins": 5
+        },
+        "seen": {
+          "n": 35,
+          "gamesWithMatch": 35,
+          "frequency": 0.18229166666666666,
+          "winShare": 0.35714285714285715,
+          "ci": [
+            0.20588235294117646,
+            0.525
+          ],
+          "outrightWins": 12
+        },
+        "placed": {
+          "n": 8,
+          "gamesWithMatch": 8,
+          "frequency": 0.041666666666666664,
+          "winShare": 0.25,
+          "ci": [
+            0,
+            0.6
+          ],
+          "outrightWins": 2
+        },
+        "seenBeforeMulligan": 66,
+        "keptBeforeMulligan": 50
+      },
+      {
+        "id": "elf_queen",
+        "initial": {
+          "n": 5,
+          "gamesWithMatch": 5,
+          "frequency": 0.026041666666666668,
+          "winShare": 0.2,
+          "ci": [
+            0,
+            0.6666666666666666
+          ],
+          "outrightWins": 1
+        },
+        "seen": {
+          "n": 28,
+          "gamesWithMatch": 28,
+          "frequency": 0.14583333333333334,
+          "winShare": 0.3392857142857143,
+          "ci": [
+            0.17307692307692307,
+            0.5178571428571429
+          ],
+          "outrightWins": 9
+        },
+        "placed": {
+          "n": 8,
+          "gamesWithMatch": 8,
+          "frequency": 0.041666666666666664,
+          "winShare": 0.125,
+          "ci": [
+            0,
+            0.42857142857142855
+          ],
+          "outrightWins": 1
+        },
+        "seenBeforeMulligan": 39,
+        "keptBeforeMulligan": 31
+      },
+      {
+        "id": "goblin_king",
+        "initial": {
+          "n": 6,
+          "gamesWithMatch": 6,
+          "frequency": 0.03125,
+          "winShare": 0.3333333333333333,
+          "ci": [
+            0,
+            0.8
+          ],
+          "outrightWins": 2
+        },
+        "seen": {
+          "n": 28,
+          "gamesWithMatch": 28,
+          "frequency": 0.14583333333333334,
+          "winShare": 0.2857142857142857,
+          "ci": [
+            0.13333333333333333,
+            0.4666666666666667
+          ],
+          "outrightWins": 8
+        },
+        "placed": {
+          "n": 9,
+          "gamesWithMatch": 9,
+          "frequency": 0.046875,
+          "winShare": 0.3333333333333333,
+          "ci": [
+            0,
+            0.6666666666666666
+          ],
+          "outrightWins": 3
+        },
+        "seenBeforeMulligan": 31,
+        "keptBeforeMulligan": 21
+      },
+      {
+        "id": "golem_king",
+        "initial": {
+          "n": 4,
+          "gamesWithMatch": 4,
+          "frequency": 0.020833333333333332,
+          "winShare": 0.5,
+          "ci": [
+            0,
+            1
+          ],
+          "outrightWins": 2
+        },
+        "seen": {
+          "n": 19,
+          "gamesWithMatch": 19,
+          "frequency": 0.09895833333333333,
+          "winShare": 0.3684210526315789,
+          "ci": [
+            0.16666666666666666,
+            0.5833333333333334
+          ],
+          "outrightWins": 6
+        },
+        "placed": {
+          "n": 4,
+          "gamesWithMatch": 4,
+          "frequency": 0.020833333333333332,
+          "winShare": 0.375,
+          "ci": [
+            0,
+            1
+          ],
+          "outrightWins": 1
+        },
+        "seenBeforeMulligan": 23,
+        "keptBeforeMulligan": 12
+      },
+      {
+        "id": "demon_storm",
+        "initial": {
+          "n": 7,
+          "gamesWithMatch": 7,
+          "frequency": 0.036458333333333336,
+          "winShare": 0.14285714285714285,
+          "ci": [
+            0,
+            0.5
+          ],
+          "outrightWins": 1
+        },
+        "seen": {
+          "n": 28,
+          "gamesWithMatch": 28,
+          "frequency": 0.14583333333333334,
+          "winShare": 0.32142857142857145,
+          "ci": [
+            0.15384615384615385,
+            0.5
+          ],
+          "outrightWins": 8
+        },
+        "placed": {
+          "n": 0,
+          "gamesWithMatch": 0,
+          "frequency": 0,
+          "winShare": null,
+          "ci": [
+            null,
+            null
+          ],
+          "outrightWins": 0
+        },
+        "seenBeforeMulligan": 21,
+        "keptBeforeMulligan": 5
+      },
+      {
+        "id": "golem_cristal",
+        "initial": {
+          "n": 15,
+          "gamesWithMatch": 15,
+          "frequency": 0.078125,
+          "winShare": 0.26666666666666666,
+          "ci": [
+            0.058823529411764705,
+            0.5333333333333333
+          ],
+          "outrightWins": 4
+        },
+        "seen": {
+          "n": 54,
+          "gamesWithMatch": 48,
+          "frequency": 0.28125,
+          "winShare": 0.3055555555555556,
+          "ci": [
+            0.19827586206896552,
+            0.41818181818181815
+          ],
+          "outrightWins": 14
+        },
+        "placed": {
+          "n": 24,
+          "gamesWithMatch": 23,
+          "frequency": 0.125,
+          "winShare": 0.3958333333333333,
+          "ci": [
+            0.22916666666666666,
+            0.575
+          ],
+          "outrightWins": 8
+        },
+        "seenBeforeMulligan": 67,
+        "keptBeforeMulligan": 48
+      },
+      {
+        "id": "dwarf_beer",
+        "initial": {
+          "n": 20,
+          "gamesWithMatch": 20,
+          "frequency": 0.10416666666666667,
+          "winShare": 0.35,
+          "ci": [
+            0.14705882352941177,
+            0.5652173913043478
+          ],
+          "outrightWins": 6
+        },
+        "seen": {
+          "n": 65,
+          "gamesWithMatch": 51,
+          "frequency": 0.3385416666666667,
+          "winShare": 0.3,
+          "ci": [
+            0.20491803278688525,
+            0.39705882352941174
+          ],
+          "outrightWins": 17
+        },
+        "placed": {
+          "n": 22,
+          "gamesWithMatch": 18,
+          "frequency": 0.11458333333333333,
+          "winShare": 0.4090909090909091,
+          "ci": [
+            0.22916666666666666,
+            0.59375
+          ],
+          "outrightWins": 8
+        },
+        "seenBeforeMulligan": 65,
+        "keptBeforeMulligan": 35
+      },
+      {
+        "id": "elf_caster",
+        "initial": {
+          "n": 26,
+          "gamesWithMatch": 23,
+          "frequency": 0.13541666666666666,
+          "winShare": 0.3269230769230769,
+          "ci": [
+            0.15789473684210525,
+            0.5208333333333334
+          ],
+          "outrightWins": 8
+        },
+        "seen": {
+          "n": 75,
+          "gamesWithMatch": 53,
+          "frequency": 0.390625,
+          "winShare": 0.26,
+          "ci": [
+            0.176056338028169,
+            0.35
+          ],
+          "outrightWins": 18
+        },
+        "placed": {
+          "n": 12,
+          "gamesWithMatch": 10,
+          "frequency": 0.0625,
+          "winShare": 0.25,
+          "ci": [
+            0,
+            0.45454545454545453
+          ],
+          "outrightWins": 3
+        },
+        "seenBeforeMulligan": 86,
+        "keptBeforeMulligan": 41
+      }
+    ],
+    "4": [
+      {
+        "id": "human_king",
+        "initial": {
+          "n": 10,
+          "gamesWithMatch": 10,
+          "frequency": 0.0390625,
+          "winShare": 0,
+          "ci": [
+            0,
+            0
+          ],
+          "outrightWins": 0
+        },
+        "seen": {
+          "n": 37,
+          "gamesWithMatch": 37,
+          "frequency": 0.14453125,
+          "winShare": 0.2702702702702703,
+          "ci": [
+            0.13513513513513514,
+            0.4222222222222222
+          ],
+          "outrightWins": 10
+        },
+        "placed": {
+          "n": 18,
+          "gamesWithMatch": 18,
+          "frequency": 0.0703125,
+          "winShare": 0.2222222222222222,
+          "ci": [
+            0.05263157894736842,
+            0.4375
+          ],
+          "outrightWins": 4
+        },
+        "seenBeforeMulligan": 46,
+        "keptBeforeMulligan": 34
+      },
+      {
+        "id": "dwarf_king",
+        "initial": {
+          "n": 19,
+          "gamesWithMatch": 19,
+          "frequency": 0.07421875,
+          "winShare": 0.05263157894736842,
+          "ci": [
+            0,
+            0.16666666666666666
+          ],
+          "outrightWins": 1
+        },
+        "seen": {
+          "n": 41,
+          "gamesWithMatch": 41,
+          "frequency": 0.16015625,
+          "winShare": 0.1951219512195122,
+          "ci": [
+            0.07894736842105263,
+            0.32608695652173914
+          ],
+          "outrightWins": 8
+        },
+        "placed": {
+          "n": 10,
+          "gamesWithMatch": 10,
+          "frequency": 0.0390625,
+          "winShare": 0.2,
+          "ci": [
+            0,
+            0.5
+          ],
+          "outrightWins": 2
+        },
+        "seenBeforeMulligan": 84,
+        "keptBeforeMulligan": 67
+      },
+      {
+        "id": "elf_queen",
+        "initial": {
+          "n": 8,
+          "gamesWithMatch": 8,
+          "frequency": 0.03125,
+          "winShare": 0,
+          "ci": [
+            0,
+            0
+          ],
+          "outrightWins": 0
+        },
+        "seen": {
+          "n": 38,
+          "gamesWithMatch": 38,
+          "frequency": 0.1484375,
+          "winShare": 0.2894736842105263,
+          "ci": [
+            0.15625,
+            0.4358974358974359
+          ],
+          "outrightWins": 11
+        },
+        "placed": {
+          "n": 13,
+          "gamesWithMatch": 13,
+          "frequency": 0.05078125,
+          "winShare": 0.3076923076923077,
+          "ci": [
+            0.07142857142857142,
+            0.5833333333333334
+          ],
+          "outrightWins": 4
+        },
+        "seenBeforeMulligan": 61,
+        "keptBeforeMulligan": 55
+      },
+      {
+        "id": "goblin_king",
+        "initial": {
+          "n": 10,
+          "gamesWithMatch": 10,
+          "frequency": 0.0390625,
+          "winShare": 0.4,
+          "ci": [
+            0.09090909090909091,
+            0.75
+          ],
+          "outrightWins": 4
+        },
+        "seen": {
+          "n": 38,
+          "gamesWithMatch": 38,
+          "frequency": 0.1484375,
+          "winShare": 0.23684210526315788,
+          "ci": [
+            0.1111111111111111,
+            0.375
+          ],
+          "outrightWins": 9
+        },
+        "placed": {
+          "n": 10,
+          "gamesWithMatch": 10,
+          "frequency": 0.0390625,
+          "winShare": 0.3,
+          "ci": [
+            0,
+            0.625
+          ],
+          "outrightWins": 3
+        },
+        "seenBeforeMulligan": 57,
+        "keptBeforeMulligan": 45
+      },
+      {
+        "id": "golem_king",
+        "initial": {
+          "n": 5,
+          "gamesWithMatch": 5,
+          "frequency": 0.01953125,
+          "winShare": 0.4,
+          "ci": [
+            0,
+            1
+          ],
+          "outrightWins": 2
+        },
+        "seen": {
+          "n": 28,
+          "gamesWithMatch": 28,
+          "frequency": 0.109375,
+          "winShare": 0.25,
+          "ci": [
+            0.09375,
+            0.4230769230769231
+          ],
+          "outrightWins": 7
+        },
+        "placed": {
+          "n": 9,
+          "gamesWithMatch": 9,
+          "frequency": 0.03515625,
+          "winShare": 0.2222222222222222,
+          "ci": [
+            0,
+            0.5714285714285714
+          ],
+          "outrightWins": 2
+        },
+        "seenBeforeMulligan": 35,
+        "keptBeforeMulligan": 23
+      },
+      {
+        "id": "demon_storm",
+        "initial": {
+          "n": 9,
+          "gamesWithMatch": 9,
+          "frequency": 0.03515625,
+          "winShare": 0.3333333333333333,
+          "ci": [
+            0,
+            0.6666666666666666
+          ],
+          "outrightWins": 3
+        },
+        "seen": {
+          "n": 36,
+          "gamesWithMatch": 36,
+          "frequency": 0.140625,
+          "winShare": 0.3888888888888889,
+          "ci": [
+            0.23684210526315788,
+            0.5517241379310345
+          ],
+          "outrightWins": 14
+        },
+        "placed": {
+          "n": 1,
+          "gamesWithMatch": 1,
+          "frequency": 0.00390625,
+          "winShare": 1,
+          "ci": [
+            1,
+            1
+          ],
+          "outrightWins": 1
+        },
+        "seenBeforeMulligan": 34,
+        "keptBeforeMulligan": 7
+      },
+      {
+        "id": "golem_cristal",
+        "initial": {
+          "n": 30,
+          "gamesWithMatch": 27,
+          "frequency": 0.1171875,
+          "winShare": 0.26666666666666666,
+          "ci": [
+            0.12,
+            0.44
+          ],
+          "outrightWins": 8
+        },
+        "seen": {
+          "n": 67,
+          "gamesWithMatch": 53,
+          "frequency": 0.26171875,
+          "winShare": 0.23880597014925373,
+          "ci": [
+            0.14754098360655737,
+            0.3384615384615385
+          ],
+          "outrightWins": 16
+        },
+        "placed": {
+          "n": 22,
+          "gamesWithMatch": 20,
+          "frequency": 0.0859375,
+          "winShare": 0.2727272727272727,
+          "ci": [
+            0.09523809523809523,
+            0.47368421052631576
+          ],
+          "outrightWins": 6
+        },
+        "seenBeforeMulligan": 68,
+        "keptBeforeMulligan": 32
+      },
+      {
+        "id": "dwarf_beer",
+        "initial": {
+          "n": 29,
+          "gamesWithMatch": 27,
+          "frequency": 0.11328125,
+          "winShare": 0.27586206896551724,
+          "ci": [
+            0.12,
+            0.42857142857142855
+          ],
+          "outrightWins": 8
+        },
+        "seen": {
+          "n": 95,
+          "gamesWithMatch": 59,
+          "frequency": 0.37109375,
+          "winShare": 0.3263157894736842,
+          "ci": [
+            0.25806451612903225,
+            0.3956043956043956
+          ],
+          "outrightWins": 31
+        },
+        "placed": {
+          "n": 21,
+          "gamesWithMatch": 20,
+          "frequency": 0.08203125,
+          "winShare": 0.42857142857142855,
+          "ci": [
+            0.2222222222222222,
+            0.6363636363636364
+          ],
+          "outrightWins": 9
+        },
+        "seenBeforeMulligan": 95,
+        "keptBeforeMulligan": 39
+      },
+      {
+        "id": "elf_caster",
+        "initial": {
+          "n": 32,
+          "gamesWithMatch": 27,
+          "frequency": 0.125,
+          "winShare": 0.4375,
+          "ci": [
+            0.2647058823529412,
+            0.6
+          ],
+          "outrightWins": 14
+        },
+        "seen": {
+          "n": 97,
+          "gamesWithMatch": 61,
+          "frequency": 0.37890625,
+          "winShare": 0.36082474226804123,
+          "ci": [
+            0.2857142857142857,
+            0.43820224719101125
+          ],
+          "outrightWins": 35
+        },
+        "placed": {
+          "n": 24,
+          "gamesWithMatch": 23,
+          "frequency": 0.09375,
+          "winShare": 0.25,
+          "ci": [
+            0.09090909090909091,
+            0.4230769230769231
+          ],
+          "outrightWins": 6
+        },
+        "seenBeforeMulligan": 119,
+        "keptBeforeMulligan": 52
+      }
+    ],
+    "5": [
+      {
+        "id": "human_king",
+        "initial": {
+          "n": 18,
+          "gamesWithMatch": 18,
+          "frequency": 0.05625,
+          "winShare": 0.3888888888888889,
+          "ci": [
+            0.15789473684210525,
+            0.6
+          ],
+          "outrightWins": 7
+        },
+        "seen": {
+          "n": 50,
+          "gamesWithMatch": 50,
+          "frequency": 0.15625,
+          "winShare": 0.32,
+          "ci": [
+            0.2,
+            0.4528301886792453
+          ],
+          "outrightWins": 16
+        },
+        "placed": {
+          "n": 28,
+          "gamesWithMatch": 28,
+          "frequency": 0.0875,
+          "winShare": 0.25,
+          "ci": [
+            0.09375,
+            0.43333333333333335
+          ],
+          "outrightWins": 7
+        },
+        "seenBeforeMulligan": 69,
+        "keptBeforeMulligan": 54
+      },
+      {
+        "id": "dwarf_king",
+        "initial": {
+          "n": 23,
+          "gamesWithMatch": 23,
+          "frequency": 0.071875,
+          "winShare": 0.2608695652173913,
+          "ci": [
+            0.09090909090909091,
+            0.46153846153846156
+          ],
+          "outrightWins": 6
+        },
+        "seen": {
+          "n": 53,
+          "gamesWithMatch": 53,
+          "frequency": 0.165625,
+          "winShare": 0.18553459119496857,
+          "ci": [
+            0.09090909090909091,
+            0.3006535947712418
+          ],
+          "outrightWins": 9
+        },
+        "placed": {
+          "n": 12,
+          "gamesWithMatch": 12,
+          "frequency": 0.0375,
+          "winShare": 0.027777777777777776,
+          "ci": [
+            0,
+            0.09523809523809523
+          ],
+          "outrightWins": 0
+        },
+        "seenBeforeMulligan": 104,
+        "keptBeforeMulligan": 81
+      },
+      {
+        "id": "elf_queen",
+        "initial": {
+          "n": 14,
+          "gamesWithMatch": 14,
+          "frequency": 0.04375,
+          "winShare": 0.2857142857142857,
+          "ci": [
+            0.07142857142857142,
+            0.5555555555555556
+          ],
+          "outrightWins": 4
+        },
+        "seen": {
+          "n": 47,
+          "gamesWithMatch": 47,
+          "frequency": 0.146875,
+          "winShare": 0.2553191489361702,
+          "ci": [
+            0.1375,
+            0.3829787234042553
+          ],
+          "outrightWins": 11
+        },
+        "placed": {
+          "n": 17,
+          "gamesWithMatch": 17,
+          "frequency": 0.053125,
+          "winShare": 0.29411764705882354,
+          "ci": [
+            0.1111111111111111,
+            0.5
+          ],
+          "outrightWins": 4
+        },
+        "seenBeforeMulligan": 75,
+        "keptBeforeMulligan": 59
+      },
+      {
+        "id": "goblin_king",
+        "initial": {
+          "n": 15,
+          "gamesWithMatch": 15,
+          "frequency": 0.046875,
+          "winShare": 0.13333333333333333,
+          "ci": [
+            0,
+            0.3333333333333333
+          ],
+          "outrightWins": 2
+        },
+        "seen": {
+          "n": 46,
+          "gamesWithMatch": 46,
+          "frequency": 0.14375,
+          "winShare": 0.22826086956521738,
+          "ci": [
+            0.11702127659574468,
+            0.35714285714285715
+          ],
+          "outrightWins": 10
+        },
+        "placed": {
+          "n": 18,
+          "gamesWithMatch": 18,
+          "frequency": 0.05625,
+          "winShare": 0.2777777777777778,
+          "ci": [
+            0.07692307692307693,
+            0.5
+          ],
+          "outrightWins": 5
+        },
+        "seenBeforeMulligan": 69,
+        "keptBeforeMulligan": 53
+      },
+      {
+        "id": "golem_king",
+        "initial": {
+          "n": 9,
+          "gamesWithMatch": 9,
+          "frequency": 0.028125,
+          "winShare": 0.14814814814814814,
+          "ci": [
+            0,
+            0.41666666666666663
+          ],
+          "outrightWins": 1
+        },
+        "seen": {
+          "n": 45,
+          "gamesWithMatch": 45,
+          "frequency": 0.140625,
+          "winShare": 0.11851851851851851,
+          "ci": [
+            0.041666666666666664,
+            0.2127659574468085
+          ],
+          "outrightWins": 4
+        },
+        "placed": {
+          "n": 16,
+          "gamesWithMatch": 16,
+          "frequency": 0.05,
+          "winShare": 0.14583333333333331,
+          "ci": [
+            0,
+            0.3333333333333333
+          ],
+          "outrightWins": 2
+        },
+        "seenBeforeMulligan": 53,
+        "keptBeforeMulligan": 39
+      },
+      {
+        "id": "demon_storm",
+        "initial": {
+          "n": 14,
+          "gamesWithMatch": 14,
+          "frequency": 0.04375,
+          "winShare": 0.17857142857142858,
+          "ci": [
+            0,
+            0.38461538461538464
+          ],
+          "outrightWins": 2
+        },
+        "seen": {
+          "n": 47,
+          "gamesWithMatch": 47,
+          "frequency": 0.146875,
+          "winShare": 0.2624113475177305,
+          "ci": [
+            0.14465408805031446,
+            0.38297872340425526
+          ],
+          "outrightWins": 11
+        },
+        "placed": {
+          "n": 4,
+          "gamesWithMatch": 4,
+          "frequency": 0.0125,
+          "winShare": 0.08333333333333333,
+          "ci": [
+            0,
+            0.3333333333333333
+          ],
+          "outrightWins": 0
+        },
+        "seenBeforeMulligan": 45,
+        "keptBeforeMulligan": 12
+      },
+      {
+        "id": "golem_cristal",
+        "initial": {
+          "n": 34,
+          "gamesWithMatch": 31,
+          "frequency": 0.10625,
+          "winShare": 0.20588235294117646,
+          "ci": [
+            0.08333333333333333,
+            0.3448275862068966
+          ],
+          "outrightWins": 7
+        },
+        "seen": {
+          "n": 87,
+          "gamesWithMatch": 60,
+          "frequency": 0.271875,
+          "winShare": 0.20498084291187738,
+          "ci": [
+            0.12941176470588237,
+            0.28968253968253965
+          ],
+          "outrightWins": 17
+        },
+        "placed": {
+          "n": 34,
+          "gamesWithMatch": 27,
+          "frequency": 0.10625,
+          "winShare": 0.1568627450980392,
+          "ci": [
+            0.045454545454545456,
+            0.29166666666666663
+          ],
+          "outrightWins": 5
+        },
+        "seenBeforeMulligan": 88,
+        "keptBeforeMulligan": 45
+      },
+      {
+        "id": "dwarf_beer",
+        "initial": {
+          "n": 39,
+          "gamesWithMatch": 34,
+          "frequency": 0.121875,
+          "winShare": 0.23076923076923078,
+          "ci": [
+            0.10810810810810811,
+            0.3548387096774194
+          ],
+          "outrightWins": 9
+        },
+        "seen": {
+          "n": 127,
+          "gamesWithMatch": 61,
+          "frequency": 0.396875,
+          "winShare": 0.2440944881889764,
+          "ci": [
+            0.1889763779527559,
+            0.3
+          ],
+          "outrightWins": 30
+        },
+        "placed": {
+          "n": 33,
+          "gamesWithMatch": 27,
+          "frequency": 0.103125,
+          "winShare": 0.22727272727272727,
+          "ci": [
+            0.1,
+            0.35
+          ],
+          "outrightWins": 7
+        },
+        "seenBeforeMulligan": 132,
+        "keptBeforeMulligan": 59
+      },
+      {
+        "id": "elf_caster",
+        "initial": {
+          "n": 46,
+          "gamesWithMatch": 34,
+          "frequency": 0.14375,
+          "winShare": 0.20289855072463767,
+          "ci": [
+            0.10185185185185185,
+            0.3076923076923077
+          ],
+          "outrightWins": 9
+        },
+        "seen": {
+          "n": 127,
+          "gamesWithMatch": 62,
+          "frequency": 0.396875,
+          "winShare": 0.20997375328083986,
+          "ci": [
+            0.15669515669515668,
+            0.26515151515151514
+          ],
+          "outrightWins": 25
+        },
+        "placed": {
+          "n": 28,
+          "gamesWithMatch": 25,
+          "frequency": 0.0875,
+          "winShare": 0.08928571428571429,
+          "ci": [
+            0,
+            0.1956521739130435
+          ],
+          "outrightWins": 2
+        },
+        "seenBeforeMulligan": 162,
+        "keptBeforeMulligan": 75
+      }
+    ]
+  },
+  "matched": {
+    "2": {
+      "pairs": 64,
+      "a": 0.6171875,
+      "b": 0.5234375,
+      "difference": 0.09375,
+      "ci": [
+        -0.0625,
+        0.2421875
+      ],
+      "meanVPDifference": 1.890625,
+      "aOutright": 38,
+      "bOutright": 33,
+      "aPlaced": null,
+      "bPlaced": null
+    },
+    "5": {
+      "pairs": 64,
+      "a": 0.2578125,
+      "b": 0.234375,
+      "difference": 0.0234375,
+      "ci": [
+        -0.109375,
+        0.15625
+      ],
+      "meanVPDifference": 3.65625,
+      "aOutright": 16,
+      "bOutright": 15,
+      "aPlaced": null,
+      "bPlaced": null
+    }
+  },
+  "retention": {
+    "2": [
+      {
+        "card": "human_king",
+        "pairs": 32,
+        "a": 0.8125,
+        "b": 0.65625,
+        "difference": 0.15625,
+        "ci": [
+          -0.03125,
+          0.3125
+        ],
+        "meanVPDifference": 1.65625,
+        "aOutright": 26,
+        "bOutright": 21,
+        "aPlaced": 0.40625,
+        "bPlaced": 0
+      },
+      {
+        "card": "golem_king",
+        "pairs": 32,
+        "a": 0.765625,
+        "b": 0.65625,
+        "difference": 0.109375,
+        "ci": [
+          -0.0625,
+          0.296875
+        ],
+        "meanVPDifference": 0.53125,
+        "aOutright": 24,
+        "bOutright": 21,
+        "aPlaced": 0.0625,
+        "bPlaced": 0
+      },
+      {
+        "card": "elf_queen",
+        "pairs": 32,
+        "a": 0.75,
+        "b": 0.65625,
+        "difference": 0.09375,
+        "ci": [
+          -0.078125,
+          0.28125
+        ],
+        "meanVPDifference": 1.5,
+        "aOutright": 23,
+        "bOutright": 21,
+        "aPlaced": 0.15625,
+        "bPlaced": 0
+      },
+      {
+        "card": "dwarf_king",
+        "pairs": 32,
+        "a": 0.71875,
+        "b": 0.65625,
+        "difference": 0.0625,
+        "ci": [
+          -0.15625,
+          0.28125
+        ],
+        "meanVPDifference": 3,
+        "aOutright": 23,
+        "bOutright": 21,
+        "aPlaced": 0.125,
+        "bPlaced": 0
+      },
+      {
+        "card": "elf_caster",
+        "pairs": 32,
+        "a": 0.65625,
+        "b": 0.625,
+        "difference": 0.03125,
+        "ci": [
+          -0.1875,
+          0.234375
+        ],
+        "meanVPDifference": 4.75,
+        "aOutright": 20,
+        "bOutright": 20,
+        "aPlaced": 0.15625,
+        "bPlaced": 0.0625
+      },
+      {
+        "card": "demon_storm",
+        "pairs": 32,
+        "a": 0.6875,
+        "b": 0.671875,
+        "difference": 0.015625,
+        "ci": [
+          -0.203125,
+          0.25
+        ],
+        "meanVPDifference": -1.40625,
+        "aOutright": 22,
+        "bOutright": 21,
+        "aPlaced": 0,
+        "bPlaced": 0
+      },
+      {
+        "card": "goblin_king",
+        "pairs": 32,
+        "a": 0.546875,
+        "b": 0.546875,
+        "difference": 0,
+        "ci": [
+          -0.1875,
+          0.1875
+        ],
+        "meanVPDifference": -1.625,
+        "aOutright": 17,
+        "bOutright": 17,
+        "aPlaced": 0.3125,
+        "bPlaced": 0
+      },
+      {
+        "card": "golem_cristal",
+        "pairs": 32,
+        "a": 0.59375,
+        "b": 0.625,
+        "difference": -0.03125,
+        "ci": [
+          -0.203125,
+          0.15625
+        ],
+        "meanVPDifference": -1.40625,
+        "aOutright": 18,
+        "bOutright": 20,
+        "aPlaced": 0.53125,
+        "bPlaced": 0.1875
+      },
+      {
+        "card": "dwarf_beer",
+        "pairs": 32,
+        "a": 0.5625,
+        "b": 0.703125,
+        "difference": -0.140625,
+        "ci": [
+          -0.328125,
+          0.0625
+        ],
+        "meanVPDifference": -1.71875,
+        "aOutright": 18,
+        "bOutright": 22,
+        "aPlaced": 0.21875,
+        "bPlaced": 0.0625
+      }
+    ],
+    "5": [
+      {
+        "card": "golem_king",
+        "pairs": 32,
+        "a": 0.421875,
+        "b": 0.15625,
+        "difference": 0.265625,
+        "ci": [
+          0.125,
+          0.421875
+        ],
+        "meanVPDifference": 0.6875,
+        "aOutright": 12,
+        "bOutright": 5,
+        "aPlaced": 0.21875,
+        "bPlaced": 0
+      },
+      {
+        "card": "dwarf_king",
+        "pairs": 32,
+        "a": 0.3125,
+        "b": 0.28125,
+        "difference": 0.03125,
+        "ci": [
+          -0.15625,
+          0.234375
+        ],
+        "meanVPDifference": -3.1875,
+        "aOutright": 10,
+        "bOutright": 8,
+        "aPlaced": 0.375,
+        "bPlaced": 0
+      },
+      {
+        "card": "elf_queen",
+        "pairs": 32,
+        "a": 0.375,
+        "b": 0.359375,
+        "difference": 0.015625,
+        "ci": [
+          -0.140625,
+          0.171875
+        ],
+        "meanVPDifference": -1.8125,
+        "aOutright": 12,
+        "bOutright": 11,
+        "aPlaced": 0.25,
+        "bPlaced": 0
+      },
+      {
+        "card": "dwarf_beer",
+        "pairs": 32,
+        "a": 0.390625,
+        "b": 0.390625,
+        "difference": 0,
+        "ci": [
+          -0.21875,
+          0.21875
+        ],
+        "meanVPDifference": -0.40625,
+        "aOutright": 12,
+        "bOutright": 12,
+        "aPlaced": 0.375,
+        "bPlaced": 0.1875
+      },
+      {
+        "card": "goblin_king",
+        "pairs": 32,
+        "a": 0.359375,
+        "b": 0.390625,
+        "difference": -0.03125,
+        "ci": [
+          -0.21875,
+          0.15625
+        ],
+        "meanVPDifference": 1.1875,
+        "aOutright": 11,
+        "bOutright": 11,
+        "aPlaced": 0.25,
+        "bPlaced": 0
+      },
+      {
+        "card": "human_king",
+        "pairs": 32,
+        "a": 0.3125,
+        "b": 0.375,
+        "difference": -0.0625,
+        "ci": [
+          -0.21875,
+          0.125
+        ],
+        "meanVPDifference": 0.75,
+        "aOutright": 10,
+        "bOutright": 11,
+        "aPlaced": 0.40625,
+        "bPlaced": 0
+      },
+      {
+        "card": "demon_storm",
+        "pairs": 32,
+        "a": 0.203125,
+        "b": 0.3125,
+        "difference": -0.109375,
+        "ci": [
+          -0.296875,
+          0.09375
+        ],
+        "meanVPDifference": -1.09375,
+        "aOutright": 6,
+        "bOutright": 9,
+        "aPlaced": 0,
+        "bPlaced": 0
+      },
+      {
+        "card": "golem_cristal",
+        "pairs": 32,
+        "a": 0.3125,
+        "b": 0.421875,
+        "difference": -0.109375,
+        "ci": [
+          -0.328125,
+          0.125
+        ],
+        "meanVPDifference": 3.125,
+        "aOutright": 10,
+        "bOutright": 13,
+        "aPlaced": 0.53125,
+        "bPlaced": 0.125
+      },
+      {
+        "card": "elf_caster",
+        "pairs": 32,
+        "a": 0.26041666666666663,
+        "b": 0.390625,
+        "difference": -0.13020833333333334,
+        "ci": [
+          -0.28125,
+          0.026041666666666664
+        ],
+        "meanVPDifference": -0.15625,
+        "aOutright": 8,
+        "bOutright": 11,
+        "aPlaced": 0.125,
+        "bPlaced": 0.03125
+      }
+    ]
+  },
+  "validationRetention": {
+    "2": [
+      {
+        "card": "human_king",
+        "pairs": 64,
+        "a": 0.625,
+        "b": 0.6484375,
+        "difference": -0.0234375,
+        "ci": [
+          -0.1640625,
+          0.109375
+        ],
+        "meanVPDifference": 0.546875,
+        "aOutright": 39,
+        "bOutright": 40,
+        "aPlaced": 0.46875,
+        "bPlaced": 0
+      },
+      {
+        "card": "golem_king",
+        "pairs": 64,
+        "a": 0.6171875,
+        "b": 0.6640625,
+        "difference": -0.046875,
+        "ci": [
+          -0.203125,
+          0.1171875
+        ],
+        "meanVPDifference": -1.359375,
+        "aOutright": 39,
+        "bOutright": 40,
+        "aPlaced": 0.15625,
+        "bPlaced": 0
+      },
+      {
+        "card": "golem_cristal",
+        "pairs": 64,
+        "a": 0.5625,
+        "b": 0.640625,
+        "difference": -0.078125,
+        "ci": [
+          -0.2265625,
+          0.0703125
+        ],
+        "meanVPDifference": -1.15625,
+        "aOutright": 34,
+        "bOutright": 40,
+        "aPlaced": 0.515625,
+        "bPlaced": 0.125
+      }
+    ],
+    "5": [
+      {
+        "card": "human_king",
+        "pairs": 64,
+        "a": 0.4140625,
+        "b": 0.3828125,
+        "difference": 0.03125,
+        "ci": [
+          -0.140625,
+          0.203125
+        ],
+        "meanVPDifference": 4.875,
+        "aOutright": 26,
+        "bOutright": 24,
+        "aPlaced": 0.5625,
+        "bPlaced": 0
+      },
+      {
+        "card": "golem_cristal",
+        "pairs": 64,
+        "a": 0.375,
+        "b": 0.3671875,
+        "difference": 0.0078125,
+        "ci": [
+          -0.1484375,
+          0.171875
+        ],
+        "meanVPDifference": -0.71875,
+        "aOutright": 22,
+        "bOutright": 21,
+        "aPlaced": 0.59375,
+        "bPlaced": 0.109375
+      },
+      {
+        "card": "golem_king",
+        "pairs": 64,
+        "a": 0.296875,
+        "b": 0.3984375,
+        "difference": -0.1015625,
+        "ci": [
+          -0.234375,
+          0.03125
+        ],
+        "meanVPDifference": 1.09375,
+        "aOutright": 18,
+        "bOutright": 24,
+        "aPlaced": 0.171875,
+        "bPlaced": 0
+      }
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "createdAt": "2026-10-08T05:03:42.310Z",
+  "games": 768,
+  "seeds": 64,
+  "targets": [
+    "human_king",
+    "golem_cristal",
+    "golem_king"
+  ],
+  "options": {
+    "worlds": 2,
+    "horizon": 1,
+    "beam": 2
+  },
+  "source": {
+    "public/js/engine.js": "70e545457dd17d6a97be635f6f3a126f682d5b07f92a2bfa26ab02254a5a70b4",
+    "public/js/cards.js": "6ec270f9c8fece819042d3ec581f7cd0c41e2e8a69c61443a21dc43f5135c562",
+    "scripts/strategy-policies.mjs": "689a6f6cb9eca6080b02b6ef2dda885af038c4e167381335d2a5fbab33172849",
+    "scripts/adaptive-strategies.mjs": "41636deb581fa175907fdd2a3ae5fd5b7fe71add0ac5fd55b9286a64c765947a",
+    "scripts/benchmark-adaptive-strategies.mjs": "d2b689d0874c29d9f8c4a8142bf5fd348fa8494682b03a0949afc925ab0e5a8d",
+    "scripts/validate-adaptive-retention.mjs": "8457220249efe1bd5da8b15ab643d4b7e49bdc97342b912a61b7438634281855"
+  },
+  "notes": "Independent seeds 400000..400063, selected 3 cards after discovery. Same first-mulligan keep/exchange intervention; balanced opponents."
+}

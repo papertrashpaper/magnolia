@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "createdAt": "2026-10-08T04:58:42.183Z",
+  "seeds": 64,
+  "cardSeeds": 32,
+  "options": {
+    "worlds": 2,
+    "horizon": 1,
+    "beam": 2
+  },
+  "games": 1664,
+  "pilot": false,
+  "source": {
+    "public/js/engine.js": "70e545457dd17d6a97be635f6f3a126f682d5b07f92a2bfa26ab02254a5a70b4",
+    "public/js/cards.js": "6ec270f9c8fece819042d3ec581f7cd0c41e2e8a69c61443a21dc43f5135c562",
+    "scripts/strategy-policies.mjs": "689a6f6cb9eca6080b02b6ef2dda885af038c4e167381335d2a5fbab33172849",
+    "scripts/adaptive-strategies.mjs": "41636deb581fa175907fdd2a3ae5fd5b7fe71add0ac5fd55b9286a64c765947a",
+    "scripts/benchmark-adaptive-strategies.mjs": "d2b689d0874c29d9f8c4a8142bf5fd348fa8494682b03a0949afc925ab0e5a8d"
+  },
+  "targets": [
+    "human_king",
+    "dwarf_king",
+    "elf_queen",
+    "goblin_king",
+    "golem_king",
+    "demon_storm",
+    "golem_cristal",
+    "dwarf_beer",
+    "elf_caster"
+  ],
+  "notes": "Natural all-adaptive games; matched focal adaptive vs fixed savings, balanced opponents; offered-card first-mulligan keep vs exchange, balanced opponents. No real hidden cards or game seed given to planner."
+}

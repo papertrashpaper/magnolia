@@ -9,7 +9,13 @@
     "benchmark:cpu": "node scripts/benchmark-cpu.mjs",
     "benchmark:strategies": "node scripts/benchmark-strategies.mjs",
     "analyze:strategies": "node scripts/analyze-strategies.mjs",
-    "replay:strategy": "node scripts/replay-strategy-match.mjs"
+    "replay:strategy": "node scripts/replay-strategy-match.mjs",
+    "benchmark:adaptive": "node scripts/run-adaptive-benchmark.mjs",
+    "analyze:adaptive": "node scripts/analyze-adaptive-strategies.mjs",
+    "replay:adaptive": "node scripts/replay-adaptive-match.mjs",
+    "validate:adaptive-retention": "node scripts/run-adaptive-benchmark.mjs --validation",
+    "audit:research-deals": "node scripts/audit-research-deals.mjs",
+    "benchmark:royal-route": "node scripts/benchmark-royal-route.mjs"
   },
   "engines": {
     "node": ">=22"

@@ -1,0 +1,16 @@
+import {Worker} from 'node:worker_threads';
+import {readFile,writeFile,appendFile,mkdir} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {adaptiveMatch} from './benchmark-adaptive-strategies.mjs';
+const dir='research/adaptive-strategy-comparison';await mkdir(dir,{recursive:true});
+const seeds=64,targets=['human_king','golem_cristal','golem_king'],options={worlds:2,horizon:1,beam:2},tasks=[];
+for(const count of [2,5])for(const card of targets)for(let seed=0;seed<seeds;seed++)for(const treatment of ['keep','exchange']){const focal=seed%count,controllers=Array(count).fill('balanced');controllers[focal]='adaptive';tasks.push({id:tasks.length,options,group:'card',seed:400000+seed,controllers,focal,card,treatment});}
+const discovery=JSON.parse(await readFile(dir+'/results-config.json','utf8')),source={...discovery.source};source['scripts/validate-adaptive-retention.mjs']=createHash('sha256').update(await readFile('scripts/validate-adaptive-retention.mjs')).digest('hex');
+for(const [p,h] of Object.entries(source))if(createHash('sha256').update(await readFile(p)).digest('hex')!==h)throw Error('Discovery source changed: '+p);
+const cp=dir+'/validation-config.json',path=dir+'/validation.jsonl',existing=await readFile(cp,'utf8').then(JSON.parse).catch(()=>null),config={schema:1,createdAt:existing?.createdAt??new Date().toISOString(),games:tasks.length,seeds,targets,options,source,notes:'Independent seeds 400000..400063, selected 3 cards after discovery. Same first-mulligan keep/exchange intervention; balanced opponents.'};
+if(existing&&JSON.stringify(existing.source)!==JSON.stringify(source))throw Error('Archive validation data before changing source');await writeFile(cp,JSON.stringify(config,null,2)+'\n');
+const old=await readFile(path,'utf8').catch(()=>''),done=new Set(old.split('\n').filter(Boolean).map(l=>JSON.parse(l).id)),queue=tasks.filter(t=>!done.has(t.id));let position=0,completed=done.size,writes=Promise.resolve();const start=Date.now(),workers=Number(process.env.ADAPTIVE_VALIDATION_WORKERS||8);console.log(JSON.stringify({games:tasks.length,resumed:done.size,workers}));
+await Promise.all(Array.from({length:Math.min(workers,queue.length)},()=>new Promise((resolve,reject)=>{const w=new Worker(new URL('./benchmark-adaptive-strategies.mjs',import.meta.url));const next=()=>position<queue.length?w.postMessage(queue[position++]):w.terminate().then(resolve);w.on('error',reject);w.on('message',m=>{if(m.error){w.terminate();reject(Error(m.error));return;}writes=writes.then(()=>appendFile(path,JSON.stringify(m.result)+'\n'));completed++;if(completed%20===0||completed===tasks.length)console.log(JSON.stringify({completed,total:tasks.length,seconds:Math.round((Date.now()-start)/1000)}));next();});next();})));await writes;
+// Verify the persisted checkpoint, and recover a missing record before claiming completion.
+const persisted=new Set((await readFile(path,'utf8')).split('\n').filter(Boolean).map(l=>JSON.parse(l).id));for(const task of tasks)if(!persisted.has(task.id))await appendFile(path,JSON.stringify(adaptiveMatch(task))+'\n');
+console.log(JSON.stringify({complete:true,games:tasks.length,seconds:Math.round((Date.now()-start)/1000)}));

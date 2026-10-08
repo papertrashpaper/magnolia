@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "baseCommit": "ab83ed748484f9796137af77968711a8f43ae59c",
+  "node": "v24.19.0",
+  "games": 2944,
+  "archives": {
+    "results": {
+      "games": 1664,
+      "bytes": 1833203,
+      "base64Length": 2444272,
+      "sha256": "fd42081986802cb8e54e85505024f77072762b176438d4668efe470e987e3631"
+    },
+    "validation": {
+      "games": 768,
+      "bytes": 707056,
+      "base64Length": 942744,
+      "sha256": "220aa02cd5aa24ed9aabf50f6f4700d49e9dd37656dfc6aa1276c1f0870eec57"
+    },
+    "royal": {
+      "games": 512,
+      "bytes": 41168,
+      "base64Length": 54892,
+      "sha256": "2c640dc8cf509fe5faa2492d566fca92d666f6f8cb54754aecb86b63b1182593"
+    }
+  },
+  "checks": {
+    "fullSuiteBeforeRoyalTest": {
+      "tests": 72,
+      "passed": 72
+    },
+    "finalResearchTests": {
+      "tests": 3,
+      "passed": 3
+    },
+    "allCurrentTestsVerified": 73,
+    "cardConservationEveryMatch": true,
+    "VPAttributionEveryMatch": true,
+    "uniqueCompleteMatchIds": true,
+    "separateCheckpointVerification": true,
+    "dealAuditDecks": 10000
+  },
+  "excluded": "Biased preliminary seeds were discarded; final games use SHA-256 mixed seeds before LCG initialization."
+}

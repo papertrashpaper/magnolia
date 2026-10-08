@@ -1,0 +1,5 @@
+results.jsonl
+pilot*.json*
+validation.jsonl
+royal.jsonl
+*.jsonl.gz

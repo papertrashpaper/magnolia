@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "createdAt": "2026-10-08T05:15:27.724Z",
+  "games": 512,
+  "seeds": 64,
+  "hand": [
+    "human_great_marchant",
+    "human_marchant",
+    "human_king",
+    "demon_storm",
+    "golem_king"
+  ],
+  "handProbability": 1.0805402268918368e-7,
+  "options": {
+    "worlds": 2,
+    "horizon": 1,
+    "beam": 2
+  },
+  "source": {
+    "public/js/engine.js": "70e545457dd17d6a97be635f6f3a126f682d5b07f92a2bfa26ab02254a5a70b4",
+    "public/js/cards.js": "6ec270f9c8fece819042d3ec581f7cd0c41e2e8a69c61443a21dc43f5135c562",
+    "scripts/strategy-policies.mjs": "689a6f6cb9eca6080b02b6ef2dda885af038c4e167381335d2a5fbab33172849",
+    "scripts/adaptive-strategies.mjs": "41636deb581fa175907fdd2a3ae5fd5b7fe71add0ac5fd55b9286a64c765947a",
+    "scripts/benchmark-royal-route.mjs": "aa65c01a4883ec063da9ce2269df59084f6812b62439ee346fbc541307728915"
+  },
+  "notes": "Ideal starting 5 cards, first 4 rounds scripted vs adaptive on the same ideal hand; balanced opponents. Natural acquisition rate is not measured by this offered-hand experiment."
+}
