@@ -1,5 +1,5 @@
 import {matBounds,createRefreshments,servingLabel} from './tavern.js?v=1';
-import {tutorialGame,tutorialGuide,tutorialObservation,tutorialPhaseOutcome,TUTORIAL_CHAPTERS,TUTORIAL_REFERENCE,tutorialTask,tutorialPlacementAllowed,TUTORIAL_SLIDES,TUTORIAL_FRONTLINE,tutorialFeedback,tutorialPlacementFeedback,tutorialTrace} from './tutorial.js?v=14';
+import {tutorialGame,tutorialGuide,tutorialObservation,tutorialPhaseOutcome,TUTORIAL_CHAPTERS,TUTORIAL_REFERENCE,tutorialTask,tutorialPlacementAllowed,TUTORIAL_SLIDES,TUTORIAL_FRONTLINE,tutorialFeedback,tutorialTrace} from './tutorial.js?v=14';
 import {bindCardDrag} from './drag.js?v=8';
 import {CARDS,CARD,RACES,JOBS,RACE_BONUS,JOB_BONUS,effectText} from './cards.js?v=3';
 import {newGame,submit,nextRound,publicView,previewPlacement,legalCells,bounds,power,level,CPU_LEVELS,normalizeCPU} from './engine.js?v=11';
@@ -65,7 +65,10 @@ function advanceReplay(){
  render();scheduleReplay();
 }
 function showNotice(title,changes,note){
- clearTimeout(noticeTimer);notice={title,changes,note};if(mode==='local'&&game?.tutorial)render();else renderCenter();
+ clearTimeout(noticeTimer);
+ // Tutorial results are explained once, when the actual phase resolves.
+ if(mode==='local'&&game?.tutorial){notice=null;render();return;}
+ notice={title,changes,note};renderCenter();
 }
 function changeHTML(c){const lv=levelChangeSentence(c);return `<li class="${c.delta>0?'gain':'loss'}">${esc(changeSentence(c))}${lv?`<small class="level-change">${esc(lv)}</small>`:''}</li>`;}
 function summaryHTML(summary){return `<div class="phase-summary">${summary.map(p=>`<div><b>${esc(p.name)}</b><span>${p.changes.length?p.changes.map(c=>`${{gold:'お金',tech:'技術',faith:'信仰',vp:'VP'}[c.stat]} ${c.before} → ${c.after} (${c.delta>0?'+':''}${c.delta})${['tech','faith'].includes(c.stat)?` · Lv.${level(c.before)} → Lv.${level(c.after)}`:''}`).join(' ／ '):'増減なし'}</span></div>`).join('')}</div>`;}
@@ -74,7 +77,7 @@ function renderCenter(){
  if(mode==='setup'||(playback&&state.resolution.events[playback.index].phase==='draw')||(!playback&&!notice)){host.hidden=true;host.innerHTML='';return;}
  host.hidden=false;
  const event=playback?state.resolution.events[playback.index]:notice;
- const learning=mode==='local'&&game?.tutorial?(playback?tutorialFeedback(state.resolution,playback.index,game.tutorialChapter??0,myId):state.phase==='place'&&!event.title.includes('取り消し')?tutorialPlacementFeedback(state.players.find(p=>p.id===myId),moves,game.tutorialChapter??0):null):null;
+ const learning=mode==='local'&&game?.tutorial&&playback?tutorialFeedback(state.resolution,playback.index,game.tutorialChapter??0,myId):null;
  host.style.left='';host.style.right='';host.style.transform='';
  host.className=`center-notice ${playback?'resolving':'preview-notice'} ${event.battle?'battle-notice':''}`;
  host.innerHTML=`<div class="center-message" role="status" aria-live="polite"><p class="eyebrow">${playback?`${PHASE_NAMES[event.phase]} · ${playback.index+1}/${state.resolution.events.length}`:'仮配置'}</p><h2>${esc(event.title)}</h2>${event.battle?battleHTML(event):''}${event.card?`<p class="source-card">${esc(CARD[event.card].name)}</p>`:''}${learning?`${tutorialLearningHTML(learning)}${event.changes.length?`<details class="tutorial-effect-details"><summary>増減の内訳</summary><ul class="change-list">${event.changes.map(changeHTML).join('')}</ul></details>`:''}`:event.summary?summaryHTML(event.summary):event.changes.length?`<ul class="change-list">${event.changes.map(changeHTML).join('')}</ul>`:`<p class="muted">${event.battle?'戦力を比べて順位を決定します。同戦力は同順位です。':event.playerId?'この処理によるお金・技術・信仰・VPの増減はありません。':'全員の処理を順番に確認します。'}</p>`}${learning&&playback?'<button id="tutorialShowLog" class="quiet tutorial-log-link">発動した履歴を見る</button>':''}${event.note?`<p class="muted small">${esc(event.note)}</p>`:''}</div>${playback?`<div class="replay-controls"><button id="autoReplayButton" aria-pressed="${autoPlay}">${autoPlay?'自動再生を停止':'自動再生（ゆっくり）'}</button><button id="advanceReplayButton" class="primary">${learning&&game?.tutorial?'解説を閉じて次へ':playback.index===state.resolution.events.length-1?'確認を終える':'次の処理'}</button></div>`:'<button id="closeNoticeButton" class="quiet notice-close" aria-label="増減メッセージを閉じる">解説を閉じる</button>'}`;
@@ -252,7 +255,7 @@ function tutorialLearningHTML(learning,compact=false){
 function tutorialHTML(){
  if(mode!=='local'||!game?.tutorial)return '';
  const chapter=game.tutorialChapter??0,guide=tutorialGuideNow();
- return `<section class="panel tutorial-guide tutorial-compact" aria-label="チュートリアル"><div class="tutorial-top"><span class="eyebrow">第${chapter+1}章 / 3 · 各章1ラウンド</span><button data-tutorial-menu class="quiet">練習を終了</button></div><nav class="tutorial-chapters" aria-label="練習する章">${TUTORIAL_CHAPTERS.map((c,i)=>`<button data-tutorial-chapter="${i}" ${chapter===i?'aria-current="step"':''}>${i+1}. ${c.title.split('：')[0]}</button>`).join('')}</nav><div class="tutorial-current" aria-live="polite"><h2>${esc(guide.title)}</h2><p>${esc(tutorialBrief(guide))}</p>${tutorialLearningHTML(guide.learning,true)}${!guide.learning&&guide.personal.length?`<div class="tutorial-personal"><b>今回のあなたの王国では</b><p>${esc(guide.personal[0])}</p>${guide.personal.length>1?`<details><summary>ほかの増減（${guide.personal.length-1}件）</summary><ul>${guide.personal.slice(1).map(t=>`<li>${esc(t)}</li>`).join('')}</ul></details>`:''}</div>`:''}</div><div class="tutorial-reading-links"><button data-tutorial-read="lesson" class="quiet">この章の説明</button>${state.phase==='place'&&!playback?'<button data-tutorial-read="hints" class="quiet">盤面を見るヒント</button>':''}<button data-tutorial-read="0" class="quiet">解説集</button></div></section>`;
+ return `<section class="panel tutorial-guide tutorial-compact" aria-label="チュートリアル"><div class="tutorial-top"><span class="eyebrow">第${chapter+1}章 / 3 · 各章1ラウンド</span><button data-tutorial-menu class="quiet">練習を終了</button></div><nav class="tutorial-chapters" aria-label="練習する章">${TUTORIAL_CHAPTERS.map((c,i)=>`<button data-tutorial-chapter="${i}" ${chapter===i?'aria-current="step"':''}>${i+1}. ${c.title.split('：')[0]}</button>`).join('')}</nav>${!playback?`<div class="tutorial-current" aria-live="polite"><h2>${esc(guide.title)}</h2><p>${esc(tutorialBrief(guide))}</p></div>`:''}<div class="tutorial-reading-links"><button data-tutorial-read="lesson" class="quiet">この章の説明</button>${state.phase==='place'&&!playback?'<button data-tutorial-read="hints" class="quiet">盤面を見るヒント</button>':''}<button data-tutorial-read="0" class="quiet">解説集</button></div></section>`;
 }
 function startLocal(){
  try{
