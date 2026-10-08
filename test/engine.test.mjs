@@ -7,9 +7,54 @@ import {cpuDraw,cpuPlace} from '../public/js/cpu.js';
 const player=(hand=[],gold=20)=>({...makePlayer('a','A'),hand:[...hand],gold});
 const board=(cards)=>cards.map(([card,x,y])=>({card,x,y}));
 function rng(seed=1){return()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};}
-test('41種類・102枚、王1枚、眼2枚、その他デーモン1枚',()=>{
- assert.equal(CARDS.length,41);assert.equal(CARDS.reduce((s,c)=>s+c.copies,0),102);
- for(const c of CARDS){if(c.job==='ruler')assert.equal(c.copies,1);if(c.race==='demon')assert.equal(c.copies,c.id==='demon_eye'?2:1);}
+test('説明書の41種類すべての収録枚数と種族別合計が一致する',()=>{
+ const expected={
+  human_knight:3,
+  human_marchant:3,
+  human_smith:3,
+  human_sorcerer:3,
+  human_saint:3,
+  human_great_marchant:2,
+  human_undertaker:2,
+  human_king:1,
+  dwarf_pugilist:3,
+  dwarf_gem:3,
+  dwarf_cook:3,
+  dwarf_alchemist:3,
+  dwarf_saint:3,
+  dwarf_beer:2,
+  dwarf_gardian:2,
+  dwarf_king:1,
+  elf_archer:3,
+  elf_marchant:3,
+  elf_artist:3,
+  elf_mistic:3,
+  elf_saint:3,
+  elf_caster:2,
+  elf_follower:2,
+  elf_queen:1,
+  goblin_soldier:3,
+  goblin_scavenger:3,
+  goblin_junk:3,
+  goblin_saint:3,
+  goblin_lunatic:3,
+  goblin_great_soldier:2,
+  goblin_strategist:2,
+  goblin_king:1,
+  golem_iron:3,
+  golem_gold:3,
+  golem_stollow:3,
+  golem_cristal:2,
+  golem_king:1,
+  demon_destroy:3,
+  demon_eye:3,
+  demon_pest:3,
+  demon_storm:1,
+ };
+ assert.equal(CARDS.length,41);
+ assert.deepEqual(Object.fromEntries(CARDS.map(c=>[c.id,c.copies])),expected);
+ assert.equal(CARDS.reduce((s,c)=>s+c.copies,0),102);
+ assert.deepEqual(Object.fromEntries(['human','dwarf','elf','goblin','golem','demon'].map(r=>[r,CARDS.filter(c=>c.race===r).reduce((s,c)=>s+c.copies,0)])),{human:20,dwarf:20,elf:20,goblin:20,golem:12,demon:10});
 });
 test('技術・信仰の全境界',()=>{assert.deepEqual(Array.from({length:16},(_,i)=>level(i)),[0,1,1,2,2,2,2,3,3,3,3,3,3,3,3,4]);});
 test('最初のカードの相対位置は後から決まり、幅と高さ3以内',()=>{

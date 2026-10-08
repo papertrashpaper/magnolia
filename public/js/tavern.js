@@ -1,4 +1,4 @@
-import {bounds} from './engine.js?v=12';
+import {bounds} from './engine.js?v=13';
 
 // Empty mats reserve the same visible extent as the first placed card and its
 // neighbours. These are display bounds only, never additional legal cells.

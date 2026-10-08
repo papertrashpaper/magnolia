@@ -1,5 +1,5 @@
 import {roundReview} from './review.js?v=11';
-import {CARD,CARDS,RACE_BONUS,JOB_BONUS} from './cards.js?v=3';
+import {CARD,CARDS,RACE_BONUS,JOB_BONUS} from './cards.js?v=4';
 export const level=n=>n===15?4:n>=7?3:n>=3?2:n>=1?1:0;
 export const clone=x=>structuredClone(x);
 export const CPU_LEVELS={easy:'弱い',normal:'普通',hard:'強い',expert:'凄腕',overlord:'覇王'};

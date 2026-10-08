@@ -89,7 +89,7 @@ for(const race of Object.keys(RACES)){
  for(const card of CARDS.filter(c=>c.race===race)){const g=guidance.cards.find(g=>g.id===card.id);md+=`| **${card.name}**（${card.cost}金／${card.power}／${JOBS[card.job]}） | ${g.keep} | ${g.play} | ${g.reconsider} |\n`;}
  md+='\n';
 }
-md+='## 現在のカード効果\n\nカードガイドの前提を見直すための一覧です。枚数は現在の仮構成。\n\n| カード | 枚数 | 効果 |\n|---|---:|---|\n';
+md+='## 現在のカード効果\n\nカードガイドの前提を見直すための一覧です。枚数は2026-10-08に提供された説明書に準拠。比較対戦の結果は変更前の仮構成によるものです。\n\n| カード | 枚数 | 効果 |\n|---|---:|---|\n';
 for(const c of CARDS)md+=`| ${c.name} | ${c.copies} | ${c.effects.map(effectText).join('／')} |\n`;
 md+='\n[編集・再利用用のカード別データ](card-guidance.json)。`node scripts/build-card-guide.mjs` で一覧を再生成し、`node scripts/card-decision-examples.mjs` で判断例を再計算できます。価格・効果が変わったときは説明文も見直してください。生成されるメタデータだけでは推奨条件は更新されません。\n';
 await writeFile(dir+'/CARD_GUIDE.md',md);

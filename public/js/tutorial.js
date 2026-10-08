@@ -1,5 +1,5 @@
-import {newGame,level,power,previewPlacement,legalCells,STAT_NAMES} from './engine.js?v=12';
-import {CARD,RACES,JOBS} from './cards.js?v=3';
+import {newGame,level,power,previewPlacement,legalCells,STAT_NAMES} from './engine.js?v=13';
+import {CARD,RACES,JOBS} from './cards.js?v=4';
 
 export const TUTORIAL_CHAPTERS=[
  {title:'序盤：王国をつくる',intro:'マグノリアは、カードを王国に配置して勝利点（VP）を稼ぐゲームです。最後に最もVPが多い人が勝ちます。第1章は何もない王国から、手札交換・配置・各フェーズを1回ずつ試します。',goal:'最初の例：人間の行商を置き、その後ろにドワーフの料理人を置いてみましょう。行商の収入、料理人の発展とVPを1ラウンドで確認できます。この練習では、案内したカードと場所だけ操作できます。'},

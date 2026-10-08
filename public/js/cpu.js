@@ -1,5 +1,5 @@
-import {CARD,CARDS} from './cards.js?v=3';
-import {clone,legalCells,placeOne,power,level,amount,resolveRound,normalizeCPU} from './engine.js?v=12';
+import {CARD,CARDS} from './cards.js?v=4';
+import {clone,legalCells,placeOne,power,level,amount,resolveRound,normalizeCPU} from './engine.js?v=13';
 function potential(p){
  let score=0;
  for(const axis of ['x','y'])for(const type of ['race','job']){
