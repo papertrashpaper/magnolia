@@ -1,0 +1,22 @@
+{
+  "baseCommit": "ae092fdb36ef905f384bb1653990dfa79ff986a5",
+  "node": "v24.19.0",
+  "games": 7980,
+  "archiveSha256": "176820feee34f1c1bf823058efb66dfc920e4a47c4fecc0218dbdf308d380a19",
+  "archiveBytes": 897154,
+  "checks": {
+    "tests": 70,
+    "passed": 70,
+    "cardConservationEveryMatch": true,
+    "attributedVPMatchesFinalVP": true,
+    "uniqueCompleteMatchIds": true
+  },
+  "rawFieldSemantics": {
+    "endVP": "Any final VP >=40, including final gold conversion",
+    "endReason": "nine when endNine=true, otherwise vp; simultaneous conditions possible"
+  },
+  "analysisFieldSemantics": {
+    "endVP": "Any VP minus sources.goldVP >=40, before final gold conversion"
+  },
+  "nodeVersionNote": "Runtime used for this comparison; supported Node.js >=22"
+}

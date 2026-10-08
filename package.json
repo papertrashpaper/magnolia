@@ -6,7 +6,10 @@
   "scripts": {
     "start": "node server.mjs",
     "test": "node --test test/*.test.mjs",
-    "benchmark:cpu": "node scripts/benchmark-cpu.mjs"
+    "benchmark:cpu": "node scripts/benchmark-cpu.mjs",
+    "benchmark:strategies": "node scripts/benchmark-strategies.mjs",
+    "analyze:strategies": "node scripts/analyze-strategies.mjs",
+    "replay:strategy": "node scripts/replay-strategy-match.mjs"
   },
   "engines": {
     "node": ">=22"

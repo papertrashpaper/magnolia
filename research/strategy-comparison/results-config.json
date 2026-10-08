@@ -1,0 +1,104 @@
+{
+  "schema": 1,
+  "createdAt": "2026-10-08T04:06:53.968Z",
+  "pilot": false,
+  "seeds": 24,
+  "source": {
+    "public/js/engine.js": "70e545457dd17d6a97be635f6f3a126f682d5b07f92a2bfa26ab02254a5a70b4",
+    "public/js/cards.js": "6ec270f9c8fece819042d3ec581f7cd0c41e2e8a69c61443a21dc43f5135c562",
+    "scripts/strategy-policies.mjs": "689a6f6cb9eca6080b02b6ef2dda885af038c4e167381335d2a5fbab33172849",
+    "scripts/benchmark-strategies.mjs": "be9333231bc318b9ac51cf4cf451aa3ffb02ead4aa0a90531532b6dee3e77b64"
+  },
+  "strategies": {
+    "balanced": {
+      "name": "適応型",
+      "vp": 1,
+      "income": 1,
+      "tech": 1,
+      "faith": 1,
+      "war": 1,
+      "bonus": 1,
+      "slots": 0,
+      "gold": 1
+    },
+    "tech": {
+      "name": "技術得点型",
+      "vp": 1.2,
+      "income": 0.9,
+      "tech": 2.4,
+      "faith": 0.45,
+      "war": 0.7,
+      "bonus": 1,
+      "slots": 0,
+      "gold": 0.8
+    },
+    "faith": {
+      "name": "信仰戦力型",
+      "vp": 1.1,
+      "income": 0.9,
+      "tech": 0.45,
+      "faith": 2.4,
+      "war": 1.4,
+      "bonus": 1,
+      "slots": 0,
+      "gold": 0.8
+    },
+    "war": {
+      "name": "戦争特化型",
+      "vp": 0.65,
+      "income": 0.8,
+      "tech": 0.6,
+      "faith": 0.8,
+      "war": 2.5,
+      "bonus": 0.7,
+      "slots": 0,
+      "gold": 0.8
+    },
+    "economy": {
+      "name": "収入先行型",
+      "vp": 1,
+      "income": 2.5,
+      "tech": 1,
+      "faith": 1,
+      "war": 0.8,
+      "bonus": 0.8,
+      "slots": 0,
+      "gold": 1.2
+    },
+    "bonus": {
+      "name": "3枚揃え型",
+      "vp": 1,
+      "income": 0.8,
+      "tech": 0.8,
+      "faith": 0.8,
+      "war": 0.8,
+      "bonus": 3,
+      "slots": 0,
+      "gold": 0.8
+    },
+    "rush": {
+      "name": "9体早期終了型",
+      "vp": 0.8,
+      "income": 0.5,
+      "tech": 0.6,
+      "faith": 0.6,
+      "war": 1,
+      "bonus": 0.7,
+      "slots": 1.8,
+      "gold": 0.6
+    },
+    "savings": {
+      "name": "貯金・君主型",
+      "vp": 0.8,
+      "income": 1.5,
+      "tech": 0.6,
+      "faith": 0.6,
+      "war": 0.8,
+      "bonus": 0.6,
+      "slots": 0,
+      "gold": 2.7
+    }
+  },
+  "games": 7980,
+  "notes": "Seat rotations control hand allocation, not turn advantage. Policies do not access hidden information. Ties split victory credit."
+}
