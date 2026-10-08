@@ -1,5 +1,5 @@
 // Pointer Events support both mouse and touch without exposing private hands.
-export function bindCardDrag(root,onDrop,onBlocked=()=>{}){
+export function bindCardDrag(root,onDrop,onBlocked=()=>{},onDragChange=()=>{}){
  let gesture=null,ghost=null,target=null,frame=null,suppressUntil=0;
  const controller=new AbortController(),options={signal:controller.signal};
  function hover(){
@@ -18,6 +18,7 @@ export function bindCardDrag(root,onDrop,onBlocked=()=>{}){
  function clear(){
   cancelAnimationFrame(frame);frame=null;ghost?.remove();ghost=null;target?.classList.remove('drop-target');target=null;
   root.querySelector('.drag-source')?.classList.remove('drag-source');root.classList.remove('dragging-card');
+  if(gesture?.active)onDragChange(null);
   if(gesture){try{(gesture.active?root:gesture.card).releasePointerCapture(gesture.id);}catch{}gesture=null;}
  }
  root.addEventListener('pointerdown',e=>{
@@ -40,7 +41,7 @@ export function bindCardDrag(root,onDrop,onBlocked=()=>{}){
   }
   e.preventDefault();
   if(!gesture.active){
-   gesture.active=true;root.setPointerCapture(gesture.id);gesture.card.classList.add('drag-source');root.classList.add('dragging-card');
+   gesture.active=true;root.setPointerCapture(gesture.id);gesture.card.classList.add('drag-source');root.classList.add('dragging-card');onDragChange(gesture.index);
    // The stable root keeps capture if an online update replaces the hand.
    // Reveal the play mat rather than asking players to drop on an offscreen cell.
    root.querySelector('#playerBoard .board-wrap')?.scrollIntoView({block:'center',behavior:'instant'});

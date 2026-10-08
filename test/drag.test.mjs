@@ -30,6 +30,14 @@ test('two mouse drops survive replacement of the hand and suppress the generated
  assert.deepEqual(drops,[[0,0,0],[0,1,0]]);
 });
 
+test('combo hints follow the lifted card and reset on drop or cancellation',t=>{
+ const f=fixture(t),changes=[];
+ const dispose=bindCardDrag(f.root,()=>{},()=>{},i=>changes.push(i));t.after(()=>{dispose();f.restore();});
+ f.down(true);f.move(150,402);assert.deepEqual(changes,[]);
+ f.down();f.move(100,100);f.up();assert.deepEqual(changes,[0,null]);
+ f.down();f.move(100,100);f.emit(f.doc,'pointercancel');assert.deepEqual(changes,[0,null,0,null]);
+});
+
 test('touch swipes scroll the hand while vertical touch drags place a card',t=>{
  const f=fixture(t),drops=[];const dispose=bindCardDrag(f.root,(...args)=>drops.push(args));t.after(()=>{dispose();f.restore();});
  f.down(true);assert.equal(f.move(150,402).defaultPrevented,false);f.up();assert.deepEqual(drops,[]);

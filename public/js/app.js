@@ -1,10 +1,11 @@
 import {matBounds,createRefreshments,servingLabel} from './tavern.js?v=2';
 import {tutorialGame,tutorialGuide,tutorialObservation,tutorialPhaseOutcome,TUTORIAL_CHAPTERS,TUTORIAL_REFERENCE,tutorialTask,tutorialPlacementAllowed,TUTORIAL_SLIDES,TUTORIAL_FRONTLINE,tutorialFeedback,tutorialPlacementFeedback,tutorialTrace} from './tutorial.js?v=18';
-import {bindCardDrag} from './drag.js?v=8';
+import {bindCardDrag} from './drag.js?v=9';
 import {CARDS,CARD,RACES,JOBS,RACE_BONUS,JOB_BONUS,effectText} from './cards.js?v=3';
 import {newGame,submit,nextRound,publicView,previewPlacement,legalCells,bounds,power,level,CPU_LEVELS,normalizeCPU} from './engine.js?v=12';
 import {fillCPU} from './cpu.js?v=12';
-import {PHASE_NAMES,scoreRank,changeSentence,levelChangeSentence,levelProgress,battleRank,resolutionView,undoChanges,finalResultMessages,logClassName} from './presentation.js?v=6';
+import {PHASE_NAMES,scoreRank,changeSentence,levelChangeSentence,levelProgress,battleRank,resolutionView,undoChanges,finalResultMessages,logClassName} from './presentation.js?v=7';
+import {completedCombos,newCombos,placementComboHints} from './combos.js?v=1';
 
 const app=document.querySelector('#app');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -23,6 +24,7 @@ function mobileJump(target){
 }
 let moves=[],discard=new Set(),selected=null,draftKey='',busy=false,connection='';
 let playback=null,pendingView=null,playTimer=null,autoPlay=store.get('magnolia-auto-play',false),notice=null,noticeTimer=null;
+let placementCelebration=null;
 const seenResolutions=new Set();
 const seenFinalResults=new Set();
 let finalResultTimer=null;
@@ -64,18 +66,46 @@ function advanceReplay(){
  const event=state.resolution.events[playback.index];if(event.playerId)boardId=event.playerId;
  render();scheduleReplay();
 }
-function showNotice(title,changes,note){
+function showNotice(title,changes,note,combos=[]){
  clearTimeout(noticeTimer);
  // Three-card bonuses happen on placement; explain those in the draft.
  if(mode==='local'&&game?.tutorial){
   const bonus=changes.some(c=>/の(種族|職業)ボーナス/.test(c.source))||(game.tutorialChapter===2&&currentDraft().board.length===9);
   const learning=bonus&&!title.includes('取り消し')?tutorialPlacementFeedback(state.players.find(p=>p.id===myId),moves,game.tutorialChapter??0):null;
-  notice=learning?{title,changes,note,learning}:null;render();return;
+  notice=learning?{title,changes,note,learning,combos}:null;render();return;
  }
- notice={title,changes,note};renderCenter();
+ notice={title,changes,note,combos};renderCenter();
 }
 function changeHTML(c){const lv=levelChangeSentence(c);return `<li class="${c.delta>0?'gain':'loss'}">${esc(changeSentence(c))}${lv?`<small class="level-change">${esc(lv)}</small>`:''}</li>`;}
 function summaryHTML(summary){return `<div class="phase-summary">${summary.map(p=>`<div><b>${esc(p.name)}</b><span>${p.changes.length?p.changes.map(c=>`${{gold:'お金',tech:'技術',faith:'信仰',vp:'VP'}[c.stat]} ${c.before} → ${c.after} (${c.delta>0?'+':''}${c.delta})${['tech','faith'].includes(c.stat)?` · Lv.${level(c.before)} → Lv.${level(c.after)}`:''}`).join(' ／ '):'増減なし'}</span></div>`).join('')}</div>`;}
+function celebratingCombos(p){
+ if(playback){
+  const event=state.resolution.events[playback.index];
+  if(event.phase!=='place'||!event.card||event.playerId!==p.id)return [];
+  const before=resolutionView({...state,you:myId},playback.index-1).players.find(q=>q.id===p.id);
+  return newCombos(before,p);
+ }
+ return p.id===myId&&placementCelebration?completedCombos(p).filter(c=>placementCelebration.includes(c.key)):[];
+}
+function comboCardDecoration(p,cell,mini=false){
+ const groups=completedCombos(p).filter(g=>g.cells.some(c=>c.x===cell.x&&c.y===cell.y));
+ const fresh=celebratingCombos(p).some(g=>g.cells.some(c=>c.x===cell.x&&c.y===cell.y));
+ const types=[...new Set(groups.map(g=>g.type))];
+ return {classes:types.map(t=>'combo-'+t).join(' ')+(fresh?' combo-celebrate':''),keys:groups.map(g=>g.key).join(' '),label:groups.map(g=>g.label+'3枚揃い').join('、'),html:groups.length?`<span class="combo-card-marks ${mini?'mini-combo-marks':''}" aria-hidden="true">${types.map(t=>`<span class="combo-mark ${t}">${mini?(t==='race'?'種':'職'):(t==='race'?'種族揃い':'職業揃い')}</span>`).join('')}</span>`:''};
+}
+function comboLedgerHTML(p){
+ const groups=completedCombos(p);if(!groups.length)return '';
+ const actual=state.players.find(q=>q.id===p.id)?.bonuses??[];
+ return `<div class="combo-ledger"><b>✦ 3枚揃い</b><div>${groups.map(g=>`<button class="combo-chip ${g.type}" data-combo="${g.key}" data-combo-player="${p.id}" title="${esc(g.cells.map(c=>CARD[c.card].name).join('・'))}" aria-label="${esc(g.label)}の3枚を強調">${esc(g.label)}${!playback&&!actual.includes(g.key)?'（仮）':' ✓'}</button>`).join('')}</div><small>種族は緑・職業は紫。名前に触れると3枚を強調します。</small></div>`;
+}
+function availableComboHints(p){
+ if(playback||state.phase!=='place'||p.ready||moves.length>=2||busy)return [];
+ return placementComboHints(p).filter(h=>tutorialHandAllowed(h.handIndex)&&tutorialCellAllowed(h.x,h.y));
+}
+function comboAnnouncementHTML(groups,preview){
+ return groups.length?`<div class="combo-announcement"><strong>✦ ${preview?'仮配置で3枚揃い！':'3枚揃い成立！'} ✦</strong><div>${groups.map(g=>`<span class="combo-chip ${g.type}">${esc(g.label)}</span>`).join('')}</div></div>`:'';
+}
+function logOwnerLabel(entry){const kind=logClassName(entry,myId,state.players);return kind==='log-own'?'あなた':kind==='log-other'?'他プレイヤー':'全体';}
 function renderCenter(){
  const host=qs('#centerNotice');if(!host)return;
  if(mode==='setup'||(playback&&state.resolution.events[playback.index].phase==='draw')||(!playback&&!notice)){host.hidden=true;host.innerHTML='';return;}
@@ -84,7 +114,7 @@ function renderCenter(){
  const learning=mode==='local'&&game?.tutorial?(playback?tutorialFeedback(state.resolution,playback.index,game.tutorialChapter??0,myId):event.learning??null):null;
  host.style.left='';host.style.right='';host.style.transform='';
  host.className=`center-notice ${playback?'resolving':'preview-notice'} ${event.battle?'battle-notice':''} ${event.playerId?logClassName(event,myId,state.players):!playback?'log-own':''}`;
- host.innerHTML=`<div class="center-message" role="status" aria-live="polite"><p class="eyebrow">${playback?`${PHASE_NAMES[event.phase]} · ${playback.index+1}/${state.resolution.events.length}`:'仮配置'}</p><h2>${esc(event.title)}</h2>${event.battle?battleHTML(event):''}${event.card?`<p class="source-card">${esc(CARD[event.card].name)}</p>`:''}${learning?`${tutorialLearningHTML(learning)}${event.changes.length?`<details class="tutorial-effect-details"><summary>増減の内訳</summary><ul class="change-list">${event.changes.map(changeHTML).join('')}</ul></details>`:''}`:event.summary?summaryHTML(event.summary):event.changes.length?`<ul class="change-list">${event.changes.map(changeHTML).join('')}</ul>`:`<p class="muted">${event.battle?'戦力を比べて順位を決定します。同戦力は同順位です。':event.playerId?'この処理によるお金・技術・信仰・VPの増減はありません。':'全員の処理を順番に確認します。'}</p>`}${learning&&playback?'<button id="tutorialShowLog" class="quiet tutorial-log-link">発動した履歴を見る</button>':''}${event.note?`<p class="muted small">${esc(event.note)}</p>`:''}</div>${playback?`<div class="replay-controls"><button id="autoReplayButton" aria-pressed="${autoPlay}">${autoPlay?'自動再生を停止':'自動再生（ゆっくり）'}</button><button id="advanceReplayButton" class="primary">${learning&&game?.tutorial?'解説を閉じて次へ':playback.index===state.resolution.events.length-1?'確認を終える':'次の処理'}</button></div>`:'<button id="closeNoticeButton" class="quiet notice-close" aria-label="増減メッセージを閉じる">解説を閉じる</button>'}`;
+ host.innerHTML=`<div class="center-message" role="status" aria-live="polite"><p class="notice-owner">${event.playerId?logOwnerLabel(event):!playback?'あなた':'全体'}の行動</p>${comboAnnouncementHTML(playback&&event.after?celebratingCombos(event.after):event.combos??[],!playback)}<p class="eyebrow">${playback?`${PHASE_NAMES[event.phase]} · ${playback.index+1}/${state.resolution.events.length}`:'仮配置'}</p><h2>${esc(event.title)}</h2>${event.battle?battleHTML(event):''}${event.card?`<p class="source-card">${esc(CARD[event.card].name)}</p>`:''}${learning?`${tutorialLearningHTML(learning)}${event.changes.length?`<details class="tutorial-effect-details"><summary>増減の内訳</summary><ul class="change-list">${event.changes.map(changeHTML).join('')}</ul></details>`:''}`:event.summary?summaryHTML(event.summary):event.changes.length?`<ul class="change-list">${event.changes.map(changeHTML).join('')}</ul>`:`<p class="muted">${event.battle?'戦力を比べて順位を決定します。同戦力は同順位です。':event.playerId?'この処理によるお金・技術・信仰・VPの増減はありません。':'全員の処理を順番に確認します。'}</p>`}${learning&&playback?'<button id="tutorialShowLog" class="quiet tutorial-log-link">発動した履歴を見る</button>':''}${event.note?`<p class="muted small">${esc(event.note)}</p>`:''}</div>${playback?`<div class="replay-controls"><button id="autoReplayButton" aria-pressed="${autoPlay}">${autoPlay?'自動再生を停止':'自動再生（ゆっくり）'}</button><button id="advanceReplayButton" class="primary">${learning&&game?.tutorial?'解説を閉じて次へ':playback.index===state.resolution.events.length-1?'確認を終える':'次の処理'}</button></div>`:'<button id="closeNoticeButton" class="quiet notice-close" aria-label="増減メッセージを閉じる">解説を閉じる</button>'}`;
  if(qs('#tutorialShowLog'))qs('#tutorialShowLog').onclick=()=>tutorialScrollTo(qs('.logs .tutorial-log-active')??qs('.log-panel'));
  if(qs('#advanceReplayButton'))qs('#advanceReplayButton').onclick=advanceReplay;
  if(qs('#autoReplayButton'))qs('#autoReplayButton').onclick=()=>{autoPlay=!autoPlay;store.set('magnolia-auto-play',autoPlay);renderCenter();scheduleReplay();};
@@ -116,8 +146,8 @@ function battleHTML(event){
 function miniKingdom(p,active){
  const b=bounds(p.board),width=b.maxX-b.minX+1;let html='';
  for(let y=b.minY;y<=b.maxY;y++)for(let x=b.minX;x<=b.maxX;x++){
-  const cell=p.board.find(c=>c.x===x&&c.y===y);
-  html+=cell?`<button data-card="${cell.card}" class="mini-card ${!p.board.some(c=>c.x===x&&c.y<y)?'frontline':'rearline'} ${active&&cell===p.board.at(-1)?'just-placed':''} ${playback&&state.resolution.events[playback.index].phase==='war'&&isCombatant(p,cell)?`war-combatant ${warStanding(p)===1?'war-survivor':'war-fallen'} ${state.resolution.events[playback.index].battle?'war-clash':'war-settled'}`:''}" aria-label="${esc(p.name)}の${CARD[cell.card].name}の詳細"><img src="${CARD[cell.card].image}" alt="${CARD[cell.card].name}">${!p.board.some(c=>c.x===x&&c.y<y)?'<span class="mini-front-label" aria-hidden="true">⚑</span>':''}</button>`:'<span class="mini-empty"></span>';
+  const cell=p.board.find(c=>c.x===x&&c.y===y),combo=cell?comboCardDecoration(p,cell,true):null;
+  html+=cell?`<button data-card="${cell.card}" data-combo-player="${p.id}" data-combo-keys="${combo.keys}" class="mini-card ${combo.classes} ${!p.board.some(c=>c.x===x&&c.y<y)?'frontline':'rearline'} ${active&&cell===p.board.at(-1)?'just-placed':''} ${playback&&state.resolution.events[playback.index].phase==='war'&&isCombatant(p,cell)?`war-combatant ${warStanding(p)===1?'war-survivor':'war-fallen'} ${state.resolution.events[playback.index].battle?'war-clash':'war-settled'}`:''}" aria-label="${esc(p.name)}の${CARD[cell.card].name}の詳細${combo.label?`、${combo.label}`:''}"><img src="${CARD[cell.card].image}" alt="${CARD[cell.card].name}">${combo.html}${!p.board.some(c=>c.x===x&&c.y<y)?'<span class="mini-front-label" aria-hidden="true">⚑</span>':''}</button>`:'<span class="mini-empty"></span>';
  }
  return p.board.length?`<div class="mini-board" style="grid-template-columns:repeat(${width},var(--mini-width,40px))">${html}</div>`:'<span class="muted small">まだ配置なし</span>';
 }
@@ -319,13 +349,13 @@ function applyView(view){
  if(state?.gameId&&view.gameId&&state.gameId!==view.gameId){clearTimeout(playTimer);clearTimeout(noticeTimer);playback=null;pendingView=null;notice=null;seenResolutions.clear();boardId=myId;clearFinalResults();}
  if(playback&&view.resolution?.id!==playback.id){pendingView=view;return;}
  state=view;const key=`${mode}:${view.room||''}:${view.gameId||''}:${view.round||0}:${view.phase}`;
- if(key!==draftKey){draftKey=key;moves=[];discard=new Set();selected=null;}
+ if(key!==draftKey){placementCelebration=null;draftKey=key;moves=[];discard=new Set();selected=null;}
  if(view.phase==='place'&&view.ownOrder?.moves)moves=structuredClone(view.ownOrder.moves);
  if(mode==='local'&&!game?.tutorial)store.set('magnolia-local',game);
  if(view.resolution?.events.length&&!seenResolutions.has(view.resolution.id)){seenResolutions.add(view.resolution.id);playback={id:view.resolution.id,index:0};notice=null;clearTimeout(noticeTimer);scheduleReplay();}
  render();
 }
-function returnSetup(){qs("#beerPourRig").classList.remove("is-pouring");clearFinalResults();seenFinalResults.clear();recoveryGeneration++;cleanupDrag?.();cleanupDrag=null;clearTimeout(playTimer);clearTimeout(noticeTimer);playback=null;pendingView=null;notice=null;seenResolutions.clear();stream?.close();clearTimeout(reconnectTimer);stream=null;mode='setup';game=null;state=null;moves=[];selected=null;draftKey='';renderSetup();renderCenter();}
+function returnSetup(){placementCelebration=null;qs("#beerPourRig").classList.remove("is-pouring");clearFinalResults();seenFinalResults.clear();recoveryGeneration++;cleanupDrag?.();cleanupDrag=null;clearTimeout(playTimer);clearTimeout(noticeTimer);playback=null;pendingView=null;notice=null;seenResolutions.clear();stream?.close();clearTimeout(reconnectTimer);stream=null;mode='setup';game=null;state=null;moves=[];selected=null;draftKey='';renderSetup();renderCenter();}
 function renderLobby(){
  app.innerHTML=`<section class="setup"><div class="setup-head"><h1>参加者を待っています</h1><button id="backButton" class="quiet">戻る</button></div><div class="setup-grid"><section class="panel"><p class="muted small">部屋番号</p><div class="room-code">${esc(state.room)}</div><div id="connection" class="connection">${connection}</div><ul class="lobby-members">${state.players.map(p=>`<li><b>${esc(p.name)}${p.id===myId?'（あなた）':''}</b><span>${presenceText(p)}</span><span class="muted small">${p.id===state.hostId?'部屋主':'参加者'}</span></li>`).join('')}${Array.from({length:state.total-state.players.length},()=>'<li class="muted">空席<span class="small">開始時にCPUで補充</span></li>').join('')}</ul><div class="room-actions"><button id="shareButton">招待リンクをコピー</button>${myId===state.hostId?`<button id="startOnline" class="primary" ${busy?'disabled':''}>${state.players.length<state.total?'空席をCPUで埋めて開始':'ゲーム開始'}</button>`:'<span class="muted small">部屋主が開始するまでお待ちください。</span>'}</div></section><aside class="panel"><h2>部屋の設定</h2><p>合計 ${state.total}人</p><p>CPUの強さ：${(state.settings.cpuDifficulties??[state.settings.cpuDifficulty]).map(d=>CPU_LEVELS[normalizeCPU(d)]).join(' / ')}</p><p class="small muted">保存した対戦には同じブラウザの「前回の部屋に再接続」から戻れます。</p><p>戦争VP：${state.settings.warVP.map((n,i)=>`${i+1}位 ${n}VP`).join(' / ')}</p><div class="note">ゲーム開始後は新しい参加者は入れません。切断時は同じブラウザで「前回の部屋に再接続」を選べます。</div></aside></div></section>`;
  qs('#backButton').onclick=returnSetup;qs('#shareButton').onclick=copyInvite;if(qs('#startOnline'))qs('#startOnline').onclick=()=>remote('start');updateConnection();
@@ -353,15 +383,17 @@ function updateRefreshment(kind,served=false){
 }
 function enjoyRefreshment(kind){refreshmentService.take(kind);}
 function boardHTML(p,interactive){
+ const hints=interactive?availableComboHints(p):[];
  const cells=interactive?legalCells(p.board):[];const b=matBounds(p.board,cells);const width=b.maxX-b.minX+1;
  let content='';for(let y=b.minY;y<=b.maxY;y++)for(let x=b.minX;x<=b.maxX;x++){
   const card=p.board.find(c=>c.x===x&&c.y===y),legal=cells.some(c=>c.x===x&&c.y===y);
-  if(card){const planned=moves.findIndex(m=>m.x===x&&m.y===y);const front=!p.board.some(c=>c.x===x&&c.y<y);
-   content+=`<button class="cell ${front?'frontline':'rearline'} ${interactive&&planned>=0?'planned':''}" data-card="${card.card}" aria-label="${CARD[card.card].name}の詳細"><img src="${CARD[card.card].image}" alt="${CARD[card.card].name}">${interactive&&planned>=0?`<span class="number">${planned+1}</span>`:''}${front?'<span class="front-label">⚑ 前線 · 戦争に参戦</span>':''}</button>`;
-  }else if(legal)content+=`<button class="cell candidate ${selected!==null?'can-place':''} ${tutorialTaskNow()&&tutorialCellAllowed(x,y)?'tutorial-required':''}" data-cell="${x},${y}" ${moves.length>=2||busy||!tutorialCellAllowed(x,y)?'disabled':''} aria-label="${x},${y}に配置"><span style="font-size:1.6rem">＋</span></button>`;
+  const matching=hints.filter(h=>h.x===x&&h.y===y&&(selected===null||h.handIndex===selected));
+  if(card){const combo=comboCardDecoration(p,card);const planned=moves.findIndex(m=>m.x===x&&m.y===y);const front=!p.board.some(c=>c.x===x&&c.y<y);
+   content+=`<button data-combo-player="${p.id}" data-combo-keys="${combo.keys}" class="cell ${combo.classes} ${front?'frontline':'rearline'} ${interactive&&planned>=0?'planned':''}" data-card="${card.card}" aria-label="${CARD[card.card].name}の詳細${combo.label?`、${combo.label}`:''}"><img src="${CARD[card.card].image}" alt="${CARD[card.card].name}">${combo.html}${interactive&&planned>=0?`<span class="number">${planned+1}</span>`:''}${front?'<span class="front-label">⚑ 前線 · 戦争に参戦</span>':''}</button>`;
+  }else if(legal)content+=`<button data-combo-hints="${hints.filter(h=>h.x===x&&h.y===y).map(h=>h.handIndex).join(',')}" class="cell candidate ${matching.length?'combo-candidate':''} ${selected!==null?'can-place':''} ${tutorialTaskNow()&&tutorialCellAllowed(x,y)?'tutorial-required':''}" data-cell="${x},${y}" ${moves.length>=2||busy||!tutorialCellAllowed(x,y)?'disabled':''} aria-label="${x},${y}に配置${matching.length?'、3枚揃い可能':''}"><span style="font-size:1.6rem">＋</span><span class="combo-target-label">✦ 3枚揃い</span></button>`;
   else content+='<div class="cell void" aria-hidden="true"></div>';
  }
- return `<div class="board-table"><div class="board-wrap"><div class="board" style="grid-template-columns:repeat(${width},minmax(0,1fr));${width===1?'max-width:140px':width===2?'max-width:300px':''}">${content}</div>${!p.board.length?'<div class="empty-help">最初のカードはここへ。<br>次から上下左右に広げられます。</div>':''}</div>${refreshmentsHTML()}</div>`;
+ return `<div class="board-table"><div class="board-wrap"><div class="board" style="grid-template-columns:repeat(${width},minmax(0,1fr));${width===1?'max-width:140px':width===2?'max-width:300px':''}">${content}</div>${!p.board.length?'<div class="empty-help">最初のカードはここへ。<br>次から上下左右に広げられます。</div>':''}</div>${refreshmentsHTML()}</div>${comboLedgerHTML(p)}`;
 }
 function statsHTML(p){return `<div class="status-grid"><div class="stat vp" data-stat="vp"><span>勝利点</span><strong>${p.vp}<em>VP</em></strong></div><div class="stat gold" data-stat="gold"><span>お金</span><strong>${p.gold}<em>金</em></strong></div><div class="stat" data-stat="tech"><span>技術</span><strong>${p.tech}<em>Lv.${level(p.tech)}</em></strong></div><div class="stat" data-stat="faith"><span>信仰</span><strong>${p.faith}<em>Lv.${level(p.faith)}</em></strong></div></div>`;}
 function actionHTML(p){
@@ -373,8 +405,9 @@ function actionHTML(p){
  const own=state.players.find(x=>x.id===myId),locked=own.ready;
  const title=state.phase==='draw'?'捨てるカードを選ぶ':'配置するカードを選ぶ';
  const help=state.phase==='draw'?'選択したカードを捨て、手札を5枚まで補充します。':mobileLayout()?'カードを上下にドラッグして「＋」へ配置。カードを選んで「＋」をタップしても配置できます。最大2枚です。':'カードを王国の「＋」へドラッグして配置。カードを選んで「＋」を押しても配置できます。最大2枚です。';
- const hand=state.phase==='place'?p.hand:own.hand;
- return `<section id="handActions" class="action-panel"><div class="action-title"><div><h2>${title}</h2><span class="muted small">${state.phase==='place'?`${moves.length}/2枚`:`${discard.size}枚交換`}</span></div><div class="placement-gold" aria-live="polite"><span>現在のお金${state.phase==='place'&&moves.length?(locked?'（配置確定後）':'（仮配置後）'):''}</span><strong>${p.gold}<small>金</small></strong></div></div>${!tutorialTaskNow()?`<p class="muted small">${locked?(state.phase==='place'?'配置確定済み。自分の配置を表示しています。ほかの参加者を待っています。':'確定済み。ほかの参加者を待っています。'):help}</p>`:''}${tutorialTaskNow()?.purpose?`<div class="tutorial-purpose tutorial-action-purpose"><b>この操作の目的</b><p>${esc(tutorialTaskNow().purpose)}</p><p>${esc(tutorialTaskNow().text)}</p></div>`:''}<div class="hand">${hand.map((id,i)=>`<div class="hand-entry"><button class="hand-card ${selected===i?'selected':''} ${tutorialTaskNow()&&tutorialHandAllowed(i)?'tutorial-required':''} ${discard.has(i)&&state.phase==='draw'?'discard':''}" data-hand="${i}" data-draggable="${state.phase==='place'&&!locked&&!busy&&moves.length<2&&tutorialHandAllowed(i)&&CARD[id].cost<=p.gold}" data-drag-blocked="${state.phase==='place'&&!locked&&!busy&&moves.length<2&&tutorialHandAllowed(i)&&CARD[id].cost>p.gold?'money':''}" ${locked||busy||!tutorialHandAllowed(i)?'disabled':''} aria-label="${CARD[id].name}${state.phase==='draw'&&discard.has(i)?'、捨てる対象':''}" aria-pressed="${state.phase==='draw'?discard.has(i):selected===i}"><img src="${CARD[id].image}" draggable="false" alt="${CARD[id].name}">${state.phase==='place'&&CARD[id].cost>p.gold?'<span class="afford">お金不足</span>':''}</button><button class="hand-card-details mobile-only quiet" data-card="${id}" aria-label="${esc(CARD[id].name)}の詳細"><span>${esc(CARD[id].name)}</span><small>${CARD[id].cost}金 · 詳細</small></button></div>`).join('')}</div>${!tutorialTaskNow()&&state.phase==='place'&&selected!==null&&hand[selected]?`<div class="selected-info"><strong>${CARD[hand[selected]].name}</strong>　${CARD[hand[selected]].cost}金 / 戦力${CARD[hand[selected]].power}<p>${CARD[hand[selected]].effects.map(effectText).join('<br>')}</p><button class="quiet" data-card="${hand[selected]}" style="padding:4px 8px">カードの詳細</button></div>`:''}${!tutorialTaskNow()?`<div class="hand-info">${state.phase==='place'?`配置しない枠の報酬：${2-moves.length}金（配置処理後に獲得）`:mobileLayout()?'手札は横にスワイプできます。配置時はカードを上下にドラッグ。「詳細」で効果を確認。':'カードの画像を長押し・右クリックすると詳細を表示できます。'}</div>`:''}<div class="action-buttons">${state.phase==='place'?`<button id="undoButton" ${!moves.length||locked||busy||tutorialNoticeOpen()?'disabled':''}>最後の配置を戻す</button>`:`<button id="clearDiscard" ${!discard.size||locked||busy?'disabled':''}>選択を解除</button>`}<button id="confirmButton" class="primary" ${locked||busy||tutorialNoticeOpen()||(tutorialTaskNow()&&!tutorialTaskNow().canConfirm)?'disabled':''}>${locked?'全員の確定を待っています':state.phase==='draw'?(discard.size?'交換を確定':'交換せず補充'):moves.length?`${moves.length}枚の配置を確定`:'配置せず2金を獲得'}</button></div></section>`;
+ const hand=state.phase==='place'?p.hand:own.hand,hints=availableComboHints(p);
+ const comboHands=new Set(hints.map(h=>h.handIndex));
+ return `<section id="handActions" class="action-panel"><div class="action-title"><div><h2>${title}</h2><span class="muted small">${state.phase==='place'?`${moves.length}/2枚`:`${discard.size}枚交換`}</span></div><div class="placement-gold" aria-live="polite"><span>現在のお金${state.phase==='place'&&moves.length?(locked?'（配置確定後）':'（仮配置後）'):''}</span><strong>${p.gold}<small>金</small></strong></div></div>${!tutorialTaskNow()?`<p class="muted small">${locked?(state.phase==='place'?'配置確定済み。自分の配置を表示しています。ほかの参加者を待っています。':'確定済み。ほかの参加者を待っています。'):help}</p>`:''}${tutorialTaskNow()?.purpose?`<div class="tutorial-purpose tutorial-action-purpose"><b>この操作の目的</b><p>${esc(tutorialTaskNow().purpose)}</p><p>${esc(tutorialTaskNow().text)}</p></div>`:''}${hints.length?`<p class="combo-help">✦ 光っているカードと配置先で3枚揃い！ カードを選ぶと、そのカードの配置先が光ります。</p>`:''}<div class="hand">${hand.map((id,i)=>`<div class="hand-entry"><button class="hand-card ${comboHands.has(i)?'combo-available':''} ${selected===i?'selected':''} ${tutorialTaskNow()&&tutorialHandAllowed(i)?'tutorial-required':''} ${discard.has(i)&&state.phase==='draw'?'discard':''}" data-hand="${i}" data-draggable="${state.phase==='place'&&!locked&&!busy&&moves.length<2&&tutorialHandAllowed(i)&&CARD[id].cost<=p.gold}" data-drag-blocked="${state.phase==='place'&&!locked&&!busy&&moves.length<2&&tutorialHandAllowed(i)&&CARD[id].cost>p.gold?'money':''}" ${locked||busy||!tutorialHandAllowed(i)?'disabled':''} aria-label="${CARD[id].name}${comboHands.has(i)?'、3枚揃い可能':''}${state.phase==='draw'&&discard.has(i)?'、捨てる対象':''}" aria-pressed="${state.phase==='draw'?discard.has(i):selected===i}"><img src="${CARD[id].image}" draggable="false" alt="${CARD[id].name}">${comboHands.has(i)?'<span class="combo-hand-label">✦ 3枚揃い</span>':''}${state.phase==='place'&&CARD[id].cost>p.gold?'<span class="afford">お金不足</span>':''}</button><button class="hand-card-details mobile-only quiet" data-card="${id}" aria-label="${esc(CARD[id].name)}の詳細"><span>${esc(CARD[id].name)}</span><small>${CARD[id].cost}金 · 詳細</small></button></div>`).join('')}</div>${!tutorialTaskNow()&&state.phase==='place'&&selected!==null&&hand[selected]?`<div class="selected-info"><strong>${CARD[hand[selected]].name}</strong>　${CARD[hand[selected]].cost}金 / 戦力${CARD[hand[selected]].power}<p>${CARD[hand[selected]].effects.map(effectText).join('<br>')}</p><button class="quiet" data-card="${hand[selected]}" style="padding:4px 8px">カードの詳細</button></div>`:''}${!tutorialTaskNow()?`<div class="hand-info">${state.phase==='place'?`配置しない枠の報酬：${2-moves.length}金（配置処理後に獲得）`:mobileLayout()?'手札は横にスワイプできます。配置時はカードを上下にドラッグ。「詳細」で効果を確認。':'カードの画像を長押し・右クリックすると詳細を表示できます。'}</div>`:''}<div class="action-buttons">${state.phase==='place'?`<button id="undoButton" ${!moves.length||locked||busy||tutorialNoticeOpen()?'disabled':''}>最後の配置を戻す</button>`:`<button id="clearDiscard" ${!discard.size||locked||busy?'disabled':''}>選択を解除</button>`}<button id="confirmButton" class="primary" ${locked||busy||tutorialNoticeOpen()||(tutorialTaskNow()&&!tutorialTaskNow().canConfirm)?'disabled':''}>${locked?'全員の確定を待っています':state.phase==='draw'?(discard.size?'交換を確定':'交換せず補充'):moves.length?`${moves.length}枚の配置を確定`:'配置せず2金を獲得'}</button></div></section>`;
 }
 function resultsHTML(){
  if(!['round','ended'].includes(state.phase))return '';
@@ -388,7 +421,7 @@ function placeAt(handIndex,x,y){
  const task=tutorialTaskNow();if(task&&!tutorialPlacementAllowed(task,handIndex,x,y)){toast(task.text);return;}
  const draft=currentDraft(),card=CARD[draft.hand[handIndex]];
  if(card&&card.cost>draft.gold){moneyWarning();return;}
- try{const proposed=[...moves,{handIndex,x,y}];const result=previewPlacement(own,proposed),placed=result.placed.at(-1);moves=proposed;selected=null;render();showNotice(`${own.name}が${CARD[placed.card].name}を仮配置`,placed.steps,'予定の増減です。確定前なら取り消せます。');}catch(e){toast(e.message);}
+ try{const proposed=[...moves,{handIndex,x,y}];const result=previewPlacement(own,proposed),placed=result.placed.at(-1);placementCelebration=newCombos(draft,result.player).map(g=>g.key);moves=proposed;selected=null;render();showNotice(`${own.name}が${CARD[placed.card].name}を仮配置`,placed.steps,'予定の増減です。確定前なら取り消せます。',newCombos(draft,result.player));}catch(e){toast(e.message);}
 }
 function renderGame(){
  app.classList.toggle('tutorial-reading-effect',mode==='local'&&!!game?.tutorial&&!!playback);
@@ -397,7 +430,7 @@ function renderGame(){
  const draft=currentDraft();const own=state.players.find(p=>p.id===myId);const viewed=boardId===myId?draft:state.players.find(p=>p.id===boardId)||draft;
  const editing=!playback&&boardId===myId&&state.phase==='place'&&!own.ready;
  const displayLogs=game?.tutorial&&playback?[...state.logs,...tutorialTrace(globalState().resolution,playback.index,myId)]:state.logs;
- app.innerHTML=`<div class="game-head"><div><p class="eyebrow">${mode==='online'?`部屋 ${state.room}`:'CPU対戦'}</p><h1>ラウンド ${state.round}${state.phase==='ended'&&!playback?' — 終了':''}</h1></div><div style="display:flex;align-items:center;gap:12px">${mode==='online'?`<span id="connection" class="connection">${connection}</span>`:''}<button id="backButton" class="quiet">対戦メニュー</button></div></div>${tutorialHTML()}${waitingHTML()}<div class="phase-strip">${['draw','place','war','develop','income','vp'].map((phase,i)=>`<span class="${state.phase===phase?'active':''}">${i+1}. ${PHASE_NAMES[phase]}</span>`).join('')}</div>${kingdomGallery(state,draft)}${playback?'':resultsHTML()}${reviewHTML()}<div class="game-layout"><section id="playerBoard" class="panel play-panel"><div class="board-heading"><b>${esc(viewed.name)} · 現在${scoreRank(state.players,viewed)}位の王国${!playback&&state.phase==='place'&&boardId===myId&&moves.length?(own.ready?'（配置確定済み）':'（配置予定）'):''}</b><span>前方 ↑ ／ ${viewed.board.length}/9体 ／ 戦力 ${power(viewed)}</span></div>${statsHTML(viewed)}${metersHTML(viewed)}${editing&&selected!==null?`<div class="mobile-selected-card mobile-only"><b>${esc(CARD[draft.hand[selected]].name)}</b><span>配置する「＋」をタップ</span><button id="mobileCancelSelection" class="quiet">選択を解除</button></div>`:''}${boardHTML(viewed,editing)}${boardId!==myId?'<div class="action-buttons"><button id="myBoardButton">自分の王国に戻る</button></div>':actionHTML(draft)}</section><aside><section class="panel players-panel"><h2>参加者</h2>${state.players.map(p=>p.id===myId?draft:p).map(p=>`<button class="player-row ${p.id===boardId?'active':''}" data-player="${p.id}"><span class="row-head"><strong>${esc(p.name)} · ${scoreRank(state.players,p)}位</strong><span class="player-type">${presenceText(p)}</span></span><span class="details">${p.vp} VP ／ ${p.gold}金 ／ ${p.board.length}体 ／ 戦力 ${power(p)}<br>技術 ${p.tech}（Lv.${level(p.tech)}）・信仰 ${p.faith}（Lv.${level(p.faith)}）</span></button>`).join('')}</section><section class="panel log-panel"><h2>履歴</h2><ul class="logs">${displayLogs.length?[...displayLogs].reverse().slice(0,60).map(l=>`<li class="${logClassName(l,myId,state.players)} ${playback&&l.eventIndex===playback.index?'tutorial-log-active':''}"><b>R${l.round}</b>${playback&&l.eventIndex===playback.index?'<span class="tutorial-log-tag">いま発動した効果</span>':''} ${esc(l.message)}</li>`).join(''):'<li>手札を交換して、王国づくりを始めましょう。</li>'}</ul><p class="muted small" style="margin:14px 0 0">山札 ${state.deckCount}枚 ／ 捨て札 ${state.discardCount}枚</p></section></aside></div>`;
+ app.innerHTML=`<div class="game-head"><div><p class="eyebrow">${mode==='online'?`部屋 ${state.room}`:'CPU対戦'}</p><h1>ラウンド ${state.round}${state.phase==='ended'&&!playback?' — 終了':''}</h1></div><div style="display:flex;align-items:center;gap:12px">${mode==='online'?`<span id="connection" class="connection">${connection}</span>`:''}<button id="backButton" class="quiet">対戦メニュー</button></div></div>${tutorialHTML()}${waitingHTML()}<div class="phase-strip">${['draw','place','war','develop','income','vp'].map((phase,i)=>`<span class="${state.phase===phase?'active':''}">${i+1}. ${PHASE_NAMES[phase]}</span>`).join('')}</div>${kingdomGallery(state,draft)}${playback?'':resultsHTML()}${reviewHTML()}<div class="game-layout"><section id="playerBoard" class="panel play-panel"><div class="board-heading"><b>${esc(viewed.name)} · 現在${scoreRank(state.players,viewed)}位の王国${!playback&&state.phase==='place'&&boardId===myId&&moves.length?(own.ready?'（配置確定済み）':'（配置予定）'):''}</b><span>前方 ↑ ／ ${viewed.board.length}/9体 ／ 戦力 ${power(viewed)}</span></div>${statsHTML(viewed)}${metersHTML(viewed)}${editing&&selected!==null?`<div class="mobile-selected-card mobile-only"><b>${esc(CARD[draft.hand[selected]].name)}</b><span>配置する「＋」をタップ</span><button id="mobileCancelSelection" class="quiet">選択を解除</button></div>`:''}${boardHTML(viewed,editing)}${boardId!==myId?'<div class="action-buttons"><button id="myBoardButton">自分の王国に戻る</button></div>':actionHTML(draft)}</section><aside><section class="panel players-panel"><h2>参加者</h2>${state.players.map(p=>p.id===myId?draft:p).map(p=>`<button class="player-row ${p.id===boardId?'active':''}" data-player="${p.id}"><span class="row-head"><strong>${esc(p.name)} · ${scoreRank(state.players,p)}位</strong><span class="player-type">${presenceText(p)}</span></span><span class="details">${p.vp} VP ／ ${p.gold}金 ／ ${p.board.length}体 ／ 戦力 ${power(p)}<br>技術 ${p.tech}（Lv.${level(p.tech)}）・信仰 ${p.faith}（Lv.${level(p.faith)}）</span></button>`).join('')}</section><section class="panel log-panel"><h2>履歴</h2><div class="log-legend"><span class="own">青：あなた</span><span class="other">赤茶：他プレイヤー</span></div><ul class="logs">${displayLogs.length?[...displayLogs].reverse().slice(0,60).map(l=>`<li class="${logClassName(l,myId,state.players)} ${playback&&l.eventIndex===playback.index?'tutorial-log-active':''}"><span class="log-owner">${logOwnerLabel(l)}</span><b>R${l.round}</b>${playback&&l.eventIndex===playback.index?'<span class="tutorial-log-tag">いま発動した効果</span>':''} ${esc(l.message)}</li>`).join(''):'<li>手札を交換して、王国づくりを始めましょう。</li>'}</ul><p class="muted small" style="margin:14px 0 0">山札 ${state.deckCount}枚 ／ 捨て札 ${state.discardCount}枚</p></section></aside></div>`;
  if(mobileLayout()){
   const gallery=qs('.kingdom-gallery');gallery.scrollLeft=mobileGalleryScroll;
   if(qs('.hand'))qs('.hand').scrollLeft=mobileHandScroll;
@@ -431,7 +464,14 @@ function renderGame(){
  for(const el of document.querySelectorAll('[data-cell]'))el.onclick=()=>{
   if(selected===null)return;const[x,y]=el.dataset.cell.split(',').map(Number);placeAt(selected,x,y);
  };
- if(!cleanupDrag)cleanupDrag=bindCardDrag(app,placeAt,moneyWarning);
+ for(const chip of document.querySelectorAll('[data-combo]')){
+  const highlight=active=>{for(const card of document.querySelectorAll('[data-combo-keys]'))if(card.dataset.comboPlayer===chip.dataset.comboPlayer&&card.dataset.comboKeys.split(' ').includes(chip.dataset.combo))card.classList.toggle('combo-inspecting',active);};
+  chip.onpointerenter=()=>highlight(true);chip.onpointerleave=()=>highlight(false);chip.onfocus=()=>highlight(true);chip.onblur=()=>highlight(false);chip.onclick=()=>highlight(true);
+ }
+ if(!cleanupDrag)cleanupDrag=bindCardDrag(app,placeAt,moneyWarning,index=>{
+  const handIndex=index??selected;
+  for(const cell of app.querySelectorAll('[data-combo-hints]'))cell.classList.toggle('combo-candidate',cell.dataset.comboHints.split(',').filter(Boolean).some(i=>handIndex===null||Number(i)===handIndex));
+ });
  for(const el of document.querySelectorAll('[data-hand]')){
   const index=Number(el.dataset.hand);el.onclick=()=>{
    if(!tutorialHandAllowed(index))return;
@@ -440,7 +480,7 @@ function renderGame(){
   el.oncontextmenu=e=>{e.preventDefault();showCard((state.phase==='place'?draft:own).hand[index]);};
  }
  if(qs('#myBoardButton'))qs('#myBoardButton').onclick=()=>{boardId=myId;render();};
- if(qs('#undoButton'))qs('#undoButton').onclick=()=>{const before=currentDraft();const removed=before.board.at(-1);moves.pop();selected=null;const after=currentDraft();render();showNotice(`${own.name}の${CARD[removed.card].name}の仮配置を取り消しました`,undoChanges(before,after),'このカードによる増加をキャンセルし、配置コストも元に戻しました。');};
+ if(qs('#undoButton'))qs('#undoButton').onclick=()=>{const before=currentDraft();const removed=before.board.at(-1);placementCelebration=null;moves.pop();selected=null;const after=currentDraft();render();showNotice(`${own.name}の${CARD[removed.card].name}の仮配置を取り消しました`,undoChanges(before,after),'このカードによる増加をキャンセルし、配置コストも元に戻しました。');};
  if(qs('#clearDiscard'))qs('#clearDiscard').onclick=()=>{discard.clear();render();};
  if(qs('#rematchButton'))qs('#rematchButton').onclick=()=>remote('rematch');
  if(qs('#confirmButton'))qs('#confirmButton').onclick=confirmAction;
