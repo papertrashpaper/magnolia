@@ -87,7 +87,7 @@ test('a diagonal hand swipe can turn upwards into a card drop without a second t
 
 test('touch capture survives an online update before the first movement',t=>{
  const f=fixture(t),drops=[];const dispose=bindCardDrag(f.root,(...args)=>drops.push(args));t.after(()=>{dispose();f.restore();});
- f.down(true);assert.equal(f.root.captured,1);f.root.card=f.card();f.move(110,350);f.up();assert.deepEqual(drops,[[0,0,0]]);
+ f.down(true);f.root.card=f.card();f.move(110,350);assert.equal(f.root.captured,1);f.up();assert.deepEqual(drops,[[0,0,0]]);
 });
 
 test('lost capture and an unrelated pointer cancellation do not leave a stuck gesture',t=>{
@@ -112,10 +112,8 @@ test('mobile CSS leaves card touch gestures to the shared drag controller',async
 });
 
 
-test('root capture forwards exactly one ordinary tap, but never a swipe or drag tap',t=>{
+test('ordinary taps remain native, with no synthesized extra card click',t=>{
  const f=fixture(t);const dispose=bindCardDrag(f.root,()=>{});t.after(()=>{dispose();f.restore();});
- f.down(true);f.up();assert.equal(f.root.card.taps,1);assert.equal(f.emit(f.root,'click').defaultPrevented,true);
- f.down(true);f.move(130,400);f.up();assert.equal(f.root.card.taps,1);
- f.down(true);f.move(100,360);f.up();assert.equal(f.root.card.taps,1);
- f.down();f.up();assert.equal(f.root.card.taps,2);
+ f.down(true);f.up();assert.equal(f.root.card.taps,0);assert.equal(f.emit(f.root,'click').defaultPrevented,false);
+ f.down();f.up();assert.equal(f.root.card.taps,0);assert.equal(f.emit(f.root,'click').defaultPrevented,false);
 });
