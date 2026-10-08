@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {tutorialGame,tutorialGuide,tutorialObservation,tutorialPhaseOutcome,TUTORIAL_REFERENCE,tutorialTask,tutorialPlacementAllowed,TUTORIAL_SLIDES} from '../public/js/tutorial.js';
+import {tutorialGame,tutorialGuide,tutorialObservation,tutorialPhaseOutcome,TUTORIAL_REFERENCE,tutorialTask,tutorialPlacementAllowed,TUTORIAL_SLIDES,TUTORIAL_FRONTLINE} from '../public/js/tutorial.js';
 import {CARDS} from '../public/js/cards.js';
 import {submit,publicView,previewPlacement,level,power,legalCells} from '../public/js/engine.js';
 import {fillCPU} from '../public/js/cpu.js';
@@ -76,7 +76,7 @@ test('増減がない理由も実際のフェーズ記録から説明する',()=
 });
 
 test('導入から3章の指定操作まで、交換・配置・確定を順番に案内する',()=>{
- assert.equal(TUTORIAL_SLIDES.length,6);
+ assert.deepEqual(TUTORIAL_SLIDES.map(s=>s.kind),['welcome','kingdom','flow','draw','placement','front','develop','income','scoring','effects','levels','practice']);
  assert.match(TUTORIAL_SLIDES[0].title,/ようこそ/);
  assert.match(TUTORIAL_SLIDES.at(-1).title,/実際の盤面/);
  for(let chapter=0;chapter<3;chapter++){
@@ -106,4 +106,12 @@ test('導入から3章の指定操作まで、交換・配置・確定を順番�
   assert.equal(tutorialTask(chapter,'place',undo.hand,1).card,task.card);
   submit(g,'human',{moves});assert.equal(g.phase,chapter===2?'ended':'round');inventory(g);
  }
+});
+
+test('階段状の前線は各縦列の先頭で、後列と区別できる合法な王国',()=>{
+ const fronts=TUTORIAL_FRONTLINE.filter(c=>!TUTORIAL_FRONTLINE.some(other=>other.x===c.x&&other.y<c.y));
+ assert.deepEqual(fronts.map(c=>[c.x,c.y]),[[0,0],[1,1],[2,2]]);
+ assert.equal(TUTORIAL_FRONTLINE.length-fronts.length,3);
+ const placed=[];
+ for(const c of TUTORIAL_FRONTLINE){assert(legalCells(placed).some(cell=>cell.x===c.x&&cell.y===c.y));placed.push(c);}
 });

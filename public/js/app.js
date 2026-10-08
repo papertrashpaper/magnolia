@@ -1,5 +1,5 @@
 import {matBounds,createRefreshments,servingLabel} from './tavern.js?v=1';
-import {tutorialGame,tutorialGuide,tutorialObservation,tutorialPhaseOutcome,TUTORIAL_CHAPTERS,TUTORIAL_REFERENCE,tutorialTask,tutorialPlacementAllowed,TUTORIAL_SLIDES} from './tutorial.js?v=11';
+import {tutorialGame,tutorialGuide,tutorialObservation,tutorialPhaseOutcome,TUTORIAL_CHAPTERS,TUTORIAL_REFERENCE,tutorialTask,tutorialPlacementAllowed,TUTORIAL_SLIDES,TUTORIAL_FRONTLINE} from './tutorial.js?v=12';
 import {bindCardDrag} from './drag.js?v=8';
 import {CARDS,CARD,RACES,JOBS,RACE_BONUS,JOB_BONUS,effectText} from './cards.js?v=3';
 import {newGame,submit,nextRound,publicView,previewPlacement,legalCells,bounds,power,level,CPU_LEVELS,normalizeCPU} from './engine.js?v=11';
@@ -185,15 +185,24 @@ function openTutorialIntro(index=0){
  tutorialSlide=index;const slide=TUTORIAL_SLIDES[index];
  const image=id=>`<img src="${CARD[id].image}" alt="${esc(CARD[id].name)}">`;
  const pair=(ids)=>`<div class="intro-cards">${ids.map(id=>`<figure>${image(id)}<figcaption>${esc(CARD[id].name)}</figcaption></figure>`).join('')}</div>`;
+ const flow=active=>`<ol class="intro-round-flow">${['draw','place','war','develop','income','vp'].map((phase,i)=>`<li ${phase===active?'aria-current="step"':''}><span>${i+1}</span><b>${PHASE_NAMES[phase]}</b></li>`).join('')}</ol>`;
+ const lessonCards=(ids,notes)=>`<div class="intro-effect-examples">${ids.map((id,i)=>`<figure>${image(id)}<figcaption><b>${esc(CARD[id].name)}</b><span>${esc(notes[i])}</span></figcaption></figure>`).join('')}</div>`;
+ const front=()=>`<div class="intro-front"><strong>↑ 前方 ／ 各縦列の一番上が前線</strong><div class="intro-column-labels"><span>縦列1</span><span>縦列2</span><span>縦列3</span></div><div class="intro-stair-board">${Array.from({length:9},(_,i)=>{const x=i%3,y=Math.floor(i/3),card=TUTORIAL_FRONTLINE.find(c=>c.x===x&&c.y===y);if(!card)return '<div class="intro-stair-empty" aria-hidden="true"></div>';const front=!TUTORIAL_FRONTLINE.some(c=>c.x===x&&c.y<y);return `<figure class="${front?'intro-stair-front':'intro-stair-rear'}">${image(card.card)}<figcaption>${front?'⚑ 前線':'後方'}</figcaption></figure>`;}).join('')}</div><span>金色の枠の3枚が参戦。横に一直線でなくても前線です。</span></div>`;
  const visual={
   welcome:'<div class="intro-landscape"><span>MAGNOLIA</span><b>冒険者の宿・琥珀の灯亭</b></div>',
   kingdom:`<div class="intro-kingdom">${['human_knight','elf_mistic','dwarf_pugilist','human_marchant','dwarf_cook','elf_saint'].map(image).join('')}</div><p class="intro-caption">仲間を並べて、あなたの王国へ</p>`,
-  front:`<div class="intro-front"><strong>↑ 前方 / 前線は戦争に参戦</strong>${pair(['human_knight','human_marchant'])}<span>前線 ↑ ／ 後方 ↓</span></div>`,
-  levels:`${pair(['elf_artist','elf_mistic'])}<div class="intro-thresholds">${[[0,0],[1,1],[3,2],[7,3],[15,4]].map(([point,lv])=>`<span><b>${point}点〜</b>Lv.${lv}</span>`).join('')}</div><p class="intro-caption">芸術家：技術Lv.×2 VP ／ 神秘家：信仰Lv.×2の追加戦力</p>`,
-  phases:`${pair(['dwarf_cook','human_marchant','elf_follower'])}<div class="intro-phase-list"><span>発展 → 技術・信仰</span><span>収入 → お金</span><span>VP → 得点</span></div>`,
+  flow:`${flow()}<p class="intro-caption">終了しなければ、①ドローへ戻ります</p>`,
+  draw:`${lessonCards(['demon_storm','human_marchant'],['9金：今は5金。交換する？','1金：今から配置できる'])}<p class="intro-caption">捨てるカードを選ぶ → 手札を5枚へ</p>`,
+  placement:`${pair(['human_marchant','dwarf_cook'])}<div class="intro-phase-list"><span>1枚目：行商に1金</span><span>2枚目：料理人に2金</span></div><p class="intro-caption">5金から2枚配置すると、残り2金</p>`,
+  front:front(),
+  develop:lessonCards(['dwarf_cook','elf_saint'],['発展：技術＋1','発展：信仰＋1']),
+  income:`${lessonCards(['human_marchant'],['収入：＋1金'])}<div class="intro-equation">基本3金 ＋ 行商1金 ＝ <b>4金</b></div>`,
+  scoring:lessonCards(['dwarf_cook','elf_follower'],['VP：技術Lv. × 1VP','VP：信仰Lv. × 1VP']),
+  effects:`${lessonCards(['elf_follower'],['配置時：信仰＋2 ／ VP：信仰Lv. × 1VP'])}<div class="intro-phase-list"><span>配置時 → 置いた瞬間だけ</span><span>VP → 毎ラウンド</span></div>`,
+  levels:`${pair(['elf_artist','elf_mistic'])}<div class="intro-thresholds">${[['0',0],['1〜2',1],['3〜6',2],['7〜14',3],['15',4]].map(([point,lv])=>`<span><b>${point}点</b>Lv.${lv}</span>`).join('')}</div><p class="intro-caption">芸術家：技術Lv.×2 VP ／ 神秘家：信仰Lv.×2の追加戦力</p>`,
   practice:`${pair(['human_marchant','dwarf_cook'])}<p class="intro-caption">最初の練習：行商と料理人の小さな王国</p>`
  }[slide.kind];
- qs('#tutorialIntroBody').innerHTML=`<div class="intro-heading"><p class="eyebrow">初めてのマグノリア · ${index+1} / ${TUTORIAL_SLIDES.length}</p><h2 id="tutorialIntroTitle">${esc(slide.title)}</h2></div><div class="intro-content"><div class="intro-visual">${visual}</div><p class="intro-description">${esc(slide.text)}</p></div><div class="intro-footer"><button id="introBack" ${index===0?'disabled':''}>戻る</button><div class="intro-dots" aria-label="スライド ${index+1} / ${TUTORIAL_SLIDES.length}">${TUTORIAL_SLIDES.map((_,i)=>`<span class="${i===index?'active':''}"></span>`).join('')}</div><button id="introNext" class="primary">${index===TUTORIAL_SLIDES.length-1?'盤面で練習を始める':'次へ'}</button></div>`;
+ qs('#tutorialIntroBody').innerHTML=`<div class="intro-heading"><p class="eyebrow">${esc(slide.section)} · ${index+1} / ${TUTORIAL_SLIDES.length}</p><h2 id="tutorialIntroTitle">${esc(slide.title)}</h2></div><div class="intro-content"><div class="intro-visual">${slide.phase?flow(slide.phase):''}${visual}</div><p class="intro-description">${esc(slide.text)}</p></div><div class="intro-footer"><button id="introBack" ${index===0?'disabled':''}>戻る</button><div class="intro-dots" aria-label="スライド ${index+1} / ${TUTORIAL_SLIDES.length}">${TUTORIAL_SLIDES.map((_,i)=>`<span class="${i===index?'active':''}"></span>`).join('')}</div><button id="introNext" class="primary">${index===TUTORIAL_SLIDES.length-1?'盤面で練習を始める':'次へ'}</button></div>`;
  qs('#introBack').onclick=()=>openTutorialIntro(tutorialSlide-1);
  qs('#introNext').onclick=()=>{if(tutorialSlide<TUTORIAL_SLIDES.length-1)openTutorialIntro(tutorialSlide+1);else{qs('#tutorialIntroDialog').close();startTutorial();}};
  const dialog=qs('#tutorialIntroDialog');if(!dialog.open)dialog.showModal();qs('#introNext').focus();
