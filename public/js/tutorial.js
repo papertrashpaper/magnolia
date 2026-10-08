@@ -2,9 +2,9 @@ import {newGame,level,power,previewPlacement,legalCells,STAT_NAMES} from './engi
 import {CARD,RACES,JOBS} from './cards.js?v=3';
 
 export const TUTORIAL_CHAPTERS=[
- {title:'序盤：王国をつくる',intro:'マグノリアは、カードを王国に配置して勝利点（VP）を稼ぐゲームです。最後に最もVPが多い人が勝ちます。第1章は何もない王国から、手札交換・配置・各フェーズを1回ずつ試します。',goal:'最初の例：人間の行商を置き、その後ろにドワーフの料理人を置いてみましょう。行商の収入、料理人の発展とVPを1ラウンドで確認できます。別のカードを試しても大丈夫です。'},
+ {title:'序盤：王国をつくる',intro:'マグノリアは、カードを王国に配置して勝利点（VP）を稼ぐゲームです。最後に最もVPが多い人が勝ちます。第1章は何もない王国から、手札交換・配置・各フェーズを1回ずつ試します。',goal:'最初の例：人間の行商を置き、その後ろにドワーフの料理人を置いてみましょう。行商の収入、料理人の発展とVPを1ラウンドで確認できます。この練習では、案内したカードと場所だけ操作できます。'},
  {title:'中盤：育てて組み合わせる',intro:'第2章は練習用に準備した途中盤面です。前の章の続きではありません。技術2点・信仰2点、7金から始めます。どちらもあと1点でLv.2。同じ種族を並べることと、レベルに応じたカード効果を試しましょう。',goal:'ドワーフが横に2体並んでいます。3体目を同じ横列に置くと技術ボーナス。信仰を伸ばすカードや、レベルで強くなるカードも比べてみましょう。'},
- {title:'終盤：勝ち切るタイミング',intro:'第3章も独立した例題です。王国は7体、技術・信仰はLv.3、VPは39。得点用のカードが既にあるため、この1ラウンドで終了条件に到達します。最後の配置を考え、残金を含む最終得点まで確認しましょう。',goal:'戦力を増やす・今すぐVPを増やす・お金を残す、どれがよさそうでしょうか。9体になると終了することも意識して、好きな一手を試してください。'},
+ {title:'終盤：勝ち切るタイミング',intro:'第3章も独立した例題です。王国は7体、技術・信仰はLv.3、VPは39。得点用のカードが既にあるため、この1ラウンドで終了条件に到達します。最後の配置を考え、残金を含む最終得点まで確認しましょう。',goal:'戦力を増やす・今すぐVPを増やす・お金を残す、どれがよさそうでしょうか。9体になると終了することも意識して、指定の2枚を置き、終了まで確認してください。'},
 ];
 const specs=[
  {gold:5,tech:0,faith:0,vp:0,board:[],hand:['human_marchant','dwarf_cook','dwarf_pugilist','elf_marchant','demon_storm'],enemy:[],enemyHand:['human_marchant','goblin_soldier','elf_marchant','dwarf_cook','elf_saint']},
@@ -23,6 +23,7 @@ export function tutorialGame(name,chapter=0){
  own.board=s.board.map(([id,x,y])=>({card:take(id),x,y}));
  enemy.board=s.enemy.map(([id,x,y])=>({card:take(id),x,y}));
  own.hand=s.hand.map(take);enemy.hand=s.enemyHand.map(take);
+ if(chapter===0)g.deck.push(take('elf_saint'));
  own.power=power(own);enemy.power=power(enemy);
  g.tutorial=true;g.tutorialChapter=chapter;return g;
 }
@@ -88,3 +89,31 @@ export function tutorialPhaseOutcome(resolution,phase,you='human'){
   return `${card.name}の効果はありますが、今回の条件では値が増えません。カードの詳細で参照する値・条件を確認しましょう。`;
  });
 }
+
+// A lesson permits only its current action. Derive the next task from the draft,
+// so undoing a placement restores the previous task without a separate counter.
+export function tutorialTask(chapter,phase,hand=[],moves=0,discard=[]){
+ if(phase==='draw'){
+  const index=chapter===0?hand.indexOf('demon_storm'):-1;
+  const ready=chapter===0?discard.length===1&&discard[0]===index:discard.length===0;
+  return {handIndex:index,canConfirm:ready,text:chapter===0?'まず9金の「嵐のデーモン」を選び、「交換を確定」を押しましょう。今は5金なので、使えるカードに交換します。':'この章は用意した手札を使います。「交換せず補充」を押して配置へ進みましょう。'};
+ }
+ if(phase!=='place')return null;
+ const steps=[
+  [['human_marchant',0,0,'最初に「人間の行商」を光る＋へ置きましょう。1金で配置でき、収入の土台になります。'],['dwarf_cook',0,1,'次に「ドワーフの料理人」を行商の下の光る＋へ。後ろでも発展・VPの効果は働きます。']],
+  [['dwarf_pugilist',2,0,'「ドワーフの拳闘士」をドワーフ2枚の右へ。同じ種族が横に3枚揃う技術ボーナスを見ましょう。'],['elf_follower',2,1,'「エルフの修行僧」を拳闘士の下へ。配置時の信仰＋2で、Lv.1からLv.2になります。']],
+  [['elf_follower',1,2,'「エルフの修行僧」を下段中央へ。信仰を増やし、VPを得るカードを加えます。'],['elf_saint',2,2,'「エルフの聖職者」を下段右へ。配置時VPを確認し、9体になった王国の最終ラウンドを見届けましょう。']]
+ ][chapter];
+ const step=steps?.[moves];
+ if(!step)return {handIndex:-1,canConfirm:moves===2,text:'2枚置けました。お金と効果の変化を確認し、「2枚の配置を確定」を押しましょう。取り消すと前の手順へ戻れます。'};
+ return {card:step[0],handIndex:hand.indexOf(step[0]),x:step[1],y:step[2],canConfirm:false,text:step[3]};
+}
+export function tutorialPlacementAllowed(task,handIndex,x,y){return !!task?.card&&task.handIndex===handIndex&&task.x===x&&task.y===y;}
+export const TUTORIAL_SLIDES=[
+ {title:'チュートリアルへようこそ！',text:'宿屋の卓で、一緒にマグノリアについて学びましょう。まずは絵で基本を知り、そのあと3つの短い盤面練習へ。全ラウンドを遊ばなくても、序盤から終盤まで体験できます。',kind:'welcome'},
+ {title:'自分の王国をつくり、VPを稼ぐゲーム',text:'手札からカードを置いて王国を広げます。戦争の報酬やカードの効果で勝利点（VP）を増やし、最後に最もVPが多い人が勝ちます。誰かが40VP、または9体配置したラウンドの最後に終了します。',kind:'kingdom'},
+ {title:'お金で配置。前線の仲間が戦う',text:'カードにはコスト・戦力・効果があります。配置は毎ラウンド最大2枚、上下左右につなげ、全体を3×3以内に。各縦列で一番上のカードが前線です。後ろのカードも収入・発展・VPで王国を支えます。',kind:'front'},
+ {title:'技術・信仰で、カードの効果を育てる',text:'点数が1・3・7・15になるとレベルが上がります。レベルを参照するカードの効果が強くなり、点数は使っても減りません。対応するカードと組み合わせることが大切です。',kind:'levels'},
+ {title:'置いたあとも、王国が働く',text:'手札交換 → 配置 → 戦争 → 発展 → 収入 → VP。発展は技術・信仰、収入はお金、VPは得点を増やす時間です。対応する効果がないフェーズでは変化しないこともあります。収入では全員が基本3金を得ます。',kind:'phases'},
+ {title:'では、実際の盤面でやってみましょう！',text:'光るカードと光る＋を順番に操作します。まず手札交換、そのあと2枚配置。理由つきの増減を見ながら、各フェーズを一つずつ確認しましょう。詳しい説明はいつでも「解説集」で読めます。',kind:'practice'}
+];

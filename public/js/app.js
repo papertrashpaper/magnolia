@@ -1,5 +1,5 @@
 import {matBounds,createRefreshments,servingLabel} from './tavern.js?v=1';
-import {tutorialGame,tutorialGuide,tutorialObservation,tutorialPhaseOutcome,TUTORIAL_CHAPTERS,TUTORIAL_REFERENCE} from './tutorial.js?v=9';
+import {tutorialGame,tutorialGuide,tutorialObservation,tutorialPhaseOutcome,TUTORIAL_CHAPTERS,TUTORIAL_REFERENCE,tutorialTask,tutorialPlacementAllowed,TUTORIAL_SLIDES} from './tutorial.js?v=10';
 import {bindCardDrag} from './drag.js?v=8';
 import {CARDS,CARD,RACES,JOBS,RACE_BONUS,JOB_BONUS,effectText} from './cards.js?v=3';
 import {newGame,submit,nextRound,publicView,previewPlacement,legalCells,bounds,power,level,CPU_LEVELS,normalizeCPU} from './engine.js?v=11';
@@ -157,8 +157,8 @@ function warFields(){return `<div class="war-fields">${Array.from({length:setup.
 function renderSetup(){
  const saved=store.get('magnolia-local');
  const oldSession=store.get('magnolia-session');
- app.innerHTML=`<section class="setup"><div class="tavern-welcome"><span class="inn-emblem" aria-hidden="true">✦</span><div><p class="inn-sign">THE AMBER LANTERN</p><h2>琥珀の灯亭</h2><p>灯りの下、今宵もひとつの王国が生まれる。</p></div><span class="inn-emblem" aria-hidden="true">✦</span></div><div class="setup-head"><div><p class="eyebrow">旅人たちの卓</p><h1>対戦を始める</h1></div><span class="muted small">2〜5人</span></div><div class="tabs"><button data-tab="local" class="${setupTab==='local'?'active':''}">CPU対戦</button><button data-tab="online" class="${setupTab==='online'?'active':''}">オンライン対戦</button></div><div class="tutorial-entry"><div><b>初めての旅人へ</b><span>3つの短い例題で、勝ち方・操作・王国の育て方をじっくり練習。各章1ラウンド、途中盤面から始められます。</span></div><button id="tutorialButton">チュートリアルで遊ぶ</button></div><div class="setup-grid"><section class="panel"><h2>${setupTab==='local'?'CPUと遊ぶ':'部屋を作る・参加する'}</h2><label>プレイヤー名<input id="nameInput" maxlength="20" value="${esc(setup.name)}"></label>${setupTab==='online'?`<label style="margin-top:18px">対戦サーバーURL<input id="serverInput" type="url" placeholder="https://……onrender.com" value="${esc(setup.server)}"></label><p class="muted small" style="margin:8px 0">接続先は設定済みです。そのまま部屋を作成できます。</p>`:''}<div class="fields"><label>合計人数<select id="totalInput">${[2,3,4,5].map(n=>`<option value="${n}" ${setup.total===n?'selected':''}>${n}人${setupTab==='local'?`（あなた＋CPU${n-1}人）`:''}</option>`).join('')}</select></label>${setupTab==='online'?`<label>CPU用に確保する席<select id="cpuInput">${Array.from({length:setup.total},(_,i)=>`<option value="${i}" ${setup.cpuCount===i?'selected':''}>${i}席</option>`).join('')}</select></label>`:''}</div>${cpuStrengthFields()}<h3>戦争で獲得するVP</h3>${warFields()}<p class="muted small" style="margin:10px 0">同点は同順位。次の順位は飛ばします。</p><button id="createButton" class="primary">${setupTab==='local'?'CPU対戦を開始':'部屋を作成'}</button>${setupTab==='local'&&saved?'<button id="resumeLocal" style="width:100%;margin-top:10px">前回のCPU対戦を再開</button>':''}${setupTab==='online'?`<div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--line)"><label>部屋番号<input id="roomInput" placeholder="例：A1B2C3" maxlength="6" value="${esc(setup.room)}" style="text-transform:uppercase"></label><button id="joinButton" style="width:100%;margin-top:12px">部屋に参加</button>${oldSession?'<button id="resumeOnline" style="width:100%;margin-top:10px">前回の部屋に再接続</button>':''}</div>`:''}<div id="formError" class="form-error" role="alert"></div></section><aside class="panel"><h2>ラウンドの流れ</h2><ul class="mini-sequence"><li><span>01</span><div><b>手札を交換</b><br>捨てるカードを選び、5枚まで補充。</div></li><li><span>02</span><div><b>最大2枚を配置</b><br>上下左右につなげて、王国を広げる。</div></li><li><span>03</span><div><b>戦争・発展・収入・VP</b><br>全員の確定後に、自動で計算。</div></li></ul><div class="note">誰かが40VP、または9体配置したラウンドで終了。残金も得点に加わります。</div><p class="muted small" style="margin:18px 0 0">各種族の王とデーモンは1枚、眼のデーモンは2枚。その他は人間・ドワーフ・エルフ・ゴブリン各3枚、ゴーレム各2枚です。</p></aside></div></section>`;
- qs('#tutorialButton').onclick=()=>startTutorial();
+ app.innerHTML=`<section class="setup"><div class="tavern-welcome"><span class="inn-emblem" aria-hidden="true">✦</span><div><p class="inn-sign">THE AMBER LANTERN</p><h2>琥珀の灯亭</h2><p>灯りの下、今宵もひとつの王国が生まれる。</p></div><span class="inn-emblem" aria-hidden="true">✦</span></div><div class="setup-head"><div><p class="eyebrow">旅人たちの卓</p><h1>対戦を始める</h1></div><span class="muted small">2〜5人</span></div><div class="tabs"><button data-tab="local" class="${setupTab==='local'?'active':''}">CPU対戦</button><button data-tab="online" class="${setupTab==='online'?'active':''}">オンライン対戦</button></div><div class="tutorial-entry"><div><b>初めての旅人へ</b><span>画像つきの導入で基本を知り、3つの短い盤面練習へ。光るカードと場所が次の操作を案内します。</span></div><button id="tutorialButton">チュートリアルで遊ぶ</button></div><div class="setup-grid"><section class="panel"><h2>${setupTab==='local'?'CPUと遊ぶ':'部屋を作る・参加する'}</h2><label>プレイヤー名<input id="nameInput" maxlength="20" value="${esc(setup.name)}"></label>${setupTab==='online'?`<label style="margin-top:18px">対戦サーバーURL<input id="serverInput" type="url" placeholder="https://……onrender.com" value="${esc(setup.server)}"></label><p class="muted small" style="margin:8px 0">接続先は設定済みです。そのまま部屋を作成できます。</p>`:''}<div class="fields"><label>合計人数<select id="totalInput">${[2,3,4,5].map(n=>`<option value="${n}" ${setup.total===n?'selected':''}>${n}人${setupTab==='local'?`（あなた＋CPU${n-1}人）`:''}</option>`).join('')}</select></label>${setupTab==='online'?`<label>CPU用に確保する席<select id="cpuInput">${Array.from({length:setup.total},(_,i)=>`<option value="${i}" ${setup.cpuCount===i?'selected':''}>${i}席</option>`).join('')}</select></label>`:''}</div>${cpuStrengthFields()}<h3>戦争で獲得するVP</h3>${warFields()}<p class="muted small" style="margin:10px 0">同点は同順位。次の順位は飛ばします。</p><button id="createButton" class="primary">${setupTab==='local'?'CPU対戦を開始':'部屋を作成'}</button>${setupTab==='local'&&saved?'<button id="resumeLocal" style="width:100%;margin-top:10px">前回のCPU対戦を再開</button>':''}${setupTab==='online'?`<div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--line)"><label>部屋番号<input id="roomInput" placeholder="例：A1B2C3" maxlength="6" value="${esc(setup.room)}" style="text-transform:uppercase"></label><button id="joinButton" style="width:100%;margin-top:12px">部屋に参加</button>${oldSession?'<button id="resumeOnline" style="width:100%;margin-top:10px">前回の部屋に再接続</button>':''}</div>`:''}<div id="formError" class="form-error" role="alert"></div></section><aside class="panel"><h2>ラウンドの流れ</h2><ul class="mini-sequence"><li><span>01</span><div><b>手札を交換</b><br>捨てるカードを選び、5枚まで補充。</div></li><li><span>02</span><div><b>最大2枚を配置</b><br>上下左右につなげて、王国を広げる。</div></li><li><span>03</span><div><b>戦争・発展・収入・VP</b><br>全員の確定後に、自動で計算。</div></li></ul><div class="note">誰かが40VP、または9体配置したラウンドで終了。残金も得点に加わります。</div><p class="muted small" style="margin:18px 0 0">各種族の王とデーモンは1枚、眼のデーモンは2枚。その他は人間・ドワーフ・エルフ・ゴブリン各3枚、ゴーレム各2枚です。</p></aside></div></section>`;
+ qs('#tutorialButton').onclick=()=>openTutorialIntro();
  qs('#nameInput').oninput=e=>{setup.name=e.target.value;store.set('magnolia-name',setup.name);};
  qs('#difficultyInput').onchange=e=>{setup.cpuDifficulty=e.target.value;setup.cpuDifficulties=Array(setup.total-1).fill(setup.cpuDifficulty);store.set('magnolia-cpu-difficulty',setup.cpuDifficulty);store.set('magnolia-cpu-seats',setup.cpuDifficulties);renderSetup();};
  for(const el of document.querySelectorAll('[data-cpu-seat]'))el.onchange=e=>{setup.cpuDifficulties[Number(el.dataset.cpuSeat)]=e.target.value;store.set('magnolia-cpu-seats',setup.cpuDifficulties);renderSetup();};
@@ -174,9 +174,33 @@ function renderSetup(){
  if(qs('#resumeOnline'))qs('#resumeOnline').onclick=()=>resumeOnline(oldSession);
 }
 
+function tutorialTaskNow(){
+ if(mode!=='local'||!game?.tutorial||playback)return null;
+ const draft=currentDraft();return tutorialTask(game.tutorialChapter??0,state.phase,draft.hand,moves.length,[...discard]);
+}
+function tutorialHandAllowed(index){const task=tutorialTaskNow();return !task||task.handIndex===index;}
+function tutorialCellAllowed(x,y){const task=tutorialTaskNow();return !task||tutorialPlacementAllowed(task,task.handIndex,x,y);}
+let tutorialSlide=0,tutorialHandFocusKey=null;
+function openTutorialIntro(index=0){
+ tutorialSlide=index;const slide=TUTORIAL_SLIDES[index];
+ const image=id=>`<img src="${CARD[id].image}" alt="${esc(CARD[id].name)}">`;
+ const pair=(ids)=>`<div class="intro-cards">${ids.map(id=>`<figure>${image(id)}<figcaption>${esc(CARD[id].name)}</figcaption></figure>`).join('')}</div>`;
+ const visual={
+  welcome:'<div class="intro-landscape"><span>MAGNOLIA</span><b>冒険者の宿・琥珀の灯亭</b></div>',
+  kingdom:`<div class="intro-kingdom">${['human_knight','elf_mistic','dwarf_pugilist','human_marchant','dwarf_cook','elf_saint'].map(image).join('')}</div><p class="intro-caption">仲間を並べて、あなたの王国へ</p>`,
+  front:`<div class="intro-front"><strong>↑ 前方 / 前線は戦争に参戦</strong>${pair(['human_knight','human_marchant'])}<span>前線 ↑ ／ 後方 ↓</span></div>`,
+  levels:`${pair(['elf_artist','elf_mistic'])}<div class="intro-thresholds">${[[0,0],[1,1],[3,2],[7,3],[15,4]].map(([point,lv])=>`<span><b>${point}点〜</b>Lv.${lv}</span>`).join('')}</div><p class="intro-caption">芸術家：技術Lv.×2 VP ／ 神秘家：信仰Lv.×2の追加戦力</p>`,
+  phases:`${pair(['dwarf_cook','human_marchant','elf_follower'])}<div class="intro-phase-list"><span>発展 → 技術・信仰</span><span>収入 → お金</span><span>VP → 得点</span></div>`,
+  practice:`${pair(['human_marchant','dwarf_cook'])}<p class="intro-caption">最初の練習：行商と料理人の小さな王国</p>`
+ }[slide.kind];
+ qs('#tutorialIntroBody').innerHTML=`<div class="intro-heading"><p class="eyebrow">初めてのマグノリア · ${index+1} / ${TUTORIAL_SLIDES.length}</p><h2 id="tutorialIntroTitle">${esc(slide.title)}</h2></div><div class="intro-content"><div class="intro-visual">${visual}</div><p class="intro-description">${esc(slide.text)}</p></div><div class="intro-footer"><button id="introBack" ${index===0?'disabled':''}>戻る</button><div class="intro-dots" aria-label="スライド ${index+1} / ${TUTORIAL_SLIDES.length}">${TUTORIAL_SLIDES.map((_,i)=>`<span class="${i===index?'active':''}"></span>`).join('')}</div><button id="introNext" class="primary">${index===TUTORIAL_SLIDES.length-1?'盤面で練習を始める':'次へ'}</button></div>`;
+ qs('#introBack').onclick=()=>openTutorialIntro(tutorialSlide-1);
+ qs('#introNext').onclick=()=>{if(tutorialSlide<TUTORIAL_SLIDES.length-1)openTutorialIntro(tutorialSlide+1);else{qs('#tutorialIntroDialog').close();startTutorial();}};
+ const dialog=qs('#tutorialIntroDialog');if(!dialog.open)dialog.showModal();qs('#introNext').focus();
+}
 function startTutorial(chapter=0){
  clearTimeout(playTimer);clearTimeout(noticeTimer);clearFinalResults();playback=null;pendingView=null;notice=null;
- game=tutorialGame(setup.name,chapter);autoPlay=false;fillCPU(game,submit);mode='local';myId='human';boardId=myId;draftKey='';state=null;moves=[];selected=null;seenResolutions.clear();seenFinalResults.clear();tutorialDockCollapsed=false;
+ game=tutorialGame(setup.name,chapter);tutorialHandFocusKey=null;autoPlay=false;fillCPU(game,submit);mode='local';myId='human';boardId=myId;draftKey='';state=null;moves=[];selected=null;seenResolutions.clear();seenFinalResults.clear();tutorialDockCollapsed=false;
  applyView(publicView(game,myId));requestAnimationFrame(()=>qs('.tutorial-guide')?.scrollIntoView({block:'start',behavior:'instant'}));
 }
 function tutorialGuideNow(){
@@ -190,8 +214,7 @@ function tutorialFinishControls(){
 }
 function tutorialBrief(guide){
  if(guide.done)return (game.tutorialChapter??0)<2?'この章の練習は完了です。下のボタンで次の章へ進めます。':'練習は完了です。下のボタンから通常対戦を始められます。';
- if(guide.step===1)return (game.tutorialChapter??0)===0?'VPが最も多い王国を目指します。使いたい手札を残し、不要なカードを選んで交換。そのまま補充してもOKです。':'途中盤面から始めます。手札のコストと効果を確認し、残すカードを選んで補充しましょう。';
- if(guide.step===2)return moves?'増減を確認し、必要なら「最後の配置を戻す」。最大2枚置いたら配置を確定しましょう。':'カードを選んで「＋」へ配置。ドラッグでも置けます。まずは1枚、仮置きしてみましょう。';
+ if(guide.step<=2)return tutorialTaskNow()?.text??guide.text;
  const phase=state.resolution.events[playback.index].phase;
  return {place:'代金を払ってから配置時効果・ボーナスを処理します。「次の処理」で確認しましょう。',war:'金色の前線の戦力を比べ、戦争順位に応じたVPを得ます。',develop:'発展効果で技術・信仰が増えます。レベルの変化も見てみましょう。',income:'基本3金に、カードの収入を加えます。',vp:'カードのVP効果を処理します。発展後のレベルを使います。',final:'残金3金につき1VPを加え、最終VPで勝敗を決めます。'}[phase]??guide.text;
 }
@@ -309,7 +332,7 @@ function boardHTML(p,interactive){
   const card=p.board.find(c=>c.x===x&&c.y===y),legal=cells.some(c=>c.x===x&&c.y===y);
   if(card){const planned=moves.findIndex(m=>m.x===x&&m.y===y);const front=!p.board.some(c=>c.x===x&&c.y<y);
    content+=`<button class="cell ${front?'frontline':'rearline'} ${interactive&&planned>=0?'planned':''}" data-card="${card.card}" aria-label="${CARD[card.card].name}の詳細"><img src="${CARD[card.card].image}" alt="${CARD[card.card].name}">${interactive&&planned>=0?`<span class="number">${planned+1}</span>`:''}${front?'<span class="front-label">⚑ 前線 · 戦争に参戦</span>':''}</button>`;
-  }else if(legal)content+=`<button class="cell candidate ${selected!==null?'can-place':''}" data-cell="${x},${y}" ${moves.length>=2||busy?'disabled':''} aria-label="${x},${y}に配置"><span style="font-size:1.6rem">＋</span></button>`;
+  }else if(legal)content+=`<button class="cell candidate ${selected!==null?'can-place':''} ${tutorialTaskNow()&&tutorialCellAllowed(x,y)?'tutorial-required':''}" data-cell="${x},${y}" ${moves.length>=2||busy||!tutorialCellAllowed(x,y)?'disabled':''} aria-label="${x},${y}に配置"><span style="font-size:1.6rem">＋</span></button>`;
   else content+='<div class="cell void" aria-hidden="true"></div>';
  }
  return `<div class="board-table"><div class="board-wrap"><div class="board" style="grid-template-columns:repeat(${width},minmax(0,1fr));${width===1?'max-width:140px':width===2?'max-width:300px':''}">${content}</div>${!p.board.length?'<div class="empty-help">最初のカードはここへ。<br>次から上下左右に広げられます。</div>':''}</div>${refreshmentsHTML()}</div>`;
@@ -325,7 +348,7 @@ function actionHTML(p){
  const title=state.phase==='draw'?'捨てるカードを選ぶ':'配置するカードを選ぶ';
  const help=state.phase==='draw'?'選択したカードを捨て、手札を5枚まで補充します。':mobileLayout()?'カードを上下にドラッグして「＋」へ配置。カードを選んで「＋」をタップしても配置できます。最大2枚です。':'カードを王国の「＋」へドラッグして配置。カードを選んで「＋」を押しても配置できます。最大2枚です。';
  const hand=state.phase==='place'?p.hand:own.hand;
- return `<section id="handActions" class="action-panel"><div class="action-title"><div><h2>${title}</h2><span class="muted small">${state.phase==='place'?`${moves.length}/2枚`:`${discard.size}枚交換`}</span></div><div class="placement-gold" aria-live="polite"><span>現在のお金${state.phase==='place'&&moves.length?(locked?'（配置確定後）':'（仮配置後）'):''}</span><strong>${p.gold}<small>金</small></strong></div></div><p class="muted small">${locked?(state.phase==='place'?'配置確定済み。自分の配置を表示しています。ほかの参加者を待っています。':'確定済み。ほかの参加者を待っています。'):help}</p><div class="hand">${hand.map((id,i)=>`<div class="hand-entry"><button class="hand-card ${selected===i?'selected':''} ${discard.has(i)&&state.phase==='draw'?'discard':''}" data-hand="${i}" data-draggable="${state.phase==='place'&&!locked&&!busy&&moves.length<2&&CARD[id].cost<=p.gold}" data-drag-blocked="${state.phase==='place'&&!locked&&!busy&&moves.length<2&&CARD[id].cost>p.gold?'money':''}" ${locked||busy?'disabled':''} aria-label="${CARD[id].name}${state.phase==='draw'&&discard.has(i)?'、捨てる対象':''}" aria-pressed="${state.phase==='draw'?discard.has(i):selected===i}"><img src="${CARD[id].image}" draggable="false" alt="${CARD[id].name}">${state.phase==='place'&&CARD[id].cost>p.gold?'<span class="afford">お金不足</span>':''}</button><button class="hand-card-details mobile-only quiet" data-card="${id}" aria-label="${esc(CARD[id].name)}の詳細"><span>${esc(CARD[id].name)}</span><small>${CARD[id].cost}金 · 詳細</small></button></div>`).join('')}</div>${state.phase==='place'&&selected!==null&&hand[selected]?`<div class="selected-info"><strong>${CARD[hand[selected]].name}</strong>　${CARD[hand[selected]].cost}金 / 戦力${CARD[hand[selected]].power}<p>${CARD[hand[selected]].effects.map(effectText).join('<br>')}</p><button class="quiet" data-card="${hand[selected]}" style="padding:4px 8px">カードの詳細</button></div>`:''}<div class="hand-info">${state.phase==='place'?`配置しない枠の報酬：${2-moves.length}金（配置処理後に獲得）`:mobileLayout()?'手札は横にスワイプできます。配置時はカードを上下にドラッグ。「詳細」で効果を確認。':'カードの画像を長押し・右クリックすると詳細を表示できます。'}</div><div class="action-buttons">${state.phase==='place'?`<button id="undoButton" ${!moves.length||locked||busy?'disabled':''}>最後の配置を戻す</button>`:`<button id="clearDiscard" ${!discard.size||locked||busy?'disabled':''}>選択を解除</button>`}<button id="confirmButton" class="primary" ${locked||busy?'disabled':''}>${locked?'全員の確定を待っています':state.phase==='draw'?(discard.size?'交換を確定':'交換せず補充'):moves.length?`${moves.length}枚の配置を確定`:'配置せず2金を獲得'}</button></div></section>`;
+ return `<section id="handActions" class="action-panel"><div class="action-title"><div><h2>${title}</h2><span class="muted small">${state.phase==='place'?`${moves.length}/2枚`:`${discard.size}枚交換`}</span></div><div class="placement-gold" aria-live="polite"><span>現在のお金${state.phase==='place'&&moves.length?(locked?'（配置確定後）':'（仮配置後）'):''}</span><strong>${p.gold}<small>金</small></strong></div></div><p class="muted small">${locked?(state.phase==='place'?'配置確定済み。自分の配置を表示しています。ほかの参加者を待っています。':'確定済み。ほかの参加者を待っています。'):help}</p><div class="hand">${hand.map((id,i)=>`<div class="hand-entry"><button class="hand-card ${selected===i?'selected':''} ${tutorialTaskNow()&&tutorialHandAllowed(i)?'tutorial-required':''} ${discard.has(i)&&state.phase==='draw'?'discard':''}" data-hand="${i}" data-draggable="${state.phase==='place'&&!locked&&!busy&&moves.length<2&&tutorialHandAllowed(i)&&CARD[id].cost<=p.gold}" data-drag-blocked="${state.phase==='place'&&!locked&&!busy&&moves.length<2&&tutorialHandAllowed(i)&&CARD[id].cost>p.gold?'money':''}" ${locked||busy||!tutorialHandAllowed(i)?'disabled':''} aria-label="${CARD[id].name}${state.phase==='draw'&&discard.has(i)?'、捨てる対象':''}" aria-pressed="${state.phase==='draw'?discard.has(i):selected===i}"><img src="${CARD[id].image}" draggable="false" alt="${CARD[id].name}">${state.phase==='place'&&CARD[id].cost>p.gold?'<span class="afford">お金不足</span>':''}</button><button class="hand-card-details mobile-only quiet" data-card="${id}" aria-label="${esc(CARD[id].name)}の詳細"><span>${esc(CARD[id].name)}</span><small>${CARD[id].cost}金 · 詳細</small></button></div>`).join('')}</div>${state.phase==='place'&&selected!==null&&hand[selected]?`<div class="selected-info"><strong>${CARD[hand[selected]].name}</strong>　${CARD[hand[selected]].cost}金 / 戦力${CARD[hand[selected]].power}<p>${CARD[hand[selected]].effects.map(effectText).join('<br>')}</p><button class="quiet" data-card="${hand[selected]}" style="padding:4px 8px">カードの詳細</button></div>`:''}<div class="hand-info">${state.phase==='place'?`配置しない枠の報酬：${2-moves.length}金（配置処理後に獲得）`:mobileLayout()?'手札は横にスワイプできます。配置時はカードを上下にドラッグ。「詳細」で効果を確認。':'カードの画像を長押し・右クリックすると詳細を表示できます。'}</div><div class="action-buttons">${state.phase==='place'?`<button id="undoButton" ${!moves.length||locked||busy?'disabled':''}>最後の配置を戻す</button>`:`<button id="clearDiscard" ${!discard.size||locked||busy?'disabled':''}>選択を解除</button>`}<button id="confirmButton" class="primary" ${locked||busy||(tutorialTaskNow()&&!tutorialTaskNow().canConfirm)?'disabled':''}>${locked?'全員の確定を待っています':state.phase==='draw'?(discard.size?'交換を確定':'交換せず補充'):moves.length?`${moves.length}枚の配置を確定`:'配置せず2金を獲得'}</button></div></section>`;
 }
 function resultsHTML(){
  if(!['round','ended'].includes(state.phase))return '';
@@ -335,6 +358,7 @@ function resultsHTML(){
 function placeAt(handIndex,x,y){
  const own=state?.players.find(p=>p.id===myId);
  if(playback||state?.phase!=='place'||boardId!==myId||!own||own.ready||busy||moves.length>=2)return;
+ const task=tutorialTaskNow();if(task&&!tutorialPlacementAllowed(task,handIndex,x,y)){toast(task.text);return;}
  const draft=currentDraft(),card=CARD[draft.hand[handIndex]];
  if(card&&card.cost>draft.gold){moneyWarning();return;}
  try{const proposed=[...moves,{handIndex,x,y}];const result=previewPlacement(own,proposed),placed=result.placed.at(-1);moves=proposed;selected=null;render();showNotice(`${own.name}が${CARD[placed.card].name}を仮配置`,placed.steps,'予定の増減です。確定前なら取り消せます。');}catch(e){toast(e.message);}
@@ -348,6 +372,9 @@ function renderGame(){
  if(mobileLayout()){
   const gallery=qs('.kingdom-gallery');gallery.scrollLeft=mobileGalleryScroll;
   if(qs('.hand'))qs('.hand').scrollLeft=mobileHandScroll;
+  const task=tutorialTaskNow(),taskKey=task?`${game.tutorialChapter}:${state.phase}:${moves.length}`:null;
+  if(taskKey!==tutorialHandFocusKey&&task?.handIndex>=0){const hand=qs('.hand'),card=qs(`[data-hand="${task.handIndex}"]`);if(hand&&card){hand.scrollLeft+=card.getBoundingClientRect().left-hand.getBoundingClientRect().left-(hand.clientWidth-card.clientWidth)/2;mobileHandScroll=hand.scrollLeft;}}
+  tutorialHandFocusKey=taskKey;
   const event=playback?globalState().resolution.events[playback.index]:null;
   const focus=event?.playerId?`${state.round}:${playback.index}`:null;
   if(focus&&focus!==mobilePlaybackFocus){
@@ -378,6 +405,7 @@ function renderGame(){
  if(!cleanupDrag)cleanupDrag=bindCardDrag(app,placeAt,moneyWarning);
  for(const el of document.querySelectorAll('[data-hand]')){
   const index=Number(el.dataset.hand);el.onclick=()=>{
+   if(!tutorialHandAllowed(index))return;
    if(state.phase==='draw'){discard.has(index)?discard.delete(index):discard.add(index);}else{if(CARD[draft.hand[index]].cost>draft.gold){moneyWarning();return;}selected=selected===index?null:index;}render();if(state.phase==='place'&&selected!==null)mobileJump('.mobile-selected-card');
   };
   el.oncontextmenu=e=>{e.preventDefault();showCard((state.phase==='place'?draft:own).hand[index]);};
@@ -393,6 +421,7 @@ function renderGame(){
 }
 async function confirmAction(){
  if(playback)return;
+ const task=tutorialTaskNow();if(task&&!task.canConfirm){toast(task.text);return;}
  const order=state.phase==='draw'?{discard:[...discard]}:{moves:structuredClone(moves)};
  if(mode==='online'){await remote('action',{phase:state.phase,round:state.round,order});return;}
  if(busy)return;busy=true;render();await new Promise(resolve=>setTimeout(resolve,30));

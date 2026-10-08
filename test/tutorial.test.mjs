@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {tutorialGame,tutorialGuide,tutorialObservation,tutorialPhaseOutcome,TUTORIAL_REFERENCE} from '../public/js/tutorial.js';
+import {tutorialGame,tutorialGuide,tutorialObservation,tutorialPhaseOutcome,TUTORIAL_REFERENCE,tutorialTask,tutorialPlacementAllowed,TUTORIAL_SLIDES} from '../public/js/tutorial.js';
 import {CARDS} from '../public/js/cards.js';
 import {submit,publicView,previewPlacement,level,power,legalCells} from '../public/js/engine.js';
 import {fillCPU} from '../public/js/cpu.js';
@@ -73,4 +73,37 @@ test('増減がない理由も実際のフェーズ記録から説明する',()=
  beginPlace(g);submit(g,'human',{moves:[{handIndex:3,x:0,y:0}]});
  assert.match(tutorialPhaseOutcome(g.resolution,'vp').join(' '),/エルフの芸術家.*Lv.0/);
  inventory(g);
+});
+
+test('導入から3章の指定操作まで、交換・配置・確定を順番に案内する',()=>{
+ assert.equal(TUTORIAL_SLIDES.length,6);
+ assert.match(TUTORIAL_SLIDES[0].title,/ようこそ/);
+ assert.match(TUTORIAL_SLIDES.at(-1).title,/実際の盤面/);
+ for(let chapter=0;chapter<3;chapter++){
+  const g=tutorialGame('旅人',chapter),own=g.players[0];fillCPU(g,submit);
+  let task=tutorialTask(chapter,'draw',own.hand,0,[]);
+  assert.equal(task.canConfirm,chapter!==0);
+  const discard=chapter===0?[task.handIndex]:[];
+  assert(tutorialTask(chapter,'draw',own.hand,0,discard).canConfirm);
+  assert.equal(tutorialTask(chapter,'draw',own.hand,0,[0,1]).canConfirm,false);
+  submit(g,'human',{discard});fillCPU(g,submit);
+  if(chapter===0)assert(own.hand.includes('elf_saint'));
+  const moves=[];
+  for(let i=0;i<2;i++){
+   const draft=previewPlacement(own,moves).player;
+   task=tutorialTask(chapter,'place',draft.hand,moves.length);
+   assert.equal(task.canConfirm,false);
+   assert(tutorialPlacementAllowed(task,task.handIndex,task.x,task.y));
+   assert.equal(tutorialPlacementAllowed(task,task.handIndex+1,task.x,task.y),false);
+   assert.equal(tutorialPlacementAllowed(task,task.handIndex,task.x+1,task.y),false);
+   moves.push({handIndex:task.handIndex,x:task.x,y:task.y});
+   assert.equal(tutorialTask(chapter,'place',draft.hand,i).text,task.text);
+  }
+  const finished=previewPlacement(own,moves).player;
+  assert(tutorialTask(chapter,'place',finished.hand,2).canConfirm);
+  assert.equal(tutorialPlacementAllowed(tutorialTask(chapter,'place',finished.hand,2),0,0,0),false);
+  const undo=previewPlacement(own,moves.slice(0,1)).player;
+  assert.equal(tutorialTask(chapter,'place',undo.hand,1).card,task.card);
+  submit(g,'human',{moves});assert.equal(g.phase,chapter===2?'ended':'round');inventory(g);
+ }
 });
