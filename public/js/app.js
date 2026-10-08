@@ -205,7 +205,7 @@ function openTutorialIntro(index=0){
  qs('#tutorialIntroBody').innerHTML=`<div class="intro-heading"><p class="eyebrow">${esc(slide.section)} · ${index+1} / ${TUTORIAL_SLIDES.length}</p><h2 id="tutorialIntroTitle">${esc(slide.title)}</h2></div><div class="intro-content"><div class="intro-visual">${slide.phase?flow(slide.phase):''}${visual}</div><p class="intro-description">${esc(slide.text)}</p></div><div class="intro-footer"><button id="introBack" ${index===0?'disabled':''}>戻る</button><div class="intro-dots" aria-label="スライド ${index+1} / ${TUTORIAL_SLIDES.length}">${TUTORIAL_SLIDES.map((_,i)=>`<span class="${i===index?'active':''}"></span>`).join('')}</div><button id="introNext" class="primary">${index===TUTORIAL_SLIDES.length-1?'盤面で練習を始める':'次へ'}</button></div>`;
  qs('#introBack').onclick=()=>openTutorialIntro(tutorialSlide-1);
  qs('#introNext').onclick=()=>{if(tutorialSlide<TUTORIAL_SLIDES.length-1)openTutorialIntro(tutorialSlide+1);else{qs('#tutorialIntroDialog').close();startTutorial();}};
- const dialog=qs('#tutorialIntroDialog');if(!dialog.open)dialog.showModal();qs('#introNext').focus();
+ const dialog=qs('#tutorialIntroDialog');if(!dialog.open)dialog.showModal();qs('.intro-content').scrollTop=0;qs('#introNext').focus({preventScroll:true});
 }
 function startTutorial(chapter=0){
  clearTimeout(playTimer);clearTimeout(noticeTimer);clearFinalResults();playback=null;pendingView=null;notice=null;
