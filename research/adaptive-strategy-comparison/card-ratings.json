@@ -1,0 +1,213 @@
+{
+  "date": "2026-10-08",
+  "players_focus": 4,
+  "scope": "序盤の使いやすさ・資金繰り・得点力・他ルートへのつなぎやすさを含む暫定評価。勝率の変換ではない。",
+  "reference": "https://note.com/magnolia_3vp/n/ncc065bcbce35",
+  "cards": [
+    {
+      "id": "human_knight",
+      "stars": 3,
+      "reason": "序盤の6戦力は頼れる。後半は安い戦争VP役や、伸びる前線に置き換えたい。"
+    },
+    {
+      "id": "human_marchant",
+      "stars": 4,
+      "reason": "安く収入を確保でき、揃えの穴埋めにも使える。方針を選ばない。"
+    },
+    {
+      "id": "human_saint",
+      "stars": 3,
+      "reason": "信仰の育成とVPを兼ねる。ただし早く置きたい割に3金・低戦力。"
+    },
+    {
+      "id": "human_sorcerer",
+      "stars": 3,
+      "reason": "即時信仰と前線を兼ねるが、安い祈祷師や神秘家との競合がある。"
+    },
+    {
+      "id": "human_smith",
+      "stars": 4,
+      "reason": "技術＋1と得点を同時に得られる。芸術家より2金高い分を活かせるかが大事。"
+    },
+    {
+      "id": "human_great_marchant",
+      "stars": 5,
+      "reason": "序盤の資金繰りを大きく改善。引いたカードに合わせて複数ルートへ進める。"
+    },
+    {
+      "id": "human_undertaker",
+      "stars": 2,
+      "reason": "戦争を取れないときの得点役。技術＋1もあるが、用途が狭い。"
+    },
+    {
+      "id": "human_king",
+      "stars": 3,
+      "reason": "残金が多い終盤には強い。初手から単体で抱えるカードとしては不安定。"
+    },
+    {
+      "id": "dwarf_pugilist",
+      "stars": 3,
+      "reason": "安い5戦力と技術＋1。前線・レベル境界・揃えが重なると効率がよい。"
+    },
+    {
+      "id": "dwarf_gem",
+      "stars": 4,
+      "reason": "技術ルートの資金問題を解決し、自身も技術を上げる。"
+    },
+    {
+      "id": "dwarf_cook",
+      "stars": 5,
+      "reason": "安く、育成と得点が自己完結。序盤に技術へ寄せる大きな理由になる。"
+    },
+    {
+      "id": "dwarf_saint",
+      "stars": 4,
+      "reason": "両軸の育成と6戦力を兼ねる。水晶などへの準備として優秀。"
+    },
+    {
+      "id": "dwarf_alchemist",
+      "stars": 4,
+      "reason": "2金で収入と伸びる前線。信仰を使えるなら無駄が少ない。"
+    },
+    {
+      "id": "dwarf_beer",
+      "stars": 5,
+      "reason": "技術特化の主力得点役。稼働を早められるほど強い。"
+    },
+    {
+      "id": "dwarf_gardian",
+      "stars": 4,
+      "reason": "高額カードを得点に変えつつ収入も補う。大型中心の盤面に合う。"
+    },
+    {
+      "id": "dwarf_king",
+      "stars": 3,
+      "reason": "技術＋5の価値が出す時期次第。得点札を出す方がよい場面も多い。"
+    },
+    {
+      "id": "elf_archer",
+      "stars": 4,
+      "reason": "後列から戦力を足せる独自の役割。前線の配置を崩さず順位を上げられる。"
+    },
+    {
+      "id": "elf_marchant",
+      "stars": 4,
+      "reason": "1金で即時信仰と収入。信仰ルートへの入り口として使いやすい。"
+    },
+    {
+      "id": "elf_artist",
+      "stars": 5,
+      "reason": "育った技術を3金で大きなVPに変える。費用対効果が優秀。"
+    },
+    {
+      "id": "elf_mistic",
+      "stars": 4,
+      "reason": "安く信仰を上げ、前線としても伸びる。信仰戦争の準備役。"
+    },
+    {
+      "id": "elf_saint",
+      "stars": 4,
+      "reason": "1金の継続育成が便利。配置時VPを欲張って出すのを遅らせない方がよい。"
+    },
+    {
+      "id": "elf_caster",
+      "stars": 4,
+      "reason": "高信仰なら前線と追加VPが強力。報酬を取れる盤面で使いたい。"
+    },
+    {
+      "id": "elf_queen",
+      "stars": 4,
+      "reason": "即時信仰＋5が戦力とVPの両方に効く。ただし7金は重い。"
+    },
+    {
+      "id": "elf_follower",
+      "stars": 4,
+      "reason": "即時＋2信仰で境界を越えやすく、そのまま得点役になる。"
+    },
+    {
+      "id": "goblin_soldier",
+      "stars": 4,
+      "reason": "1金の前線・戦争VP・揃え要員。安さで使える場面が広い。"
+    },
+    {
+      "id": "goblin_scavenger",
+      "stars": 4,
+      "reason": "戦争と資金繰りを両立。安価な戦争ルートの息切れを防ぐ。"
+    },
+    {
+      "id": "goblin_junk",
+      "stars": 3,
+      "reason": "技術と戦争の橋渡し。両方を利用する盤面では評価が上がる。"
+    },
+    {
+      "id": "goblin_saint",
+      "stars": 3,
+      "reason": "安い信仰源と前線。信仰VP役としては使えない。"
+    },
+    {
+      "id": "goblin_lunatic",
+      "stars": 3,
+      "reason": "安い信仰VP役。派手ではないが、育った信仰の受け皿になる。"
+    },
+    {
+      "id": "goblin_great_soldier",
+      "stars": 4,
+      "reason": "2金・5戦力・追加2VP。報酬を取れるなら後列でも強い。"
+    },
+    {
+      "id": "goblin_strategist",
+      "stars": 4,
+      "reason": "高基本戦力のカードを通常VPに変える。戦争一本からの移行にも使える。"
+    },
+    {
+      "id": "goblin_king",
+      "stars": 3,
+      "reason": "安価カードが並んだ盤面では強いが、8金を用意する難しさがある。"
+    },
+    {
+      "id": "golem_iron",
+      "stars": 4,
+      "reason": "片方のレベルだけでも戦力が伸び、2金で前線を補強できる。"
+    },
+    {
+      "id": "golem_gold",
+      "stars": 3,
+      "reason": "職業が分散した盤面の資金補助。効果は一度なので使う順番が重要。"
+    },
+    {
+      "id": "golem_stollow",
+      "stars": 5,
+      "reason": "技術なら収入、信仰なら前線。片方だけ育っていても役割を持てる。"
+    },
+    {
+      "id": "golem_cristal",
+      "stars": 5,
+      "reason": "信仰の有力な得点役で、両軸ならさらに強い。育成の準備なしに抱えるのは別問題。"
+    },
+    {
+      "id": "golem_king",
+      "stars": 3,
+      "reason": "レベル差を埋める効果と8戦力は強いが、利用先と6金の準備が必要。"
+    },
+    {
+      "id": "demon_destroy",
+      "stars": 4,
+      "reason": "前線を強めながら戦争VPも得る。安い軍勢を後列へ回す際に便利。"
+    },
+    {
+      "id": "demon_eye",
+      "stars": 5,
+      "reason": "序盤から収入と戦争の両方を狙える。資金と得点の選択肢を残せる。"
+    },
+    {
+      "id": "demon_pest",
+      "stars": 5,
+      "reason": "育成不要の毎回4VP。早く置いて稼ぐ価値が非常に大きい。"
+    },
+    {
+      "id": "demon_storm",
+      "stars": 3,
+      "reason": "最大出力は非常に高いが、9金・揃え・配置場所の準備を選ぶ。"
+    }
+  ]
+}
