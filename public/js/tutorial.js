@@ -177,7 +177,7 @@ function eventLearning(event,past,chapter,you,preview=false){
   if(chapter===2)paragraphs.push('最後の収入も、残金の得点に含まれます。');
  }else if(['develop','vp'].includes(event.phase)){
   const effects=changes.map(change=>({change,card:ownEffect(change)})).filter(x=>x.card);
-  card=effects[0]?.card??null;title=event.phase==='develop'?'置いたカードが点数を育てる':'置いたカードがVPを生む';
+  card=effects[0]?.card??null;title=event.phase==='develop'?'発展の結果':'VPの結果';
   for(const item of effects){
    const c=item.change,name=CARD[item.card].name;
    if(event.phase==='develop')paragraphs.push(`今回置いた${name}のおかげで、${changeValue(c)}。この後のVPには新しいレベルを使います。`);
@@ -185,7 +185,7 @@ function eventLearning(event,past,chapter,you,preview=false){
     const eff=CARD[item.card].effects.find(e=>e.phase==='vp'&&e.stat===c.stat);
     const stat=eff?.scale==='techLevel'?'tech':eff?.scale==='faithLevel'?'faith':null;
     const grown=stat?past.flatMap(e=>e.playerId===you?(e.changes??[]):[]).find(x=>x.stat===stat&&[...placed].some(id=>x.source.startsWith(CARD[id].name))):null;
-    paragraphs.push(`今回置いた${name}で${c.delta}VP。${stat?`${STAT_NAMES[stat]}${p[stat]}点・Lv.${level(p[stat])}×${eff.amount}＝${c.delta}VPです。`:''}`);
+    paragraphs.push(`今回置いた${name}で${c.delta}VP。${stat?`${stat==='tech'?'技術':'信仰'}${p[stat]}点・Lv.${level(p[stat])}×${eff.amount}＝${c.delta}VPです。`:''}`);
     if(grown)paragraphs.push(`配置で育てた${STAT_NAMES[stat]}が、この得点につながりました。点数は消費しません。`);
    }
   }
