@@ -1,0 +1,107 @@
+{
+  "createdAt": "2026-10-08T07:11:59.814Z",
+  "runtime": "v24.19.0",
+  "notes": "Single-process Node timing after benchmark workers finish; not browser latency. Two predefined five-player initial deals, paired treatments.",
+  "records": [
+    {
+      "task": {
+        "id": 0,
+        "group": "timing",
+        "count": 5,
+        "seed": 810000,
+        "focal": 0,
+        "opponent": "balanced",
+        "treatment": "adaptive",
+        "options": {
+          "worlds": 2,
+          "rounds": 4,
+          "beam": 8,
+          "rolloutBeam": 2,
+          "finalists": 3
+        }
+      },
+      "rounds": 5,
+      "timing": {
+        "decisions": 10,
+        "totalMs": 4052.7431690000003,
+        "maxMs": 817.1059690000002
+      },
+      "meanDecisionMs": 405.27431690000003
+    },
+    {
+      "task": {
+        "id": 1,
+        "group": "timing",
+        "count": 5,
+        "seed": 810000,
+        "focal": 0,
+        "opponent": "balanced",
+        "treatment": "planning",
+        "options": {
+          "worlds": 2,
+          "rounds": 4,
+          "beam": 8,
+          "rolloutBeam": 2,
+          "finalists": 3
+        }
+      },
+      "rounds": 4,
+      "timing": {
+        "decisions": 8,
+        "totalMs": 12170.068272999995,
+        "maxMs": 2199.0617139999995
+      },
+      "meanDecisionMs": 1521.2585341249994
+    },
+    {
+      "task": {
+        "id": 2,
+        "group": "timing",
+        "count": 5,
+        "seed": 810001,
+        "focal": 1,
+        "opponent": "balanced",
+        "treatment": "adaptive",
+        "options": {
+          "worlds": 2,
+          "rounds": 4,
+          "beam": 8,
+          "rolloutBeam": 2,
+          "finalists": 3
+        }
+      },
+      "rounds": 5,
+      "timing": {
+        "decisions": 10,
+        "totalMs": 3312.9967200000065,
+        "maxMs": 691.7279020000024
+      },
+      "meanDecisionMs": 331.29967200000067
+    },
+    {
+      "task": {
+        "id": 3,
+        "group": "timing",
+        "count": 5,
+        "seed": 810001,
+        "focal": 1,
+        "opponent": "balanced",
+        "treatment": "planning",
+        "options": {
+          "worlds": 2,
+          "rounds": 4,
+          "beam": 8,
+          "rolloutBeam": 2,
+          "finalists": 3
+        }
+      },
+      "rounds": 5,
+      "timing": {
+        "decisions": 10,
+        "totalMs": 14622.230913999996,
+        "maxMs": 1946.8586370000012
+      },
+      "meanDecisionMs": 1462.2230913999997
+    }
+  ]
+}

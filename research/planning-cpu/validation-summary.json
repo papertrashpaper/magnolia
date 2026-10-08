@@ -1,0 +1,257 @@
+{
+  "games": 448,
+  "groups": {
+    "natural/2": {
+      "pairs": 32,
+      "planning": 0.71875,
+      "baseline": 0.65625,
+      "difference": 0.0625,
+      "ci": [
+        -0.125,
+        0.25
+      ],
+      "meanVPDifference": 6.40625,
+      "rulerCompletionPlanning": 0,
+      "rulerCompletionBaseline": 0,
+      "planDecisions": 66,
+      "meanDecisionMsPlanning": 528.9626140523437,
+      "meanDecisionMsBaseline": 123.32889354296859,
+      "p95MatchMaxMsPlanning": 1168.443767,
+      "p95MatchMaxMsBaseline": 498.90347500000007
+    },
+    "natural/3": {
+      "pairs": 32,
+      "planning": 0.453125,
+      "baseline": 0.34375,
+      "difference": 0.109375,
+      "ci": [
+        -0.046875,
+        0.28125
+      ],
+      "meanVPDifference": 1.78125,
+      "rulerCompletionPlanning": 0,
+      "rulerCompletionBaseline": 0,
+      "planDecisions": 65,
+      "meanDecisionMsPlanning": 766.833744385938,
+      "meanDecisionMsBaseline": 184.59173895468757,
+      "p95MatchMaxMsPlanning": 1393.122021999996,
+      "p95MatchMaxMsBaseline": 510.5156080000015
+    },
+    "natural/4": {
+      "pairs": 32,
+      "planning": 0.515625,
+      "baseline": 0.40625,
+      "difference": 0.109375,
+      "ci": [
+        -0.09375,
+        0.328125
+      ],
+      "meanVPDifference": 2.59375,
+      "rulerCompletionPlanning": 0,
+      "rulerCompletionBaseline": 0,
+      "planDecisions": 49,
+      "meanDecisionMsPlanning": 1210.610488126563,
+      "meanDecisionMsBaseline": 303.26846727109313,
+      "p95MatchMaxMsPlanning": 2112.8700459999964,
+      "p95MatchMaxMsBaseline": 825.252971000009
+    },
+    "natural/5": {
+      "pairs": 32,
+      "planning": 0.359375,
+      "baseline": 0.28125,
+      "difference": 0.078125,
+      "ci": [
+        -0.125,
+        0.265625
+      ],
+      "meanVPDifference": 1.03125,
+      "rulerCompletionPlanning": 0,
+      "rulerCompletionBaseline": 0,
+      "planDecisions": 74,
+      "meanDecisionMsPlanning": 1905.1098075062516,
+      "meanDecisionMsBaseline": 500.7010433046881,
+      "p95MatchMaxMsPlanning": 5040.351286999998,
+      "p95MatchMaxMsBaseline": 1421.6866239999654
+    },
+    "production/2": {
+      "pairs": 16,
+      "planning": 0.34375,
+      "baseline": 0.3125,
+      "difference": 0.03125,
+      "ci": [
+        -0.25,
+        0.3125
+      ],
+      "meanVPDifference": -0.6875,
+      "rulerCompletionPlanning": 0,
+      "rulerCompletionBaseline": 0,
+      "planDecisions": 29,
+      "meanDecisionMsPlanning": 620.8992307421885,
+      "meanDecisionMsBaseline": 162.7943955671819,
+      "p95MatchMaxMsPlanning": 1332.5722180000157,
+      "p95MatchMaxMsBaseline": 1173.4390999999596
+    },
+    "production/5": {
+      "pairs": 16,
+      "planning": 0.09375,
+      "baseline": 0.25,
+      "difference": -0.15625,
+      "ci": [
+        -0.375,
+        0.0625
+      ],
+      "meanVPDifference": 0.875,
+      "rulerCompletionPlanning": 0,
+      "rulerCompletionBaseline": 0,
+      "planDecisions": 21,
+      "meanDecisionMsPlanning": 1875.0824738593767,
+      "meanDecisionMsBaseline": 339.8080910609386,
+      "p95MatchMaxMsPlanning": 3672.523438000004,
+      "p95MatchMaxMsBaseline": 1402.3679579999298
+    },
+    "royal/2": {
+      "pairs": 16,
+      "planning": 0.625,
+      "baseline": 0.65625,
+      "difference": -0.03125,
+      "ci": [
+        -0.28125,
+        0.25
+      ],
+      "meanVPDifference": -0.3125,
+      "rulerCompletionPlanning": 0.0625,
+      "rulerCompletionBaseline": 0,
+      "planDecisions": 38,
+      "meanDecisionMsPlanning": 545.244478889055,
+      "meanDecisionMsBaseline": 129.56803807187515,
+      "p95MatchMaxMsPlanning": 1016.327263000072,
+      "p95MatchMaxMsBaseline": 414.5627570000943
+    },
+    "royal/5": {
+      "pairs": 16,
+      "planning": 0.875,
+      "baseline": 0.5,
+      "difference": 0.375,
+      "ci": [
+        0.0625,
+        0.6875
+      ],
+      "meanVPDifference": 16.125,
+      "rulerCompletionPlanning": 0.25,
+      "rulerCompletionBaseline": 0,
+      "planDecisions": 55,
+      "meanDecisionMsPlanning": 1741.8152110656304,
+      "meanDecisionMsBaseline": 439.2149752093763,
+      "p95MatchMaxMsPlanning": 3168.7098850000184,
+      "p95MatchMaxMsBaseline": 1400.0555150000146
+    },
+    "lookahead/2": {
+      "pairs": 16,
+      "planning": 0.71875,
+      "baseline": 0.59375,
+      "difference": 0.125,
+      "ci": [
+        0,
+        0.28125
+      ],
+      "meanVPDifference": 3.1875,
+      "rulerCompletionPlanning": 0,
+      "rulerCompletionBaseline": 0,
+      "planDecisions": 29,
+      "meanDecisionMsPlanning": 479.5225841921877,
+      "meanDecisionMsBaseline": 299.83851450781896,
+      "p95MatchMaxMsPlanning": 1006.2584819999756,
+      "p95MatchMaxMsBaseline": 655.9104560000123
+    },
+    "lookahead/5": {
+      "pairs": 16,
+      "planning": 0.5625,
+      "baseline": 0.09375,
+      "difference": 0.46875,
+      "ci": [
+        0.21875,
+        0.71875
+      ],
+      "meanVPDifference": 8.75,
+      "rulerCompletionPlanning": 0,
+      "rulerCompletionBaseline": 0,
+      "planDecisions": 38,
+      "meanDecisionMsPlanning": 1829.2829598281237,
+      "meanDecisionMsBaseline": 1209.831841884378,
+      "p95MatchMaxMsPlanning": 2964.76679699996,
+      "p95MatchMaxMsBaseline": 2425.4708070000634
+    },
+    "natural/all": {
+      "pairs": 128,
+      "planning": 0.51171875,
+      "baseline": 0.421875,
+      "difference": 0.08984375,
+      "ci": [
+        0,
+        0.18359375
+      ],
+      "meanVPDifference": 2.953125,
+      "rulerCompletionPlanning": 0,
+      "rulerCompletionBaseline": 0,
+      "planDecisions": 254,
+      "meanDecisionMsPlanning": 1102.879163517774,
+      "meanDecisionMsBaseline": 277.97253576835936,
+      "p95MatchMaxMsPlanning": 3208.031661999994,
+      "p95MatchMaxMsBaseline": 1209.7019869999785
+    },
+    "production/all": {
+      "pairs": 32,
+      "planning": 0.21875,
+      "baseline": 0.28125,
+      "difference": -0.0625,
+      "ci": [
+        -0.25,
+        0.140625
+      ],
+      "meanVPDifference": 0.09375,
+      "rulerCompletionPlanning": 0,
+      "rulerCompletionBaseline": 0,
+      "planDecisions": 50,
+      "meanDecisionMsPlanning": 1247.9908523007823,
+      "meanDecisionMsBaseline": 251.30124331406023,
+      "p95MatchMaxMsPlanning": 3454.45145199995,
+      "p95MatchMaxMsBaseline": 1384.0829640000593
+    },
+    "royal/all": {
+      "pairs": 32,
+      "planning": 0.75,
+      "baseline": 0.578125,
+      "difference": 0.171875,
+      "ci": [
+        -0.046875,
+        0.390625
+      ],
+      "meanVPDifference": 7.90625,
+      "rulerCompletionPlanning": 0.15625,
+      "rulerCompletionBaseline": 0,
+      "planDecisions": 93,
+      "meanDecisionMsPlanning": 1143.529844977343,
+      "meanDecisionMsBaseline": 284.3915066406257,
+      "p95MatchMaxMsPlanning": 3005.340798999998,
+      "p95MatchMaxMsBaseline": 1202.5092489999952
+    },
+    "lookahead/all": {
+      "pairs": 32,
+      "planning": 0.640625,
+      "baseline": 0.34375,
+      "difference": 0.296875,
+      "ci": [
+        0.15625,
+        0.4375
+      ],
+      "meanVPDifference": 5.96875,
+      "rulerCompletionPlanning": 0,
+      "rulerCompletionBaseline": 0,
+      "planDecisions": 67,
+      "meanDecisionMsPlanning": 1154.4027720101556,
+      "meanDecisionMsBaseline": 754.8351781960986,
+      "p95MatchMaxMsPlanning": 2912.9644120000303,
+      "p95MatchMaxMsBaseline": 2004.7521880000131
+    }
+  }
+}

@@ -17,7 +17,10 @@
     "audit:research-deals": "node scripts/audit-research-deals.mjs",
     "benchmark:royal-route": "node scripts/benchmark-royal-route.mjs",
     "guide:cards": "node scripts/build-card-guide.mjs",
-    "examples:cards": "node scripts/card-decision-examples.mjs"
+    "examples:cards": "node scripts/card-decision-examples.mjs",
+    "benchmark:planning": "node scripts/benchmark-planning.mjs",
+    "validate:planning": "node scripts/benchmark-planning.mjs --validation",
+    "analyze:planning": "node scripts/analyze-planning.mjs combined"
   },
   "engines": {
     "node": ">=22"
