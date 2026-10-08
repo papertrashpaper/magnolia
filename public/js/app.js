@@ -1,5 +1,5 @@
 import {matBounds,createRefreshments,servingLabel} from './tavern.js?v=1';
-import {tutorialGame,tutorialGuide,tutorialObservation,tutorialPhaseOutcome,TUTORIAL_CHAPTERS,TUTORIAL_REFERENCE,tutorialTask,tutorialPlacementAllowed,TUTORIAL_SLIDES,TUTORIAL_FRONTLINE,tutorialFeedback,tutorialTrace} from './tutorial.js?v=16';
+import {tutorialGame,tutorialGuide,tutorialObservation,tutorialPhaseOutcome,TUTORIAL_CHAPTERS,TUTORIAL_REFERENCE,tutorialTask,tutorialPlacementAllowed,TUTORIAL_SLIDES,TUTORIAL_FRONTLINE,tutorialFeedback,tutorialPlacementFeedback,tutorialTrace} from './tutorial.js?v=17';
 import {bindCardDrag} from './drag.js?v=8';
 import {CARDS,CARD,RACES,JOBS,RACE_BONUS,JOB_BONUS,effectText} from './cards.js?v=3';
 import {newGame,submit,nextRound,publicView,previewPlacement,legalCells,bounds,power,level,CPU_LEVELS,normalizeCPU} from './engine.js?v=11';
@@ -66,8 +66,12 @@ function advanceReplay(){
 }
 function showNotice(title,changes,note){
  clearTimeout(noticeTimer);
- // Tutorial results are explained once, when the actual phase resolves.
- if(mode==='local'&&game?.tutorial){notice=null;render();return;}
+ // Three-card bonuses happen on placement; explain those in the draft.
+ if(mode==='local'&&game?.tutorial){
+  const bonus=changes.some(c=>/の(種族|職業)ボーナス/.test(c.source));
+  const learning=bonus&&!title.includes('取り消し')?tutorialPlacementFeedback(state.players.find(p=>p.id===myId),moves,game.tutorialChapter??0):null;
+  notice=learning?{title,changes,note,learning}:null;render();return;
+ }
  notice={title,changes,note};renderCenter();
 }
 function changeHTML(c){const lv=levelChangeSentence(c);return `<li class="${c.delta>0?'gain':'loss'}">${esc(changeSentence(c))}${lv?`<small class="level-change">${esc(lv)}</small>`:''}</li>`;}
@@ -77,7 +81,7 @@ function renderCenter(){
  if(mode==='setup'||(playback&&state.resolution.events[playback.index].phase==='draw')||(!playback&&!notice)){host.hidden=true;host.innerHTML='';return;}
  host.hidden=false;
  const event=playback?state.resolution.events[playback.index]:notice;
- const learning=mode==='local'&&game?.tutorial&&playback?tutorialFeedback(state.resolution,playback.index,game.tutorialChapter??0,myId):null;
+ const learning=mode==='local'&&game?.tutorial?(playback?tutorialFeedback(state.resolution,playback.index,game.tutorialChapter??0,myId):event.learning??null):null;
  host.style.left='';host.style.right='';host.style.transform='';
  host.className=`center-notice ${playback?'resolving':'preview-notice'} ${event.battle?'battle-notice':''}`;
  host.innerHTML=`<div class="center-message" role="status" aria-live="polite"><p class="eyebrow">${playback?`${PHASE_NAMES[event.phase]} · ${playback.index+1}/${state.resolution.events.length}`:'仮配置'}</p><h2>${esc(event.title)}</h2>${event.battle?battleHTML(event):''}${event.card?`<p class="source-card">${esc(CARD[event.card].name)}</p>`:''}${learning?`${tutorialLearningHTML(learning)}${event.changes.length?`<details class="tutorial-effect-details"><summary>増減の内訳</summary><ul class="change-list">${event.changes.map(changeHTML).join('')}</ul></details>`:''}`:event.summary?summaryHTML(event.summary):event.changes.length?`<ul class="change-list">${event.changes.map(changeHTML).join('')}</ul>`:`<p class="muted">${event.battle?'戦力を比べて順位を決定します。同戦力は同順位です。':event.playerId?'この処理によるお金・技術・信仰・VPの増減はありません。':'全員の処理を順番に確認します。'}</p>`}${learning&&playback?'<button id="tutorialShowLog" class="quiet tutorial-log-link">発動した履歴を見る</button>':''}${event.note?`<p class="muted small">${esc(event.note)}</p>`:''}</div>${playback?`<div class="replay-controls"><button id="autoReplayButton" aria-pressed="${autoPlay}">${autoPlay?'自動再生を停止':'自動再生（ゆっくり）'}</button><button id="advanceReplayButton" class="primary">${learning&&game?.tutorial?'解説を閉じて次へ':playback.index===state.resolution.events.length-1?'確認を終える':'次の処理'}</button></div>`:'<button id="closeNoticeButton" class="quiet notice-close" aria-label="増減メッセージを閉じる">解説を閉じる</button>'}`;
@@ -478,7 +482,7 @@ function updateTutorialDock(){
  const overview=qs('.kingdom-overview');
  if(mobileLayout())document.documentElement.style.setProperty('--mobile-overview-height',overview&&getComputedStyle(overview).position==='sticky'?`${Math.ceil(overview.getBoundingClientRect().height)}px`:'0px');
  const dock=qs('#tutorialDock'),original=qs('.tutorial-guide');
- const active=mode==='local'&&game?.tutorial&&original&&!playback;
+ const active=mode==='local'&&game?.tutorial&&original&&!playback&&!tutorialNoticeOpen();
  const visible=active&&original.getBoundingClientRect().top<0;
  dock.hidden=!visible;
  if(visible){

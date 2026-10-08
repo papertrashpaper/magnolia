@@ -202,6 +202,9 @@ function eventLearning(event,past,chapter,you,preview=false){
 }
 export function tutorialFeedback(resolution,eventIndex,chapter=0,you='human'){
  const past=resolution?.events?.slice(0,eventIndex+1)??[];
+ // The same line bonus has already been explained when the card was drafted.
+ const event=past.at(-1);
+ if(event?.phase==='place'&&(event.changes??[]).some(c=>/の(種族|職業)ボーナス/.test(c.source)))return null;
  return eventLearning(past.at(-1),past,chapter,you);
 }
 export function tutorialPlacementFeedback(player,moves,chapter=0){

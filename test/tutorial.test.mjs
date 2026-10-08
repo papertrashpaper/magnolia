@@ -201,3 +201,17 @@ test('中盤・終盤の解説は既存カードを目的として紹介せず�
   }
  }
 });
+
+test('3枚揃えの解説は仮置きで表示し、確定後には繰り返さない',()=>{
+ const g=tutorialGame('旅人',1);beginPlace(g);
+ const moves=[{handIndex:0,x:2,y:0},{handIndex:0,x:2,y:1}];
+ assert.match(tutorialPlacementFeedback(g.players[0],moves.slice(0,1),1).title,/種族揃え/);
+ assert.match(tutorialPlacementFeedback(g.players[0],moves,1).title,/職業揃え/);
+ submit(g,'human',{moves});
+ const events=g.resolution.events;
+ const indices=events.flatMap((e,i)=>e.playerId==='human'&&e.phase==='place'&&e.card?[i]:[]);
+ assert.equal(indices.length,2);
+ for(const i of indices){assert.equal(tutorialFeedback(g.resolution,i,1),null);assert(events[i].changes.some(c=>c.source.includes('ボーナス')));}
+ const vp=events.findIndex(e=>e.phase==='vp'&&e.playerId==='human');
+ assert.equal(tutorialFeedback(g.resolution,vp,1).card,'elf_follower');
+});
