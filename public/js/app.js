@@ -76,6 +76,7 @@ function renderCenter(){
  host.hidden=false;
  const event=playback?state.resolution.events[playback.index]:notice;
  const learning=mode==='local'&&game?.tutorial?(playback?tutorialFeedback(state.resolution,playback.index,game.tutorialChapter??0,myId):state.phase==='place'&&!event.title.includes('取り消し')?tutorialPlacementFeedback(state.players.find(p=>p.id===myId),moves,game.tutorialChapter??0):null):null;
+ if(!learning){host.style.left='';host.style.right='';host.style.transform='';}
  host.className=`center-notice ${playback?'resolving':'preview-notice'} ${event.battle?'battle-notice':''}`;
  host.innerHTML=`<div class="center-message" role="status" aria-live="polite"><p class="eyebrow">${playback?`${PHASE_NAMES[event.phase]} · ${playback.index+1}/${state.resolution.events.length}`:'仮配置'}</p><h2>${esc(event.title)}</h2>${event.battle?battleHTML(event):''}${event.card?`<p class="source-card">${esc(CARD[event.card].name)}</p>`:''}${learning?`${tutorialLearningHTML(learning)}${event.changes.length?`<details class="tutorial-effect-details"><summary>増減の内訳</summary><ul class="change-list">${event.changes.map(changeHTML).join('')}</ul></details>`:''}`:event.summary?summaryHTML(event.summary):event.changes.length?`<ul class="change-list">${event.changes.map(changeHTML).join('')}</ul>`:`<p class="muted">${event.battle?'戦力を比べて順位を決定します。同戦力は同順位です。':event.playerId?'この処理によるお金・技術・信仰・VPの増減はありません。':'全員の処理を順番に確認します。'}</p>`}${learning&&playback?'<button id="tutorialShowLog" class="quiet tutorial-log-link">発動した履歴を見る</button>':''}${event.note?`<p class="muted small">${esc(event.note)}</p>`:''}</div>${playback?`<div class="replay-controls"><button id="autoReplayButton" aria-pressed="${autoPlay}">${autoPlay?'自動再生を停止':'自動再生（ゆっくり）'}</button><button id="advanceReplayButton" class="primary">${playback.index===state.resolution.events.length-1?'確認を終える':'次の処理'}</button></div>`:'<button id="closeNoticeButton" class="quiet notice-close" aria-label="増減メッセージを閉じる">閉じる</button>'}`;
  if(qs('#tutorialShowLog'))qs('#tutorialShowLog').onclick=()=>tutorialScrollTo(qs('.logs .tutorial-log-active')??qs('.log-panel'));
@@ -382,6 +383,7 @@ function placeAt(handIndex,x,y){
  try{const proposed=[...moves,{handIndex,x,y}];const result=previewPlacement(own,proposed),placed=result.placed.at(-1);moves=proposed;selected=null;render();showNotice(`${own.name}が${CARD[placed.card].name}を仮配置`,placed.steps,'予定の増減です。確定前なら取り消せます。');}catch(e){toast(e.message);}
 }
 function renderGame(){
+ app.classList.toggle('tutorial-reading-effect',mode==='local'&&!!game?.tutorial&&!!playback);
  if(mobileLayout()){mobileGalleryScroll=qs('.kingdom-gallery')?.scrollLeft??mobileGalleryScroll;mobileHandScroll=qs('.hand')?.scrollLeft??mobileHandScroll;}
  const state=playback?resolutionView({...globalState(),you:myId},playback.index):globalState();
  const draft=currentDraft();const own=state.players.find(p=>p.id===myId);const viewed=boardId===myId?draft:state.players.find(p=>p.id===boardId)||draft;
@@ -449,6 +451,8 @@ async function confirmAction(){
 function localNext(){if(playback)return;try{nextRound(game);fillCPU(game,submit);applyView(publicView(game,myId));}catch(e){toast(e.message);}}
 function tutorialScrollTo(target){
  if(!target)return;
+ const host=qs('#centerNotice');
+ if(host&&!host.hidden&&matchMedia('(min-width: 901px)').matches){const rect=target.getBoundingClientRect(),width=host.getBoundingClientRect().width;host.style.transform='none';if(rect.right<=innerWidth-width-48){host.style.left='auto';host.style.right='24px';}else{host.style.left='24px';host.style.right='auto';}}
  const overview=qs('#kingdomOverview'),offset=overview&&getComputedStyle(overview).position==='sticky'?overview.getBoundingClientRect().height+18:18;
  target.style.scrollMarginTop=`${offset}px`;
  target.scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
