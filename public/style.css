@@ -356,3 +356,5 @@ body:has(#app.dragging-card) .tutorial-dock{opacity:.15;pointer-events:none}
  @keyframes combo-mote-burst{0%{opacity:0;transform:translate(0,4px) scale(.5)}15%{opacity:1;transform:translate(2px,-8px) scale(1.8);box-shadow:0 0 10px white,0 0 18px var(--combo-color)}100%{opacity:0;transform:translate(calc((50% - var(--spark-x)) * -1),-65px) scale(.3)}}
 }
 @media(prefers-reduced-motion:reduce){.combo-particles{display:none}}
+.combo-particles i{--spark-drift:-24px}.combo-particles i:nth-child(even){--spark-drift:24px}
+@keyframes combo-mote-burst{0%{opacity:0;transform:translate(0,4px) scale(.5)}15%{opacity:1;transform:translate(2px,-8px) scale(1.8);box-shadow:0 0 10px white,0 0 18px var(--combo-color)}100%{opacity:0;transform:translate(var(--spark-drift),-65px) scale(.3)}}
