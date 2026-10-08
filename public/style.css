@@ -344,3 +344,15 @@ body:has(#app.dragging-card) .tutorial-dock{opacity:.15;pointer-events:none}
  @keyframes combo-hand-halo{0%,100%{filter:drop-shadow(0 0 3px var(--combo-color));box-shadow:var(--combo-rings),0 0 14px color-mix(in srgb,var(--combo-color) 40%,transparent)}50%{filter:drop-shadow(0 0 7px var(--combo-color));box-shadow:var(--combo-rings),0 0 30px color-mix(in srgb,var(--combo-color) 85%,transparent)}}
  @keyframes combo-settled-halo{0%,100%{box-shadow:var(--combo-rings),0 0 10px color-mix(in srgb,var(--combo-color) 35%,transparent)}50%{box-shadow:var(--combo-rings),0 0 25px color-mix(in srgb,var(--combo-color) 80%,transparent)}}
 }
+
+/* Color-matched motes drift from each active bonus hint and completed trio. */
+.combo-particles,.cell.candidate.combo-candidate>.combo-particles{position:absolute;inset:0;z-index:4;pointer-events:none;overflow:visible;border-radius:inherit}
+.combo-particles i{position:absolute;left:var(--spark-x);top:var(--spark-y);display:block;width:4px;height:4px;background:color-mix(in srgb,var(--combo-color) 55%,white);border-radius:50%;opacity:0;box-shadow:0 0 5px var(--combo-color),0 0 10px var(--combo-color);pointer-events:none}
+.cell.candidate:not(.combo-candidate)>.combo-particles{display:none}.mini-card .combo-particles i{width:2px;height:2px;box-shadow:0 0 4px var(--combo-color)}
+@media(prefers-reduced-motion:no-preference){
+ .combo-particles i{animation:combo-mote 2.8s ease-in-out var(--spark-delay) infinite}
+ .combo-celebrate .combo-particles i{animation:combo-mote-burst 1.4s ease-out var(--spark-stagger) 2,combo-mote 2.8s ease-in-out 3.2s infinite}
+ @keyframes combo-mote{0%{opacity:0;transform:translate(0,9px) scale(.4)}25%{opacity:.9;transform:translate(3px,-5px) scale(1.1)}75%{opacity:.55}100%{opacity:0;transform:translate(-5px,-35px) scale(.3)}}
+ @keyframes combo-mote-burst{0%{opacity:0;transform:translate(0,4px) scale(.5)}15%{opacity:1;transform:translate(2px,-8px) scale(1.8);box-shadow:0 0 10px white,0 0 18px var(--combo-color)}100%{opacity:0;transform:translate(calc((50% - var(--spark-x)) * -1),-65px) scale(.3)}}
+}
+@media(prefers-reduced-motion:reduce){.combo-particles{display:none}}
