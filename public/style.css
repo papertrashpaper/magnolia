@@ -397,3 +397,9 @@ body:has(#app.dragging-card) .tutorial-dock{opacity:.15;pointer-events:none}
  .tutorial-notice .combo-announcement{padding:12px 6px 8px}
 }
 @media(max-width:760px) and (orientation:landscape){.center-notice.tutorial-notice{max-height:calc(100dvh - 20px)}}
+
+/* Inline deltas never cover neighbouring participant values. */
+.participant-values>span{display:inline-block;white-space:nowrap}
+.stat-delta.participant-delta{position:static;display:inline-block;vertical-align:baseline;margin-left:4px;padding:1px 5px;font-size:.75rem;line-height:1.4;animation:participant-delta-reveal 1.8s ease-out both}
+@keyframes participant-delta-reveal{0%{opacity:0}15%,75%{opacity:1}100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.stat-delta.participant-delta{animation:none}}
