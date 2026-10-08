@@ -115,7 +115,7 @@ function comboCardDecoration(p,cell,mini=false){
 function comboLedgerHTML(p){
  const groups=completedCombos(p),achievements=objectiveAchievementsHTML(p);if(!groups.length&&!achievements)return '';
  const actual=state.players.find(q=>q.id===p.id)?.bonuses??[];
- return `<div class="combo-ledger">${groups.length?'<b>✦ 3枚揃い</b>':'<b>✉ 追加目標達成</b>'}<div>${groups.map(g=>`<button class="combo-chip ${g.type}" style="${comboStyle([g])}" data-combo="${g.key}" data-combo-player="${p.id}" title="${esc(g.cells.map(c=>CARD[c.card].name).join('・'))}" aria-label="${esc(g.label)}の3枚を強調">${esc(g.label)}（${g.direction}）<span class="combo-reward">${esc(comboRewardText(g))}</span>${!playback&&!actual.includes(g.key)?'（仮）':' ✓'}</button>`).join('')}${achievements}</div>${groups.length?'<small>名前に触れると3枚を強調します。</small>':''}</div>`;
+ return `<div class="combo-ledger"><b>✦ ボーナス</b><div>${groups.map(g=>`<button class="combo-chip ${g.type}" style="${comboStyle([g])}" data-combo="${g.key}" data-combo-player="${p.id}" title="${esc(g.cells.map(c=>CARD[c.card].name).join('・'))}" aria-label="${esc(g.label)}の3枚を強調">${esc(g.label)}（${g.direction}）<span class="combo-reward">${esc(comboRewardText(g))}</span>${!playback&&!actual.includes(g.key)?'（仮）':' ✓'}</button>`).join('')}${achievements}</div>${groups.length?'<small>名前に触れると3枚を強調します。</small>':''}</div>`;
 }
 function availableComboHints(p){
  if(playback||state.phase!=='place'||p.ready||moves.length>=2||busy)return [];
