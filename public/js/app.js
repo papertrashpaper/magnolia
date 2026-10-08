@@ -264,7 +264,7 @@ function openTutorialIntro(index=0){
 }
 function startTutorial(chapter=0){
  clearTimeout(playTimer);clearTimeout(noticeTimer);clearFinalResults();playback=null;pendingView=null;notice=null;
- game=tutorialGame(setup.name,chapter);tutorialHandFocusKey=null;tutorialEffectFocusKey=null;autoPlay=false;fillCPU(game,submit);mode='local';myId='human';boardId=myId;draftKey='';state=null;moves=[];selected=null;seenResolutions.clear();seenFinalResults.clear();tutorialDockCollapsed=false;
+ game=tutorialGame(setup.name,chapter);tutorialHandFocusKey=null;tutorialEffectFocusKey=null;autoPlay=false;fillCPU(game,submit);mode='local';myId='human';boardId=myId;draftKey='';state=null;moves=[];selected=null;seenResolutions.clear();seenFinalResults.clear();tutorialDockCollapsed=mobileLayout();
  applyView(publicView(game,myId));requestAnimationFrame(()=>qs('.tutorial-guide')?.scrollIntoView({block:'start',behavior:'instant'}));
 }
 function tutorialGuideNow(){
@@ -551,7 +551,7 @@ function updateTutorialDock(){
   if(dock.innerHTML!==html)dock.innerHTML=html;
   if(qs('#tutorialReadMore'))qs('#tutorialReadMore').onclick=()=>openTutorialHandbook('lesson');
   qs('#toggleTutorialDock').onclick=()=>{tutorialDockCollapsed=!tutorialDockCollapsed;updateTutorialDock();};
- }else if(!active){tutorialDockCollapsed=false;dock.innerHTML='';}
+ }else if(!active){tutorialDockCollapsed=mobileLayout();dock.innerHTML='';}
  const height=visible?Math.ceil(dock.getBoundingClientRect().height)+24:0;
  document.documentElement.style.setProperty('--tutorial-dock-height',`${height}px`);
  // Opening the advice can otherwise cover a button that was already in view.
