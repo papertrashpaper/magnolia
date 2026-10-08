@@ -3,12 +3,12 @@ import {CARD,RACES,JOBS} from './cards.js?v=3';
 
 export const TUTORIAL_CHAPTERS=[
  {title:'序盤：王国をつくる',intro:'マグノリアは、カードを王国に配置して勝利点（VP）を稼ぐゲームです。最後に最もVPが多い人が勝ちます。第1章は何もない王国から、手札交換・配置・各フェーズを1回ずつ試します。',goal:'最初の例：人間の行商を置き、その後ろにドワーフの料理人を置いてみましょう。行商の収入、料理人の発展とVPを1ラウンドで確認できます。この練習では、案内したカードと場所だけ操作できます。'},
- {title:'中盤：育てて組み合わせる',intro:'第2章は練習用に準備した途中盤面です。前の章の続きではありません。技術2点・信仰2点、7金から始めます。どちらもあと1点でLv.2。同じ種族の3枚揃え、レベルを使う効果、前線の騎士の戦争時効果を試しましょう。',goal:'拳闘士でドワーフを横に3体揃え、信奉者で信仰を育てます。前線には人間の騎士を用意しました。戦争報酬を得ると、騎士の効果で追加1VPも獲得できます。'},
+ {title:'中盤：育てて組み合わせる',intro:'第2章は練習用に準備した途中盤面です。前の章の続きではありません。技術2点・信仰2点、7金から始めます。どちらもあと1点でLv.2。種族と職業、それぞれの3枚揃え、レベルを使う効果、前線の騎士の戦争時効果を試しましょう。',goal:'拳闘士でドワーフの種族揃え、信奉者で聖職者の職業揃えを横に完成させます。前線には人間の騎士を用意しました。戦争報酬を得ると、騎士の効果で追加1VPも獲得できます。'},
  {title:'終盤：勝ち切るタイミング',intro:'第3章も独立した例題です。王国は7体、技術・信仰はLv.3、VPは39。得点用のカードが既にあるため、この1ラウンドで終了条件に到達します。最後の配置を考え、残金を含む最終得点まで確認しましょう。',goal:'戦力を増やす・今すぐVPを増やす・お金を残す、どれがよさそうでしょうか。9体になると終了することも意識して、指定の2枚を置き、終了まで確認してください。'},
 ];
 const specs=[
  {gold:5,tech:0,faith:0,vp:0,board:[],hand:['human_marchant','dwarf_cook','dwarf_pugilist','elf_marchant','demon_storm'],enemy:[],enemyHand:['human_marchant','goblin_soldier','elf_marchant','dwarf_cook','elf_saint']},
- {gold:7,tech:2,faith:2,vp:12,board:[['dwarf_cook',0,0],['dwarf_gem',1,0],['human_saint',0,1],['elf_mistic',1,1],['human_knight',0,-1]],hand:['dwarf_pugilist','elf_follower','golem_iron','elf_artist','human_great_marchant'],enemy:[['human_knight',0,0],['human_marchant',1,0],['elf_saint',0,1]],enemyHand:['goblin_soldier','elf_marchant','human_great_marchant','dwarf_cook','elf_artist']},
+ {gold:7,tech:2,faith:2,vp:12,board:[['dwarf_cook',0,0],['dwarf_gem',1,0],['human_saint',0,1],['elf_saint',1,1],['human_knight',0,-1]],hand:['dwarf_pugilist','elf_follower','golem_iron','elf_artist','human_great_marchant'],enemy:[['human_knight',0,0],['human_marchant',1,0],['elf_saint',0,1]],enemyHand:['goblin_soldier','elf_marchant','human_great_marchant','dwarf_cook','elf_artist']},
  {gold:8,tech:7,faith:7,vp:39,board:[['golem_iron',0,0],['human_knight',1,0],['elf_mistic',2,0],['dwarf_cook',0,1],['human_saint',1,1],['elf_artist',2,1],['human_marchant',0,2]],hand:['elf_follower','dwarf_beer','elf_saint','human_great_marchant','demon_destroy'],enemy:[['demon_pest',0,0],['goblin_great_soldier',1,0],['elf_archer',2,0],['human_great_marchant',0,1]],enemyHand:['goblin_soldier','elf_marchant','human_saint','dwarf_cook','golem_gold']},
 ];
 export function tutorialGame(name,chapter=0){
@@ -36,7 +36,7 @@ export const TUTORIAL_REFERENCE=[
  {title:'手札交換は何を捨てる？',paragraphs:['毎ラウンドのドローで、残っている手札から好きな枚数を捨てて5枚まで補充します。捨てなくても補充されます。交換はそのラウンドで1回だけ。捨てたカードの代わりに何が来るかは分かりません。','最初は今のお金で置けるカードを残すと動きやすくなります。ただし、高いカードでも次に置きたいなら残せます。中盤以降は自分の技術・信仰で効果が伸びるカード、あと1枚で種族・職業が揃うカードを探しましょう。']},
  {title:'配置の操作・順番・取り消し',paragraphs:['カードを選び、王国の「＋」を押すかタップして配置します。PCではドラッグ、スマホでも上下にドラッグして配置できます。スマホの手札を横にスワイプすると、別のカードが見えます。2枚目の手札は1枚目を置いた後の残りから選びます。','配置は仮置きです。お金・効果・戦力の変化を見て、「最後の配置を戻す」でやり直せます。最後に配置を確定します。オンラインでは全員の確定後に順番に処理が表示されます。','1枚ごとに支払い→配置時効果→配置ボーナスの順に処理します。1枚目で得たお金や技術・信仰点を2枚目に使える場合があるので順番も大切です。置かない枠1つにつき1金を配置処理の後にもらいます。この報酬を今回の配置代金には使えません。お金が足りないカードは配置・ドラッグできません。']},
  {title:'どこに置く？ 前線と3×3の考え方',paragraphs:['カードは上下左右につなげて置きます。斜めだけの接続は不可。王国全体の幅・高さはそれぞれ3マスまで。最初のカードの最終的な位置は、あとからどちらへ広げたかで決まります。','画面の上が前方。各縦列で一番上にある1体が前線で、原則そのカードの戦力だけを合計します。高戦力カードを同じ列の後ろに置いても戦力は増えません。前に置くと前線が交代します。エルフの射手のような、後ろからでも参戦できる例外があります。','後列でも収入・発展・VPなどの効果は使えます。戦うカードを前、王国を支えるカードを後ろに置くと役割が分かりやすくなります。配置済みカードは移動・置き換えできず、王国全体もずらせません。空きをどこに残すかも考えましょう。']},
- {title:'3枚揃えると何が起きる？',paragraphs:['縦か横の1列3枚を、同じ種族または同じ職業で揃えると配置ボーナスが出ます。列が揃うと1回発動し、次のラウンドに自動で繰り返すものではありません。同時に複数列や種族・職業が揃えば、すべて発動します。','種族：人間5VP／ドワーフ技術2／エルフ信仰2／ゴブリン3金／ゴーレム技術2＋信仰2／デーモン7VP。職業：戦士3金／商人5VP／職人技術2／聖職者信仰2／魔術師1金＋3VP／君主9VP。','2枚揃ったからといって3枚目を無理に探す必要はありません。支払い、前線、カード効果と両立できると強力です。第2章ではドワーフ2枚の横列を用意してあるので、ボーナスが起きる配置を試せます。']},
+ {title:'3枚揃えると何が起きる？',paragraphs:['縦か横の1列3枚を、同じ種族または同じ職業で揃えると配置ボーナスが出ます。列が揃うと1回発動し、次のラウンドに自動で繰り返すものではありません。同時に複数列や種族・職業が揃えば、すべて発動します。','種族：人間5VP／ドワーフ技術2／エルフ信仰2／ゴブリン3金／ゴーレム技術2＋信仰2／デーモン7VP。職業：戦士3金／商人5VP／職人技術2／聖職者信仰2／魔術師1金＋3VP／君主9VP。','2枚揃ったからといって3枚目を無理に探す必要はありません。支払い、前線、カード効果と両立できると強力です。第2章では、上の横列でドワーフの種族揃え、下の横列で聖職者の職業揃えを試せます。種族か職業のどちらかが一致すれば成立し、両方を揃える必要はありません。']},
  {title:'1ラウンドに起こること',paragraphs:['ドローで手札を整える→配置で最大2枚置く→戦争で前線の戦力を比べる→発展で技術・信仰を増やす→収入で基本3金とカードの収入を得る→VPフェーズでカードの得点を得る、の順です。','配置後のお金が少なくても、収入フェーズには基本3金が入ります。発展でレベルが上がると、その後の収入・VPでは新しいレベルを参照します。戦争は発展より先なので、このラウンドの発展で得るレベルを今の戦争には使えません。','2人戦の戦争報酬は標準で1位4VP・2位0VP。3人以上は1位5VP・2位3VP・3位以下0VP。設定で変更できます。同戦力は同順位で、次の順位を飛ばします。中央の増減メッセージで、どの効果によって増えたか確認しましょう。']},
  {title:'序盤・中盤・終盤はどう動く？',paragraphs:['序盤は安いカードで、収入や毎ラウンドの発展・VPをつくると後の選択が増えます。「毎ラウンド＋1」のカードも早く置けば何度も使えます。高いカードだけを集めると、置けないまま手番を終えることがあります。','中盤は、既にあるカードに合う技術・信仰、3枚揃え、前線の強化を比べます。戦力は自分の合計だけでなく相手との比較が大切。相手を越えられるか、今の順位を保てるかを見てからお金を使いましょう。','終盤は残りの得点機会が少なくなります。収入を育てるより今すぐVPを取る方がよいこともあります。9体目を置くとそのラウンドで終了するため、まだ王国を育てたいなら空きを残す選択もできます。逆にリードしているなら終了を早める考え方もあります。']},
  {title:'最後のお金と、よくある勘違い',paragraphs:['終了時は残金3金につき1VP、端数切り捨て。たとえば8金なら2VP、9金なら3VPです。人間の君主がいる場合は、このお金のVPを3倍にします。終了ラウンドの収入も含めた残金で計算します。','技術・信仰そのものは最後にVPへ換算されません。レベルを使うカードが得点を生みます。お金を使い切る・必ず2枚置く・戦力だけを伸ばす、といった動きが毎回正解とは限りません。王国の得点源と相手、終わるタイミングを一緒に見ましょう。']},
@@ -101,12 +101,12 @@ export function tutorialTask(chapter,phase,hand=[],moves=0,discard=[]){
  if(phase!=='place')return null;
  const steps=[
   [['human_marchant',0,0,'最初に「人間の行商」を光る＋へ置きましょう。1金で配置でき、収入の土台になります。'],['dwarf_cook',0,1,'次に「ドワーフの料理人」を行商の下の光る＋へ。後ろでも発展・VPの効果は働きます。']],
-  [['dwarf_pugilist',2,0,'「ドワーフの拳闘士」をドワーフ2枚の右へ。同じ種族が横に3枚揃う技術ボーナスを見ましょう。'],['elf_follower',2,1,'「エルフの信奉者」を拳闘士の下へ。配置時の信仰＋2で、Lv.1からLv.2になります。']],
+  [['dwarf_pugilist',2,0,'「ドワーフの拳闘士」をドワーフ2枚の右へ。同じ種族が横に3枚揃う技術ボーナスを見ましょう。'],['elf_follower',2,1,'「エルフの信奉者」を聖職者2枚の右へ。種族が違っても、同じ職業が横に3枚揃うボーナスを見ましょう。']],
   [['elf_follower',1,2,'「エルフの信奉者」を下段中央へ。信仰を増やし、VPを得るカードを加えます。'],['elf_saint',2,2,'「エルフの祈り手」を下段右へ。配置時VPを確認し、9体になった王国の最終ラウンドを見届けましょう。']]
  ][chapter];
  const step=steps?.[moves];
  if(!step)return {handIndex:-1,canConfirm:moves===2,purpose:'行動を確定して、置いたカードが戦争・発展・収入・VPでどう働くかを順番に確認します。',text:'2枚置けました。お金と効果の変化を確認し、「2枚の配置を確定」を押しましょう。取り消すと前の手順へ戻れます。'};
- return {card:step[0],handIndex:hand.indexOf(step[0]),x:step[1],y:step[2],canConfirm:false,text:step[3],purpose:placementPurpose(step[0])};
+ return {card:step[0],handIndex:hand.indexOf(step[0]),x:step[1],y:step[2],canConfirm:false,text:step[3],purpose:chapter===1&&moves===1?'下の横列には、人間の聖職者とエルフの祈り手がいます。種族は違いますが、職業はどちらも「聖職者」。信奉者も聖職者なので右に並べ、職業だけの一致でも3枚揃えが成立することを確かめます。':placementPurpose(step[0])};
 }
 export function tutorialPlacementAllowed(task,handIndex,x,y){return !!task?.card&&task.handIndex===handIndex&&task.x===x&&task.y===y;}
 // Staggered columns show that the front is decided independently in each column.
@@ -133,7 +133,7 @@ export const TUTORIAL_SLIDES=[
 const placementPurposes={
  human_marchant:'行商を早く置くと、この後の収入で毎ラウンド＋1金。次のカードを買うための土台をつくる練習です。',
  dwarf_cook:'料理人は発展で技術＋1、その技術レベルを使ってVPを生みます。「点数を育てる→得点にする」つながりと、後方でも効果が働くことを確かめます。',
- dwarf_pugilist:'拳闘士の配置時技術＋1に、ドワーフ3枚揃えの技術＋2を重ねます。置く場所によって、カード単体以上の効果が得られる練習です。さらに戦力を増やし、前線の騎士の「戦争VP獲得時：追加1VP」も発動させましょう。',
+ dwarf_pugilist:'上の横列には、料理人と鉱石屋のドワーフ2枚がいます。右にドワーフの拳闘士を並べ、同じ種族の3枚揃えで技術＋2を得る練習です。職業が違っても、種族が一致すれば成立します。',
  elf_follower:'信奉者は置いた瞬間に信仰＋2。その信仰レベルを使って、自身や聖職者がVPを生みます。レベルを育てるカードと得点するカードを組み合わせます。',
  elf_saint:'祈り手は置いた瞬間に信仰レベル分のVPを得ます。今回は9体目にして、終了条件に届いても発展・収入・VPまで処理することを確かめます。'
 };
@@ -149,10 +149,21 @@ function eventLearning(event,past,chapter,you,preview=false){
   const c=CARD[card],cost=changes.find(x=>x.source===c.name+'の配置コスト');
   const effects=changes.filter(x=>!x.source.endsWith('の配置コスト'));
   const pos=p.board.find(b=>b.card===card),front=pos&&!p.board.some(b=>b.x===pos.x&&b.y<pos.y);
-  title=`${c.name}を置いた目的を確認`;
+  title=`${c.name}を置いた結果`;
   if(effects.length){
-   paragraphs.push(`${origin(card)}${c.name}のおかげで、${effects.map(changeValue).join('、')}になりました。`);
+   const bonuses=effects.filter(x=>/の(種族|職業)ボーナス/.test(x.source));
+   if(bonuses.length){
+    title=bonuses.some(x=>x.source.includes('職業'))?'種族が違っても、聖職者3枚で職業揃え！':'職業が違っても、ドワーフ3枚で種族揃え！';
+    for(const bonus of bonuses){
+     const type=bonus.source.includes('種族')?'race':'job';
+     const candidates=[p.board.filter(b=>b.y===pos.y).sort((a,b)=>a.x-b.x),p.board.filter(b=>b.x===pos.x).sort((a,b)=>a.y-b.y)];
+     const line=candidates.find(line=>line.length===3&&line.every(b=>CARD[b.card][type]===c[type]));
+     if(line)paragraphs.push(`${line===candidates[0]?'横':'縦'}1列に「${line.map(b=>CARD[b.card].name).join('」「')}」の3枚が並びました。${type==='race'?`職業は${line.map(b=>JOBS[CARD[b.card].job]).join('・')}と別々ですが、種族は全員「${RACES[c.race]}」`:`種族は${line.map(b=>RACES[CARD[b.card].race]).join('・')}で一致していませんが、職業は全員「${JOBS[c.job]}」`}なので、${bonus.source}が発動して${STAT_NAMES[bonus.stat]}＋${bonus.delta}（${bonus.before}→${bonus.after}）を得ました。`);
+    }
+    paragraphs.push('縦か横の1列3枚で、種族か職業のどちらかが同じなら成立します。斜めや、王国内にばらばらの3枚では成立しません。3枚目を置いて列が完成したときに1回だけ得る配置ボーナスです。');
+   }else paragraphs.push(`${origin(card)}${c.name}のおかげで、${effects.map(changeValue).join('、')}になりました。`);
    if(card==='dwarf_pugilist')paragraphs.push('配置時効果で技術＋1、横に並べたドワーフ3枚の種族ボーナスでさらに＋2。配置前の技術2点から5点へ進み、Lv.1→2になりました。');
+   else if(card==='elf_follower'&&bonuses.length)paragraphs.push('信奉者自身の配置時効果で信仰2→4（＋2、Lv.1→2）、その後に聖職者の職業ボーナスで4→6（さらに＋2、Lv.2のまま）。カードの効果と3枚揃えの報酬は別々に得ています。後のVPでは、信奉者だけでなく、最初からいた人間の聖職者も1VP→2VPを生む状態になりました。');
    else if(card==='elf_follower')paragraphs.push(level(effects[0].before)!==level(effects[0].after)?'信仰が3点の境目を越えてLv.2に。後のVPでは、信奉者だけでなく、最初からいた人間の聖職者も1VP→2VPを生むようになります。':'信仰の点数は増えましたが、レベルはそのまま。VPを決めるのはレベルなので、今回の信奉者のVP効果はまだ増えません。');
    else if(card==='elf_saint')paragraphs.push(`祈り手の「配置時：信仰レベル×1VP」は、置いた今だけ発動します。これで王国が${p.board.length}体に。9体なら、このラウンドの最後まで処理して終了します。`);
   }else if(card==='human_marchant'){

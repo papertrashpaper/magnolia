@@ -35,8 +35,8 @@ test('中盤は配置時効果とドワーフ3枚揃えで技術Lv.2になり、
  assert(result.placed[0].bonuses.some(b=>b.value==='dwarf'));
  assert.match(tutorialObservation(g.players[0],[]).join(' '),/ドワーフの拳闘士.*3枚揃え/);
  submit(g,'human',{moves:[{handIndex:0,x:2,y:0},{handIndex:0,x:2,y:1}]});
- assert.equal(g.players[0].faith,5);assert.equal(g.players[0].tech,6);inventory(g);
- assert(g.resolution.events.some(e=>e.changes.some(c=>c.source==='人間の聖職者の効果'&&c.delta===2)));
+ assert.equal(g.players[0].faith,8);assert.equal(g.players[0].tech,6);inventory(g);
+ assert(g.resolution.events.some(e=>e.changes.some(c=>c.source==='人間の聖職者の効果'&&c.delta===3)));
 });
 test('終盤は9体の終了条件と残金得点を1ラウンドだけで確認できる',()=>{
  const g=tutorialGame('旅人',2);beginPlace(g);
@@ -142,7 +142,7 @@ test('中盤の配置ボーナス・信仰レベルが、既存カードのVPも
  const i=g.resolution.events.findIndex(e=>e.phase==='vp'&&e.playerId==='human');
  const lesson=tutorialFeedback(g.resolution,i,1);
  assert.equal(lesson.card,'elf_follower');
- const text=lesson.paragraphs.join(' ');assert.match(text,/信奉者.*2VP/);assert.match(text,/信奉者の配置時効果.*信仰点 2→4/);assert.match(text,/最初から盤面にいた人間の聖職者/);
+ const text=lesson.paragraphs.join(' ');assert.match(text,/信奉者.*3VP/);assert.match(text,/信奉者の配置時効果.*信仰点 2→4/);assert.match(text,/最初から盤面にいた人間の聖職者/);
 });
 
 test('練習の履歴は現在の処理までを表示し、未来の発動や他人の効果を混ぜない',()=>{
@@ -171,3 +171,19 @@ test('中盤は騎士の戦争時追加VPを確実に体験し、報酬との因
   inventory(g);
  }
 });
+
+ test('中盤の2配置で種族だけ・職業だけの3枚揃えを具体的に体験する',()=>{
+ const g=tutorialGame('旅人',1);beginPlace(g);
+ const first=[{handIndex:0,x:2,y:0}],moves=[...first,{handIndex:0,x:2,y:1}];
+ const result=previewPlacement(g.players[0],moves);
+ assert.deepEqual(result.placed.map(p=>p.bonuses),[[{type:'race',value:'dwarf'}],[{type:'job',value:'priest'}]]);
+ assert.equal(result.player.faith,6);assert.equal(level(result.player.faith),2);
+ const race=tutorialPlacementFeedback(g.players[0],first,1).paragraphs.join(' ');
+ for(const text of ['ドワーフの料理人','ドワーフの鉱石屋','ドワーフの拳闘士','職業は職人・商人・戦士','種族は全員「ドワーフ」','技術点＋2'])assert(race.includes(text),text);
+ const job=tutorialPlacementFeedback(g.players[0],moves,1).paragraphs.join(' ');
+ for(const text of ['人間の聖職者','エルフの祈り手','エルフの信奉者','種族は人間・エルフ・エルフ','職業は全員「聖職者」','信仰点＋2','2→4','4→6','1回だけ'])assert(job.includes(text),text);
+ const draft=previewPlacement(g.players[0],first).player;
+ assert.match(tutorialTask(1,'place',draft.hand,1).purpose,/職業だけの一致/);
+ assert(!tutorialTask(1,'place',g.players[0].hand,0).purpose.includes('騎士'));
+ submit(g,'human',{moves});inventory(g);
+ });
