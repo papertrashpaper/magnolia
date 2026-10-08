@@ -17,7 +17,7 @@ test('3つの独立した例題は実在するカード枚数と合法な3×3盤
   assert.equal(tutorialGuide({chapter,phase:g.phase}).done,true);
   assert(publicView(g,'human').resolution.events.length>0);
  }
- assert.throws(()=>tutorialGame('旅人',3),/章/);
+ assert.throws(()=>tutorialGame('旅人',4),/章/);
 });
 test('序盤は支払い・収入・技術を2枚で実際に体験できる',()=>{
  const g=tutorialGame('旅人');beginPlace(g);

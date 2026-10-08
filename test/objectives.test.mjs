@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {OBJECTIVES,objectiveProgress} from '../public/js/objectives.js';
-import {newGame,makePlayer,checkObjectives,submit,resolveRound,publicView,objectivePlacementHints} from '../public/js/engine.js';
+import {newGame,makePlayer,checkObjectives,submit,resolveRound,publicView} from '../public/js/engine.js';
 import {resolutionView} from '../public/js/presentation.js';
 const seats=[{id:'a',name:'A'},{id:'b',name:'B'}];
 const goal=id=>({id,claimedBy:[]});
@@ -51,11 +51,6 @@ test('目標の得点で終了判定・手札非公開・演出は達成前の�
  const index=v.resolution.events.findIndex(e=>e.objectiveId);assert.deepEqual(resolutionView(v,index).objectives[0].claimedBy,['a']);
  delete g.objectives;assert.deepEqual(publicView(g,'a').objectives,[]);
 });
-test('配置案内は手札と合法位置を使用、未配置報酬込み、達成済みは案内しない',()=>{
- const p=makePlayer('p','P');p.gold=4;p.hand=['human_knight'];const hints=objectivePlacementHints(p,[goal('gold2'),{id:'tech3',claimedBy:['q']}]);
- assert.equal(hints.gold2.moves.length,1);assert.equal(hints.tech3,undefined);
- const poor={...p,gold:2};assert.equal(objectivePlacementHints(poor,[goal('gold2')]).gold2,undefined);
-});
 test('HTTPで公開目標・設定・再接続を同期し相手の手札を秘匿する',async()=>{
  const {makeServer}=await import('../server.mjs');const server=makeServer();await new Promise(r=>server.listen(0,'127.0.0.1',r));
  const base=`http://127.0.0.1:${server.address().port}`;
@@ -69,9 +64,4 @@ test('HTTPで公開目標・設定・再接続を同期し相手の手札を秘�
   await post('action',{...ac,phase:'place',round:1,order:{moves:[]}});const after=await post('action',{...bc,phase:'place',round:1,order:{moves:[]}});
   const restored=await(await fetch(`${base}/api/state?${new URLSearchParams(ac)}`)).json();assert.deepEqual(restored.objectives,after.objectives);
  }finally{await new Promise(r=>server.close(r));}
-});
-test('配置案内は次の発展・収入も考慮する',()=>{
- const p=makePlayer('p','P');p.gold=4;p.faith=6;p.hand=['human_saint'];
- const h=objectivePlacementHints(p,[goal('faith3')]);assert.equal(h.faith3.phase,'develop');assert.equal(h.faith3.moves[0].name,'人間の聖職者');
- p.board=[{card:'human_great_marchant',x:0,y:0}];p.hand=['human_great_marchant'];const income=objectivePlacementHints(p,[goal('income7')]);assert.equal(income.income7.phase,'income');
 });

@@ -1,12 +1,13 @@
-import {OBJECTIVE,OBJECTIVE_PHASES,objectiveProgress} from './objectives.js?v=1';
-import {matBounds,createRefreshments,servingLabel} from './tavern.js?v=4';
-import {tutorialGame,tutorialGuide,tutorialObservation,tutorialPhaseOutcome,TUTORIAL_CHAPTERS,TUTORIAL_REFERENCE,tutorialTask,tutorialPlacementAllowed,TUTORIAL_SLIDES,TUTORIAL_FRONTLINE,tutorialFeedback,tutorialPlacementFeedback,tutorialTrace} from './tutorial.js?v=20';
+import {objectiveAlerts} from './objective-ui.js?v=1';
+import {OBJECTIVE,OBJECTIVE_PHASES,objectiveProgress} from './objectives.js?v=2';
+import {matBounds,createRefreshments,servingLabel} from './tavern.js?v=5';
+import {tutorialGame,tutorialGuide,tutorialObservation,tutorialPhaseOutcome,TUTORIAL_CHAPTERS,TUTORIAL_REFERENCE,tutorialTask,tutorialPlacementAllowed,TUTORIAL_SLIDES,TUTORIAL_FRONTLINE,tutorialFeedback,tutorialPlacementFeedback,tutorialTrace} from './tutorial.js?v=21';
 import {bindCardDrag} from './drag.js?v=9';
 import {CARDS,CARD,RACES,JOBS,RACE_BONUS,JOB_BONUS,effectText} from './cards.js?v=4';
-import {newGame,submit,nextRound,publicView,previewPlacement,legalCells,bounds,power,level,CPU_LEVELS,normalizeCPU,objectivePlacementHints} from './engine.js?v=14';
-import {fillCPU} from './cpu.js?v=14';
-import {PHASE_NAMES,scoreRank,changeSentence,levelChangeSentence,levelProgress,battleRank,resolutionView,undoChanges,finalResultMessages,logClassName} from './presentation.js?v=9';
-import {completedCombos,newCombos,placementComboHints,comboStyle} from './combos.js?v=4';
+import {newGame,submit,nextRound,publicView,previewPlacement,legalCells,bounds,power,level,CPU_LEVELS,normalizeCPU} from './engine.js?v=15';
+import {fillCPU} from './cpu.js?v=15';
+import {PHASE_NAMES,scoreRank,changeSentence,levelChangeSentence,levelProgress,battleRank,resolutionView,undoChanges,finalResultMessages,logClassName} from './presentation.js?v=10';
+import {completedCombos,newCombos,placementComboHints,comboStyle} from './combos.js?v=5';
 
 const app=document.querySelector('#app');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -72,7 +73,7 @@ function moneyWarning(){
  clearTimeout(moneyWarning.timer);moneyWarning.timer=setTimeout(()=>host.classList.remove('show'),2200);
 }
 function bonusText(b){return Object.entries(b).map(([s,n])=>`${n}${{gold:'金',tech:'技術点',faith:'信仰点',vp:'VP'}[s]}`).join(' ＋ ');}
-function scheduleReplay(){clearTimeout(playTimer);if(!playback||qs('#tutorialHandbookDialog').open)return;const drawing=state.resolution.events[playback.index].phase==='draw';if(mode==='local'&&game?.tutorial&&tutorialFeedback(state.resolution,playback.index,game.tutorialChapter??0,myId))return;if(drawing||autoPlay)playTimer=setTimeout(advanceReplay,drawing?1050:3200);}
+function scheduleReplay(){clearTimeout(playTimer);if(!playback||qs('#tutorialHandbookDialog').open||qs('#objectiveMailDialog').open)return;const drawing=state.resolution.events[playback.index].phase==='draw';if(mode==='local'&&game?.tutorial&&tutorialFeedback(state.resolution,playback.index,game.tutorialChapter??0,myId))return;if(drawing||autoPlay)playTimer=setTimeout(advanceReplay,drawing?1050:3200);}
 function advanceReplay(){
  if(!playback)return;clearTimeout(playTimer);
  if(++playback.index>=state.resolution.events.length){
@@ -112,9 +113,9 @@ function comboCardDecoration(p,cell,mini=false){
  return {style:comboStyle(groups),classes:types.map(t=>'combo-'+t).join(' ')+(fresh?' combo-celebrate':''),keys:groups.map(g=>g.key).join(' '),label:groups.map(g=>g.label+'3枚揃い').join('、'),html:groups.length?`${comboParticlesHTML()}<span class="combo-card-marks ${mini?'mini-combo-marks':''}" aria-hidden="true">${[...new Map(groups.map(g=>[`${g.type}:${g.value}`,g])).values()].map(g=>`<span class="combo-mark ${g.type}" style="${comboStyle([g])}">${mini?(g.type==='race'?RACES:JOBS)[g.value]:g.label}</span>`).join('')}</span>`:''};
 }
 function comboLedgerHTML(p){
- const groups=completedCombos(p);if(!groups.length)return '';
+ const groups=completedCombos(p),achievements=objectiveAchievementsHTML(p);if(!groups.length&&!achievements)return '';
  const actual=state.players.find(q=>q.id===p.id)?.bonuses??[];
- return `<div class="combo-ledger"><b>✦ 3枚揃い</b><div>${groups.map(g=>`<button class="combo-chip ${g.type}" style="${comboStyle([g])}" data-combo="${g.key}" data-combo-player="${p.id}" title="${esc(g.cells.map(c=>CARD[c.card].name).join('・'))}" aria-label="${esc(g.label)}の3枚を強調">${esc(g.label)}（${g.direction}）${!playback&&!actual.includes(g.key)?'（仮）':' ✓'}</button>`).join('')}</div><small>カードに載っている種族・職業の色で表示。名前に触れると3枚を強調します。</small></div>`;
+ return `<div class="combo-ledger">${groups.length?'<b>✦ 3枚揃い</b>':'<b>✉ 追加目標達成</b>'}<div>${groups.map(g=>`<button class="combo-chip ${g.type}" style="${comboStyle([g])}" data-combo="${g.key}" data-combo-player="${p.id}" title="${esc(g.cells.map(c=>CARD[c.card].name).join('・'))}" aria-label="${esc(g.label)}の3枚を強調">${esc(g.label)}（${g.direction}）${!playback&&!actual.includes(g.key)?'（仮）':' ✓'}</button>`).join('')}${achievements}</div>${groups.length?'<small>名前に触れると3枚を強調します。</small>':''}</div>`;
 }
 function availableComboHints(p){
  if(playback||state.phase!=='place'||p.ready||moves.length>=2||busy)return [];
@@ -216,9 +217,10 @@ function warFields(){return `<div class="war-fields">${Array.from({length:setup.
 function renderSetup(){
  const saved=store.get('magnolia-local');
  const oldSession=store.get('magnolia-session');
- app.innerHTML=`<section class="setup"><div class="tavern-welcome"><span class="inn-emblem" aria-hidden="true">✦</span><div><p class="inn-sign">THE AMBER LANTERN</p><h2>琥珀の灯亭</h2><p>灯りの下、今宵もひとつの王国が生まれる。</p></div><span class="inn-emblem" aria-hidden="true">✦</span></div><div class="setup-head"><div><p class="eyebrow">旅人たちの卓</p><h1>対戦を始める</h1></div><span class="muted small">2〜5人</span></div><div class="tabs"><button data-tab="local" class="${setupTab==='local'?'active':''}">CPU対戦</button><button data-tab="online" class="${setupTab==='online'?'active':''}">オンライン対戦</button></div><div class="tutorial-entry"><div><b>初めての旅人へ</b><span>画像つきの導入で基本を知り、3つの短い盤面練習へ。光るカードと場所が次の操作を案内します。</span></div><button id="tutorialButton">チュートリアルで遊ぶ</button></div><div class="setup-grid"><section class="panel"><h2>${setupTab==='local'?'CPUと遊ぶ':'部屋を作る・参加する'}</h2><label>プレイヤー名<input id="nameInput" maxlength="20" value="${esc(setup.name)}"></label>${setupTab==='online'?`<label style="margin-top:18px">対戦サーバーURL<input id="serverInput" type="url" placeholder="https://……onrender.com" value="${esc(setup.server)}"></label><p class="muted small" style="margin:8px 0">接続先は設定済みです。そのまま部屋を作成できます。</p>`:''}<div class="fields"><label>合計人数<select id="totalInput">${[2,3,4,5].map(n=>`<option value="${n}" ${setup.total===n?'selected':''}>${n}人${setupTab==='local'?`（あなた＋CPU${n-1}人）`:''}</option>`).join('')}</select></label>${setupTab==='online'?`<label>CPU用に確保する席<select id="cpuInput">${Array.from({length:setup.total},(_,i)=>`<option value="${i}" ${setup.cpuCount===i?'selected':''}>${i}席</option>`).join('')}</select></label>`:''}</div>${cpuStrengthFields()}<label class="objective-option"><input id="objectivesInput" type="checkbox" ${setup.additionalObjectives?'checked':''}>追加目標を使う（12枚からランダムに4枚）</label><p class="small muted">先に条件を達成すると各3VP。同時達成は全員が得点します。</p><h3>戦争で獲得するVP</h3>${warFields()}<p class="muted small" style="margin:10px 0">同点は同順位。次の順位は飛ばします。</p><button id="createButton" class="primary">${setupTab==='local'?'CPU対戦を開始':'部屋を作成'}</button>${setupTab==='local'&&saved?'<button id="resumeLocal" style="width:100%;margin-top:10px">前回のCPU対戦を再開</button>':''}${setupTab==='online'?`<div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--line)"><label>部屋番号<input id="roomInput" placeholder="例：A1B2C3" maxlength="6" value="${esc(setup.room)}" style="text-transform:uppercase"></label><button id="joinButton" style="width:100%;margin-top:12px">部屋に参加</button>${oldSession?'<button id="resumeOnline" style="width:100%;margin-top:10px">前回の部屋に再接続</button>':''}</div>`:''}<div id="formError" class="form-error" role="alert"></div></section><aside class="panel"><h2>ラウンドの流れ</h2><ul class="mini-sequence"><li><span>01</span><div><b>手札を交換</b><br>捨てるカードを選び、5枚まで補充。</div></li><li><span>02</span><div><b>最大2枚を配置</b><br>上下左右につなげて、王国を広げる。</div></li><li><span>03</span><div><b>戦争・発展・収入・VP</b><br>全員の確定後に、自動で計算。</div></li></ul><div class="note">誰かが40VP、または9体配置したラウンドで終了。残金も得点に加わります。</div><p class="muted small" style="margin:18px 0 0">説明書の収録枚数に準拠した41種類・102枚です。各カードは1〜3枚。カード一覧で個別の枚数を確認できます。</p></aside></div></section>`;
+ app.innerHTML=`<section class="setup"><div class="tavern-welcome"><span class="inn-emblem" aria-hidden="true">✦</span><div><p class="inn-sign">THE AMBER LANTERN</p><h2>琥珀の灯亭</h2><p>灯りの下、今宵もひとつの王国が生まれる。</p></div><span class="inn-emblem" aria-hidden="true">✦</span></div><div class="setup-head"><div><p class="eyebrow">旅人たちの卓</p><h1>対戦を始める</h1></div><span class="muted small">2〜5人</span></div><div class="tabs"><button data-tab="local" class="${setupTab==='local'?'active':''}">CPU対戦</button><button data-tab="online" class="${setupTab==='online'?'active':''}">オンライン対戦</button></div><div class="tutorial-entry"><div><b>初めての旅人へ</b><span>画像つきの導入で基本を知り、基本3章と追加目標の練習へ。光るカードと場所が次の操作を案内します。</span></div><div class="tutorial-entry-actions"><button id="tutorialButton">チュートリアルで遊ぶ</button><button id="objectiveTutorialButton">追加目標を練習する</button></div></div><div class="setup-grid"><section class="panel"><h2>${setupTab==='local'?'CPUと遊ぶ':'部屋を作る・参加する'}</h2><label>プレイヤー名<input id="nameInput" maxlength="20" value="${esc(setup.name)}"></label>${setupTab==='online'?`<label style="margin-top:18px">対戦サーバーURL<input id="serverInput" type="url" placeholder="https://……onrender.com" value="${esc(setup.server)}"></label><p class="muted small" style="margin:8px 0">接続先は設定済みです。そのまま部屋を作成できます。</p>`:''}<div class="fields"><label>合計人数<select id="totalInput">${[2,3,4,5].map(n=>`<option value="${n}" ${setup.total===n?'selected':''}>${n}人${setupTab==='local'?`（あなた＋CPU${n-1}人）`:''}</option>`).join('')}</select></label>${setupTab==='online'?`<label>CPU用に確保する席<select id="cpuInput">${Array.from({length:setup.total},(_,i)=>`<option value="${i}" ${setup.cpuCount===i?'selected':''}>${i}席</option>`).join('')}</select></label>`:''}</div>${cpuStrengthFields()}<label class="objective-option"><input id="objectivesInput" type="checkbox" ${setup.additionalObjectives?'checked':''}>追加目標を使う（12枚からランダムに4枚）</label><p class="small muted">先に条件を達成すると各3VP。同時達成は全員が得点します。</p><h3>戦争で獲得するVP</h3>${warFields()}<p class="muted small" style="margin:10px 0">同点は同順位。次の順位は飛ばします。</p><button id="createButton" class="primary">${setupTab==='local'?'CPU対戦を開始':'部屋を作成'}</button>${setupTab==='local'&&saved?'<button id="resumeLocal" style="width:100%;margin-top:10px">前回のCPU対戦を再開</button>':''}${setupTab==='online'?`<div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--line)"><label>部屋番号<input id="roomInput" placeholder="例：A1B2C3" maxlength="6" value="${esc(setup.room)}" style="text-transform:uppercase"></label><button id="joinButton" style="width:100%;margin-top:12px">部屋に参加</button>${oldSession?'<button id="resumeOnline" style="width:100%;margin-top:10px">前回の部屋に再接続</button>':''}</div>`:''}<div id="formError" class="form-error" role="alert"></div></section><aside class="panel"><h2>ラウンドの流れ</h2><ul class="mini-sequence"><li><span>01</span><div><b>手札を交換</b><br>捨てるカードを選び、5枚まで補充。</div></li><li><span>02</span><div><b>最大2枚を配置</b><br>上下左右につなげて、王国を広げる。</div></li><li><span>03</span><div><b>戦争・発展・収入・VP</b><br>全員の確定後に、自動で計算。</div></li></ul><div class="note">誰かが40VP、または9体配置したラウンドで終了。残金も得点に加わります。</div><p class="muted small" style="margin:18px 0 0">説明書の収録枚数に準拠した41種類・102枚です。各カードは1〜3枚。カード一覧で個別の枚数を確認できます。</p></aside></div></section>`;
  qs('#objectivesInput').onchange=e=>setup.additionalObjectives=e.target.checked;
  qs('#tutorialButton').onclick=()=>openTutorialIntro();
+ qs('#objectiveTutorialButton').onclick=()=>startTutorial(3);
  qs('#nameInput').oninput=e=>{setup.name=e.target.value;store.set('magnolia-name',setup.name);};
  qs('#difficultyInput').onchange=e=>{setup.cpuDifficulty=e.target.value;setup.cpuDifficulties=Array(setup.total-1).fill(setup.cpuDifficulty);store.set('magnolia-cpu-difficulty',setup.cpuDifficulty);store.set('magnolia-cpu-seats',setup.cpuDifficulties);renderSetup();};
  for(const el of document.querySelectorAll('[data-cpu-seat]'))el.onchange=e=>{setup.cpuDifficulties[Number(el.dataset.cpuSeat)]=e.target.value;store.set('magnolia-cpu-seats',setup.cpuDifficulties);renderSetup();};
@@ -236,6 +238,7 @@ function renderSetup(){
 
 function tutorialTaskNow(){
  if(mode!=='local'||!game?.tutorial||playback)return null;
+ if(game.tutorialChapter===3&&state.phase==='place'){const read=game.tutorialLettersRead??[],kind=!read.includes('own')?'own':!read.includes('rivals')?'rivals':null;if(kind)return {handIndex:-1,canConfirm:false,target:`[data-objective-mail="${kind}"]`,purpose:kind==='own'?'青い手紙で、自分の数値が条件にどれだけ近づいたかを確認します。':'赤い手紙で、相手がどの目標に近づいているかを確認します。',text:`盤面左上の${kind==='own'?'青':'赤'}い手紙を押して、案内を読みましょう。`};}
  const draft=currentDraft();return tutorialTask(game.tutorialChapter??0,state.phase,draft.hand,moves.length,[...discard]);
 }
 function tutorialNoticeOpen(){return mode==='local'&&game?.tutorial&&!!notice&&!playback;}
@@ -283,10 +286,10 @@ function tutorialGuideNow(){
 }
 function tutorialFinishControls(){
  const chapter=game.tutorialChapter??0;
- return `<div class="tutorial-finish-actions">${chapter<2?'<button data-tutorial-next class="primary">次の章を練習する</button>':'<button data-tutorial-play class="primary">通常のCPU対戦を始める</button>'}<button data-tutorial-retry>この章をもう一度</button><button data-tutorial-menu class="quiet">メニューへ戻る</button></div>`;
+ return `<div class="tutorial-finish-actions">${chapter<TUTORIAL_CHAPTERS.length-1?'<button data-tutorial-next class="primary">次の章を練習する</button>':'<button data-tutorial-play class="primary">通常のCPU対戦を始める</button>'}<button data-tutorial-retry>この章をもう一度</button><button data-tutorial-menu class="quiet">メニューへ戻る</button></div>`;
 }
 function tutorialBrief(guide){
- if(guide.done)return (game.tutorialChapter??0)<2?'この章の練習は完了です。下のボタンで次の章へ進めます。':'練習は完了です。下のボタンから通常対戦を始められます。';
+ if(guide.done)return (game.tutorialChapter??0)<TUTORIAL_CHAPTERS.length-1?'この章の練習は完了です。下のボタンで次の章へ進めます。':'練習は完了です。下のボタンから通常対戦を始められます。';
  if(guide.step<=2)return tutorialTaskNow()?.text??guide.text;
  const phase=state.resolution.events[playback.index].phase;
  return {place:'代金を払ってから配置時効果・ボーナスを処理します。「次の処理」で確認しましょう。',war:'金色の前線の戦力を比べ、戦争順位に応じたVPを得ます。',develop:'発展効果で技術・信仰が増えます。レベルの変化も見てみましょう。',income:'基本3金に、カードの収入を加えます。',vp:'カードのVP効果を処理します。発展後のレベルを使います。',final:'残金3金につき1VPを加え、最終VPで勝敗を決めます。'}[phase]??guide.text;
@@ -310,7 +313,7 @@ function tutorialLearningHTML(learning,compact=false){
 function tutorialHTML(){
  if(mode!=='local'||!game?.tutorial)return '';
  const chapter=game.tutorialChapter??0,guide=tutorialGuideNow();
- return `<section class="panel tutorial-guide tutorial-compact" aria-label="チュートリアル"><div class="tutorial-top"><span class="eyebrow">第${chapter+1}章 / 3 · 各章1ラウンド</span><button data-tutorial-menu class="quiet">練習を終了</button></div><nav class="tutorial-chapters" aria-label="練習する章">${TUTORIAL_CHAPTERS.map((c,i)=>`<button data-tutorial-chapter="${i}" ${chapter===i?'aria-current="step"':''}>${i+1}. ${c.title.split('：')[0]}</button>`).join('')}</nav>${!playback?`<div class="tutorial-current" aria-live="polite"><h2>${esc(guide.title)}</h2><p>${esc(tutorialBrief(guide))}</p></div>`:''}<div class="tutorial-reading-links"><button data-tutorial-read="lesson" class="quiet">この章の説明</button>${state.phase==='place'&&!playback?'<button data-tutorial-read="hints" class="quiet">盤面を見るヒント</button>':''}<button data-tutorial-read="0" class="quiet">解説集</button></div></section>`;
+ return `<section class="panel tutorial-guide tutorial-compact" aria-label="チュートリアル"><div class="tutorial-top"><span class="eyebrow">第${chapter+1}章 / ${TUTORIAL_CHAPTERS.length} · 各章1ラウンド</span><button data-tutorial-menu class="quiet">練習を終了</button></div><nav class="tutorial-chapters" aria-label="練習する章">${TUTORIAL_CHAPTERS.map((c,i)=>`<button data-tutorial-chapter="${i}" ${chapter===i?'aria-current="step"':''}>${i+1}. ${c.title.split('：')[0]}</button>`).join('')}</nav>${!playback?`<div class="tutorial-current" aria-live="polite"><h2>${esc(guide.title)}</h2><p>${esc(tutorialBrief(guide))}</p></div>`:''}<div class="tutorial-reading-links"><button data-tutorial-read="lesson" class="quiet">この章の説明</button>${state.phase==='place'&&!playback?'<button data-tutorial-read="hints" class="quiet">盤面を見るヒント</button>':''}<button data-tutorial-read="0" class="quiet">解説集</button></div></section>`;
 }
 function startLocal(){
  try{
@@ -414,7 +417,7 @@ function boardHTML(p,interactive){
   }else if(legal)content+=`<button data-combo-hints="${hints.filter(h=>h.x===x&&h.y===y).map(h=>h.handIndex).join(',')}" style="${comboStyle(matching.flatMap(h=>h.combos))}" class="cell candidate ${matching.length?'combo-candidate':''} ${selected!==null?'can-place':''} ${tutorialTaskNow()&&tutorialCellAllowed(x,y)?'tutorial-required':''}" data-cell="${x},${y}" ${moves.length>=2||busy||!tutorialCellAllowed(x,y)?'disabled':''} aria-label="${x},${y}に配置${matching.length?'、3枚揃い可能':''}">${comboParticlesHTML()}<span style="font-size:1.6rem">＋</span><span class="combo-target-label">✦ 3枚揃い</span></button>`;
   else content+='<div class="cell void" aria-hidden="true"></div>';
  }
- return `<div class="board-table"><div class="board-wrap"><div class="board" style="grid-template-columns:repeat(${width},minmax(0,1fr));${width===1?'max-width:140px':width===2?'max-width:300px':''}">${content}</div>${!p.board.length?'<div class="empty-help">最初のカードはここへ。<br>次から上下左右に広げられます。</div>':''}</div>${refreshmentsHTML()}</div>${comboLedgerHTML(p)}`;
+ return `<div class="board-table">${objectiveMailboxHTML()}<div class="board-wrap"><div class="board" style="grid-template-columns:repeat(${width},minmax(0,1fr));${width===1?'max-width:140px':width===2?'max-width:300px':''}">${content}</div>${!p.board.length?'<div class="empty-help">最初のカードはここへ。<br>次から上下左右に広げられます。</div>':''}</div>${refreshmentsHTML()}</div>${comboLedgerHTML(p)}`;
 }
 function statsHTML(p){return `<div class="status-grid">${[['vp','勝利点',p.vp,'VP'],['gold','お金',p.gold,'金'],['power','戦力',power(p),''],['tech','技術',p.tech,`Lv.${level(p.tech)}`],['faith','信仰',p.faith,`Lv.${level(p.faith)}`]].map(([stat,label,value,unit])=>`<div class="stat ${stat}" data-stat="${stat}"><span>${label}</span><strong>${value}<em>${unit}</em></strong>${deltaHTML(p,stat)}</div>`).join('')}</div>`;}
 function actionHTML(p){
@@ -444,24 +447,43 @@ function placeAt(handIndex,x,y){
  if(card&&card.cost>draft.gold){moneyWarning();return;}
  try{const proposed=[...moves,{handIndex,x,y}];const result=previewPlacement(own,proposed),placed=result.placed.at(-1);placementCelebration=newCombos(draft,result.player).map(g=>g.key);moves=proposed;selected=null;render();showNotice(`${own.name}が${CARD[placed.card].name}を仮配置`,placed.steps,'予定の増減です。確定前なら取り消せます。',newCombos(draft,result.player));}catch(e){toast(e.message);}
 }
-let objectiveHintCache={key:null,hints:{}};
-function objectivesHTML(view,draft){
+let objectiveAlertCache={key:null,alerts:{own:[],rivals:[]}};
+function displayedObjectiveView(){return playback?resolutionView({...state,you:myId},playback.index):state;}
+function currentObjectiveAlerts(){
+ const view=displayedObjectiveView(),draft=currentDraft();
+ const key=JSON.stringify([view.phase,view.players,draft,view.objectives,moves.length,!!playback]);
+ if(key!==objectiveAlertCache.key)objectiveAlertCache={key,alerts:objectiveAlerts(view,myId,draft,{playback:!!playback})};
+ return objectiveAlertCache.alerts;
+}
+function mailIcon(){return `<svg viewBox="0 0 64 48" aria-hidden="true"><path d="M3 13L32 2l29 11v30H3Z" fill="currentColor" opacity=".35"/><rect x="5" y="13" width="54" height="30" rx="3" fill="#f7e7b8" stroke="currentColor" stroke-width="3"/><path d="M6 14l26 19 26-19M6 42l17-15m35 15L41 27" fill="none" stroke="currentColor" stroke-width="2.5"/><circle cx="32" cy="32" r="6" fill="currentColor"/></svg>`;}
+function objectiveMailboxHTML(){
+ const alerts=currentObjectiveAlerts();if(!alerts.own.length&&!alerts.rivals.length)return '';
+ return `<div class="objective-mailbox" aria-label="追加目標の手紙">${[['own','青',alerts.own.length,'達成できそうな目標'],['rivals','赤',alerts.rivals.length,'相手が達成しそうな目標']].filter(([, ,count])=>count).map(([kind,color,count,label])=>`<button class="objective-mail ${kind}" data-objective-mail="${kind}" aria-label="${color}い手紙：${label} ${count}件" title="${label}">${mailIcon()}<span class="mail-count">${count}</span></button>`).join('')}</div>`;
+}
+function objectiveAchievementsHTML(p){
+ const goals=(displayedObjectiveView().objectives??[]).filter(g=>g.claimedBy?.includes(p.id));
+ return goals.map(g=>`<span class="objective-achievement ${playback&&state.resolution.events[playback.index]?.objectiveId===g.id?'fresh':''}" aria-label="追加目標達成：${esc(OBJECTIVE[g.id].title)}、${OBJECTIVE[g.id].vp}VP獲得"><span aria-hidden="true">✉</span> ${esc(OBJECTIVE[g.id].title)} 達成 <b>＋${OBJECTIVE[g.id].vp}VP</b></span>`).join('');
+}
+function objectivesHTML(view){
  if(!view.objectives?.length)return '';
- const planning=!playback&&view.phase==='place';
- const projected=structuredClone(draft);if(planning)projected.gold+=2-moves.length;
- const players=view.players.map(p=>p.id===myId?projected:p);
- const canPlan=planning&&!view.players.find(p=>p.id===myId)?.ready;
- const key=canPlan?JSON.stringify([view.players.find(p=>p.id===myId),view.objectives]):null;
- if(canPlan&&key!==objectiveHintCache.key)objectiveHintCache={key,hints:objectivePlacementHints(view.players.find(p=>p.id===myId),view.objectives)};
- const hints=canPlan?objectiveHintCache.hints:{};
  return `<section class="objective-panel" aria-label="追加目標"><div class="objective-heading"><b>追加目標</b><span>各3VP・先着（同時達成は全員）</span></div><div class="objective-grid">${view.objectives.map(goal=>{
   const o=OBJECTIVE[goal.id];if(!o)return '';
-  const claimed=goal.claimedBy?.length,own=players.find(p=>p.id===myId),progress=objectiveProgress(own,goal.id);
-  const rivals=players.filter(p=>p.id!==myId).map(p=>({p,progress:objectiveProgress(p,goal.id)}));
-  const dangers=rivals.filter(r=>r.progress.met||r.progress.near);
-  return `<article class="objective-card ${claimed?'claimed':progress.met?'ready':progress.near?'near':''}"><div><b>${esc(o.title)}</b><span class="objective-vp">3VP</span></div><small>${OBJECTIVE_PHASES[o.phase]}${o.exact?'・ちょうどの金額':''}</small>${claimed?`<p class="objective-claimed">達成：${goal.claimedBy.map(id=>esc(players.find(p=>p.id===id)?.name??id)).join('・')}（R${goal.round}）</p>`:`<p class="objective-own"><b>${progress.met?'判定待ち':progress.near?'あと少し':'あなた'}</b> ${esc(progress.detail)}${planning?' <small>（配置予定・未配置報酬込み）</small>':''}</p>${hints[goal.id]?`<details class="objective-hint"><summary>${hints[goal.id].moves.length?'手札で到達可・配置案を見る':'追加配置なしで到達可'}</summary><p>${hints[goal.id].moves.length?`${moves.length?'別の配置案：':''}${hints[goal.id].moves.map(m=>esc(m.name)).join(' → ')}を配置`:'配置しない枠の報酬と継続効果を確認してください。'}</p><small>${OBJECTIVE_PHASES[hints[goal.id].phase]??'発展終了時'}・配置位置によります</small></details>`:''}${dangers.length?`<p class="objective-danger">${dangers.map(r=>`${esc(r.p.name)}：${r.progress.met?'判定待ち':'あと少し'}（${esc(r.progress.detail)}）`).join('<br>')}</p>`:''}<details><summary>全員の進捗</summary>${rivals.map(r=>`<p>${esc(r.p.name)}：${esc(r.progress.detail)}</p>`).join('')}</details>`}</article>`;
- }).join('')}</div><p class="objective-footnote">相手は公開盤面で判断。非公開の手札は予測に含みません。</p></section>`;
+  const claimed=goal.claimedBy?.length;
+  return `<article class="objective-card letter-card ${claimed?'claimed':''}" aria-label="${esc(o.title)}、${o.vp}VP、${claimed?'達成済み':'未達成'}"><img src="assets/objective-letter.svg" alt="" aria-hidden="true"><div class="letter-content"><small>${OBJECTIVE_PHASES[o.phase]}${o.exact?'・ちょうど':''}</small><b class="letter-title">${esc(o.title)}</b><span class="letter-award">${o.vp}<small>VP</small></span><span class="letter-achievers">${claimed?`達成：${goal.claimedBy.map(id=>esc(view.players.find(p=>p.id===id)?.name??id)).join('・')}`:'未達成'}</span></div></article>`;
+ }).join('')}</div></section>`;
 }
+function openObjectiveMail(kind){
+ const alerts=currentObjectiveAlerts(),entries=kind==='own'?alerts.own:alerts.rivals;
+ if(!entries.length)return;
+ clearTimeout(playTimer);
+ const title=kind==='own'?'青い手紙 — あなたが狙える目標':'赤い手紙 — 相手が近づいている目標';
+ qs('#objectiveMailTitle').textContent=title;
+
+ qs('#objectiveMailBody').innerHTML=`<div class="mail-reading ${kind}">${entries.map(entry=>`<article><h3>${esc(entry.o.title)} <span>＋${entry.o.vp}VP</span></h3><p class="mail-phase">${OBJECTIVE_PHASES[entry.o.phase]}</p>${kind==='own'?`<p><b>${entry.progress.met?'条件を満たしています（判定待ち）':'達成まであと少し'}</b></p><p>${esc(entry.progress.detail)}</p><p>現在の数値での進捗です。指定フェイズ終了時に条件を満たしているか確認します。</p>`:`<ul>${entry.players.map(p=>`<li><b>${esc(p.name)}</b>：${p.progress.met?'条件を満たしています（判定待ち）':'あと少し'}<br>${esc(p.progress.detail)}</li>`).join('')}</ul>`}</article>`).join('')}<p class="mail-reading-note">${kind==='own'?'仮配置中は、その時点の数値を表示します。所持金は未配置枠の報酬を加え、指定フェイズ終了時の金額で判定します。':'相手の公開盤面だけで判断しています。非公開の手札による次の配置は断定できません。'}先に達成された目標は得点できません。同じ判定時の達成は全員が得点します。</p></div>`;
+ if(game?.tutorial&&game.tutorialChapter===3){game.tutorialLettersRead??=[];if(!game.tutorialLettersRead.includes(kind))game.tutorialLettersRead.push(kind);}
+ qs('#objectiveMailDialog').showModal();
+}
+qs('#objectiveMailDialog').addEventListener('close',()=>{render();const target=tutorialTaskNow()?.target;if(target)qs(target)?.focus({preventScroll:true});scheduleReplay();});
 function renderGame(){
  app.classList.toggle('tutorial-reading-effect',mode==='local'&&!!game?.tutorial&&!!playback);
  if(mobileLayout()){mobileGalleryScroll=qs('.kingdom-gallery')?.scrollLeft??mobileGalleryScroll;mobileHandScroll=qs('.hand')?.scrollLeft??mobileHandScroll;}
@@ -494,8 +516,9 @@ function renderGame(){
  for(const el of document.querySelectorAll('[data-tutorial-menu]'))el.onclick=returnSetup;
  for(const el of document.querySelectorAll('[data-tutorial-play]'))el.onclick=()=>{returnSetup();startLocal();};
  for(const el of document.querySelectorAll('[data-tutorial-read]'))el.onclick=()=>openTutorialHandbook(el.dataset.tutorialRead);
- if(mode==='local'&&game?.tutorial){const guide=tutorialGuideNow();if(guide.target)qs(guide.target)?.classList.add('tutorial-focus');if(guide.learning?.card)qs(`#playerBoard [data-card="${guide.learning.card}"]`)?.classList.add('tutorial-source-card');}
+ if(mode==='local'&&game?.tutorial){const guide=tutorialGuideNow();if(tutorialTaskNow()?.target||guide.target)qs(tutorialTaskNow()?.target??guide.target)?.classList.add('tutorial-focus');if(guide.learning?.card)qs(`#playerBoard [data-card="${guide.learning.card}"]`)?.classList.add('tutorial-source-card');}
  qs('#backButton').onclick=returnSetup;
+ for(const button of document.querySelectorAll('[data-objective-mail]'))button.onclick=()=>openObjectiveMail(button.dataset.objectiveMail);
  for(const button of document.querySelectorAll('[data-refreshment]'))button.onclick=()=>enjoyRefreshment(button.dataset.refreshment);
  if(qs('.round-review'))qs('.round-review').ontoggle=e=>{reviewOpen=e.target.open;};
  if(qs('#reviewRound'))qs('#reviewRound').onchange=e=>{reviewRound=Number(e.target.value);reviewOpen=true;render();};

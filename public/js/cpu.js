@@ -1,6 +1,6 @@
-import {objectiveProgress} from './objectives.js?v=1';
+import {objectiveProgress} from './objectives.js?v=2';
 import {CARD,CARDS} from './cards.js?v=4';
-import {clone,legalCells,placeOne,power,level,amount,resolveRound,normalizeCPU} from './engine.js?v=14';
+import {clone,legalCells,placeOne,power,level,amount,resolveRound,normalizeCPU} from './engine.js?v=15';
 function potential(p){
  let score=0;
  for(const axis of ['x','y'])for(const type of ['race','job']){

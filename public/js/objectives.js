@@ -1,5 +1,5 @@
 import {CARD} from './cards.js?v=4';
-import {power,level,amount} from './engine.js?v=14';
+import {power,level,amount} from './engine.js?v=15';
 // Printed objective cards: thresholds are inclusive, except exact cash goals.
 export const OBJECTIVES=[
  {id:'gold2',title:'所持金2金',phase:'place',target:2,exact:true},

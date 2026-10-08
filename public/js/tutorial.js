@@ -1,15 +1,18 @@
-import {newGame,level,power,previewPlacement,legalCells,STAT_NAMES} from './engine.js?v=14';
+import {OBJECTIVE} from './objectives.js?v=2';
+import {newGame,level,power,previewPlacement,legalCells,STAT_NAMES} from './engine.js?v=15';
 import {CARD,RACES,JOBS} from './cards.js?v=4';
 
 export const TUTORIAL_CHAPTERS=[
  {title:'序盤：王国をつくる',intro:'マグノリアは、カードを王国に配置して勝利点（VP）を稼ぐゲームです。最後に最もVPが多い人が勝ちます。第1章は何もない王国から、手札交換・配置・各フェーズを1回ずつ試します。',goal:'最初の例：人間の行商を置き、その後ろにドワーフの料理人を置いてみましょう。行商の収入、料理人の発展とVPを1ラウンドで確認できます。この練習では、案内したカードと場所だけ操作できます。'},
  {title:'中盤：育てて組み合わせる',intro:'第2章は練習用に準備した途中盤面です。前の章の続きではありません。技術2点・信仰2点、7金から始めます。どちらもあと1点でLv.2。種族・職業の3枚揃えと、信奉者のVP効果を試します。',goal:'拳闘士でドワーフの種族揃え、信奉者で聖職者の職業揃えを横に完成させます。信奉者で育てた信仰が、その後のVPになる流れも確認します。'},
  {title:'終盤：勝ち切るタイミング',intro:'7体の王国から、魔術師の戦争時効果と9体による終了を試します。技術・信仰はLv.3、VPは30です。',goal:'魔術師を前線に置き、戦争報酬に追加VPを得ます。祈り手を9体目にして、全員が終了する流れを確認します。'},
+ {title:'追加目標：手紙を読んで先に達成',intro:'12枚の追加目標から4枚を公開し、先に達成すると各3VP。この練習は固定の4枚です。盤面左上の青い手紙は自分の数値の接近、赤い手紙は相手の接近を知らせます。普段は手紙マークが出ません。',goal:'青・赤の手紙を読んでから、行商と料理人を置いて所持金2金を目指します。コスト3以下のユニット3体は相手も同時に達成できる例です。相手は信仰レベル3にも接近しています。得点と手紙タグ、薄くなった目標を確認しましょう。'},
 ];
 const specs=[
  {gold:5,tech:0,faith:0,vp:0,board:[],hand:['human_marchant','dwarf_cook','dwarf_pugilist','elf_marchant','demon_storm'],enemy:[],enemyHand:['human_marchant','goblin_soldier','elf_marchant','dwarf_cook','elf_saint']},
  {gold:7,tech:2,faith:2,vp:12,board:[['dwarf_cook',0,0],['dwarf_gem',1,0],['human_saint',0,1],['elf_saint',1,1],['human_knight',0,-1]],hand:['dwarf_pugilist','elf_follower','golem_iron','elf_artist','human_great_marchant'],enemy:[['human_knight',0,0],['human_marchant',1,0],['elf_saint',0,1]],enemyHand:['goblin_soldier','elf_marchant','human_great_marchant','dwarf_cook','elf_artist']},
  {gold:8,tech:7,faith:7,vp:30,board:[['golem_iron',0,0],['human_knight',1,0],['elf_mistic',1,2],['dwarf_cook',0,1],['human_saint',1,1],['elf_artist',2,1],['human_marchant',0,2]],hand:['elf_caster','dwarf_beer','elf_saint','human_great_marchant','demon_destroy'],enemy:[['demon_pest',0,0],['goblin_great_soldier',1,0],['elf_archer',2,0],['human_great_marchant',0,1]],enemyHand:['goblin_soldier','elf_marchant','human_saint','dwarf_cook','golem_gold']},
+ {gold:5,tech:0,faith:0,vp:0,board:[['human_marchant',0,0],['dwarf_cook',0,1]],hand:['human_marchant','dwarf_cook','golem_iron','elf_artist','goblin_soldier'],enemy:[['human_knight',0,0],['elf_marchant',1,0],['human_saint',0,1]],enemyHand:['dwarf_cook','elf_mistic','goblin_soldier','human_great_marchant','golem_gold']},
 ];
 export function tutorialGame(name,chapter=0){
  if(!Number.isInteger(chapter)||!specs[chapter])throw Error('練習の章が見つかりません。');
@@ -24,6 +27,7 @@ export function tutorialGame(name,chapter=0){
  enemy.board=s.enemy.map(([id,x,y])=>({card:take(id),x,y}));
  own.hand=s.hand.map(take);enemy.hand=s.enemyHand.map(take);
  if(chapter===0)g.deck.push(take('elf_saint'));
+ if(chapter===3){g.settings.additionalObjectives=true;g.objectives=['gold2','cheap3','faith3','jobs4'].map(id=>({id,claimedBy:[]}));enemy.faith=6;enemy.tech=0;enemy.vp=0;}
  own.power=power(own);enemy.power=power(enemy);
  g.tutorial=true;g.tutorialChapter=chapter;return g;
 }
@@ -40,6 +44,7 @@ export const TUTORIAL_REFERENCE=[
  {title:'1ラウンドに起こること',paragraphs:['ドローで手札を整える→配置で最大2枚置く→戦争で前線の戦力を比べる→発展で技術・信仰を増やす→収入で基本3金とカードの収入を得る→VPフェーズでカードの得点を得る、の順です。','配置後のお金が少なくても、収入フェーズには基本3金が入ります。発展でレベルが上がると、その後の収入・VPでは新しいレベルを参照します。戦争は発展より先なので、このラウンドの発展で得るレベルを今の戦争には使えません。','2人戦の戦争報酬は標準で1位4VP・2位0VP。3人以上は1位5VP・2位3VP・3位以下0VP。設定で変更できます。同戦力は同順位で、次の順位を飛ばします。中央の増減メッセージで、どの効果によって増えたか確認しましょう。']},
  {title:'序盤・中盤・終盤はどう動く？',paragraphs:['序盤は安いカードで、収入や毎ラウンドの発展・VPをつくると後の選択が増えます。「毎ラウンド＋1」のカードも早く置けば何度も使えます。高いカードだけを集めると、置けないまま手番を終えることがあります。','中盤は、既にあるカードに合う技術・信仰、3枚揃え、前線の強化を比べます。戦力は自分の合計だけでなく相手との比較が大切。相手を越えられるか、今の順位を保てるかを見てからお金を使いましょう。','終盤は残りの得点機会が少なくなります。収入を育てるより今すぐVPを取る方がよいこともあります。9体目を置くとそのラウンドで終了するため、まだ王国を育てたいなら空きを残す選択もできます。逆にリードしているなら終了を早める考え方もあります。']},
  {title:'最後のお金と、よくある勘違い',paragraphs:['終了時は残金3金につき1VP、端数切り捨て。たとえば8金なら2VP、9金なら3VPです。人間の君主がいる場合は、このお金のVPを3倍にします。終了ラウンドの収入も含めた残金で計算します。','技術・信仰そのものは最後にVPへ換算されません。レベルを使うカードが得点を生みます。お金を使い切る・必ず2枚置く・戦力だけを伸ばす、といった動きが毎回正解とは限りません。王国の得点源と相手、終わるタイミングを一緒に見ましょう。']},
+ {title:'追加目標と青・赤の手紙',paragraphs:['追加目標を使う場合、12枚からランダムに4枚を公開します。条件を先に満たした人に各3VP。同じフェイズの判定で複数人が達成すると全員が3VPを得ます。達成済みの目標は薄くなり、達成者名を記録します。再加点はしません。','青い手紙は自分の数値が条件に近づいたときだけ出ます。押すと目標と残りの数値を確認できます。配置案や手順は表示しません。赤い手紙は相手の公開盤面が達成間近のときだけ出て、目標と相手の名前を表示します。非公開の手札は判断に使いません。','所持金2金は配置終了時にちょうど2金。未配置枠の報酬も加えて判定します。1枚配置した瞬間に2金になっても、未配置枠の1金で3金になれば未達成です。所持金12金は各フェイズ終了時にちょうど12金で判定。収入7金は所持金ではなく、基本3金を含むそのフェイズの収入です。','目標を達成すると、3枚揃いのタグと同じ欄に手紙風の達成タグと獲得VPが残ります。追加目標だけでも得点が伸びるため、40VPの終了条件にも含まれます。']},
 ];
 const phaseLessons={
  place:['配置：先に代金、そのあと効果','各カードの処理は支払い→配置時効果→配置ボーナス。中央で理由つきの増減を確認します。置かなかった枠の1金は、今回の配置が終わってから入ります。'],
@@ -51,7 +56,13 @@ const phaseLessons={
 };
 export function tutorialGuide({chapter=0,phase,moves=0,replayPhase=null}){
  const lesson=TUTORIAL_CHAPTERS[chapter]??TUTORIAL_CHAPTERS[0];
- if(!replayPhase&&['round','ended'].includes(phase))return {step:4,title:chapter===2?'3章の練習、おつかれさまでした！':'この章の1ラウンドを完了！',text:chapter===0?'お金を払ってカードを置き、戦争・発展・収入・VPが順に発生する流れを体験しました。次は途中盤面から、技術・信仰点と組み合わせを練習します。':chapter===1?'技術・信仰点は使うカードと組み合わせると役立ちます。3枚揃えとレベルの境目も確認できましたか？ 次は終了直前の盤面で、最後の得点まで体験します。':'最終結果は戦争だけでなく、カードのVP・配置ボーナス・残金の合計で決まります。勝っても負けても練習は完了です。下の解説はいつでも読み直せます。通常対戦では同じ考え方を、自分の引いたカードで試してみましょう。',target:null,done:true};
+ if(chapter===3){
+  if(!replayPhase&&['round','ended'].includes(phase))return {step:4,title:'追加目標の練習を完了！',text:'青い手紙で自分の進捗、赤い手紙で相手の接近を確認しました。達成した目標の3VPと、盤面下の手紙タグを確認しましょう。同時達成は全員が得点し、達成済みの目標は薄く表示されます。',done:true};
+  if(replayPhase&&replayPhase!=='draw')return {step:3,title:'指定フェイズの終了時に目標を判定',text:'各フェイズの最後に目標を確認します。自分と相手の達成、3VPの加点、達成者名と手紙タグに注目しましょう。',target:'.replay-controls'};
+  if(phase==='draw'||replayPhase==='draw')return {step:1,title:'追加目標の練習を始めよう',text:'今回は手札を交換しません。「交換せず補充」で進み、盤面左上の青・赤の手紙を読みましょう。',target:'.hand'};
+  return {step:2,title:'手紙を読んで、所持金2金を狙おう',text:'青い手紙は自分の進捗、赤い手紙は相手の接近です。行商1金→料理人2金の順で置くと、5−1−2＝2金。配置終了時に目標を達成できます。',target:'.objective-mailbox'};
+ }
+ if(!replayPhase&&['round','ended'].includes(phase))return {step:4,title:chapter===2?'基本3章の練習、おつかれさまでした！':'この章の1ラウンドを完了！',text:chapter===0?'お金を払ってカードを置き、戦争・発展・収入・VPが順に発生する流れを体験しました。次は途中盤面から、技術・信仰点と組み合わせを練習します。':chapter===1?'技術・信仰点は使うカードと組み合わせると役立ちます。3枚揃えとレベルの境目も確認できましたか？ 次は終了直前の盤面で、最後の得点まで体験します。':'最終結果は戦争だけでなく、カードのVP・配置ボーナス・残金の合計で決まります。勝っても負けても練習は完了です。下の解説はいつでも読み直せます。次は追加目標の手紙と、先着の得点を練習できます。',target:null,done:true};
  if(replayPhase&&replayPhase!=='draw'){const [title,text]=phaseLessons[replayPhase]??phaseLessons.vp;return {step:3,title,text,target:'.replay-controls'};}
  if(phase==='draw'||replayPhase==='draw')return {step:1,title:'手札を整える：置けるカードを残そう',text:chapter===0?'最初は5金・手札5枚です。今回は収入・技術・信仰を試せる安いカードと、今は置けない9金の嵐のデーモンを用意しました。不要なカードを押して選び「交換を確定」。そのまま「交換せず補充」でも進めます。':`${lesson.goal} まず手札のコストと効果を確認し、使いたいカードを残しましょう。用意された手札のまま練習するなら「交換せず補充」で進めます。`,target:'.hand'};
  return {step:2,title:moves?'仮置きの結果を見て、次の一手を考える':'配置する：カードの役割と置き場所を選ぼう',text:moves?'仮置きで変わったお金・技術・信仰・戦力を見ましょう。「最後の配置を戻す」でやり直せます。2枚目の代金は今表示されているお金から支払います。1枚だけでも、何も置かなくても確定できます。準備ができたら配置を確定してください。':`${lesson.goal} 手札を選んで「＋」を押すかタップ、またはドラッグして仮置きします。上が前方。前線のカードで戦力を、後列のカードで収入や発展・VPを支える配置を試してみましょう。`,target:moves?'#confirmButton':'.hand'};
@@ -96,17 +107,18 @@ export function tutorialTask(chapter,phase,hand=[],moves=0,discard=[]){
  if(phase==='draw'){
   const index=chapter===0?hand.indexOf('demon_storm'):-1;
   const ready=chapter===0?discard.length===1&&discard[0]===index:discard.length===0;
-  return {handIndex:index,canConfirm:ready,purpose:['今は5金。9金のデーモンを交換して、置ける手札を残します。','拳闘士と信奉者で、種族揃え・職業揃えを試します。今回は交換しません。','魔術師と祈り手で、戦争時効果と全員の終了を試します。今回は交換しません。'][chapter],text:chapter===0?'「嵐のデーモン」を選び、「交換を確定」を押しましょう。':'「交換せず補充」を押しましょう。'};
+  return {handIndex:index,canConfirm:ready,purpose:['今は5金。9金のデーモンを交換して、置ける手札を残します。','拳闘士と信奉者で、種族揃え・職業揃えを試します。今回は交換しません。','魔術師と祈り手で、戦争時効果と全員の終了を試します。今回は交換しません。','青・赤の手紙で目標を確認します。今回は交換しません。'][chapter],text:chapter===0?'「嵐のデーモン」を選び、「交換を確定」を押しましょう。':'「交換せず補充」を押しましょう。'};
  }
  if(phase!=='place')return null;
  const steps=[
   [['human_marchant',0,0,'「人間の行商」を光る＋へ。'],['dwarf_cook',0,1,'「ドワーフの料理人」を行商の下へ。']],
   [['dwarf_pugilist',2,0,'「ドワーフの拳闘士」をドワーフ2枚の右へ。'],['elf_follower',2,1,'「エルフの信奉者」を聖職者2枚の右へ。']],
-  [['elf_caster',2,0,'「エルフの魔術師」を上段右の前線へ。'],['elf_saint',2,2,'「エルフの祈り手」を下段右へ。']]
+  [['elf_caster',2,0,'「エルフの魔術師」を上段右の前線へ。'],['elf_saint',2,2,'「エルフの祈り手」を下段右へ。']],
+  [['human_marchant',1,0,'「人間の行商」を既存の行商の右へ。'],['dwarf_cook',1,1,'「ドワーフの料理人」を既存の料理人の右へ。']]
  ][chapter];
  const step=steps?.[moves];
  if(!step)return {handIndex:-1,canConfirm:moves===2,purpose:'確定して、置いた2枚の働きを順番に確認します。',text:'「2枚の配置を確定」を押しましょう。'};
- return {card:step[0],handIndex:hand.indexOf(step[0]),x:step[1],y:step[2],canConfirm:false,text:step[3],purpose:chapter===1&&moves===1?'信奉者で聖職者の横列を完成させます。種族が違っても、職業だけの一致で信仰＋2です。':placementPurpose(step[0])};
+ return {card:step[0],handIndex:hand.indexOf(step[0]),x:step[1],y:step[2],canConfirm:false,text:step[3],purpose:chapter===3?(moves===0?'1金を払い、安いユニット3体の条件に届かせます。所持金2金は2枚目の後で判定します。':'2金を払って残金2金。2枠とも配置するので、未配置枠の報酬はありません。'):chapter===1&&moves===1?'信奉者で聖職者の横列を完成させます。種族が違っても、職業だけの一致で信仰＋2です。':placementPurpose(step[0])};
 }
 export function tutorialPlacementAllowed(task,handIndex,x,y){return !!task?.card&&task.handIndex===handIndex&&task.x===x&&task.y===y;}
 // Staggered columns show that the front is decided independently in each column.
@@ -141,6 +153,7 @@ const placementPurposes={
 function placementPurpose(card){return placementPurposes[card]??'カードを置いた後、効果と増減の理由を確認しましょう。';}
 const changeValue=c=>`${STAT_NAMES[c.stat]} ${c.before}→${c.after}${['tech','faith'].includes(c.stat)?`（Lv.${level(c.before)}→Lv.${level(c.after)}）`:''}`;
 function eventLearning(event,past,chapter,you,preview=false){
+ if(chapter===3&&event?.objectiveId){const o=OBJECTIVE[event.objectiveId],goal=event.objectives?.find(g=>g.id===event.objectiveId);return {card:null,title:`${event.playerId===you?'あなた':event.after?.name??'相手'}が追加目標を達成！`,paragraphs:[`「${o.title}」を${event.phase==='place'?'配置':event.phase==='develop'?'発展':'指定'}フェイズ終了時に達成し、${o.vp}VPを獲得しました。`,goal?.claimedBy.length>1?'今回は同じ判定で複数人が達成。全員が3VPを得ます。先に処理された人だけの得点にはなりません。':'先着の目標です。達成済みになったこの目標から、後で得点することはできません。','追加目標の手紙が薄くなり、達成者名を表示します。盤面下には獲得VPつきの手紙タグが残ります。']};}
  if(!event||event.playerId!==you||!event.after||event.phase==='draw')return null;
  const p=event.after,changes=event.changes??[];
  const placed=new Set(past.filter(e=>e.phase==='place'&&e.playerId===you&&e.card).map(e=>e.card));

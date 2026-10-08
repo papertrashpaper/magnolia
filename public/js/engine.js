@@ -1,4 +1,4 @@
-import {OBJECTIVE,objectiveProgress} from './objectives.js?v=1';
+import {OBJECTIVE,objectiveProgress} from './objectives.js?v=2';
 import {roundReview} from './review.js?v=11';
 import {CARD,CARDS,RACE_BONUS,JOB_BONUS} from './cards.js?v=4';
 export const level=n=>n===15?4:n>=7?3:n>=3?2:n>=1?1:0;
@@ -115,28 +115,6 @@ export function previewPlacement(player,moves){
  if(!Array.isArray(moves)||moves.length>2)throw Error('配置は最大2枚です。');
  const p=clone(player),placed=[];for(const move of moves)placed.push(placeOne(p,move));
  return {player:p,placed};
-}
-export function objectivePlacementHints(player,goals){
- const open=(goals??[]).filter(g=>!g.claimedBy?.length),hints={};
- function inspect(p,moves){
-  const projected=clone(p);projected.gold+=2-moves.length;
-  for(const goal of open){const o=OBJECTIVE[goal.id];if(hints[goal.id])continue;
-   if(o.phase!=='income'&&objectiveProgress(projected,goal.id).met)hints[goal.id]={moves:clone(moves),detail:objectiveProgress(projected,goal.id).detail,phase:o.phase==='war'?'war':'place'};
-   else if(o.phase==='income'||['tech3','faith3','levels2'].includes(goal.id)){
-    const developed=clone(projected);effects(developed,'develop');
-    if(objectiveProgress(developed,goal.id).met)hints[goal.id]={moves:clone(moves),detail:objectiveProgress(developed,goal.id).detail,phase:o.phase==='income'?'income':'develop'};
-   }
-  }
- }
- inspect(player,[]);if(open.every(g=>hints[g.id]))return hints;
- const first=[];
- for(let i=0;i<player.hand.length;i++)if(CARD[player.hand[i]].cost<=player.gold)for(const cell of legalCells(player.board)){
-  const p=clone(player),move={handIndex:i,...cell},name=CARD[p.hand[i]].name;placeOne(p,move);const moves=[{...move,name}];inspect(p,moves);first.push({p,moves});
- }
- for(const entry of first)for(let i=0;i<entry.p.hand.length;i++)if(CARD[entry.p.hand[i]].cost<=entry.p.gold)for(const cell of legalCells(entry.p.board)){
-  const p=clone(entry.p),move={handIndex:i,...cell},name=CARD[p.hand[i]].name;placeOne(p,move);inspect(p,[...entry.moves,{...move,name}]);
- }
- return hints;
 }
 export function power(p){
  let total=0;
