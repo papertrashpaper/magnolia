@@ -47,7 +47,7 @@ const initialParams=new URLSearchParams(location.search);
 const defaultServer=location.hostname==='papertrashpaper.github.io'?'https://magnolia-82c3.onrender.com':location.origin;
 let connecting=false,recovering=false,reconnectTimer=null,recoveryGeneration=0;
 let reviewRound=null,reviewOpen=false,backupSaved=true;
-let setup={name:store.get('magnolia-name','あなた'),total:3,cpuCount:0,cpuDifficulty:store.get('magnolia-cpu-difficulty','normal'),cpuDifficulties:store.get('magnolia-cpu-seats',[]),server:initialParams.get('server')||store.get('magnolia-server',defaultServer),room:initialParams.get('room')||'',warVP:[5,3,0,0,0]};
+let setup={name:store.get('magnolia-name','あなた'),total:4,cpuCount:0,cpuDifficulty:store.get('magnolia-cpu-difficulty','normal'),cpuDifficulties:store.get('magnolia-cpu-seats',[]),server:initialParams.get('server')||store.get('magnolia-server',defaultServer),room:initialParams.get('room')||'',warVP:[5,3,0,0,0]};
 if(initialParams.get('room'))setupTab='online';
 function toast(text){qs('#toast').textContent=text;qs('#toast').classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>qs('#toast').classList.remove('show'),4500);}
 function moneyWarning(){
