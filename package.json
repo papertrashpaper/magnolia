@@ -15,7 +15,9 @@
     "replay:adaptive": "node scripts/replay-adaptive-match.mjs",
     "validate:adaptive-retention": "node scripts/run-adaptive-benchmark.mjs --validation",
     "audit:research-deals": "node scripts/audit-research-deals.mjs",
-    "benchmark:royal-route": "node scripts/benchmark-royal-route.mjs"
+    "benchmark:royal-route": "node scripts/benchmark-royal-route.mjs",
+    "guide:cards": "node scripts/build-card-guide.mjs",
+    "examples:cards": "node scripts/card-decision-examples.mjs"
   },
   "engines": {
     "node": ">=22"

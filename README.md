@@ -134,6 +134,8 @@ npm test
 
 [手札から戦術を選ぶ追加比較](research/adaptive-strategy-comparison/README.md) では、戦術の採用率と最終成績、完成形の出現率、君主など9種類のカードを初手に残す／交換する対照実験を記録しています。[考察](research/adaptive-strategy-comparison/FINDINGS.md) に使いどころをまとめました。`npm run analyze:adaptive` で再集計、`npm run replay:adaptive -- 0` で対戦再現、`npm run benchmark:adaptive` で再実行できます。
 
+[全41種類のカード判断ガイド](research/adaptive-strategy-comparison/CARD_GUIDE.md) では、残す条件・出すタイミング・複数ルートの比較を整理しています。条件別の勝率を確定した表ではなく、既存の対戦比較と、同じ盤面で配置を変えた11例のルール計算に基づく暫定ガイドです。`npm run guide:cards` で一覧を生成、`npm run examples:cards` で判断例を再計算できます。
+
 ## 対戦保存と再接続
 
 無料のRenderサービスには永続ディスクがないため、各参加者のブラウザにサーバーが作成した暗号化・認証付きバックアップを自動保存します。サーバー再起動後、同じサイト・同じブラウザから「前回の部屋に再接続」を選ぶと、その参加者が保存した最新状態から部屋を復元します。確定済みの操作・部屋番号・メンバー・手札・CPU設定・振り返りも保持します。接続が途切れた場合は自動で再接続を試みます。

@@ -1,0 +1,992 @@
+{
+  "sources": {
+    "public/js/cards.js": "6ec270f9c8fece819042d3ec581f7cd0c41e2e8a69c61443a21dc43f5135c562",
+    "public/js/engine.js": "70e545457dd17d6a97be635f6f3a126f682d5b07f92a2bfa26ab02254a5a70b4",
+    "scripts/card-decision-examples.mjs": "607aa4b458f1786135e217fb8b6b3dfa40b39babe1ef0b4f006c872e25225a92"
+  },
+  "scope": "Controlled one-round counterfactuals; the opponent does not place cards. These are exact rule calculations, not win-rate trials.",
+  "cases": [
+    {
+      "id": "tech-only",
+      "title": "技術Lv.3・信仰Lv.0：ビールか水晶か",
+      "input": {
+        "id": "tech-only",
+        "title": "技術Lv.3・信仰Lv.0：ビールか水晶か",
+        "tech": 7,
+        "faith": 0,
+        "board": [
+          {
+            "card": "dwarf_cook",
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "hand": [
+          "dwarf_beer",
+          "golem_cristal"
+        ],
+        "plans": [
+          [
+            {
+              "card": "dwarf_beer",
+              "x": 0,
+              "y": 1
+            }
+          ],
+          [
+            {
+              "card": "golem_cristal",
+              "x": 0,
+              "y": 1
+            }
+          ]
+        ]
+      },
+      "outcomes": [
+        {
+          "label": "置かない",
+          "vpGain": 3,
+          "gold": 17,
+          "tech": 8,
+          "faith": 0,
+          "techLevel": 3,
+          "faithLevel": 0,
+          "power": 1,
+          "powerAfter": 1,
+          "warRank": 2,
+          "warVP": 0,
+          "ended": false,
+          "finalGoldVP": null
+        },
+        {
+          "label": "ドワーフのビール職人",
+          "vpGain": 12,
+          "gold": 10,
+          "tech": 8,
+          "faith": 0,
+          "techLevel": 3,
+          "faithLevel": 0,
+          "power": 1,
+          "powerAfter": 1,
+          "warRank": 2,
+          "warVP": 0,
+          "ended": false,
+          "finalGoldVP": null
+        },
+        {
+          "label": "水晶のゴーレム",
+          "vpGain": 9,
+          "gold": 10,
+          "tech": 8,
+          "faith": 0,
+          "techLevel": 3,
+          "faithLevel": 0,
+          "power": 1,
+          "powerAfter": 1,
+          "warRank": 2,
+          "warVP": 0,
+          "ended": false,
+          "finalGoldVP": null
+        }
+      ]
+    },
+    {
+      "id": "dual-levels",
+      "title": "技術Lv.3・信仰Lv.2：ビールか水晶か",
+      "input": {
+        "id": "dual-levels",
+        "title": "技術Lv.3・信仰Lv.2：ビールか水晶か",
+        "tech": 7,
+        "faith": 3,
+        "board": [
+          {
+            "card": "dwarf_cook",
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "hand": [
+          "dwarf_beer",
+          "golem_cristal"
+        ],
+        "plans": [
+          [
+            {
+              "card": "dwarf_beer",
+              "x": 0,
+              "y": 1
+            }
+          ],
+          [
+            {
+              "card": "golem_cristal",
+              "x": 0,
+              "y": 1
+            }
+          ]
+        ]
+      },
+      "outcomes": [
+        {
+          "label": "置かない",
+          "vpGain": 3,
+          "gold": 17,
+          "tech": 8,
+          "faith": 3,
+          "techLevel": 3,
+          "faithLevel": 2,
+          "power": 1,
+          "powerAfter": 1,
+          "warRank": 2,
+          "warVP": 0,
+          "ended": false,
+          "finalGoldVP": null
+        },
+        {
+          "label": "ドワーフのビール職人",
+          "vpGain": 12,
+          "gold": 10,
+          "tech": 8,
+          "faith": 3,
+          "techLevel": 3,
+          "faithLevel": 2,
+          "power": 1,
+          "powerAfter": 1,
+          "warRank": 2,
+          "warVP": 0,
+          "ended": false,
+          "finalGoldVP": null
+        },
+        {
+          "label": "水晶のゴーレム",
+          "vpGain": 13,
+          "gold": 10,
+          "tech": 8,
+          "faith": 3,
+          "techLevel": 3,
+          "faithLevel": 2,
+          "power": 1,
+          "powerAfter": 1,
+          "warRank": 2,
+          "warVP": 0,
+          "ended": false,
+          "finalGoldVP": null
+        }
+      ]
+    },
+    {
+      "id": "max-levels",
+      "title": "技術・信仰ともLv.4：ビールか水晶か",
+      "input": {
+        "id": "max-levels",
+        "title": "技術・信仰ともLv.4：ビールか水晶か",
+        "tech": 15,
+        "faith": 15,
+        "board": [
+          {
+            "card": "dwarf_cook",
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "hand": [
+          "dwarf_beer",
+          "golem_cristal"
+        ],
+        "plans": [
+          [
+            {
+              "card": "dwarf_beer",
+              "x": 0,
+              "y": 1
+            }
+          ],
+          [
+            {
+              "card": "golem_cristal",
+              "x": 0,
+              "y": 1
+            }
+          ]
+        ]
+      },
+      "outcomes": [
+        {
+          "label": "置かない",
+          "vpGain": 4,
+          "gold": 17,
+          "tech": 15,
+          "faith": 15,
+          "techLevel": 4,
+          "faithLevel": 4,
+          "power": 1,
+          "powerAfter": 1,
+          "warRank": 2,
+          "warVP": 0,
+          "ended": false,
+          "finalGoldVP": null
+        },
+        {
+          "label": "ドワーフのビール職人",
+          "vpGain": 16,
+          "gold": 10,
+          "tech": 15,
+          "faith": 15,
+          "techLevel": 4,
+          "faithLevel": 4,
+          "power": 1,
+          "powerAfter": 1,
+          "warRank": 2,
+          "warVP": 0,
+          "ended": false,
+          "finalGoldVP": null
+        },
+        {
+          "label": "水晶のゴーレム",
+          "vpGain": 20,
+          "gold": 10,
+          "tech": 15,
+          "faith": 15,
+          "techLevel": 4,
+          "faithLevel": 4,
+          "power": 1,
+          "powerAfter": 1,
+          "warRank": 2,
+          "warVP": 0,
+          "ended": false,
+          "finalGoldVP": null
+        }
+      ]
+    },
+    {
+      "id": "threshold-source",
+      "title": "技術はLv.3・信仰はLv.2まであと1点：育てる先",
+      "input": {
+        "id": "threshold-source",
+        "title": "技術はLv.3・信仰はLv.2まであと1点：育てる先",
+        "tech": 7,
+        "faith": 2,
+        "board": [
+          {
+            "card": "dwarf_cook",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "card": "golem_cristal",
+            "x": 0,
+            "y": 1
+          }
+        ],
+        "hand": [
+          "dwarf_pugilist",
+          "elf_saint"
+        ],
+        "plans": [
+          [
+            {
+              "card": "dwarf_pugilist",
+              "x": 1,
+              "y": 1
+            }
+          ],
+          [
+            {
+              "card": "elf_saint",
+              "x": 1,
+              "y": 1
+            }
+          ]
+        ]
+      },
+      "outcomes": [
+        {
+          "label": "置かない",
+          "vpGain": 11,
+          "gold": 17,
+          "tech": 8,
+          "faith": 2,
+          "techLevel": 3,
+          "faithLevel": 1,
+          "power": 1,
+          "powerAfter": 1,
+          "warRank": 2,
+          "warVP": 0,
+          "ended": false,
+          "finalGoldVP": null
+        },
+        {
+          "label": "ドワーフの拳闘士",
+          "vpGain": 11,
+          "gold": 14,
+          "tech": 9,
+          "faith": 2,
+          "techLevel": 3,
+          "faithLevel": 1,
+          "power": 6,
+          "powerAfter": 6,
+          "warRank": 2,
+          "warVP": 0,
+          "ended": false,
+          "finalGoldVP": null
+        },
+        {
+          "label": "エルフの祈り手",
+          "vpGain": 14,
+          "gold": 15,
+          "tech": 8,
+          "faith": 3,
+          "techLevel": 3,
+          "faithLevel": 2,
+          "power": 3,
+          "powerAfter": 3,
+          "warRank": 2,
+          "warVP": 0,
+          "ended": false,
+          "finalGoldVP": null
+        }
+      ]
+    },
+    {
+      "id": "faith-before-war",
+      "title": "今の戦争に間に合う信仰：信奉者か祈り手か",
+      "input": {
+        "id": "faith-before-war",
+        "title": "今の戦争に間に合う信仰：信奉者か祈り手か",
+        "tech": 0,
+        "faith": 2,
+        "board": [
+          {
+            "card": "elf_mistic",
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opponent": [
+          {
+            "card": "goblin_great_soldier",
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "warVP": [
+          4,
+          0
+        ],
+        "hand": [
+          "elf_follower",
+          "elf_saint"
+        ],
+        "plans": [
+          [
+            {
+              "card": "elf_follower",
+              "x": 0,
+              "y": 1
+            }
+          ],
+          [
+            {
+              "card": "elf_saint",
+              "x": 0,
+              "y": 1
+            }
+          ]
+        ]
+      },
+      "outcomes": [
+        {
+          "label": "置かない",
+          "vpGain": 0,
+          "gold": 17,
+          "tech": 0,
+          "faith": 2,
+          "techLevel": 0,
+          "faithLevel": 1,
+          "power": 4,
+          "powerAfter": 4,
+          "warRank": 2,
+          "warVP": 0,
+          "ended": false,
+          "finalGoldVP": null
+        },
+        {
+          "label": "エルフの信奉者",
+          "vpGain": 6,
+          "gold": 13,
+          "tech": 0,
+          "faith": 4,
+          "techLevel": 0,
+          "faithLevel": 2,
+          "power": 6,
+          "powerAfter": 6,
+          "warRank": 1,
+          "warVP": 4,
+          "ended": false,
+          "finalGoldVP": null
+        },
+        {
+          "label": "エルフの祈り手",
+          "vpGain": 1,
+          "gold": 15,
+          "tech": 0,
+          "faith": 3,
+          "techLevel": 0,
+          "faithLevel": 2,
+          "power": 4,
+          "powerAfter": 6,
+          "warRank": 2,
+          "warVP": 0,
+          "ended": false,
+          "finalGoldVP": null
+        }
+      ]
+    },
+    {
+      "id": "war-already-paid",
+      "title": "すでに戦争報酬を取れる：百人長か鉄か",
+      "input": {
+        "id": "war-already-paid",
+        "title": "すでに戦争報酬を取れる：百人長か鉄か",
+        "tech": 0,
+        "faith": 0,
+        "board": [
+          {
+            "card": "human_knight",
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opponent": [
+          {
+            "card": "human_knight",
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "warVP": [
+          4,
+          0
+        ],
+        "hand": [
+          "goblin_great_soldier",
+          "golem_iron"
+        ],
+        "plans": [
+          [
+            {
+              "card": "goblin_great_soldier",
+              "x": 0,
+              "y": 1
+            }
+          ],
+          [
+            {
+              "card": "golem_iron",
+              "x": 0,
+              "y": 1
+            }
+          ]
+        ]
+      },
+      "outcomes": [
+        {
+          "label": "置かない",
+          "vpGain": 5,
+          "gold": 17,
+          "tech": 0,
+          "faith": 0,
+          "techLevel": 0,
+          "faithLevel": 0,
+          "power": 6,
+          "powerAfter": 6,
+          "warRank": 1,
+          "warVP": 4,
+          "ended": false,
+          "finalGoldVP": null
+        },
+        {
+          "label": "ゴブリンの百人長",
+          "vpGain": 7,
+          "gold": 14,
+          "tech": 0,
+          "faith": 0,
+          "techLevel": 0,
+          "faithLevel": 0,
+          "power": 6,
+          "powerAfter": 6,
+          "warRank": 1,
+          "warVP": 4,
+          "ended": false,
+          "finalGoldVP": null
+        },
+        {
+          "label": "鉄のゴーレム",
+          "vpGain": 5,
+          "gold": 14,
+          "tech": 0,
+          "faith": 0,
+          "techLevel": 0,
+          "faithLevel": 0,
+          "power": 6,
+          "powerAfter": 6,
+          "warRank": 1,
+          "warVP": 4,
+          "ended": false,
+          "finalGoldVP": null
+        }
+      ]
+    },
+    {
+      "id": "war-unlock",
+      "title": "報酬圏外：後列の百人長か前線の騎士か",
+      "input": {
+        "id": "war-unlock",
+        "title": "報酬圏外：後列の百人長か前線の騎士か",
+        "tech": 0,
+        "faith": 0,
+        "board": [
+          {
+            "card": "dwarf_cook",
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opponent": [
+          {
+            "card": "human_knight",
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "warVP": [
+          4,
+          0
+        ],
+        "hand": [
+          "goblin_great_soldier",
+          "human_knight"
+        ],
+        "plans": [
+          [
+            {
+              "card": "goblin_great_soldier",
+              "x": 0,
+              "y": 1
+            }
+          ],
+          [
+            {
+              "card": "human_knight",
+              "x": 1,
+              "y": 0
+            }
+          ]
+        ]
+      },
+      "outcomes": [
+        {
+          "label": "置かない",
+          "vpGain": 1,
+          "gold": 17,
+          "tech": 1,
+          "faith": 0,
+          "techLevel": 1,
+          "faithLevel": 0,
+          "power": 1,
+          "powerAfter": 1,
+          "warRank": 2,
+          "warVP": 0,
+          "ended": false,
+          "finalGoldVP": null
+        },
+        {
+          "label": "ゴブリンの百人長",
+          "vpGain": 1,
+          "gold": 14,
+          "tech": 1,
+          "faith": 0,
+          "techLevel": 1,
+          "faithLevel": 0,
+          "power": 1,
+          "powerAfter": 1,
+          "warRank": 2,
+          "warVP": 0,
+          "ended": false,
+          "finalGoldVP": null
+        },
+        {
+          "label": "人間の騎士",
+          "vpGain": 6,
+          "gold": 13,
+          "tech": 1,
+          "faith": 0,
+          "techLevel": 1,
+          "faithLevel": 0,
+          "power": 7,
+          "powerAfter": 7,
+          "warRank": 1,
+          "warVP": 4,
+          "ended": false,
+          "finalGoldVP": null
+        }
+      ]
+    },
+    {
+      "id": "income-back-row",
+      "title": "後列の収入2金：大商人か眼か",
+      "input": {
+        "id": "income-back-row",
+        "title": "後列の収入2金：大商人か眼か",
+        "tech": 0,
+        "faith": 0,
+        "board": [
+          {
+            "card": "dwarf_cook",
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "hand": [
+          "human_great_marchant",
+          "demon_eye"
+        ],
+        "plans": [
+          [
+            {
+              "card": "human_great_marchant",
+              "x": 0,
+              "y": 1
+            }
+          ],
+          [
+            {
+              "card": "demon_eye",
+              "x": 0,
+              "y": 1
+            }
+          ]
+        ]
+      },
+      "outcomes": [
+        {
+          "label": "置かない",
+          "vpGain": 1,
+          "gold": 17,
+          "tech": 1,
+          "faith": 0,
+          "techLevel": 1,
+          "faithLevel": 0,
+          "power": 1,
+          "powerAfter": 1,
+          "warRank": 2,
+          "warVP": 0,
+          "ended": false,
+          "finalGoldVP": null
+        },
+        {
+          "label": "人間の大商人",
+          "vpGain": 1,
+          "gold": 16,
+          "tech": 1,
+          "faith": 0,
+          "techLevel": 1,
+          "faithLevel": 0,
+          "power": 1,
+          "powerAfter": 1,
+          "warRank": 2,
+          "warVP": 0,
+          "ended": false,
+          "finalGoldVP": null
+        },
+        {
+          "label": "眼のデーモン",
+          "vpGain": 1,
+          "gold": 13,
+          "tech": 1,
+          "faith": 0,
+          "techLevel": 1,
+          "faithLevel": 0,
+          "power": 1,
+          "powerAfter": 1,
+          "warRank": 2,
+          "warVP": 0,
+          "ended": false,
+          "finalGoldVP": null
+        }
+      ]
+    },
+    {
+      "id": "king-low-gold",
+      "title": "終了ラウンド・配置前7金：君主かビールか",
+      "input": {
+        "id": "king-low-gold",
+        "title": "終了ラウンド・配置前7金：君主かビールか",
+        "gold": 7,
+        "vp": 39,
+        "tech": 7,
+        "faith": 0,
+        "board": [
+          {
+            "card": "dwarf_cook",
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "hand": [
+          "human_king",
+          "dwarf_beer"
+        ],
+        "plans": [
+          [
+            {
+              "card": "human_king",
+              "x": 0,
+              "y": 1
+            }
+          ],
+          [
+            {
+              "card": "dwarf_beer",
+              "x": 0,
+              "y": 1
+            }
+          ]
+        ]
+      },
+      "outcomes": [
+        {
+          "label": "置かない",
+          "vpGain": 7,
+          "gold": 12,
+          "tech": 8,
+          "faith": 0,
+          "techLevel": 3,
+          "faithLevel": 0,
+          "power": 1,
+          "powerAfter": 1,
+          "warRank": 2,
+          "warVP": 0,
+          "ended": true,
+          "finalGoldVP": 4
+        },
+        {
+          "label": "人間の君主",
+          "vpGain": 7,
+          "gold": 5,
+          "tech": 8,
+          "faith": 0,
+          "techLevel": 3,
+          "faithLevel": 0,
+          "power": 1,
+          "powerAfter": 1,
+          "warRank": 2,
+          "warVP": 0,
+          "ended": true,
+          "finalGoldVP": 3
+        },
+        {
+          "label": "ドワーフのビール職人",
+          "vpGain": 13,
+          "gold": 5,
+          "tech": 8,
+          "faith": 0,
+          "techLevel": 3,
+          "faithLevel": 0,
+          "power": 1,
+          "powerAfter": 1,
+          "warRank": 2,
+          "warVP": 0,
+          "ended": true,
+          "finalGoldVP": 1
+        }
+      ]
+    },
+    {
+      "id": "king-high-gold",
+      "title": "終了ラウンド・配置前20金：君主かビールか",
+      "input": {
+        "id": "king-high-gold",
+        "title": "終了ラウンド・配置前20金：君主かビールか",
+        "gold": 20,
+        "vp": 39,
+        "tech": 7,
+        "faith": 0,
+        "board": [
+          {
+            "card": "dwarf_cook",
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "hand": [
+          "human_king",
+          "dwarf_beer"
+        ],
+        "plans": [
+          [
+            {
+              "card": "human_king",
+              "x": 0,
+              "y": 1
+            }
+          ],
+          [
+            {
+              "card": "dwarf_beer",
+              "x": 0,
+              "y": 1
+            }
+          ]
+        ]
+      },
+      "outcomes": [
+        {
+          "label": "置かない",
+          "vpGain": 11,
+          "gold": 25,
+          "tech": 8,
+          "faith": 0,
+          "techLevel": 3,
+          "faithLevel": 0,
+          "power": 1,
+          "powerAfter": 1,
+          "warRank": 2,
+          "warVP": 0,
+          "ended": true,
+          "finalGoldVP": 8
+        },
+        {
+          "label": "人間の君主",
+          "vpGain": 22,
+          "gold": 18,
+          "tech": 8,
+          "faith": 0,
+          "techLevel": 3,
+          "faithLevel": 0,
+          "power": 1,
+          "powerAfter": 1,
+          "warRank": 2,
+          "warVP": 0,
+          "ended": true,
+          "finalGoldVP": 18
+        },
+        {
+          "label": "ドワーフのビール職人",
+          "vpGain": 18,
+          "gold": 18,
+          "tech": 8,
+          "faith": 0,
+          "techLevel": 3,
+          "faithLevel": 0,
+          "power": 1,
+          "powerAfter": 1,
+          "warRank": 2,
+          "warVP": 0,
+          "ended": true,
+          "finalGoldVP": 6
+        }
+      ]
+    },
+    {
+      "id": "ruler-line",
+      "title": "君主2枚の列：嵐で揃えるかビールか",
+      "input": {
+        "id": "ruler-line",
+        "title": "君主2枚の列：嵐で揃えるかビールか",
+        "gold": 12,
+        "vp": 10,
+        "tech": 7,
+        "faith": 0,
+        "board": [
+          {
+            "card": "human_king",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "card": "golem_king",
+            "x": 1,
+            "y": 0
+          },
+          {
+            "card": "dwarf_cook",
+            "x": 0,
+            "y": 1
+          }
+        ],
+        "warVP": [
+          4,
+          0
+        ],
+        "hand": [
+          "demon_storm",
+          "dwarf_beer"
+        ],
+        "plans": [
+          [
+            {
+              "card": "demon_storm",
+              "x": 2,
+              "y": 0
+            }
+          ],
+          [
+            {
+              "card": "dwarf_beer",
+              "x": 1,
+              "y": 1
+            }
+          ]
+        ]
+      },
+      "outcomes": [
+        {
+          "label": "置かない",
+          "vpGain": 7,
+          "gold": 17,
+          "tech": 8,
+          "faith": 0,
+          "techLevel": 3,
+          "faithLevel": 0,
+          "power": 14,
+          "powerAfter": 14,
+          "warRank": 1,
+          "warVP": 4,
+          "ended": false,
+          "finalGoldVP": null
+        },
+        {
+          "label": "嵐のデーモン",
+          "vpGain": 26,
+          "gold": 7,
+          "tech": 8,
+          "faith": 0,
+          "techLevel": 3,
+          "faithLevel": 0,
+          "power": 27,
+          "powerAfter": 27,
+          "warRank": 1,
+          "warVP": 4,
+          "ended": false,
+          "finalGoldVP": null
+        },
+        {
+          "label": "ドワーフのビール職人",
+          "vpGain": 16,
+          "gold": 10,
+          "tech": 8,
+          "faith": 0,
+          "techLevel": 3,
+          "faithLevel": 0,
+          "power": 14,
+          "powerAfter": 14,
+          "warRank": 1,
+          "warVP": 4,
+          "ended": false,
+          "finalGoldVP": null
+        }
+      ]
+    }
+  ]
+}
