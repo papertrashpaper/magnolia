@@ -1,0 +1,811 @@
+{
+  "arms": {
+    "baseline": {
+      "games": 32,
+      "win": 0.515625,
+      "vp": 46.6875,
+      "rounds": 4.5,
+      "units": 7.21875,
+      "gold": 10.21875,
+      "tech": 3.3125,
+      "faith": 3.84375,
+      "techLevel": 1.4375,
+      "faithLevel": 1.5625,
+      "income": 6.125,
+      "incomeCards": 2.3125,
+      "expensive": 0.40625,
+      "techVP": 1.09375,
+      "faithVP": 1.03125,
+      "warVP": 1.15625,
+      "bonuses": 1.65625,
+      "doubledBonuses": 0.03125,
+      "rulers": 0.25,
+      "incomeEffectGold": 9.6875,
+      "incomeCost": 5.59375,
+      "techEffectVP": 9.375,
+      "faithEffectVP": 6.09375,
+      "bonusVP": 4.3125,
+      "phasePlaceVP": 5.03125,
+      "phaseWarVP": 14.8125,
+      "phaseCardVP": 23.5625,
+      "finalGoldVP": 3.28125,
+      "changes": 2.84375,
+      "lateChanges": 0.5,
+      "lateChances": 0.6875,
+      "abandoned": 0.75,
+      "plannedDecisions": 1.75,
+      "continuedDecisions": 0,
+      "meanDecisionMs": 910.6585028781249,
+      "maxDecisionMs": 1341.5681852499997,
+      "incomeToExpensive": 0.3125,
+      "grownTechVP": 0.4375,
+      "grownFaithVP": 0.5,
+      "multiBonus": 0.53125,
+      "stormBonus": 0.03125
+    },
+    "economy": {
+      "games": 32,
+      "win": 0.359375,
+      "vp": 43.21875,
+      "rounds": 4.4375,
+      "units": 6.96875,
+      "gold": 11.75,
+      "tech": 3.78125,
+      "faith": 2.96875,
+      "techLevel": 1.59375,
+      "faithLevel": 1.40625,
+      "income": 7.34375,
+      "incomeCards": 2.96875,
+      "expensive": 0.5625,
+      "techVP": 1.25,
+      "faithVP": 1.0625,
+      "warVP": 0.8125,
+      "bonuses": 1.40625,
+      "doubledBonuses": 0,
+      "rulers": 0.1875,
+      "incomeEffectGold": 12.5,
+      "incomeCost": 7.8125,
+      "techEffectVP": 9.96875,
+      "faithEffectVP": 6,
+      "bonusVP": 3.0625,
+      "phasePlaceVP": 3.625,
+      "phaseWarVP": 11.53125,
+      "phaseCardVP": 24.40625,
+      "finalGoldVP": 3.65625,
+      "changes": 0,
+      "lateChanges": 0,
+      "lateChances": 0.5,
+      "abandoned": 0.78125,
+      "plannedDecisions": 2.59375,
+      "continuedDecisions": 0,
+      "meanDecisionMs": 226.83493936093814,
+      "maxDecisionMs": 347.93090846875174,
+      "incomeToExpensive": 0.46875,
+      "grownTechVP": 0.53125,
+      "grownFaithVP": 0.5,
+      "multiBonus": 0.375,
+      "stormBonus": 0
+    },
+    "tech": {
+      "games": 32,
+      "win": 0.359375,
+      "vp": 42.3125,
+      "rounds": 4.40625,
+      "units": 6.8125,
+      "gold": 10.65625,
+      "tech": 4.625,
+      "faith": 2.3125,
+      "techLevel": 1.90625,
+      "faithLevel": 1.21875,
+      "income": 6.875,
+      "incomeCards": 2.6875,
+      "expensive": 0.5,
+      "techVP": 1.34375,
+      "faithVP": 0.8125,
+      "warVP": 0.90625,
+      "bonuses": 1.21875,
+      "doubledBonuses": 0,
+      "rulers": 0.15625,
+      "incomeEffectGold": 10.90625,
+      "incomeCost": 7.125,
+      "techEffectVP": 11.96875,
+      "faithEffectVP": 4.78125,
+      "bonusVP": 2.75,
+      "phasePlaceVP": 3.15625,
+      "phaseWarVP": 12.1875,
+      "phaseCardVP": 23.65625,
+      "finalGoldVP": 3.3125,
+      "changes": 0,
+      "lateChanges": 0,
+      "lateChances": 0.59375,
+      "abandoned": 0.625,
+      "plannedDecisions": 1.8125,
+      "continuedDecisions": 0,
+      "meanDecisionMs": 235.89925526249897,
+      "maxDecisionMs": 342.06095799999827,
+      "incomeToExpensive": 0.4375,
+      "grownTechVP": 0.59375,
+      "grownFaithVP": 0.3125,
+      "multiBonus": 0.34375,
+      "stormBonus": 0
+    },
+    "faith": {
+      "games": 32,
+      "win": 0.265625,
+      "vp": 42.34375,
+      "rounds": 4.4375,
+      "units": 6.75,
+      "gold": 10.0625,
+      "tech": 2,
+      "faith": 4.28125,
+      "techLevel": 1.15625,
+      "faithLevel": 1.875,
+      "income": 6.1875,
+      "incomeCards": 2.375,
+      "expensive": 0.40625,
+      "techVP": 0.78125,
+      "faithVP": 1.125,
+      "warVP": 1.0625,
+      "bonuses": 1.3125,
+      "doubledBonuses": 0.09375,
+      "rulers": 0.25,
+      "incomeEffectGold": 9.28125,
+      "incomeCost": 5.78125,
+      "techEffectVP": 7.28125,
+      "faithEffectVP": 7.3125,
+      "bonusVP": 3.5,
+      "phasePlaceVP": 3.96875,
+      "phaseWarVP": 14.78125,
+      "phaseCardVP": 19.78125,
+      "finalGoldVP": 3.8125,
+      "changes": 0,
+      "lateChanges": 0,
+      "lateChances": 0.59375,
+      "abandoned": 0.65625,
+      "plannedDecisions": 2.0625,
+      "continuedDecisions": 0,
+      "meanDecisionMs": 213.18119116640693,
+      "maxDecisionMs": 307.86356787499767,
+      "incomeToExpensive": 0.34375,
+      "grownTechVP": 0.28125,
+      "grownFaithVP": 0.625,
+      "multiBonus": 0.375,
+      "stormBonus": 0.0625
+    },
+    "war": {
+      "games": 32,
+      "win": 0.25,
+      "vp": 43.09375,
+      "rounds": 4.46875,
+      "units": 6.5625,
+      "gold": 10.21875,
+      "tech": 2.96875,
+      "faith": 2.75,
+      "techLevel": 1.375,
+      "faithLevel": 1.21875,
+      "income": 5.9375,
+      "incomeCards": 2.21875,
+      "expensive": 0.3125,
+      "techVP": 1.0625,
+      "faithVP": 0.875,
+      "warVP": 1.46875,
+      "bonuses": 1.28125,
+      "doubledBonuses": 0.03125,
+      "rulers": 0.15625,
+      "incomeEffectGold": 8.1875,
+      "incomeCost": 5.375,
+      "techEffectVP": 8.9375,
+      "faithEffectVP": 5.4375,
+      "bonusVP": 3.3125,
+      "phasePlaceVP": 3.625,
+      "phaseWarVP": 14.4375,
+      "phaseCardVP": 21.15625,
+      "finalGoldVP": 3.875,
+      "changes": 0,
+      "lateChanges": 0,
+      "lateChances": 0.5625,
+      "abandoned": 0.5,
+      "plannedDecisions": 1.96875,
+      "continuedDecisions": 0,
+      "meanDecisionMs": 209.053532887239,
+      "maxDecisionMs": 313.87343968749593,
+      "incomeToExpensive": 0.28125,
+      "grownTechVP": 0.375,
+      "grownFaithVP": 0.40625,
+      "multiBonus": 0.375,
+      "stormBonus": 0.03125
+    },
+    "bonus": {
+      "games": 32,
+      "win": 0.40625,
+      "vp": 44.40625,
+      "rounds": 4.5,
+      "units": 6.71875,
+      "gold": 10.09375,
+      "tech": 4.09375,
+      "faith": 3.28125,
+      "techLevel": 1.75,
+      "faithLevel": 1.375,
+      "income": 6.28125,
+      "incomeCards": 2.28125,
+      "expensive": 0.46875,
+      "techVP": 1.40625,
+      "faithVP": 1,
+      "warVP": 0.8125,
+      "bonuses": 1.21875,
+      "doubledBonuses": 0,
+      "rulers": 0.1875,
+      "incomeEffectGold": 9.3125,
+      "incomeCost": 5.8125,
+      "techEffectVP": 12.46875,
+      "faithEffectVP": 6.25,
+      "bonusVP": 2.84375,
+      "phasePlaceVP": 3.4375,
+      "phaseWarVP": 12.28125,
+      "phaseCardVP": 25.53125,
+      "finalGoldVP": 3.15625,
+      "changes": 0,
+      "lateChanges": 0,
+      "lateChances": 0.5625,
+      "abandoned": 0.71875,
+      "plannedDecisions": 2.09375,
+      "continuedDecisions": 0,
+      "meanDecisionMs": 222.10395348593792,
+      "maxDecisionMs": 329.23675971874695,
+      "incomeToExpensive": 0.375,
+      "grownTechVP": 0.65625,
+      "grownFaithVP": 0.53125,
+      "multiBonus": 0.25,
+      "stormBonus": 0
+    },
+    "savings": {
+      "games": 32,
+      "win": 0.203125,
+      "vp": 40.8125,
+      "rounds": 4.46875,
+      "units": 6.71875,
+      "gold": 12.75,
+      "tech": 2.3125,
+      "faith": 2.90625,
+      "techLevel": 1.21875,
+      "faithLevel": 1.4375,
+      "income": 6.625,
+      "incomeCards": 2.75,
+      "expensive": 0.375,
+      "techVP": 0.96875,
+      "faithVP": 0.875,
+      "warVP": 1.03125,
+      "bonuses": 1.21875,
+      "doubledBonuses": 0.03125,
+      "rulers": 0.25,
+      "incomeEffectGold": 11.4375,
+      "incomeCost": 6.40625,
+      "techEffectVP": 7,
+      "faithEffectVP": 4.5625,
+      "bonusVP": 3.78125,
+      "phasePlaceVP": 4.25,
+      "phaseWarVP": 11.28125,
+      "phaseCardVP": 20.6875,
+      "finalGoldVP": 4.59375,
+      "changes": 0,
+      "lateChanges": 0,
+      "lateChances": 0.5625,
+      "abandoned": 0.6875,
+      "plannedDecisions": 2.0625,
+      "continuedDecisions": 0,
+      "meanDecisionMs": 210.52443481562412,
+      "maxDecisionMs": 315.78173681249734,
+      "incomeToExpensive": 0.375,
+      "grownTechVP": 0.34375,
+      "grownFaithVP": 0.5,
+      "multiBonus": 0.40625,
+      "stormBonus": 0.03125
+    },
+    "flexible": {
+      "games": 32,
+      "win": 0.40625,
+      "vp": 43.84375,
+      "rounds": 4.375,
+      "units": 6.96875,
+      "gold": 11.0625,
+      "tech": 2.375,
+      "faith": 2.6875,
+      "techLevel": 1.125,
+      "faithLevel": 1.3125,
+      "income": 7.0625,
+      "incomeCards": 2.96875,
+      "expensive": 0.21875,
+      "techVP": 1.0625,
+      "faithVP": 0.84375,
+      "warVP": 1.1875,
+      "bonuses": 1.53125,
+      "doubledBonuses": 0.03125,
+      "rulers": 0.09375,
+      "incomeEffectGold": 11.0625,
+      "incomeCost": 7.53125,
+      "techEffectVP": 7.75,
+      "faithEffectVP": 4.75,
+      "bonusVP": 5.1875,
+      "phasePlaceVP": 5.34375,
+      "phaseWarVP": 13.9375,
+      "phaseCardVP": 20.84375,
+      "finalGoldVP": 3.71875,
+      "changes": 2.375,
+      "lateChanges": 0.28125,
+      "lateChances": 0.5625,
+      "abandoned": 0.3125,
+      "plannedDecisions": 0.90625,
+      "continuedDecisions": 0,
+      "meanDecisionMs": 1477.7153545578137,
+      "maxDecisionMs": 2156.6188960312543,
+      "incomeToExpensive": 0.21875,
+      "grownTechVP": 0.28125,
+      "grownFaithVP": 0.40625,
+      "multiBonus": 0.46875,
+      "stormBonus": 0.03125
+    },
+    "committed": {
+      "games": 32,
+      "win": 0.359375,
+      "vp": 44.03125,
+      "rounds": 4.5,
+      "units": 7,
+      "gold": 11.71875,
+      "tech": 2.65625,
+      "faith": 2.53125,
+      "techLevel": 1.25,
+      "faithLevel": 1.28125,
+      "income": 6.84375,
+      "incomeCards": 2.9375,
+      "expensive": 0.21875,
+      "techVP": 1.09375,
+      "faithVP": 0.8125,
+      "warVP": 1.25,
+      "bonuses": 1.5,
+      "doubledBonuses": 0.03125,
+      "rulers": 0.0625,
+      "incomeEffectGold": 11.34375,
+      "incomeCost": 7.34375,
+      "techEffectVP": 8.40625,
+      "faithEffectVP": 4.75,
+      "bonusVP": 4.9375,
+      "phasePlaceVP": 5.0625,
+      "phaseWarVP": 13.5,
+      "phaseCardVP": 21.875,
+      "finalGoldVP": 3.59375,
+      "changes": 1.9375,
+      "lateChanges": 0.25,
+      "lateChances": 0.71875,
+      "abandoned": 0,
+      "plannedDecisions": 2.71875,
+      "continuedDecisions": 2.09375,
+      "meanDecisionMs": 1240.8574287515635,
+      "maxDecisionMs": 2211.029651906252,
+      "incomeToExpensive": 0.1875,
+      "grownTechVP": 0.3125,
+      "grownFaithVP": 0.375,
+      "multiBonus": 0.5,
+      "stormBonus": 0.03125
+    }
+  },
+  "comparisons": {
+    "natural:economy": {
+      "pairs": 32,
+      "seeds": 8,
+      "diff": -0.15625,
+      "vpDiff": -3.46875,
+      "ci95": [
+        -0.296875,
+        -0.046875
+      ]
+    },
+    "natural:tech": {
+      "pairs": 32,
+      "seeds": 8,
+      "diff": -0.15625,
+      "vpDiff": -4.375,
+      "ci95": [
+        -0.3125,
+        -0.03125
+      ]
+    },
+    "natural:faith": {
+      "pairs": 32,
+      "seeds": 8,
+      "diff": -0.25,
+      "vpDiff": -4.34375,
+      "ci95": [
+        -0.515625,
+        0
+      ]
+    },
+    "natural:war": {
+      "pairs": 32,
+      "seeds": 8,
+      "diff": -0.265625,
+      "vpDiff": -3.59375,
+      "ci95": [
+        -0.484375,
+        -0.046875
+      ]
+    },
+    "natural:bonus": {
+      "pairs": 32,
+      "seeds": 8,
+      "diff": -0.109375,
+      "vpDiff": -2.28125,
+      "ci95": [
+        -0.25,
+        0.015625
+      ]
+    },
+    "natural:savings": {
+      "pairs": 32,
+      "seeds": 8,
+      "diff": -0.3125,
+      "vpDiff": -5.875,
+      "ci95": [
+        -0.5,
+        -0.140625
+      ]
+    },
+    "natural:flexible": {
+      "pairs": 32,
+      "seeds": 8,
+      "diff": -0.109375,
+      "vpDiff": -2.84375,
+      "ci95": [
+        -0.203125,
+        0.015625
+      ]
+    },
+    "natural:committed": {
+      "pairs": 32,
+      "seeds": 8,
+      "diff": -0.15625,
+      "vpDiff": -2.65625,
+      "ci95": [
+        -0.3125,
+        0
+      ]
+    },
+    "expert:flexible": {
+      "pairs": 16,
+      "seeds": 8,
+      "diff": 0,
+      "vpDiff": -2.875,
+      "ci95": [
+        -0.1875,
+        0.1875
+      ]
+    },
+    "natural:flexible-vs-committed": {
+      "pairs": 32,
+      "seeds": 8,
+      "diff": 0.046875,
+      "vpDiff": -0.1875,
+      "ci95": [
+        -0.0625,
+        0.1875
+      ]
+    }
+  },
+  "byCount": {
+    "2": {
+      "baseline": {
+        "games": 8,
+        "win": 0.625,
+        "vp": 46.125
+      },
+      "economy": {
+        "games": 8,
+        "win": 0.5,
+        "vp": 47.875
+      },
+      "tech": {
+        "games": 8,
+        "win": 0.75,
+        "vp": 48.875
+      },
+      "faith": {
+        "games": 8,
+        "win": 0.5,
+        "vp": 47.875
+      },
+      "war": {
+        "games": 8,
+        "win": 0.5,
+        "vp": 52.5
+      },
+      "bonus": {
+        "games": 8,
+        "win": 0.8125,
+        "vp": 48.5
+      },
+      "savings": {
+        "games": 8,
+        "win": 0.5,
+        "vp": 48
+      },
+      "flexible": {
+        "games": 8,
+        "win": 0.625,
+        "vp": 45.375,
+        "paired": {
+          "pairs": 8,
+          "seeds": 8,
+          "diff": 0,
+          "vpDiff": -0.75,
+          "ci95": [
+            -0.375,
+            0.375
+          ]
+        }
+      },
+      "committed": {
+        "games": 8,
+        "win": 0.625,
+        "vp": 45.625,
+        "paired": {
+          "pairs": 8,
+          "seeds": 8,
+          "diff": 0,
+          "vpDiff": -0.5,
+          "ci95": [
+            -0.5,
+            0.5
+          ]
+        }
+      }
+    },
+    "3": {
+      "baseline": {
+        "games": 8,
+        "win": 0.5625,
+        "vp": 50.375
+      },
+      "economy": {
+        "games": 8,
+        "win": 0.3125,
+        "vp": 46.125
+      },
+      "tech": {
+        "games": 8,
+        "win": 0.25,
+        "vp": 44.375
+      },
+      "faith": {
+        "games": 8,
+        "win": 0.125,
+        "vp": 39.25
+      },
+      "war": {
+        "games": 8,
+        "win": 0.25,
+        "vp": 38.5
+      },
+      "bonus": {
+        "games": 8,
+        "win": 0.25,
+        "vp": 43
+      },
+      "savings": {
+        "games": 8,
+        "win": 0.0625,
+        "vp": 38.25
+      },
+      "flexible": {
+        "games": 8,
+        "win": 0.375,
+        "vp": 45.5,
+        "paired": {
+          "pairs": 8,
+          "seeds": 8,
+          "diff": -0.1875,
+          "vpDiff": -4.875,
+          "ci95": [
+            -0.625,
+            0.25
+          ]
+        }
+      },
+      "committed": {
+        "games": 8,
+        "win": 0.3125,
+        "vp": 45.25,
+        "paired": {
+          "pairs": 8,
+          "seeds": 8,
+          "diff": -0.25,
+          "vpDiff": -5.125,
+          "ci95": [
+            -0.6875,
+            0.25
+          ]
+        }
+      }
+    },
+    "4": {
+      "baseline": {
+        "games": 8,
+        "win": 0.375,
+        "vp": 42.125
+      },
+      "economy": {
+        "games": 8,
+        "win": 0.375,
+        "vp": 42.5
+      },
+      "tech": {
+        "games": 8,
+        "win": 0.1875,
+        "vp": 38
+      },
+      "faith": {
+        "games": 8,
+        "win": 0.3125,
+        "vp": 41.25
+      },
+      "war": {
+        "games": 8,
+        "win": 0.25,
+        "vp": 44
+      },
+      "bonus": {
+        "games": 8,
+        "win": 0.3125,
+        "vp": 44.625
+      },
+      "savings": {
+        "games": 8,
+        "win": 0.25,
+        "vp": 40.5
+      },
+      "flexible": {
+        "games": 8,
+        "win": 0.375,
+        "vp": 43.875,
+        "paired": {
+          "pairs": 8,
+          "seeds": 8,
+          "diff": 0,
+          "vpDiff": 1.75,
+          "ci95": [
+            -0.375,
+            0.375
+          ]
+        }
+      },
+      "committed": {
+        "games": 8,
+        "win": 0.25,
+        "vp": 45.875,
+        "paired": {
+          "pairs": 8,
+          "seeds": 8,
+          "diff": -0.125,
+          "vpDiff": 3.75,
+          "ci95": [
+            -0.5,
+            0.25
+          ]
+        }
+      }
+    },
+    "5": {
+      "baseline": {
+        "games": 8,
+        "win": 0.5,
+        "vp": 48.125
+      },
+      "economy": {
+        "games": 8,
+        "win": 0.25,
+        "vp": 36.375
+      },
+      "tech": {
+        "games": 8,
+        "win": 0.25,
+        "vp": 38
+      },
+      "faith": {
+        "games": 8,
+        "win": 0.125,
+        "vp": 41
+      },
+      "war": {
+        "games": 8,
+        "win": 0,
+        "vp": 37.375
+      },
+      "bonus": {
+        "games": 8,
+        "win": 0.25,
+        "vp": 41.5
+      },
+      "savings": {
+        "games": 8,
+        "win": 0,
+        "vp": 36.5
+      },
+      "flexible": {
+        "games": 8,
+        "win": 0.25,
+        "vp": 40.625,
+        "paired": {
+          "pairs": 8,
+          "seeds": 8,
+          "diff": -0.25,
+          "vpDiff": -7.5,
+          "ci95": [
+            -0.5,
+            0
+          ]
+        }
+      },
+      "committed": {
+        "games": 8,
+        "win": 0.25,
+        "vp": 39.375,
+        "paired": {
+          "pairs": 8,
+          "seeds": 8,
+          "diff": -0.25,
+          "vpDiff": -8.75,
+          "ci95": [
+            -0.5,
+            0
+          ]
+        }
+      }
+    }
+  },
+  "firstSelected": {
+    "tech": {
+      "games": 5,
+      "wins": 2,
+      "vp": 44.6,
+      "win": 0.4
+    },
+    "bonus": {
+      "games": 2,
+      "wins": 1,
+      "vp": 41.5,
+      "win": 0.5
+    },
+    "savings": {
+      "games": 7,
+      "wins": 3,
+      "vp": 41.57142857142857,
+      "win": 0.42857142857142855
+    },
+    "balanced": {
+      "games": 9,
+      "wins": 5.5,
+      "vp": 48.666666666666664,
+      "win": 0.6111111111111112
+    },
+    "war": {
+      "games": 3,
+      "wins": 1,
+      "vp": 41,
+      "win": 0.3333333333333333
+    },
+    "faith": {
+      "games": 3,
+      "wins": 0,
+      "vp": 39,
+      "win": 0
+    },
+    "economy": {
+      "games": 3,
+      "wins": 0.5,
+      "vp": 42.666666666666664,
+      "win": 0.16666666666666666
+    }
+  },
+  "late": {
+    "opportunities": 18,
+    "profileChanges": 9
+  }
+}

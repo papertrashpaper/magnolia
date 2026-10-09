@@ -1,0 +1,1707 @@
+{
+  "createdAt": "2026-10-09T00:26:18.337Z",
+  "games": 640,
+  "currentCards": [
+    {
+      "id": "human_knight",
+      "name": "人間の騎士",
+      "copies": 3,
+      "cost": 3,
+      "power": 6,
+      "race": "human",
+      "job": "warrior",
+      "effects": [
+        {
+          "phase": "war",
+          "stat": "vp",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "human_marchant",
+      "name": "人間の行商",
+      "copies": 3,
+      "cost": 1,
+      "power": 3,
+      "race": "human",
+      "job": "merchant",
+      "effects": [
+        {
+          "phase": "income",
+          "stat": "gold",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "human_saint",
+      "name": "人間の聖職者",
+      "copies": 3,
+      "cost": 3,
+      "power": 2,
+      "race": "human",
+      "job": "priest",
+      "effects": [
+        {
+          "phase": "develop",
+          "stat": "faith",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "vp",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "faithLevel"
+        }
+      ]
+    },
+    {
+      "id": "human_sorcerer",
+      "name": "人間の呪い師",
+      "copies": 3,
+      "cost": 3,
+      "power": 4,
+      "race": "human",
+      "job": "mage",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "faith",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "power",
+          "stat": "power",
+          "amount": 1,
+          "scale": "faithLevel"
+        }
+      ]
+    },
+    {
+      "id": "human_smith",
+      "name": "人間の大工",
+      "copies": 3,
+      "cost": 5,
+      "power": 2,
+      "race": "human",
+      "job": "artisan",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "tech",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "vp",
+          "stat": "vp",
+          "amount": 2,
+          "scale": "techLevel"
+        }
+      ]
+    },
+    {
+      "id": "human_great_marchant",
+      "name": "人間の大商人",
+      "copies": 2,
+      "cost": 2,
+      "power": 2,
+      "race": "human",
+      "job": "merchant",
+      "effects": [
+        {
+          "phase": "income",
+          "stat": "gold",
+          "amount": 2,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "human_undertaker",
+      "name": "人間の葬儀屋",
+      "copies": 2,
+      "cost": 3,
+      "power": 2,
+      "race": "human",
+      "job": "artisan",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "tech",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "noWar",
+          "stat": "vp",
+          "amount": 2,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "human_king",
+      "name": "人間の君主",
+      "copies": 1,
+      "cost": 6,
+      "power": 6,
+      "race": "human",
+      "job": "ruler",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "race"
+        },
+        {
+          "phase": "final",
+          "stat": "tripleGold",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "dwarf_pugilist",
+      "name": "ドワーフの拳闘士",
+      "copies": 3,
+      "cost": 2,
+      "power": 5,
+      "race": "dwarf",
+      "job": "warrior",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "tech",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "dwarf_gem",
+      "name": "ドワーフの鉱石屋",
+      "copies": 3,
+      "cost": 3,
+      "power": 4,
+      "race": "dwarf",
+      "job": "merchant",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "tech",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "income",
+          "stat": "gold",
+          "amount": 1,
+          "scale": "techLevel"
+        }
+      ]
+    },
+    {
+      "id": "dwarf_cook",
+      "name": "ドワーフの料理人",
+      "copies": 3,
+      "cost": 2,
+      "power": 1,
+      "race": "dwarf",
+      "job": "artisan",
+      "effects": [
+        {
+          "phase": "develop",
+          "stat": "tech",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "vp",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "techLevel"
+        }
+      ]
+    },
+    {
+      "id": "dwarf_saint",
+      "name": "ドワーフの神官",
+      "copies": 3,
+      "cost": 4,
+      "power": 6,
+      "race": "dwarf",
+      "job": "priest",
+      "effects": [
+        {
+          "phase": "develop",
+          "stat": "tech",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "develop",
+          "stat": "faith",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "dwarf_alchemist",
+      "name": "ドワーフの錬金術師",
+      "copies": 3,
+      "cost": 2,
+      "power": 2,
+      "race": "dwarf",
+      "job": "mage",
+      "effects": [
+        {
+          "phase": "power",
+          "stat": "power",
+          "amount": 2,
+          "scale": "faithLevel"
+        },
+        {
+          "phase": "income",
+          "stat": "gold",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "dwarf_beer",
+      "name": "ドワーフのビール職人",
+      "copies": 2,
+      "cost": 6,
+      "power": 2,
+      "race": "dwarf",
+      "job": "artisan",
+      "effects": [
+        {
+          "phase": "vp",
+          "stat": "vp",
+          "amount": 3,
+          "scale": "techLevel"
+        }
+      ]
+    },
+    {
+      "id": "dwarf_gardian",
+      "name": "ドワーフの聖堂守り",
+      "copies": 2,
+      "cost": 4,
+      "power": 5,
+      "race": "dwarf",
+      "job": "priest",
+      "effects": [
+        {
+          "phase": "income",
+          "stat": "gold",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "vp",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "cost4Plus"
+        }
+      ]
+    },
+    {
+      "id": "dwarf_king",
+      "name": "ドワーフの王",
+      "copies": 1,
+      "cost": 7,
+      "power": 7,
+      "race": "dwarf",
+      "job": "ruler",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "tech",
+          "amount": 5,
+          "scale": null
+        },
+        {
+          "phase": "place",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "race"
+        }
+      ]
+    },
+    {
+      "id": "elf_archer",
+      "name": "エルフの射手",
+      "copies": 3,
+      "cost": 2,
+      "power": 3,
+      "race": "elf",
+      "job": "warrior",
+      "effects": [
+        {
+          "phase": "alwaysPower",
+          "stat": "power",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "elf_marchant",
+      "name": "エルフの交易人",
+      "copies": 3,
+      "cost": 1,
+      "power": 2,
+      "race": "elf",
+      "job": "merchant",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "faith",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "income",
+          "stat": "gold",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "elf_artist",
+      "name": "エルフの芸術家",
+      "copies": 3,
+      "cost": 3,
+      "power": 1,
+      "race": "elf",
+      "job": "artisan",
+      "effects": [
+        {
+          "phase": "vp",
+          "stat": "vp",
+          "amount": 2,
+          "scale": "techLevel"
+        }
+      ]
+    },
+    {
+      "id": "elf_mistic",
+      "name": "エルフの神秘家",
+      "copies": 3,
+      "cost": 2,
+      "power": 2,
+      "race": "elf",
+      "job": "mage",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "faith",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "power",
+          "stat": "power",
+          "amount": 2,
+          "scale": "faithLevel"
+        }
+      ]
+    },
+    {
+      "id": "elf_saint",
+      "name": "エルフの祈り手",
+      "copies": 3,
+      "cost": 1,
+      "power": 2,
+      "race": "elf",
+      "job": "priest",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "faithLevel"
+        },
+        {
+          "phase": "develop",
+          "stat": "faith",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "elf_caster",
+      "name": "エルフの魔術師",
+      "copies": 2,
+      "cost": 6,
+      "power": 3,
+      "race": "elf",
+      "job": "mage",
+      "effects": [
+        {
+          "phase": "power",
+          "stat": "power",
+          "amount": 3,
+          "scale": "faithLevel"
+        },
+        {
+          "phase": "war",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "faithLevel"
+        }
+      ]
+    },
+    {
+      "id": "elf_queen",
+      "name": "エルフの女王",
+      "copies": 1,
+      "cost": 7,
+      "power": 7,
+      "race": "elf",
+      "job": "ruler",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "faith",
+          "amount": 5,
+          "scale": null
+        },
+        {
+          "phase": "place",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "race"
+        }
+      ]
+    },
+    {
+      "id": "elf_follower",
+      "name": "エルフの信奉者",
+      "copies": 2,
+      "cost": 3,
+      "power": 3,
+      "race": "elf",
+      "job": "priest",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "faith",
+          "amount": 2,
+          "scale": null
+        },
+        {
+          "phase": "vp",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "faithLevel"
+        }
+      ]
+    },
+    {
+      "id": "goblin_soldier",
+      "name": "ゴブリンの兵士",
+      "copies": 3,
+      "cost": 1,
+      "power": 4,
+      "race": "goblin",
+      "job": "warrior",
+      "effects": [
+        {
+          "phase": "war",
+          "stat": "vp",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "goblin_scavenger",
+      "name": "ゴブリンのゴミ売り",
+      "copies": 3,
+      "cost": 2,
+      "power": 3,
+      "race": "goblin",
+      "job": "merchant",
+      "effects": [
+        {
+          "phase": "war",
+          "stat": "vp",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "income",
+          "stat": "gold",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "goblin_junk",
+      "name": "ゴブリンのガラクタ集め",
+      "copies": 3,
+      "cost": 2,
+      "power": 4,
+      "race": "goblin",
+      "job": "artisan",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "tech",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "war",
+          "stat": "vp",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "goblin_saint",
+      "name": "ゴブリンの祈祷師",
+      "copies": 3,
+      "cost": 1,
+      "power": 3,
+      "race": "goblin",
+      "job": "mage",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "faith",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "power",
+          "stat": "power",
+          "amount": 1,
+          "scale": "faithLevel"
+        }
+      ]
+    },
+    {
+      "id": "goblin_lunatic",
+      "name": "ゴブリンの錯乱者",
+      "copies": 3,
+      "cost": 2,
+      "power": 2,
+      "race": "goblin",
+      "job": "priest",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "faith",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "vp",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "faithLevel"
+        }
+      ]
+    },
+    {
+      "id": "goblin_great_soldier",
+      "name": "ゴブリンの百人長",
+      "copies": 2,
+      "cost": 2,
+      "power": 5,
+      "race": "goblin",
+      "job": "warrior",
+      "effects": [
+        {
+          "phase": "war",
+          "stat": "vp",
+          "amount": 2,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "goblin_strategist",
+      "name": "ゴブリンの戦術家",
+      "copies": 2,
+      "cost": 4,
+      "power": 4,
+      "race": "goblin",
+      "job": "mage",
+      "effects": [
+        {
+          "phase": "vp",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "basePower4Plus"
+        }
+      ]
+    },
+    {
+      "id": "goblin_king",
+      "name": "ゴブリンの族長",
+      "copies": 1,
+      "cost": 8,
+      "power": 2,
+      "race": "goblin",
+      "job": "ruler",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "race"
+        },
+        {
+          "phase": "vp",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "cost3Minus"
+        }
+      ]
+    },
+    {
+      "id": "golem_iron",
+      "name": "鉄のゴーレム",
+      "copies": 3,
+      "cost": 2,
+      "power": 4,
+      "race": "golem",
+      "job": "warrior",
+      "effects": [
+        {
+          "phase": "power",
+          "stat": "power",
+          "amount": 1,
+          "scale": "techLevel"
+        },
+        {
+          "phase": "power",
+          "stat": "power",
+          "amount": 1,
+          "scale": "faithLevel"
+        }
+      ]
+    },
+    {
+      "id": "golem_gold",
+      "name": "黄金のゴーレム",
+      "copies": 3,
+      "cost": 2,
+      "power": 4,
+      "race": "golem",
+      "job": "merchant",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "gold",
+          "amount": 1,
+          "scale": "jobTypes"
+        }
+      ]
+    },
+    {
+      "id": "golem_stollow",
+      "name": "藁のゴーレム",
+      "copies": 3,
+      "cost": 5,
+      "power": 4,
+      "race": "golem",
+      "job": "mage",
+      "effects": [
+        {
+          "phase": "power",
+          "stat": "power",
+          "amount": 2,
+          "scale": "faithLevel"
+        },
+        {
+          "phase": "income",
+          "stat": "gold",
+          "amount": 2,
+          "scale": "techLevel"
+        }
+      ]
+    },
+    {
+      "id": "golem_cristal",
+      "name": "水晶のゴーレム",
+      "copies": 2,
+      "cost": 6,
+      "power": 1,
+      "race": "golem",
+      "job": "priest",
+      "effects": [
+        {
+          "phase": "vp",
+          "stat": "vp",
+          "amount": 2,
+          "scale": "techLevel"
+        },
+        {
+          "phase": "vp",
+          "stat": "vp",
+          "amount": 2,
+          "scale": "faithLevel"
+        }
+      ]
+    },
+    {
+      "id": "golem_king",
+      "name": "ゴーレムの王",
+      "copies": 1,
+      "cost": 6,
+      "power": 8,
+      "race": "golem",
+      "job": "ruler",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "equalize",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "place",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "race"
+        }
+      ]
+    },
+    {
+      "id": "demon_destroy",
+      "name": "破壊のデーモン",
+      "copies": 3,
+      "cost": 5,
+      "power": 8,
+      "race": "demon",
+      "job": "warrior",
+      "effects": [
+        {
+          "phase": "war",
+          "stat": "vp",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "demon_eye",
+      "name": "眼のデーモン",
+      "copies": 3,
+      "cost": 5,
+      "power": 6,
+      "race": "demon",
+      "job": "merchant",
+      "effects": [
+        {
+          "phase": "income",
+          "stat": "gold",
+          "amount": 2,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "demon_pest",
+      "name": "疫病のデーモン",
+      "copies": 3,
+      "cost": 5,
+      "power": 4,
+      "race": "demon",
+      "job": "artisan",
+      "effects": [
+        {
+          "phase": "vp",
+          "stat": "vp",
+          "amount": 4,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "demon_storm",
+      "name": "嵐のデーモン",
+      "copies": 1,
+      "cost": 9,
+      "power": 13,
+      "race": "demon",
+      "job": "ruler",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "race"
+        },
+        {
+          "phase": "persistent",
+          "stat": "doubleBonus",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    }
+  ],
+  "totalCards": 102,
+  "replays": [
+    {
+      "prefix": "results",
+      "id": 0,
+      "arm": "baseline"
+    },
+    {
+      "prefix": "results",
+      "id": 7,
+      "arm": "flexible"
+    },
+    {
+      "prefix": "results",
+      "id": 8,
+      "arm": "committed"
+    },
+    {
+      "prefix": "validation",
+      "id": 0,
+      "arm": "baseline"
+    },
+    {
+      "prefix": "validation",
+      "id": 7,
+      "arm": "flexible"
+    },
+    {
+      "prefix": "validation",
+      "id": 8,
+      "arm": "committed"
+    }
+  ],
+  "arms": {
+    "baseline": {
+      "games": 64,
+      "win": 0.5,
+      "vp": 47.609375,
+      "rounds": 4.59375,
+      "units": 7.21875,
+      "gold": 10.109375,
+      "tech": 3.359375,
+      "faith": 3.890625,
+      "techLevel": 1.53125,
+      "faithLevel": 1.625,
+      "income": 6.140625,
+      "incomeCards": 2.234375,
+      "expensive": 0.484375,
+      "techVP": 1.171875,
+      "faithVP": 1.03125,
+      "warVP": 1.25,
+      "bonuses": 1.515625,
+      "doubledBonuses": 0.015625,
+      "rulers": 0.203125,
+      "incomeEffectGold": 9.703125,
+      "incomeCost": 5.625,
+      "techEffectVP": 10.234375,
+      "faithEffectVP": 5.640625,
+      "bonusVP": 3.734375,
+      "phasePlaceVP": 4.34375,
+      "phaseWarVP": 16.515625,
+      "phaseCardVP": 23.609375,
+      "finalGoldVP": 3.140625,
+      "changes": 2.96875,
+      "lateChanges": 0.53125,
+      "lateChances": 0.71875,
+      "abandoned": 0.6875,
+      "plannedDecisions": 1.703125,
+      "continuedDecisions": 0,
+      "meanDecisionMs": 909.1180937128904,
+      "maxDecisionMs": 1324.900523140626,
+      "incomeToExpensive": 0.40625,
+      "grownTechVP": 0.484375,
+      "grownFaithVP": 0.5,
+      "multiBonus": 0.515625,
+      "stormBonus": 0.015625
+    },
+    "economy": {
+      "games": 64,
+      "win": 0.3828125,
+      "vp": 43.296875,
+      "rounds": 4.46875,
+      "units": 7.09375,
+      "gold": 11.796875,
+      "tech": 3.875,
+      "faith": 2.890625,
+      "techLevel": 1.71875,
+      "faithLevel": 1.390625,
+      "income": 7.46875,
+      "incomeCards": 3.046875,
+      "expensive": 0.46875,
+      "techVP": 1.171875,
+      "faithVP": 0.921875,
+      "warVP": 1.046875,
+      "bonuses": 1.46875,
+      "doubledBonuses": 0,
+      "rulers": 0.15625,
+      "incomeEffectGold": 12.4375,
+      "incomeCost": 7.8125,
+      "techEffectVP": 10.171875,
+      "faithEffectVP": 4.671875,
+      "bonusVP": 3.34375,
+      "phasePlaceVP": 3.8125,
+      "phaseWarVP": 12.5625,
+      "phaseCardVP": 23.21875,
+      "finalGoldVP": 3.703125,
+      "changes": 0,
+      "lateChanges": 0,
+      "lateChances": 0.578125,
+      "abandoned": 0.6875,
+      "plannedDecisions": 2.296875,
+      "continuedDecisions": 0,
+      "meanDecisionMs": 238.47480606836024,
+      "maxDecisionMs": 377.7160500312501,
+      "incomeToExpensive": 0.40625,
+      "grownTechVP": 0.5625,
+      "grownFaithVP": 0.46875,
+      "multiBonus": 0.4375,
+      "stormBonus": 0
+    },
+    "tech": {
+      "games": 64,
+      "win": 0.3515625,
+      "vp": 42.1875,
+      "rounds": 4.40625,
+      "units": 6.515625,
+      "gold": 10.15625,
+      "tech": 4.75,
+      "faith": 2.625,
+      "techLevel": 1.9375,
+      "faithLevel": 1.265625,
+      "income": 6.53125,
+      "incomeCards": 2.328125,
+      "expensive": 0.453125,
+      "techVP": 1.265625,
+      "faithVP": 0.75,
+      "warVP": 0.90625,
+      "bonuses": 1.09375,
+      "doubledBonuses": 0,
+      "rulers": 0.15625,
+      "incomeEffectGold": 9.890625,
+      "incomeCost": 6.328125,
+      "techEffectVP": 11.6875,
+      "faithEffectVP": 3.8125,
+      "bonusVP": 2.53125,
+      "phasePlaceVP": 3.015625,
+      "phaseWarVP": 12.796875,
+      "phaseCardVP": 23.0625,
+      "finalGoldVP": 3.3125,
+      "changes": 0,
+      "lateChanges": 0,
+      "lateChances": 0.5,
+      "abandoned": 0.578125,
+      "plannedDecisions": 1.765625,
+      "continuedDecisions": 0,
+      "meanDecisionMs": 233.15600724999993,
+      "maxDecisionMs": 341.96771449999994,
+      "incomeToExpensive": 0.375,
+      "grownTechVP": 0.59375,
+      "grownFaithVP": 0.328125,
+      "multiBonus": 0.296875,
+      "stormBonus": 0
+    },
+    "faith": {
+      "games": 64,
+      "win": 0.265625,
+      "vp": 42.296875,
+      "rounds": 4.53125,
+      "units": 6.84375,
+      "gold": 10.125,
+      "tech": 2.546875,
+      "faith": 4.34375,
+      "techLevel": 1.3125,
+      "faithLevel": 1.890625,
+      "income": 6.234375,
+      "incomeCards": 2.25,
+      "expensive": 0.34375,
+      "techVP": 0.859375,
+      "faithVP": 1.015625,
+      "warVP": 1.078125,
+      "bonuses": 1.34375,
+      "doubledBonuses": 0.046875,
+      "rulers": 0.1875,
+      "incomeEffectGold": 9.125,
+      "incomeCost": 5.609375,
+      "techEffectVP": 7.8125,
+      "faithEffectVP": 5.8125,
+      "bonusVP": 3.9375,
+      "phasePlaceVP": 4.390625,
+      "phaseWarVP": 14.921875,
+      "phaseCardVP": 19.546875,
+      "finalGoldVP": 3.4375,
+      "changes": 0,
+      "lateChanges": 0,
+      "lateChances": 0.59375,
+      "abandoned": 0.625,
+      "plannedDecisions": 1.890625,
+      "continuedDecisions": 0,
+      "meanDecisionMs": 224.19058059101565,
+      "maxDecisionMs": 336.79913685937584,
+      "incomeToExpensive": 0.265625,
+      "grownTechVP": 0.359375,
+      "grownFaithVP": 0.59375,
+      "multiBonus": 0.4375,
+      "stormBonus": 0.03125
+    },
+    "war": {
+      "games": 64,
+      "win": 0.3125,
+      "vp": 42.859375,
+      "rounds": 4.46875,
+      "units": 6.625,
+      "gold": 9.890625,
+      "tech": 3.140625,
+      "faith": 2.890625,
+      "techLevel": 1.421875,
+      "faithLevel": 1.34375,
+      "income": 5.71875,
+      "incomeCards": 1.96875,
+      "expensive": 0.421875,
+      "techVP": 0.984375,
+      "faithVP": 0.890625,
+      "warVP": 1.578125,
+      "bonuses": 1.171875,
+      "doubledBonuses": 0.015625,
+      "rulers": 0.265625,
+      "incomeEffectGold": 7.921875,
+      "incomeCost": 4.828125,
+      "techEffectVP": 8.640625,
+      "faithEffectVP": 4.453125,
+      "bonusVP": 3,
+      "phasePlaceVP": 3.6875,
+      "phaseWarVP": 15.53125,
+      "phaseCardVP": 20.21875,
+      "finalGoldVP": 3.421875,
+      "changes": 0,
+      "lateChanges": 0,
+      "lateChances": 0.5625,
+      "abandoned": 0.40625,
+      "plannedDecisions": 1.78125,
+      "continuedDecisions": 0,
+      "meanDecisionMs": 210.0276340072917,
+      "maxDecisionMs": 314.45144604687243,
+      "incomeToExpensive": 0.34375,
+      "grownTechVP": 0.375,
+      "grownFaithVP": 0.4375,
+      "multiBonus": 0.34375,
+      "stormBonus": 0.015625
+    },
+    "bonus": {
+      "games": 64,
+      "win": 0.4140625,
+      "vp": 44.421875,
+      "rounds": 4.515625,
+      "units": 6.796875,
+      "gold": 9.984375,
+      "tech": 3.859375,
+      "faith": 3.421875,
+      "techLevel": 1.703125,
+      "faithLevel": 1.453125,
+      "income": 6.265625,
+      "incomeCards": 2.203125,
+      "expensive": 0.4375,
+      "techVP": 1.328125,
+      "faithVP": 0.984375,
+      "warVP": 0.96875,
+      "bonuses": 1.359375,
+      "doubledBonuses": 0.015625,
+      "rulers": 0.171875,
+      "incomeEffectGold": 9.296875,
+      "incomeCost": 5.609375,
+      "techEffectVP": 12.078125,
+      "faithEffectVP": 5.171875,
+      "bonusVP": 3.75,
+      "phasePlaceVP": 4.375,
+      "phaseWarVP": 12.34375,
+      "phaseCardVP": 24.46875,
+      "finalGoldVP": 3.234375,
+      "changes": 0,
+      "lateChanges": 0,
+      "lateChances": 0.59375,
+      "abandoned": 0.5625,
+      "plannedDecisions": 2.03125,
+      "continuedDecisions": 0,
+      "meanDecisionMs": 223.87288718671957,
+      "maxDecisionMs": 331.72902632812395,
+      "incomeToExpensive": 0.359375,
+      "grownTechVP": 0.609375,
+      "grownFaithVP": 0.515625,
+      "multiBonus": 0.375,
+      "stormBonus": 0.015625
+    },
+    "savings": {
+      "games": 64,
+      "win": 0.28125,
+      "vp": 40.375,
+      "rounds": 4.421875,
+      "units": 6.53125,
+      "gold": 12.71875,
+      "tech": 2.421875,
+      "faith": 2.421875,
+      "techLevel": 1.25,
+      "faithLevel": 1.328125,
+      "income": 6.703125,
+      "incomeCards": 2.75,
+      "expensive": 0.421875,
+      "techVP": 0.921875,
+      "faithVP": 0.734375,
+      "warVP": 1.09375,
+      "bonuses": 1.15625,
+      "doubledBonuses": 0.015625,
+      "rulers": 0.265625,
+      "incomeEffectGold": 11.109375,
+      "incomeCost": 6.5625,
+      "techEffectVP": 7.296875,
+      "faithEffectVP": 3.40625,
+      "bonusVP": 3.5,
+      "phasePlaceVP": 4.140625,
+      "phaseWarVP": 11.53125,
+      "phaseCardVP": 19.875,
+      "finalGoldVP": 4.828125,
+      "changes": 0,
+      "lateChanges": 0,
+      "lateChances": 0.515625,
+      "abandoned": 0.59375,
+      "plannedDecisions": 1.953125,
+      "continuedDecisions": 0,
+      "meanDecisionMs": 220.4184215796875,
+      "maxDecisionMs": 327.92600432812344,
+      "incomeToExpensive": 0.40625,
+      "grownTechVP": 0.34375,
+      "grownFaithVP": 0.390625,
+      "multiBonus": 0.390625,
+      "stormBonus": 0.015625
+    },
+    "flexible": {
+      "games": 64,
+      "win": 0.4296875,
+      "vp": 45.1875,
+      "rounds": 4.453125,
+      "units": 6.9375,
+      "gold": 11.25,
+      "tech": 2.796875,
+      "faith": 2.96875,
+      "techLevel": 1.3125,
+      "faithLevel": 1.359375,
+      "income": 6.71875,
+      "incomeCards": 2.625,
+      "expensive": 0.296875,
+      "techVP": 1,
+      "faithVP": 0.875,
+      "warVP": 1.3125,
+      "bonuses": 1.53125,
+      "doubledBonuses": 0.03125,
+      "rulers": 0.140625,
+      "incomeEffectGold": 10.625,
+      "incomeCost": 6.640625,
+      "techEffectVP": 8.125,
+      "faithEffectVP": 4.234375,
+      "bonusVP": 5.140625,
+      "phasePlaceVP": 5.515625,
+      "phaseWarVP": 15.0625,
+      "phaseCardVP": 20.890625,
+      "finalGoldVP": 3.71875,
+      "changes": 2.5625,
+      "lateChanges": 0.296875,
+      "lateChances": 0.5625,
+      "abandoned": 0.25,
+      "plannedDecisions": 0.78125,
+      "continuedDecisions": 0,
+      "meanDecisionMs": 1502.1360785484376,
+      "maxDecisionMs": 2187.7388979218777,
+      "incomeToExpensive": 0.25,
+      "grownTechVP": 0.34375,
+      "grownFaithVP": 0.40625,
+      "multiBonus": 0.453125,
+      "stormBonus": 0.03125
+    },
+    "committed": {
+      "games": 64,
+      "win": 0.4296875,
+      "vp": 44.28125,
+      "rounds": 4.53125,
+      "units": 6.765625,
+      "gold": 11.921875,
+      "tech": 2.9375,
+      "faith": 2.859375,
+      "techLevel": 1.375,
+      "faithLevel": 1.296875,
+      "income": 6.59375,
+      "incomeCards": 2.5625,
+      "expensive": 0.3125,
+      "techVP": 1.03125,
+      "faithVP": 0.828125,
+      "warVP": 1.234375,
+      "bonuses": 1.421875,
+      "doubledBonuses": 0.03125,
+      "rulers": 0.140625,
+      "incomeEffectGold": 10.765625,
+      "incomeCost": 6.484375,
+      "techEffectVP": 8.40625,
+      "faithEffectVP": 4.0625,
+      "bonusVP": 4.671875,
+      "phasePlaceVP": 5.0625,
+      "phaseWarVP": 14.453125,
+      "phaseCardVP": 21.0625,
+      "finalGoldVP": 3.703125,
+      "changes": 2.21875,
+      "lateChanges": 0.265625,
+      "lateChances": 0.640625,
+      "abandoned": 0,
+      "plannedDecisions": 2.296875,
+      "continuedDecisions": 1.703125,
+      "meanDecisionMs": 1345.3596473054693,
+      "maxDecisionMs": 2288.1025447343736,
+      "incomeToExpensive": 0.25,
+      "grownTechVP": 0.375,
+      "grownFaithVP": 0.375,
+      "multiBonus": 0.421875,
+      "stormBonus": 0.03125
+    }
+  },
+  "comparisons": {
+    "natural:economy": {
+      "pairs": 64,
+      "seeds": 16,
+      "diff": -0.1171875,
+      "vpDiff": -4.3125,
+      "ci95": [
+        -0.2265625,
+        -0.0078125
+      ]
+    },
+    "natural:tech": {
+      "pairs": 64,
+      "seeds": 16,
+      "diff": -0.1484375,
+      "vpDiff": -5.421875,
+      "ci95": [
+        -0.25,
+        -0.046875
+      ]
+    },
+    "natural:faith": {
+      "pairs": 64,
+      "seeds": 16,
+      "diff": -0.234375,
+      "vpDiff": -5.3125,
+      "ci95": [
+        -0.3828125,
+        -0.09375
+      ]
+    },
+    "natural:war": {
+      "pairs": 64,
+      "seeds": 16,
+      "diff": -0.1875,
+      "vpDiff": -4.75,
+      "ci95": [
+        -0.328125,
+        -0.0625
+      ]
+    },
+    "natural:bonus": {
+      "pairs": 64,
+      "seeds": 16,
+      "diff": -0.0859375,
+      "vpDiff": -3.1875,
+      "ci95": [
+        -0.1953125,
+        0.015625
+      ]
+    },
+    "natural:savings": {
+      "pairs": 64,
+      "seeds": 16,
+      "diff": -0.21875,
+      "vpDiff": -7.234375,
+      "ci95": [
+        -0.359375,
+        -0.0859375
+      ]
+    },
+    "natural:flexible": {
+      "pairs": 64,
+      "seeds": 16,
+      "diff": -0.0703125,
+      "vpDiff": -2.421875,
+      "ci95": [
+        -0.1640625,
+        0.03125
+      ]
+    },
+    "natural:committed": {
+      "pairs": 64,
+      "seeds": 16,
+      "diff": -0.0703125,
+      "vpDiff": -3.328125,
+      "ci95": [
+        -0.1796875,
+        0.03125
+      ]
+    },
+    "expert:flexible": {
+      "pairs": 32,
+      "seeds": 16,
+      "diff": -0.125,
+      "vpDiff": -2.375,
+      "ci95": [
+        -0.3125,
+        0.0625
+      ]
+    },
+    "natural:flexible-vs-committed": {
+      "pairs": 64,
+      "seeds": 16,
+      "diff": 0,
+      "vpDiff": 0.90625,
+      "ci95": [
+        -0.078125,
+        0.09375
+      ]
+    }
+  },
+  "byCount": {
+    "2": {
+      "baseline": {
+        "games": 16,
+        "win": 0.5625,
+        "vp": 49.75
+      },
+      "economy": {
+        "games": 16,
+        "win": 0.4375,
+        "vp": 46.375
+      },
+      "tech": {
+        "games": 16,
+        "win": 0.5625,
+        "vp": 43.5
+      },
+      "faith": {
+        "games": 16,
+        "win": 0.4375,
+        "vp": 45
+      },
+      "war": {
+        "games": 16,
+        "win": 0.5625,
+        "vp": 48.75
+      },
+      "bonus": {
+        "games": 16,
+        "win": 0.59375,
+        "vp": 45.4375
+      },
+      "savings": {
+        "games": 16,
+        "win": 0.46875,
+        "vp": 44.0625
+      },
+      "flexible": {
+        "games": 16,
+        "win": 0.5625,
+        "vp": 46.5,
+        "paired": {
+          "pairs": 16,
+          "seeds": 16,
+          "diff": 0,
+          "vpDiff": -3.25,
+          "ci95": [
+            -0.25,
+            0.25
+          ]
+        }
+      },
+      "committed": {
+        "games": 16,
+        "win": 0.5625,
+        "vp": 46.875,
+        "paired": {
+          "pairs": 16,
+          "seeds": 16,
+          "diff": 0,
+          "vpDiff": -2.875,
+          "ci95": [
+            -0.3125,
+            0.3125
+          ]
+        }
+      }
+    },
+    "3": {
+      "baseline": {
+        "games": 16,
+        "win": 0.59375,
+        "vp": 51.625
+      },
+      "economy": {
+        "games": 16,
+        "win": 0.53125,
+        "vp": 48.375
+      },
+      "tech": {
+        "games": 16,
+        "win": 0.375,
+        "vp": 43.6875
+      },
+      "faith": {
+        "games": 16,
+        "win": 0.1875,
+        "vp": 41.1875
+      },
+      "war": {
+        "games": 16,
+        "win": 0.25,
+        "vp": 42.6875
+      },
+      "bonus": {
+        "games": 16,
+        "win": 0.40625,
+        "vp": 46.25
+      },
+      "savings": {
+        "games": 16,
+        "win": 0.28125,
+        "vp": 44.125
+      },
+      "flexible": {
+        "games": 16,
+        "win": 0.4375,
+        "vp": 47.0625,
+        "paired": {
+          "pairs": 16,
+          "seeds": 16,
+          "diff": -0.15625,
+          "vpDiff": -4.5625,
+          "ci95": [
+            -0.40625,
+            0.09375
+          ]
+        }
+      },
+      "committed": {
+        "games": 16,
+        "win": 0.46875,
+        "vp": 45.4375,
+        "paired": {
+          "pairs": 16,
+          "seeds": 16,
+          "diff": -0.125,
+          "vpDiff": -6.1875,
+          "ci95": [
+            -0.375,
+            0.125
+          ]
+        }
+      }
+    },
+    "4": {
+      "baseline": {
+        "games": 16,
+        "win": 0.375,
+        "vp": 41.25
+      },
+      "economy": {
+        "games": 16,
+        "win": 0.375,
+        "vp": 41.625
+      },
+      "tech": {
+        "games": 16,
+        "win": 0.28125,
+        "vp": 41.875
+      },
+      "faith": {
+        "games": 16,
+        "win": 0.3125,
+        "vp": 43.25
+      },
+      "war": {
+        "games": 16,
+        "win": 0.3125,
+        "vp": 44.1875
+      },
+      "bonus": {
+        "games": 16,
+        "win": 0.34375,
+        "vp": 44.9375
+      },
+      "savings": {
+        "games": 16,
+        "win": 0.375,
+        "vp": 39.625
+      },
+      "flexible": {
+        "games": 16,
+        "win": 0.375,
+        "vp": 44.125,
+        "paired": {
+          "pairs": 16,
+          "seeds": 16,
+          "diff": 0,
+          "vpDiff": 2.875,
+          "ci95": [
+            -0.25,
+            0.25
+          ]
+        }
+      },
+      "committed": {
+        "games": 16,
+        "win": 0.3125,
+        "vp": 43.8125,
+        "paired": {
+          "pairs": 16,
+          "seeds": 16,
+          "diff": -0.0625,
+          "vpDiff": 2.5625,
+          "ci95": [
+            -0.3125,
+            0.1875
+          ]
+        }
+      }
+    },
+    "5": {
+      "baseline": {
+        "games": 16,
+        "win": 0.46875,
+        "vp": 47.8125
+      },
+      "economy": {
+        "games": 16,
+        "win": 0.1875,
+        "vp": 36.8125
+      },
+      "tech": {
+        "games": 16,
+        "win": 0.1875,
+        "vp": 39.6875
+      },
+      "faith": {
+        "games": 16,
+        "win": 0.125,
+        "vp": 39.75
+      },
+      "war": {
+        "games": 16,
+        "win": 0.125,
+        "vp": 35.8125
+      },
+      "bonus": {
+        "games": 16,
+        "win": 0.3125,
+        "vp": 41.0625
+      },
+      "savings": {
+        "games": 16,
+        "win": 0,
+        "vp": 33.6875
+      },
+      "flexible": {
+        "games": 16,
+        "win": 0.34375,
+        "vp": 43.0625,
+        "paired": {
+          "pairs": 16,
+          "seeds": 16,
+          "diff": -0.125,
+          "vpDiff": -4.75,
+          "ci95": [
+            -0.375,
+            0.09375
+          ]
+        }
+      },
+      "committed": {
+        "games": 16,
+        "win": 0.375,
+        "vp": 41,
+        "paired": {
+          "pairs": 16,
+          "seeds": 16,
+          "diff": -0.09375,
+          "vpDiff": -6.8125,
+          "ci95": [
+            -0.28125,
+            0.0625
+          ]
+        }
+      }
+    }
+  },
+  "firstSelected": {
+    "tech": {
+      "games": 9,
+      "wins": 5.5,
+      "vp": 49.22222222222222,
+      "win": 0.6111111111111112
+    },
+    "bonus": {
+      "games": 5,
+      "wins": 3,
+      "vp": 51.6,
+      "win": 0.6
+    },
+    "savings": {
+      "games": 14,
+      "wins": 7,
+      "vp": 45.285714285714285,
+      "win": 0.5
+    },
+    "balanced": {
+      "games": 20,
+      "wins": 7.5,
+      "vp": 45.45,
+      "win": 0.375
+    },
+    "war": {
+      "games": 5,
+      "wins": 2,
+      "vp": 40,
+      "win": 0.4
+    },
+    "faith": {
+      "games": 3,
+      "wins": 0,
+      "vp": 39,
+      "win": 0
+    },
+    "economy": {
+      "games": 8,
+      "wins": 2.5,
+      "vp": 41.375,
+      "win": 0.3125
+    }
+  },
+  "late": {
+    "opportunities": 36,
+    "profileChanges": 19
+  }
+}

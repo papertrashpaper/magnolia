@@ -1,0 +1,2020 @@
+{
+  "states": 32,
+  "groups": {
+    "baseline1": {
+      "states": 32,
+      "extra": 0,
+      "plans": 4,
+      "auditValue": -345.59375000000006,
+      "auditVP": 42.677083333333336,
+      "auditGap": -5.822916666666667,
+      "terminalFraction": 1,
+      "terminalWinShare": 0.328125
+    },
+    "expanded1": {
+      "states": 32,
+      "extra": 1,
+      "plans": 5,
+      "auditValue": -345.78125000000006,
+      "auditVP": 42.75,
+      "auditGap": -5.885416666666667,
+      "terminalFraction": 1,
+      "terminalWinShare": 0.328125
+    },
+    "baseline3": {
+      "states": 32,
+      "extra": 0,
+      "plans": 10,
+      "auditValue": -365.64583333333337,
+      "auditVP": 43.239583333333336,
+      "auditGap": -5.5625,
+      "terminalFraction": 1,
+      "terminalWinShare": 0.3177083333333333
+    },
+    "expanded3": {
+      "states": 32,
+      "extra": 1,
+      "plans": 10,
+      "auditValue": -360.43750000000006,
+      "auditVP": 43.239583333333336,
+      "auditGap": -5.5625,
+      "terminalFraction": 1,
+      "terminalWinShare": 0.3229166666666667
+    }
+  },
+  "comparisons": {
+    "expanded1-baseline1": {
+      "states": 32,
+      "clusters": 8,
+      "difference": -0.1875,
+      "ci95": [
+        -0.5625,
+        0
+      ]
+    },
+    "expanded3-baseline3": {
+      "states": 32,
+      "clusters": 8,
+      "difference": 5.208333333333332,
+      "ci95": [
+        0,
+        15.624999999999996
+      ]
+    },
+    "baseline3-baseline1": {
+      "states": 32,
+      "clusters": 8,
+      "difference": -20.05208333333334,
+      "ci95": [
+        -134.19791666666666,
+        101.33333333333331
+      ]
+    },
+    "expanded3-expanded1": {
+      "states": 32,
+      "clusters": 8,
+      "difference": -14.656250000000007,
+      "ci95": [
+        -127.95833333333337,
+        106.88541666666666
+      ]
+    }
+  },
+  "diagnostic": {
+    "extraBestBeatsExistingBest": 0,
+    "missed1": 0,
+    "missed3": 0,
+    "harmful1": 1,
+    "harmful3": 0
+  },
+  "examples": [
+    {
+      "stateId": 0,
+      "prefix": "results",
+      "seed": 1030000,
+      "count": 2,
+      "round": 2,
+      "choices": {
+        "baseline1": "war",
+        "baseline3": "war",
+        "expanded1": "war",
+        "expanded3": "war"
+      },
+      "bestExisting": "war",
+      "bestExtra": "extra-war",
+      "extraAdvantage": -4,
+      "selectedExpanded3Audit": 337.3333333333333,
+      "selectedBaseline3Audit": 337.3333333333333,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [
+          {
+            "card": "dwarf_cook",
+            "x": -1,
+            "y": 0
+          },
+          {
+            "card": "human_great_marchant",
+            "x": -1,
+            "y": -1
+          }
+        ],
+        [
+          {
+            "card": "dwarf_gem",
+            "x": -2,
+            "y": -1
+          }
+        ],
+        [],
+        [
+          {
+            "card": "elf_marchant",
+            "x": 0,
+            "y": -1
+          }
+        ]
+      ],
+      "hand": [
+        "dwarf_cook",
+        "human_great_marchant",
+        "dwarf_gem",
+        "elf_marchant"
+      ],
+      "board": [
+        {
+          "card": "demon_pest",
+          "x": 0,
+          "y": 0
+        }
+      ]
+    },
+    {
+      "stateId": 1,
+      "prefix": "results",
+      "seed": 1030000,
+      "count": 2,
+      "round": 4,
+      "choices": {
+        "baseline1": "balanced",
+        "baseline3": "plan-0",
+        "expanded1": "balanced",
+        "expanded3": "plan-0"
+      },
+      "bestExisting": "balanced",
+      "bestExtra": "extra-economy",
+      "extraAdvantage": -2,
+      "selectedExpanded3Audit": 1040,
+      "selectedBaseline3Audit": 1040,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        []
+      ],
+      "hand": [
+        "dwarf_cook",
+        "elf_mistic",
+        "dwarf_saint"
+      ],
+      "board": [
+        {
+          "card": "demon_pest",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "human_great_marchant",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "elf_marchant",
+          "x": -1,
+          "y": -1
+        },
+        {
+          "card": "dwarf_gem",
+          "x": -1,
+          "y": -2
+        },
+        {
+          "card": "goblin_strategist",
+          "x": -2,
+          "y": -2
+        }
+      ]
+    },
+    {
+      "stateId": 2,
+      "prefix": "results",
+      "seed": 1030001,
+      "count": 2,
+      "round": 2,
+      "choices": {
+        "baseline1": "economy",
+        "baseline3": "economy",
+        "expanded1": "economy",
+        "expanded3": "economy"
+      },
+      "bestExisting": "war",
+      "bestExtra": "extra-economy",
+      "extraAdvantage": -1898.3333333333335,
+      "selectedExpanded3Audit": -348.3333333333333,
+      "selectedBaseline3Audit": -348.3333333333333,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [
+          {
+            "card": "goblin_junk",
+            "x": -1,
+            "y": 0
+          }
+        ],
+        [
+          {
+            "card": "dwarf_cook",
+            "x": -1,
+            "y": 1
+          },
+          {
+            "card": "dwarf_pugilist",
+            "x": -2,
+            "y": 1
+          }
+        ],
+        [],
+        []
+      ],
+      "hand": [
+        "dwarf_cook",
+        "goblin_junk",
+        "dwarf_pugilist"
+      ],
+      "board": [
+        {
+          "card": "goblin_strategist",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "elf_saint",
+          "x": 0,
+          "y": -1
+        }
+      ]
+    },
+    {
+      "stateId": 3,
+      "prefix": "results",
+      "seed": 1030001,
+      "count": 2,
+      "round": 4,
+      "choices": {
+        "baseline1": "balanced",
+        "baseline3": "rush",
+        "expanded1": "balanced",
+        "expanded3": "rush"
+      },
+      "bestExisting": "balanced",
+      "bestExtra": "extra-war",
+      "extraAdvantage": -522,
+      "selectedExpanded3Audit": 166.66666666666666,
+      "selectedBaseline3Audit": 166.66666666666666,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [
+          {
+            "card": "golem_iron",
+            "x": -1,
+            "y": -1
+          },
+          {
+            "card": "dwarf_pugilist",
+            "x": 0,
+            "y": 1
+          }
+        ],
+        [
+          {
+            "card": "dwarf_cook",
+            "x": -2,
+            "y": 1
+          }
+        ]
+      ],
+      "hand": [
+        "dwarf_cook",
+        "dwarf_pugilist",
+        "golem_iron"
+      ],
+      "board": [
+        {
+          "card": "goblin_strategist",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "elf_saint",
+          "x": 0,
+          "y": -1
+        },
+        {
+          "card": "goblin_junk",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "goblin_soldier",
+          "x": -2,
+          "y": 0
+        },
+        {
+          "card": "goblin_lunatic",
+          "x": -2,
+          "y": -1
+        },
+        {
+          "card": "goblin_junk",
+          "x": -1,
+          "y": 1
+        }
+      ]
+    },
+    {
+      "stateId": 4,
+      "prefix": "results",
+      "seed": 1030002,
+      "count": 2,
+      "round": 2,
+      "choices": {
+        "baseline1": "economy",
+        "baseline3": "economy",
+        "expanded1": "economy",
+        "expanded3": "economy"
+      },
+      "bestExisting": "savings",
+      "bestExtra": "extra-economy",
+      "extraAdvantage": -730.6666666666667,
+      "selectedExpanded3Audit": -360.3333333333333,
+      "selectedBaseline3Audit": -360.3333333333333,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [
+          {
+            "card": "elf_marchant",
+            "x": 0,
+            "y": 1
+          },
+          {
+            "card": "dwarf_cook",
+            "x": -1,
+            "y": -1
+          }
+        ],
+        [
+          {
+            "card": "human_marchant",
+            "x": 1,
+            "y": 0
+          }
+        ],
+        [],
+        []
+      ],
+      "hand": [
+        "human_marchant",
+        "elf_marchant",
+        "dwarf_cook"
+      ],
+      "board": [
+        {
+          "card": "human_great_marchant",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "goblin_scavenger",
+          "x": 0,
+          "y": -1
+        }
+      ]
+    },
+    {
+      "stateId": 5,
+      "prefix": "results",
+      "seed": 1030002,
+      "count": 2,
+      "round": 4,
+      "choices": {
+        "baseline1": "balanced",
+        "baseline3": "plan-0",
+        "expanded1": "balanced",
+        "expanded3": "plan-0"
+      },
+      "bestExisting": "savings",
+      "bestExtra": "extra-economy",
+      "extraAdvantage": -507,
+      "selectedExpanded3Audit": -1014,
+      "selectedBaseline3Audit": -1014,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [
+          {
+            "card": "dwarf_pugilist",
+            "x": -1,
+            "y": -1
+          }
+        ],
+        []
+      ],
+      "hand": [
+        "golem_stollow",
+        "golem_gold",
+        "dwarf_pugilist",
+        "elf_mistic"
+      ],
+      "board": [
+        {
+          "card": "human_great_marchant",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "goblin_scavenger",
+          "x": 0,
+          "y": -1
+        },
+        {
+          "card": "elf_marchant",
+          "x": 0,
+          "y": 1
+        },
+        {
+          "card": "human_marchant",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "human_king",
+          "x": -2,
+          "y": 0
+        }
+      ]
+    },
+    {
+      "stateId": 6,
+      "prefix": "results",
+      "seed": 1030003,
+      "count": 2,
+      "round": 2,
+      "choices": {
+        "baseline1": "tech",
+        "baseline3": "war",
+        "expanded1": "tech",
+        "expanded3": "war"
+      },
+      "bestExisting": "savings",
+      "bestExtra": "extra-economy",
+      "extraAdvantage": -730.6666666666667,
+      "selectedExpanded3Audit": -1035,
+      "selectedBaseline3Audit": -1035,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [
+          {
+            "card": "golem_stollow",
+            "x": -1,
+            "y": -1
+          }
+        ],
+        [
+          {
+            "card": "elf_saint",
+            "x": -2,
+            "y": -1
+          },
+          {
+            "card": "goblin_soldier",
+            "x": -2,
+            "y": 0
+          }
+        ],
+        [],
+        []
+      ],
+      "hand": [
+        "elf_saint",
+        "goblin_soldier",
+        "golem_stollow"
+      ],
+      "board": [
+        {
+          "card": "goblin_scavenger",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "dwarf_gem",
+          "x": 0,
+          "y": -1
+        }
+      ]
+    },
+    {
+      "stateId": 7,
+      "prefix": "results",
+      "seed": 1030003,
+      "count": 2,
+      "round": 4,
+      "choices": {
+        "baseline1": "plan-0",
+        "baseline3": "plan-0",
+        "expanded1": "plan-0",
+        "expanded3": "plan-0"
+      },
+      "bestExisting": "plan-0",
+      "bestExtra": "extra-economy",
+      "extraAdvantage": 0,
+      "selectedExpanded3Audit": -1026,
+      "selectedBaseline3Audit": -1026,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [
+          {
+            "card": "human_undertaker",
+            "x": -2,
+            "y": -1
+          },
+          {
+            "card": "human_knight",
+            "x": -2,
+            "y": 0
+          }
+        ],
+        [
+          {
+            "card": "elf_mistic",
+            "x": 0,
+            "y": -2
+          }
+        ]
+      ],
+      "hand": [
+        "goblin_soldier",
+        "human_knight",
+        "human_undertaker",
+        "elf_mistic"
+      ],
+      "board": [
+        {
+          "card": "goblin_scavenger",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "dwarf_gem",
+          "x": 0,
+          "y": -1
+        },
+        {
+          "card": "elf_artist",
+          "x": -1,
+          "y": -1
+        },
+        {
+          "card": "elf_saint",
+          "x": -1,
+          "y": -2
+        },
+        {
+          "card": "human_smith",
+          "x": -2,
+          "y": -2
+        }
+      ]
+    },
+    {
+      "stateId": 8,
+      "prefix": "results",
+      "seed": 1030004,
+      "count": 2,
+      "round": 2,
+      "choices": {
+        "baseline1": "war",
+        "baseline3": "faith",
+        "expanded1": "war",
+        "expanded3": "faith"
+      },
+      "bestExisting": "tech",
+      "bestExtra": "extra-economy",
+      "extraAdvantage": -777.6666666666667,
+      "selectedExpanded3Audit": -377.3333333333333,
+      "selectedBaseline3Audit": -377.3333333333333,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [
+          {
+            "card": "goblin_junk",
+            "x": -1,
+            "y": -1
+          },
+          {
+            "card": "goblin_soldier",
+            "x": -1,
+            "y": -2
+          }
+        ],
+        [
+          {
+            "card": "elf_artist",
+            "x": -2,
+            "y": -2
+          }
+        ],
+        [],
+        []
+      ],
+      "hand": [
+        "elf_artist",
+        "goblin_junk",
+        "goblin_soldier"
+      ],
+      "board": [
+        {
+          "card": "dwarf_gardian",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "elf_saint",
+          "x": 0,
+          "y": -1
+        }
+      ]
+    },
+    {
+      "stateId": 9,
+      "prefix": "results",
+      "seed": 1030004,
+      "count": 2,
+      "round": 4,
+      "choices": {
+        "baseline1": "savings",
+        "baseline3": "war",
+        "expanded1": "savings",
+        "expanded3": "war"
+      },
+      "bestExisting": "economy",
+      "bestExtra": "extra-tech",
+      "extraAdvantage": -41,
+      "selectedExpanded3Audit": -1041,
+      "selectedBaseline3Audit": -1041,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [
+          {
+            "card": "goblin_soldier",
+            "x": 0,
+            "y": -2
+          }
+        ],
+        [],
+        []
+      ],
+      "hand": [
+        "goblin_soldier",
+        "elf_archer",
+        "human_great_marchant"
+      ],
+      "board": [
+        {
+          "card": "dwarf_gardian",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "elf_saint",
+          "x": 0,
+          "y": -1
+        },
+        {
+          "card": "dwarf_saint",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "goblin_lunatic",
+          "x": 1,
+          "y": -1
+        },
+        {
+          "card": "goblin_junk",
+          "x": 1,
+          "y": -2
+        }
+      ]
+    },
+    {
+      "stateId": 10,
+      "prefix": "results",
+      "seed": 1030005,
+      "count": 2,
+      "round": 2,
+      "choices": {
+        "baseline1": "tech",
+        "baseline3": "savings",
+        "expanded1": "tech",
+        "expanded3": "savings"
+      },
+      "bestExisting": "savings",
+      "bestExtra": "extra-economy",
+      "extraAdvantage": -714.6666666666667,
+      "selectedExpanded3Audit": 1056,
+      "selectedBaseline3Audit": 1056,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [
+          {
+            "card": "goblin_lunatic",
+            "x": -1,
+            "y": 0
+          }
+        ],
+        [
+          {
+            "card": "demon_pest",
+            "x": 0,
+            "y": -1
+          },
+          {
+            "card": "elf_saint",
+            "x": -1,
+            "y": -1
+          }
+        ],
+        [
+          {
+            "card": "goblin_soldier",
+            "x": -2,
+            "y": -1
+          }
+        ]
+      ],
+      "hand": [
+        "elf_saint",
+        "goblin_lunatic",
+        "goblin_soldier",
+        "demon_pest"
+      ],
+      "board": [
+        {
+          "card": "demon_pest",
+          "x": 0,
+          "y": 0
+        }
+      ]
+    },
+    {
+      "stateId": 11,
+      "prefix": "results",
+      "seed": 1030005,
+      "count": 2,
+      "round": 4,
+      "choices": {
+        "baseline1": "savings",
+        "baseline3": "savings",
+        "expanded1": "savings",
+        "expanded3": "savings"
+      },
+      "bestExisting": "savings",
+      "bestExtra": "extra-economy",
+      "extraAdvantage": -2033,
+      "selectedExpanded3Audit": 1010,
+      "selectedBaseline3Audit": 1010,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [],
+        [
+          {
+            "card": "demon_pest",
+            "x": -2,
+            "y": -2
+          }
+        ]
+      ],
+      "hand": [
+        "goblin_soldier",
+        "demon_pest",
+        "dwarf_cook",
+        "dwarf_pugilist"
+      ],
+      "board": [
+        {
+          "card": "demon_pest",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "goblin_lunatic",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "elf_saint",
+          "x": -1,
+          "y": -1
+        },
+        {
+          "card": "elf_follower",
+          "x": -2,
+          "y": -1
+        }
+      ]
+    },
+    {
+      "stateId": 12,
+      "prefix": "results",
+      "seed": 1030006,
+      "count": 2,
+      "round": 2,
+      "choices": {
+        "baseline1": "economy",
+        "baseline3": "war",
+        "expanded1": "economy",
+        "expanded3": "war"
+      },
+      "bestExisting": "war",
+      "bestExtra": "extra-tech",
+      "extraAdvantage": -1405.3333333333333,
+      "selectedExpanded3Audit": 349.3333333333333,
+      "selectedBaseline3Audit": 349.3333333333333,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [
+          {
+            "card": "dwarf_cook",
+            "x": -1,
+            "y": -1
+          },
+          {
+            "card": "elf_saint",
+            "x": 0,
+            "y": 1
+          }
+        ],
+        [
+          {
+            "card": "dwarf_gem",
+            "x": -1,
+            "y": 0
+          }
+        ],
+        [],
+        []
+      ],
+      "hand": [
+        "dwarf_cook",
+        "dwarf_gem",
+        "elf_saint"
+      ],
+      "board": [
+        {
+          "card": "elf_follower",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "elf_mistic",
+          "x": 0,
+          "y": -1
+        }
+      ]
+    },
+    {
+      "stateId": 13,
+      "prefix": "results",
+      "seed": 1030006,
+      "count": 2,
+      "round": 4,
+      "choices": {
+        "baseline1": "rush",
+        "baseline3": "plan-0",
+        "expanded1": "rush",
+        "expanded3": "plan-0"
+      },
+      "bestExisting": "savings",
+      "bestExtra": "extra-economy",
+      "extraAdvantage": -681.6666666666666,
+      "selectedExpanded3Audit": -363.3333333333333,
+      "selectedBaseline3Audit": -363.3333333333333,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [
+          {
+            "card": "dwarf_gem",
+            "x": -2,
+            "y": 0
+          },
+          {
+            "card": "dwarf_cook",
+            "x": -2,
+            "y": 1
+          }
+        ],
+        [
+          {
+            "card": "golem_gold",
+            "x": -1,
+            "y": 1
+          },
+          {
+            "card": "dwarf_king",
+            "x": -2,
+            "y": -1
+          }
+        ]
+      ],
+      "hand": [
+        "dwarf_cook",
+        "dwarf_gem",
+        "golem_gold",
+        "dwarf_king"
+      ],
+      "board": [
+        {
+          "card": "elf_follower",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "elf_mistic",
+          "x": 0,
+          "y": -1
+        },
+        {
+          "card": "human_saint",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "elf_saint",
+          "x": -1,
+          "y": -1
+        }
+      ]
+    },
+    {
+      "stateId": 14,
+      "prefix": "results",
+      "seed": 1030007,
+      "count": 2,
+      "round": 2,
+      "choices": {
+        "baseline1": "faith",
+        "baseline3": "rush",
+        "expanded1": "faith",
+        "expanded3": "rush"
+      },
+      "bestExisting": "savings",
+      "bestExtra": "extra-economy",
+      "extraAdvantage": -1733.787037037037,
+      "selectedExpanded3Audit": 341.3333333333333,
+      "selectedBaseline3Audit": 341.3333333333333,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [
+          {
+            "card": "elf_marchant",
+            "x": -1,
+            "y": 0
+          },
+          {
+            "card": "dwarf_alchemist",
+            "x": -1,
+            "y": -1
+          }
+        ],
+        [
+          {
+            "card": "human_king",
+            "x": 0,
+            "y": -1
+          }
+        ],
+        [],
+        []
+      ],
+      "hand": [
+        "dwarf_alchemist",
+        "elf_marchant",
+        "goblin_saint",
+        "human_king"
+      ],
+      "board": [
+        {
+          "card": "human_smith",
+          "x": 0,
+          "y": 0
+        }
+      ]
+    },
+    {
+      "stateId": 15,
+      "prefix": "results",
+      "seed": 1030007,
+      "count": 2,
+      "round": 4,
+      "choices": {
+        "baseline1": "faith",
+        "baseline3": "plan-0",
+        "expanded1": "faith",
+        "expanded3": "plan-0"
+      },
+      "bestExisting": "balanced",
+      "bestExtra": "extra-economy",
+      "extraAdvantage": -5,
+      "selectedExpanded3Audit": -1041,
+      "selectedBaseline3Audit": -1041,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [
+          {
+            "card": "human_king",
+            "x": -2,
+            "y": 0
+          },
+          {
+            "card": "goblin_saint",
+            "x": 0,
+            "y": -1
+          }
+        ],
+        [
+          {
+            "card": "elf_mistic",
+            "x": -2,
+            "y": -1
+          }
+        ]
+      ],
+      "hand": [
+        "goblin_saint",
+        "human_king",
+        "human_sorcerer",
+        "elf_mistic"
+      ],
+      "board": [
+        {
+          "card": "human_smith",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "elf_marchant",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "dwarf_alchemist",
+          "x": -1,
+          "y": -1
+        },
+        {
+          "card": "elf_artist",
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    {
+      "stateId": 16,
+      "prefix": "results",
+      "seed": 1030000,
+      "count": 5,
+      "round": 2,
+      "choices": {
+        "baseline1": "plan-0",
+        "baseline3": "bonus",
+        "expanded1": "plan-0",
+        "expanded3": "bonus"
+      },
+      "bestExisting": "balanced",
+      "bestExtra": "extra-tech",
+      "extraAdvantage": -681.6666666666667,
+      "selectedExpanded3Audit": 337.3333333333333,
+      "selectedBaseline3Audit": 337.3333333333333,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [
+          {
+            "card": "dwarf_cook",
+            "x": -1,
+            "y": 0
+          },
+          {
+            "card": "human_great_marchant",
+            "x": -1,
+            "y": -1
+          }
+        ],
+        [
+          {
+            "card": "elf_marchant",
+            "x": -2,
+            "y": -1
+          },
+          {
+            "card": "dwarf_gem",
+            "x": 0,
+            "y": -1
+          }
+        ],
+        []
+      ],
+      "hand": [
+        "dwarf_cook",
+        "human_great_marchant",
+        "dwarf_gem",
+        "elf_marchant"
+      ],
+      "board": [
+        {
+          "card": "demon_pest",
+          "x": 0,
+          "y": 0
+        }
+      ]
+    },
+    {
+      "stateId": 17,
+      "prefix": "results",
+      "seed": 1030000,
+      "count": 5,
+      "round": 4,
+      "choices": {
+        "baseline1": "tech",
+        "baseline3": "tech",
+        "expanded1": "tech",
+        "expanded3": "tech"
+      },
+      "bestExisting": "balanced",
+      "bestExtra": "extra-tech",
+      "extraAdvantage": -1359.3333333333333,
+      "selectedExpanded3Audit": -336.3333333333333,
+      "selectedBaseline3Audit": -336.3333333333333,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        []
+      ],
+      "hand": [
+        "golem_gold",
+        "elf_mistic",
+        "goblin_junk"
+      ],
+      "board": [
+        {
+          "card": "demon_pest",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "human_great_marchant",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "elf_marchant",
+          "x": -1,
+          "y": -1
+        },
+        {
+          "card": "dwarf_gem",
+          "x": -1,
+          "y": -2
+        },
+        {
+          "card": "dwarf_cook",
+          "x": -2,
+          "y": -2
+        }
+      ]
+    },
+    {
+      "stateId": 18,
+      "prefix": "results",
+      "seed": 1030001,
+      "count": 5,
+      "round": 2,
+      "choices": {
+        "baseline1": "war",
+        "baseline3": "rush",
+        "expanded1": "war",
+        "expanded3": "rush"
+      },
+      "bestExisting": "tech",
+      "bestExtra": "extra-war",
+      "extraAdvantage": -851.3333333333334,
+      "selectedExpanded3Audit": -1007,
+      "selectedBaseline3Audit": -1007,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [
+          {
+            "card": "dwarf_cook",
+            "x": -1,
+            "y": 0
+          },
+          {
+            "card": "dwarf_cook",
+            "x": -2,
+            "y": 0
+          }
+        ],
+        [
+          {
+            "card": "elf_saint",
+            "x": -2,
+            "y": -1
+          }
+        ],
+        [
+          {
+            "card": "goblin_strategist",
+            "x": -2,
+            "y": -2
+          }
+        ]
+      ],
+      "hand": [
+        "dwarf_cook",
+        "elf_saint",
+        "goblin_strategist",
+        "dwarf_cook"
+      ],
+      "board": [
+        {
+          "card": "demon_pest",
+          "x": 0,
+          "y": 0
+        }
+      ]
+    },
+    {
+      "stateId": 19,
+      "prefix": "results",
+      "seed": 1030001,
+      "count": 5,
+      "round": 4,
+      "choices": {
+        "baseline1": "tech",
+        "baseline3": "plan-1",
+        "expanded1": "extra-bonus",
+        "expanded3": "extra-bonus"
+      },
+      "bestExisting": "tech",
+      "bestExtra": "extra-war",
+      "extraAdvantage": -6,
+      "selectedExpanded3Audit": 1016,
+      "selectedBaseline3Audit": 849.3333333333334,
+      "selectedDifference": 166.66666666666663,
+      "bestExtraSchedule": [
+        [
+          {
+            "card": "dwarf_cook",
+            "x": 0,
+            "y": 2
+          }
+        ]
+      ],
+      "hand": [
+        "elf_saint",
+        "dwarf_cook",
+        "human_king"
+      ],
+      "board": [
+        {
+          "card": "demon_pest",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "goblin_strategist",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "human_marchant",
+          "x": -2,
+          "y": 0
+        },
+        {
+          "card": "dwarf_cook",
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    {
+      "stateId": 20,
+      "prefix": "results",
+      "seed": 1030002,
+      "count": 5,
+      "round": 2,
+      "choices": {
+        "baseline1": "rush",
+        "baseline3": "rush",
+        "expanded1": "rush",
+        "expanded3": "rush"
+      },
+      "bestExisting": "savings",
+      "bestExtra": "extra-economy",
+      "extraAdvantage": -1373.3333333333333,
+      "selectedExpanded3Audit": -344.3333333333333,
+      "selectedBaseline3Audit": -344.3333333333333,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [
+          {
+            "card": "dwarf_cook",
+            "x": -1,
+            "y": 0
+          }
+        ],
+        [
+          {
+            "card": "human_smith",
+            "x": -1,
+            "y": -1
+          }
+        ],
+        []
+      ],
+      "hand": [
+        "dwarf_cook",
+        "elf_saint",
+        "human_smith",
+        "golem_gold"
+      ],
+      "board": [
+        {
+          "card": "demon_pest",
+          "x": 0,
+          "y": 0
+        }
+      ]
+    },
+    {
+      "stateId": 21,
+      "prefix": "results",
+      "seed": 1030002,
+      "count": 5,
+      "round": 4,
+      "choices": {
+        "baseline1": "balanced",
+        "baseline3": "balanced",
+        "expanded1": "balanced",
+        "expanded3": "balanced"
+      },
+      "bestExisting": "balanced",
+      "bestExtra": "extra-economy",
+      "extraAdvantage": -514,
+      "selectedExpanded3Audit": -519,
+      "selectedBaseline3Audit": -519,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [],
+        [
+          {
+            "card": "human_smith",
+            "x": -2,
+            "y": 0
+          }
+        ]
+      ],
+      "hand": [
+        "human_smith",
+        "demon_eye",
+        "elf_archer"
+      ],
+      "board": [
+        {
+          "card": "demon_pest",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "dwarf_cook",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "elf_saint",
+          "x": -1,
+          "y": -1
+        },
+        {
+          "card": "elf_saint",
+          "x": -2,
+          "y": -1
+        },
+        {
+          "card": "elf_mistic",
+          "x": -2,
+          "y": -2
+        }
+      ]
+    },
+    {
+      "stateId": 22,
+      "prefix": "results",
+      "seed": 1030003,
+      "count": 5,
+      "round": 2,
+      "choices": {
+        "baseline1": "balanced",
+        "baseline3": "economy",
+        "expanded1": "balanced",
+        "expanded3": "economy"
+      },
+      "bestExisting": "faith",
+      "bestExtra": "extra-economy",
+      "extraAdvantage": -21,
+      "selectedExpanded3Audit": -1084,
+      "selectedBaseline3Audit": -1084,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [
+          {
+            "card": "human_saint",
+            "x": -1,
+            "y": 0
+          }
+        ],
+        [
+          {
+            "card": "demon_eye",
+            "x": -1,
+            "y": -1
+          }
+        ],
+        [
+          {
+            "card": "golem_king",
+            "x": -1,
+            "y": -2
+          }
+        ],
+        [
+          {
+            "card": "goblin_junk",
+            "x": 0,
+            "y": -2
+          }
+        ]
+      ],
+      "hand": [
+        "demon_eye",
+        "human_saint",
+        "goblin_junk",
+        "golem_king"
+      ],
+      "board": [
+        {
+          "card": "human_smith",
+          "x": 0,
+          "y": 0
+        }
+      ]
+    },
+    {
+      "stateId": 23,
+      "prefix": "results",
+      "seed": 1030003,
+      "count": 5,
+      "round": 4,
+      "choices": {
+        "baseline1": "balanced",
+        "baseline3": "balanced",
+        "expanded1": "balanced",
+        "expanded3": "balanced"
+      },
+      "bestExisting": "plan-1",
+      "bestExtra": "extra-tech",
+      "extraAdvantage": -1,
+      "selectedExpanded3Audit": -1083,
+      "selectedBaseline3Audit": -1083,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [
+          {
+            "card": "human_saint",
+            "x": 0,
+            "y": -1
+          },
+          {
+            "card": "golem_gold",
+            "x": 0,
+            "y": -2
+          }
+        ]
+      ],
+      "hand": [
+        "demon_eye",
+        "human_saint",
+        "golem_king",
+        "golem_gold"
+      ],
+      "board": [
+        {
+          "card": "human_smith",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "goblin_junk",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "dwarf_pugilist",
+          "x": -1,
+          "y": -1
+        },
+        {
+          "card": "goblin_saint",
+          "x": -2,
+          "y": -1
+        }
+      ]
+    },
+    {
+      "stateId": 24,
+      "prefix": "results",
+      "seed": 1030004,
+      "count": 5,
+      "round": 2,
+      "choices": {
+        "baseline1": "savings",
+        "baseline3": "savings",
+        "expanded1": "savings",
+        "expanded3": "savings"
+      },
+      "bestExisting": "savings",
+      "bestExtra": "extra-economy",
+      "extraAdvantage": -1398.3333333333333,
+      "selectedExpanded3Audit": 336.3333333333333,
+      "selectedBaseline3Audit": 336.3333333333333,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [
+          {
+            "card": "dwarf_gem",
+            "x": -1,
+            "y": -1
+          }
+        ],
+        [
+          {
+            "card": "human_marchant",
+            "x": -1,
+            "y": -2
+          },
+          {
+            "card": "human_knight",
+            "x": -2,
+            "y": -2
+          }
+        ],
+        [],
+        []
+      ],
+      "hand": [
+        "dwarf_gem",
+        "human_marchant",
+        "human_knight"
+      ],
+      "board": [
+        {
+          "card": "goblin_lunatic",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "elf_follower",
+          "x": 0,
+          "y": -1
+        }
+      ]
+    },
+    {
+      "stateId": 25,
+      "prefix": "results",
+      "seed": 1030004,
+      "count": 5,
+      "round": 4,
+      "choices": {
+        "baseline1": "plan-0",
+        "baseline3": "plan-0",
+        "expanded1": "plan-0",
+        "expanded3": "plan-0"
+      },
+      "bestExisting": "balanced",
+      "bestExtra": "extra-economy",
+      "extraAdvantage": -5,
+      "selectedExpanded3Audit": -1040,
+      "selectedBaseline3Audit": -1040,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [
+          {
+            "card": "human_marchant",
+            "x": -2,
+            "y": 0
+          },
+          {
+            "card": "human_knight",
+            "x": -2,
+            "y": -2
+          }
+        ],
+        []
+      ],
+      "hand": [
+        "human_knight",
+        "goblin_junk",
+        "human_marchant",
+        "human_sorcerer"
+      ],
+      "board": [
+        {
+          "card": "goblin_lunatic",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "elf_follower",
+          "x": 0,
+          "y": -1
+        },
+        {
+          "card": "dwarf_gem",
+          "x": -1,
+          "y": -1
+        },
+        {
+          "card": "human_marchant",
+          "x": -2,
+          "y": -1
+        }
+      ]
+    },
+    {
+      "stateId": 26,
+      "prefix": "results",
+      "seed": 1030005,
+      "count": 5,
+      "round": 2,
+      "choices": {
+        "baseline1": "plan-0",
+        "baseline3": "plan-0",
+        "expanded1": "plan-0",
+        "expanded3": "plan-0"
+      },
+      "bestExisting": "tech",
+      "bestExtra": "extra-economy",
+      "extraAdvantage": -665.6666666666667,
+      "selectedExpanded3Audit": -1017,
+      "selectedBaseline3Audit": -1017,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [
+          {
+            "card": "human_king",
+            "x": -1,
+            "y": 0
+          }
+        ],
+        [
+          {
+            "card": "human_knight",
+            "x": -2,
+            "y": 0
+          }
+        ],
+        [],
+        []
+      ],
+      "hand": [
+        "elf_mistic",
+        "human_knight",
+        "human_king"
+      ],
+      "board": [
+        {
+          "card": "human_great_marchant",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "goblin_saint",
+          "x": 0,
+          "y": -1
+        }
+      ]
+    },
+    {
+      "stateId": 27,
+      "prefix": "results",
+      "seed": 1030005,
+      "count": 5,
+      "round": 4,
+      "choices": {
+        "baseline1": "bonus",
+        "baseline3": "bonus",
+        "expanded1": "bonus",
+        "expanded3": "bonus"
+      },
+      "bestExisting": "plan-0",
+      "bestExtra": "extra-economy",
+      "extraAdvantage": 0,
+      "selectedExpanded3Audit": -1037,
+      "selectedBaseline3Audit": -1037,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        []
+      ],
+      "hand": [
+        "human_sorcerer",
+        "golem_stollow",
+        "elf_archer"
+      ],
+      "board": [
+        {
+          "card": "human_great_marchant",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "goblin_saint",
+          "x": 0,
+          "y": -1
+        },
+        {
+          "card": "human_king",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "human_knight",
+          "x": -2,
+          "y": 0
+        },
+        {
+          "card": "dwarf_cook",
+          "x": 0,
+          "y": -2
+        }
+      ]
+    },
+    {
+      "stateId": 28,
+      "prefix": "results",
+      "seed": 1030006,
+      "count": 5,
+      "round": 2,
+      "choices": {
+        "baseline1": "balanced",
+        "baseline3": "war",
+        "expanded1": "balanced",
+        "expanded3": "war"
+      },
+      "bestExisting": "war",
+      "bestExtra": "extra-tech",
+      "extraAdvantage": -45,
+      "selectedExpanded3Audit": -1026,
+      "selectedBaseline3Audit": -1026,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [
+          {
+            "card": "dwarf_alchemist",
+            "x": -1,
+            "y": 0
+          },
+          {
+            "card": "dwarf_pugilist",
+            "x": -1,
+            "y": -1
+          }
+        ],
+        [
+          {
+            "card": "elf_mistic",
+            "x": -2,
+            "y": 0
+          }
+        ],
+        [],
+        []
+      ],
+      "hand": [
+        "dwarf_alchemist",
+        "dwarf_pugilist",
+        "elf_mistic"
+      ],
+      "board": [
+        {
+          "card": "goblin_great_soldier",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "goblin_great_soldier",
+          "x": 0,
+          "y": -1
+        }
+      ]
+    },
+    {
+      "stateId": 29,
+      "prefix": "results",
+      "seed": 1030006,
+      "count": 5,
+      "round": 4,
+      "choices": {
+        "baseline1": "balanced",
+        "baseline3": "war",
+        "expanded1": "balanced",
+        "expanded3": "war"
+      },
+      "bestExisting": "rush",
+      "bestExtra": "extra-economy",
+      "extraAdvantage": -46,
+      "selectedExpanded3Audit": -1071,
+      "selectedBaseline3Audit": -1071,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [
+          {
+            "card": "dwarf_alchemist",
+            "x": -2,
+            "y": -1
+          }
+        ],
+        [],
+        []
+      ],
+      "hand": [
+        "dwarf_alchemist",
+        "dwarf_pugilist",
+        "elf_mistic"
+      ],
+      "board": [
+        {
+          "card": "goblin_great_soldier",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "goblin_great_soldier",
+          "x": 0,
+          "y": -1
+        },
+        {
+          "card": "goblin_scavenger",
+          "x": -1,
+          "y": -1
+        },
+        {
+          "card": "elf_marchant",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "human_smith",
+          "x": -2,
+          "y": 0
+        },
+        {
+          "card": "goblin_soldier",
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    {
+      "stateId": 30,
+      "prefix": "results",
+      "seed": 1030007,
+      "count": 5,
+      "round": 2,
+      "choices": {
+        "baseline1": "savings",
+        "baseline3": "plan-1",
+        "expanded1": "savings",
+        "expanded3": "plan-1"
+      },
+      "bestExisting": "war",
+      "bestExtra": "extra-war",
+      "extraAdvantage": -693.6666666666666,
+      "selectedExpanded3Audit": -1019,
+      "selectedBaseline3Audit": -1019,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [
+          {
+            "card": "human_great_marchant",
+            "x": -1,
+            "y": -1
+          }
+        ],
+        [
+          {
+            "card": "elf_caster",
+            "x": -1,
+            "y": -2
+          }
+        ],
+        []
+      ],
+      "hand": [
+        "elf_caster",
+        "dwarf_saint",
+        "human_great_marchant"
+      ],
+      "board": [
+        {
+          "card": "goblin_lunatic",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "elf_follower",
+          "x": 0,
+          "y": -1
+        }
+      ]
+    },
+    {
+      "stateId": 31,
+      "prefix": "results",
+      "seed": 1030007,
+      "count": 5,
+      "round": 4,
+      "choices": {
+        "baseline1": "savings",
+        "baseline3": "plan-1",
+        "expanded1": "savings",
+        "expanded3": "plan-1"
+      },
+      "bestExisting": "bonus",
+      "bestExtra": "extra-economy",
+      "extraAdvantage": -510.00000000000006,
+      "selectedExpanded3Audit": -334.3333333333333,
+      "selectedBaseline3Audit": -334.3333333333333,
+      "selectedDifference": 0,
+      "bestExtraSchedule": [
+        [
+          {
+            "card": "dwarf_saint",
+            "x": 0,
+            "y": -2
+          },
+          {
+            "card": "human_knight",
+            "x": -1,
+            "y": -2
+          }
+        ],
+        []
+      ],
+      "hand": [
+        "elf_caster",
+        "dwarf_saint",
+        "goblin_king",
+        "human_knight"
+      ],
+      "board": [
+        {
+          "card": "goblin_lunatic",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "elf_follower",
+          "x": 0,
+          "y": -1
+        },
+        {
+          "card": "human_great_marchant",
+          "x": -1,
+          "y": -1
+        },
+        {
+          "card": "golem_cristal",
+          "x": 1,
+          "y": 0
+        }
+      ]
+    }
+  ]
+}

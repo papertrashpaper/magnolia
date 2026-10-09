@@ -1,0 +1,50 @@
+{
+  "results": {
+    "games": 320,
+    "rawBytes": 4508812,
+    "rawSha256": "9cd450047bfdb806d7a6739e1658cd4083d9c4bac6a4b11c84a9dea5f08cf8d2",
+    "bytes": 230812,
+    "sha256": "1ba86c0c6a0fbc908b8c9f37b15d85d0f60300c70958c703ac78f1b6dc9aa368",
+    "parts": [
+      {
+        "file": "results.jsonl.gz.part000",
+        "bytes": 98304,
+        "sha256": "18fd3a679353d61eee36a3d710b5639505d00750bb31d32ccd1c1a9e3460ecc5"
+      },
+      {
+        "file": "results.jsonl.gz.part001",
+        "bytes": 98304,
+        "sha256": "7bde3320085cb8249caa1abceaa8e26ac892a22aae0384e3cec4dca867a4360a"
+      },
+      {
+        "file": "results.jsonl.gz.part002",
+        "bytes": 34204,
+        "sha256": "a98b9d8e78bb977ceb7ce2f648e49d28b8da640759bfb0dbcb272f84a1294ef0"
+      }
+    ]
+  },
+  "validation": {
+    "games": 320,
+    "rawBytes": 4529703,
+    "rawSha256": "ee0d1586a03bb2749abfb62f4691df0a0664cda3c01d857f8f45a472b2d54f8d",
+    "bytes": 231514,
+    "sha256": "d1738b6ec2d02dbfc0ee2169b548bd1b407b39fb725788978f2c92c5b62a9eb0",
+    "parts": [
+      {
+        "file": "validation.jsonl.gz.part000",
+        "bytes": 98304,
+        "sha256": "cd150c17bf62452a39dd31c656a2734e1488277c86b613b718b85c1a3c63b2cd"
+      },
+      {
+        "file": "validation.jsonl.gz.part001",
+        "bytes": 98304,
+        "sha256": "6e9c8046d2a6e8d1cb63097b5fbfff4b6d105606e2e9b89f8efce3a53e91672b"
+      },
+      {
+        "file": "validation.jsonl.gz.part002",
+        "bytes": 34906,
+        "sha256": "03a33f1f96b03f9c8f41ce56486b7943f765df1ca6138fded6cbec4aa92ec39c"
+      }
+    ]
+  }
+}

@@ -1,0 +1,3769 @@
+{
+  "schema": 1,
+  "createdAt": "2026-10-09T00:12:07.842Z",
+  "runtime": "v24.19.0",
+  "games": 320,
+  "source": {
+    "public/js/cards.js": "bd2c8db4bf5714a149ec49af58a32a8efa467caae28d5117047aa0e07653c98c",
+    "public/js/engine.js": "ecd564615043d703fd1d496a110463911a59425716ae7098a74034e55f832032",
+    "public/js/cpu.js": "5d2c9a297bf8d17444cdcb2a4b203e137edc6e85685a2def1fa8415ef10127c8",
+    "public/js/objectives.js": "81f1e493a7c21c3cdaa6d76e4fcc6a6b68ba64d5ee4879c7dafda6da43fccc27",
+    "public/js/review.js": "56a55137323478bfb1c7ab655bcdec1352685d33723259c4919411222793f6bd",
+    "scripts/planning-strategies.mjs": "ff501e5b40ab9ca09a70025fe59bd1251d827141915f256b52deb80db73bd112",
+    "scripts/long-term-strategies.mjs": "685d3fad0012dd8b27b794b9d426cf7111da48ca8555af028d077945e6213c2a",
+    "scripts/benchmark-long-term.mjs": "94bfea29f084c6747bf028ac3ab3ada32e13c1e523a69ba561634563fc249ce1",
+    "scripts/adaptive-strategies.mjs": "41636deb581fa175907fdd2a3ae5fd5b7fe71add0ac5fd55b9286a64c765947a",
+    "scripts/strategy-policies.mjs": "689a6f6cb9eca6080b02b6ef2dda885af038c4e167381335d2a5fbab33172849"
+  },
+  "options": {
+    "worlds": 1,
+    "rounds": 4,
+    "beam": 4,
+    "rolloutBeam": 1,
+    "finalists": 2
+  },
+  "cards": [
+    {
+      "id": "human_knight",
+      "name": "人間の騎士",
+      "copies": 3,
+      "cost": 3,
+      "power": 6,
+      "race": "human",
+      "job": "warrior",
+      "effects": [
+        {
+          "phase": "war",
+          "stat": "vp",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "human_marchant",
+      "name": "人間の行商",
+      "copies": 3,
+      "cost": 1,
+      "power": 3,
+      "race": "human",
+      "job": "merchant",
+      "effects": [
+        {
+          "phase": "income",
+          "stat": "gold",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "human_saint",
+      "name": "人間の聖職者",
+      "copies": 3,
+      "cost": 3,
+      "power": 2,
+      "race": "human",
+      "job": "priest",
+      "effects": [
+        {
+          "phase": "develop",
+          "stat": "faith",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "vp",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "faithLevel"
+        }
+      ]
+    },
+    {
+      "id": "human_sorcerer",
+      "name": "人間の呪い師",
+      "copies": 3,
+      "cost": 3,
+      "power": 4,
+      "race": "human",
+      "job": "mage",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "faith",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "power",
+          "stat": "power",
+          "amount": 1,
+          "scale": "faithLevel"
+        }
+      ]
+    },
+    {
+      "id": "human_smith",
+      "name": "人間の大工",
+      "copies": 3,
+      "cost": 5,
+      "power": 2,
+      "race": "human",
+      "job": "artisan",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "tech",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "vp",
+          "stat": "vp",
+          "amount": 2,
+          "scale": "techLevel"
+        }
+      ]
+    },
+    {
+      "id": "human_great_marchant",
+      "name": "人間の大商人",
+      "copies": 2,
+      "cost": 2,
+      "power": 2,
+      "race": "human",
+      "job": "merchant",
+      "effects": [
+        {
+          "phase": "income",
+          "stat": "gold",
+          "amount": 2,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "human_undertaker",
+      "name": "人間の葬儀屋",
+      "copies": 2,
+      "cost": 3,
+      "power": 2,
+      "race": "human",
+      "job": "artisan",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "tech",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "noWar",
+          "stat": "vp",
+          "amount": 2,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "human_king",
+      "name": "人間の君主",
+      "copies": 1,
+      "cost": 6,
+      "power": 6,
+      "race": "human",
+      "job": "ruler",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "race"
+        },
+        {
+          "phase": "final",
+          "stat": "tripleGold",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "dwarf_pugilist",
+      "name": "ドワーフの拳闘士",
+      "copies": 3,
+      "cost": 2,
+      "power": 5,
+      "race": "dwarf",
+      "job": "warrior",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "tech",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "dwarf_gem",
+      "name": "ドワーフの鉱石屋",
+      "copies": 3,
+      "cost": 3,
+      "power": 4,
+      "race": "dwarf",
+      "job": "merchant",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "tech",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "income",
+          "stat": "gold",
+          "amount": 1,
+          "scale": "techLevel"
+        }
+      ]
+    },
+    {
+      "id": "dwarf_cook",
+      "name": "ドワーフの料理人",
+      "copies": 3,
+      "cost": 2,
+      "power": 1,
+      "race": "dwarf",
+      "job": "artisan",
+      "effects": [
+        {
+          "phase": "develop",
+          "stat": "tech",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "vp",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "techLevel"
+        }
+      ]
+    },
+    {
+      "id": "dwarf_saint",
+      "name": "ドワーフの神官",
+      "copies": 3,
+      "cost": 4,
+      "power": 6,
+      "race": "dwarf",
+      "job": "priest",
+      "effects": [
+        {
+          "phase": "develop",
+          "stat": "tech",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "develop",
+          "stat": "faith",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "dwarf_alchemist",
+      "name": "ドワーフの錬金術師",
+      "copies": 3,
+      "cost": 2,
+      "power": 2,
+      "race": "dwarf",
+      "job": "mage",
+      "effects": [
+        {
+          "phase": "power",
+          "stat": "power",
+          "amount": 2,
+          "scale": "faithLevel"
+        },
+        {
+          "phase": "income",
+          "stat": "gold",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "dwarf_beer",
+      "name": "ドワーフのビール職人",
+      "copies": 2,
+      "cost": 6,
+      "power": 2,
+      "race": "dwarf",
+      "job": "artisan",
+      "effects": [
+        {
+          "phase": "vp",
+          "stat": "vp",
+          "amount": 3,
+          "scale": "techLevel"
+        }
+      ]
+    },
+    {
+      "id": "dwarf_gardian",
+      "name": "ドワーフの聖堂守り",
+      "copies": 2,
+      "cost": 4,
+      "power": 5,
+      "race": "dwarf",
+      "job": "priest",
+      "effects": [
+        {
+          "phase": "income",
+          "stat": "gold",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "vp",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "cost4Plus"
+        }
+      ]
+    },
+    {
+      "id": "dwarf_king",
+      "name": "ドワーフの王",
+      "copies": 1,
+      "cost": 7,
+      "power": 7,
+      "race": "dwarf",
+      "job": "ruler",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "tech",
+          "amount": 5,
+          "scale": null
+        },
+        {
+          "phase": "place",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "race"
+        }
+      ]
+    },
+    {
+      "id": "elf_archer",
+      "name": "エルフの射手",
+      "copies": 3,
+      "cost": 2,
+      "power": 3,
+      "race": "elf",
+      "job": "warrior",
+      "effects": [
+        {
+          "phase": "alwaysPower",
+          "stat": "power",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "elf_marchant",
+      "name": "エルフの交易人",
+      "copies": 3,
+      "cost": 1,
+      "power": 2,
+      "race": "elf",
+      "job": "merchant",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "faith",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "income",
+          "stat": "gold",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "elf_artist",
+      "name": "エルフの芸術家",
+      "copies": 3,
+      "cost": 3,
+      "power": 1,
+      "race": "elf",
+      "job": "artisan",
+      "effects": [
+        {
+          "phase": "vp",
+          "stat": "vp",
+          "amount": 2,
+          "scale": "techLevel"
+        }
+      ]
+    },
+    {
+      "id": "elf_mistic",
+      "name": "エルフの神秘家",
+      "copies": 3,
+      "cost": 2,
+      "power": 2,
+      "race": "elf",
+      "job": "mage",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "faith",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "power",
+          "stat": "power",
+          "amount": 2,
+          "scale": "faithLevel"
+        }
+      ]
+    },
+    {
+      "id": "elf_saint",
+      "name": "エルフの祈り手",
+      "copies": 3,
+      "cost": 1,
+      "power": 2,
+      "race": "elf",
+      "job": "priest",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "faithLevel"
+        },
+        {
+          "phase": "develop",
+          "stat": "faith",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "elf_caster",
+      "name": "エルフの魔術師",
+      "copies": 2,
+      "cost": 6,
+      "power": 3,
+      "race": "elf",
+      "job": "mage",
+      "effects": [
+        {
+          "phase": "power",
+          "stat": "power",
+          "amount": 3,
+          "scale": "faithLevel"
+        },
+        {
+          "phase": "war",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "faithLevel"
+        }
+      ]
+    },
+    {
+      "id": "elf_queen",
+      "name": "エルフの女王",
+      "copies": 1,
+      "cost": 7,
+      "power": 7,
+      "race": "elf",
+      "job": "ruler",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "faith",
+          "amount": 5,
+          "scale": null
+        },
+        {
+          "phase": "place",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "race"
+        }
+      ]
+    },
+    {
+      "id": "elf_follower",
+      "name": "エルフの信奉者",
+      "copies": 2,
+      "cost": 3,
+      "power": 3,
+      "race": "elf",
+      "job": "priest",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "faith",
+          "amount": 2,
+          "scale": null
+        },
+        {
+          "phase": "vp",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "faithLevel"
+        }
+      ]
+    },
+    {
+      "id": "goblin_soldier",
+      "name": "ゴブリンの兵士",
+      "copies": 3,
+      "cost": 1,
+      "power": 4,
+      "race": "goblin",
+      "job": "warrior",
+      "effects": [
+        {
+          "phase": "war",
+          "stat": "vp",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "goblin_scavenger",
+      "name": "ゴブリンのゴミ売り",
+      "copies": 3,
+      "cost": 2,
+      "power": 3,
+      "race": "goblin",
+      "job": "merchant",
+      "effects": [
+        {
+          "phase": "war",
+          "stat": "vp",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "income",
+          "stat": "gold",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "goblin_junk",
+      "name": "ゴブリンのガラクタ集め",
+      "copies": 3,
+      "cost": 2,
+      "power": 4,
+      "race": "goblin",
+      "job": "artisan",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "tech",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "war",
+          "stat": "vp",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "goblin_saint",
+      "name": "ゴブリンの祈祷師",
+      "copies": 3,
+      "cost": 1,
+      "power": 3,
+      "race": "goblin",
+      "job": "mage",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "faith",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "power",
+          "stat": "power",
+          "amount": 1,
+          "scale": "faithLevel"
+        }
+      ]
+    },
+    {
+      "id": "goblin_lunatic",
+      "name": "ゴブリンの錯乱者",
+      "copies": 3,
+      "cost": 2,
+      "power": 2,
+      "race": "goblin",
+      "job": "priest",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "faith",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "vp",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "faithLevel"
+        }
+      ]
+    },
+    {
+      "id": "goblin_great_soldier",
+      "name": "ゴブリンの百人長",
+      "copies": 2,
+      "cost": 2,
+      "power": 5,
+      "race": "goblin",
+      "job": "warrior",
+      "effects": [
+        {
+          "phase": "war",
+          "stat": "vp",
+          "amount": 2,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "goblin_strategist",
+      "name": "ゴブリンの戦術家",
+      "copies": 2,
+      "cost": 4,
+      "power": 4,
+      "race": "goblin",
+      "job": "mage",
+      "effects": [
+        {
+          "phase": "vp",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "basePower4Plus"
+        }
+      ]
+    },
+    {
+      "id": "goblin_king",
+      "name": "ゴブリンの族長",
+      "copies": 1,
+      "cost": 8,
+      "power": 2,
+      "race": "goblin",
+      "job": "ruler",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "race"
+        },
+        {
+          "phase": "vp",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "cost3Minus"
+        }
+      ]
+    },
+    {
+      "id": "golem_iron",
+      "name": "鉄のゴーレム",
+      "copies": 3,
+      "cost": 2,
+      "power": 4,
+      "race": "golem",
+      "job": "warrior",
+      "effects": [
+        {
+          "phase": "power",
+          "stat": "power",
+          "amount": 1,
+          "scale": "techLevel"
+        },
+        {
+          "phase": "power",
+          "stat": "power",
+          "amount": 1,
+          "scale": "faithLevel"
+        }
+      ]
+    },
+    {
+      "id": "golem_gold",
+      "name": "黄金のゴーレム",
+      "copies": 3,
+      "cost": 2,
+      "power": 4,
+      "race": "golem",
+      "job": "merchant",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "gold",
+          "amount": 1,
+          "scale": "jobTypes"
+        }
+      ]
+    },
+    {
+      "id": "golem_stollow",
+      "name": "藁のゴーレム",
+      "copies": 3,
+      "cost": 5,
+      "power": 4,
+      "race": "golem",
+      "job": "mage",
+      "effects": [
+        {
+          "phase": "power",
+          "stat": "power",
+          "amount": 2,
+          "scale": "faithLevel"
+        },
+        {
+          "phase": "income",
+          "stat": "gold",
+          "amount": 2,
+          "scale": "techLevel"
+        }
+      ]
+    },
+    {
+      "id": "golem_cristal",
+      "name": "水晶のゴーレム",
+      "copies": 2,
+      "cost": 6,
+      "power": 1,
+      "race": "golem",
+      "job": "priest",
+      "effects": [
+        {
+          "phase": "vp",
+          "stat": "vp",
+          "amount": 2,
+          "scale": "techLevel"
+        },
+        {
+          "phase": "vp",
+          "stat": "vp",
+          "amount": 2,
+          "scale": "faithLevel"
+        }
+      ]
+    },
+    {
+      "id": "golem_king",
+      "name": "ゴーレムの王",
+      "copies": 1,
+      "cost": 6,
+      "power": 8,
+      "race": "golem",
+      "job": "ruler",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "equalize",
+          "amount": 1,
+          "scale": null
+        },
+        {
+          "phase": "place",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "race"
+        }
+      ]
+    },
+    {
+      "id": "demon_destroy",
+      "name": "破壊のデーモン",
+      "copies": 3,
+      "cost": 5,
+      "power": 8,
+      "race": "demon",
+      "job": "warrior",
+      "effects": [
+        {
+          "phase": "war",
+          "stat": "vp",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "demon_eye",
+      "name": "眼のデーモン",
+      "copies": 3,
+      "cost": 5,
+      "power": 6,
+      "race": "demon",
+      "job": "merchant",
+      "effects": [
+        {
+          "phase": "income",
+          "stat": "gold",
+          "amount": 2,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "demon_pest",
+      "name": "疫病のデーモン",
+      "copies": 3,
+      "cost": 5,
+      "power": 4,
+      "race": "demon",
+      "job": "artisan",
+      "effects": [
+        {
+          "phase": "vp",
+          "stat": "vp",
+          "amount": 4,
+          "scale": null
+        }
+      ]
+    },
+    {
+      "id": "demon_storm",
+      "name": "嵐のデーモン",
+      "copies": 1,
+      "cost": 9,
+      "power": 13,
+      "race": "demon",
+      "job": "ruler",
+      "effects": [
+        {
+          "phase": "place",
+          "stat": "vp",
+          "amount": 1,
+          "scale": "race"
+        },
+        {
+          "phase": "persistent",
+          "stat": "doubleBonus",
+          "amount": 1,
+          "scale": null
+        }
+      ]
+    }
+  ],
+  "totalCards": 102,
+  "tasks": [
+    {
+      "id": 0,
+      "group": "natural",
+      "count": 2,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 1,
+      "group": "natural",
+      "count": 2,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 2,
+      "group": "natural",
+      "count": 2,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 3,
+      "group": "natural",
+      "count": 2,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 4,
+      "group": "natural",
+      "count": 2,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 5,
+      "group": "natural",
+      "count": 2,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 6,
+      "group": "natural",
+      "count": 2,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 7,
+      "group": "natural",
+      "count": 2,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 8,
+      "group": "natural",
+      "count": 2,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 9,
+      "group": "natural",
+      "count": 2,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 10,
+      "group": "natural",
+      "count": 2,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 11,
+      "group": "natural",
+      "count": 2,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 12,
+      "group": "natural",
+      "count": 2,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 13,
+      "group": "natural",
+      "count": 2,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 14,
+      "group": "natural",
+      "count": 2,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 15,
+      "group": "natural",
+      "count": 2,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 16,
+      "group": "natural",
+      "count": 2,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 17,
+      "group": "natural",
+      "count": 2,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 18,
+      "group": "natural",
+      "count": 2,
+      "seed": 910002,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 19,
+      "group": "natural",
+      "count": 2,
+      "seed": 910002,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 20,
+      "group": "natural",
+      "count": 2,
+      "seed": 910002,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 21,
+      "group": "natural",
+      "count": 2,
+      "seed": 910002,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 22,
+      "group": "natural",
+      "count": 2,
+      "seed": 910002,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 23,
+      "group": "natural",
+      "count": 2,
+      "seed": 910002,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 24,
+      "group": "natural",
+      "count": 2,
+      "seed": 910002,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 25,
+      "group": "natural",
+      "count": 2,
+      "seed": 910002,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 26,
+      "group": "natural",
+      "count": 2,
+      "seed": 910002,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 27,
+      "group": "natural",
+      "count": 2,
+      "seed": 910003,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 28,
+      "group": "natural",
+      "count": 2,
+      "seed": 910003,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 29,
+      "group": "natural",
+      "count": 2,
+      "seed": 910003,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 30,
+      "group": "natural",
+      "count": 2,
+      "seed": 910003,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 31,
+      "group": "natural",
+      "count": 2,
+      "seed": 910003,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 32,
+      "group": "natural",
+      "count": 2,
+      "seed": 910003,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 33,
+      "group": "natural",
+      "count": 2,
+      "seed": 910003,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 34,
+      "group": "natural",
+      "count": 2,
+      "seed": 910003,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 35,
+      "group": "natural",
+      "count": 2,
+      "seed": 910003,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 36,
+      "group": "natural",
+      "count": 2,
+      "seed": 910004,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 37,
+      "group": "natural",
+      "count": 2,
+      "seed": 910004,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 38,
+      "group": "natural",
+      "count": 2,
+      "seed": 910004,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 39,
+      "group": "natural",
+      "count": 2,
+      "seed": 910004,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 40,
+      "group": "natural",
+      "count": 2,
+      "seed": 910004,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 41,
+      "group": "natural",
+      "count": 2,
+      "seed": 910004,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 42,
+      "group": "natural",
+      "count": 2,
+      "seed": 910004,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 43,
+      "group": "natural",
+      "count": 2,
+      "seed": 910004,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 44,
+      "group": "natural",
+      "count": 2,
+      "seed": 910004,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 45,
+      "group": "natural",
+      "count": 2,
+      "seed": 910005,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 46,
+      "group": "natural",
+      "count": 2,
+      "seed": 910005,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 47,
+      "group": "natural",
+      "count": 2,
+      "seed": 910005,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 48,
+      "group": "natural",
+      "count": 2,
+      "seed": 910005,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 49,
+      "group": "natural",
+      "count": 2,
+      "seed": 910005,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 50,
+      "group": "natural",
+      "count": 2,
+      "seed": 910005,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 51,
+      "group": "natural",
+      "count": 2,
+      "seed": 910005,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 52,
+      "group": "natural",
+      "count": 2,
+      "seed": 910005,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 53,
+      "group": "natural",
+      "count": 2,
+      "seed": 910005,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 54,
+      "group": "natural",
+      "count": 2,
+      "seed": 910006,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 55,
+      "group": "natural",
+      "count": 2,
+      "seed": 910006,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 56,
+      "group": "natural",
+      "count": 2,
+      "seed": 910006,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 57,
+      "group": "natural",
+      "count": 2,
+      "seed": 910006,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 58,
+      "group": "natural",
+      "count": 2,
+      "seed": 910006,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 59,
+      "group": "natural",
+      "count": 2,
+      "seed": 910006,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 60,
+      "group": "natural",
+      "count": 2,
+      "seed": 910006,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 61,
+      "group": "natural",
+      "count": 2,
+      "seed": 910006,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 62,
+      "group": "natural",
+      "count": 2,
+      "seed": 910006,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 63,
+      "group": "natural",
+      "count": 2,
+      "seed": 910007,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 64,
+      "group": "natural",
+      "count": 2,
+      "seed": 910007,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 65,
+      "group": "natural",
+      "count": 2,
+      "seed": 910007,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 66,
+      "group": "natural",
+      "count": 2,
+      "seed": 910007,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 67,
+      "group": "natural",
+      "count": 2,
+      "seed": 910007,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 68,
+      "group": "natural",
+      "count": 2,
+      "seed": 910007,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 69,
+      "group": "natural",
+      "count": 2,
+      "seed": 910007,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 70,
+      "group": "natural",
+      "count": 2,
+      "seed": 910007,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 71,
+      "group": "natural",
+      "count": 2,
+      "seed": 910007,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 72,
+      "group": "natural",
+      "count": 3,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 73,
+      "group": "natural",
+      "count": 3,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 74,
+      "group": "natural",
+      "count": 3,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 75,
+      "group": "natural",
+      "count": 3,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 76,
+      "group": "natural",
+      "count": 3,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 77,
+      "group": "natural",
+      "count": 3,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 78,
+      "group": "natural",
+      "count": 3,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 79,
+      "group": "natural",
+      "count": 3,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 80,
+      "group": "natural",
+      "count": 3,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 81,
+      "group": "natural",
+      "count": 3,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 82,
+      "group": "natural",
+      "count": 3,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 83,
+      "group": "natural",
+      "count": 3,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 84,
+      "group": "natural",
+      "count": 3,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 85,
+      "group": "natural",
+      "count": 3,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 86,
+      "group": "natural",
+      "count": 3,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 87,
+      "group": "natural",
+      "count": 3,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 88,
+      "group": "natural",
+      "count": 3,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 89,
+      "group": "natural",
+      "count": 3,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 90,
+      "group": "natural",
+      "count": 3,
+      "seed": 910002,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 91,
+      "group": "natural",
+      "count": 3,
+      "seed": 910002,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 92,
+      "group": "natural",
+      "count": 3,
+      "seed": 910002,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 93,
+      "group": "natural",
+      "count": 3,
+      "seed": 910002,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 94,
+      "group": "natural",
+      "count": 3,
+      "seed": 910002,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 95,
+      "group": "natural",
+      "count": 3,
+      "seed": 910002,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 96,
+      "group": "natural",
+      "count": 3,
+      "seed": 910002,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 97,
+      "group": "natural",
+      "count": 3,
+      "seed": 910002,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 98,
+      "group": "natural",
+      "count": 3,
+      "seed": 910002,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 99,
+      "group": "natural",
+      "count": 3,
+      "seed": 910003,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 100,
+      "group": "natural",
+      "count": 3,
+      "seed": 910003,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 101,
+      "group": "natural",
+      "count": 3,
+      "seed": 910003,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 102,
+      "group": "natural",
+      "count": 3,
+      "seed": 910003,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 103,
+      "group": "natural",
+      "count": 3,
+      "seed": 910003,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 104,
+      "group": "natural",
+      "count": 3,
+      "seed": 910003,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 105,
+      "group": "natural",
+      "count": 3,
+      "seed": 910003,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 106,
+      "group": "natural",
+      "count": 3,
+      "seed": 910003,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 107,
+      "group": "natural",
+      "count": 3,
+      "seed": 910003,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 108,
+      "group": "natural",
+      "count": 3,
+      "seed": 910004,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 109,
+      "group": "natural",
+      "count": 3,
+      "seed": 910004,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 110,
+      "group": "natural",
+      "count": 3,
+      "seed": 910004,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 111,
+      "group": "natural",
+      "count": 3,
+      "seed": 910004,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 112,
+      "group": "natural",
+      "count": 3,
+      "seed": 910004,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 113,
+      "group": "natural",
+      "count": 3,
+      "seed": 910004,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 114,
+      "group": "natural",
+      "count": 3,
+      "seed": 910004,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 115,
+      "group": "natural",
+      "count": 3,
+      "seed": 910004,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 116,
+      "group": "natural",
+      "count": 3,
+      "seed": 910004,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 117,
+      "group": "natural",
+      "count": 3,
+      "seed": 910005,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 118,
+      "group": "natural",
+      "count": 3,
+      "seed": 910005,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 119,
+      "group": "natural",
+      "count": 3,
+      "seed": 910005,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 120,
+      "group": "natural",
+      "count": 3,
+      "seed": 910005,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 121,
+      "group": "natural",
+      "count": 3,
+      "seed": 910005,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 122,
+      "group": "natural",
+      "count": 3,
+      "seed": 910005,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 123,
+      "group": "natural",
+      "count": 3,
+      "seed": 910005,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 124,
+      "group": "natural",
+      "count": 3,
+      "seed": 910005,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 125,
+      "group": "natural",
+      "count": 3,
+      "seed": 910005,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 126,
+      "group": "natural",
+      "count": 3,
+      "seed": 910006,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 127,
+      "group": "natural",
+      "count": 3,
+      "seed": 910006,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 128,
+      "group": "natural",
+      "count": 3,
+      "seed": 910006,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 129,
+      "group": "natural",
+      "count": 3,
+      "seed": 910006,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 130,
+      "group": "natural",
+      "count": 3,
+      "seed": 910006,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 131,
+      "group": "natural",
+      "count": 3,
+      "seed": 910006,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 132,
+      "group": "natural",
+      "count": 3,
+      "seed": 910006,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 133,
+      "group": "natural",
+      "count": 3,
+      "seed": 910006,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 134,
+      "group": "natural",
+      "count": 3,
+      "seed": 910006,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 135,
+      "group": "natural",
+      "count": 3,
+      "seed": 910007,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 136,
+      "group": "natural",
+      "count": 3,
+      "seed": 910007,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 137,
+      "group": "natural",
+      "count": 3,
+      "seed": 910007,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 138,
+      "group": "natural",
+      "count": 3,
+      "seed": 910007,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 139,
+      "group": "natural",
+      "count": 3,
+      "seed": 910007,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 140,
+      "group": "natural",
+      "count": 3,
+      "seed": 910007,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 141,
+      "group": "natural",
+      "count": 3,
+      "seed": 910007,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 142,
+      "group": "natural",
+      "count": 3,
+      "seed": 910007,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 143,
+      "group": "natural",
+      "count": 3,
+      "seed": 910007,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 144,
+      "group": "natural",
+      "count": 4,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 145,
+      "group": "natural",
+      "count": 4,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 146,
+      "group": "natural",
+      "count": 4,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 147,
+      "group": "natural",
+      "count": 4,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 148,
+      "group": "natural",
+      "count": 4,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 149,
+      "group": "natural",
+      "count": 4,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 150,
+      "group": "natural",
+      "count": 4,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 151,
+      "group": "natural",
+      "count": 4,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 152,
+      "group": "natural",
+      "count": 4,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 153,
+      "group": "natural",
+      "count": 4,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 154,
+      "group": "natural",
+      "count": 4,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 155,
+      "group": "natural",
+      "count": 4,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 156,
+      "group": "natural",
+      "count": 4,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 157,
+      "group": "natural",
+      "count": 4,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 158,
+      "group": "natural",
+      "count": 4,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 159,
+      "group": "natural",
+      "count": 4,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 160,
+      "group": "natural",
+      "count": 4,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 161,
+      "group": "natural",
+      "count": 4,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 162,
+      "group": "natural",
+      "count": 4,
+      "seed": 910002,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 163,
+      "group": "natural",
+      "count": 4,
+      "seed": 910002,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 164,
+      "group": "natural",
+      "count": 4,
+      "seed": 910002,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 165,
+      "group": "natural",
+      "count": 4,
+      "seed": 910002,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 166,
+      "group": "natural",
+      "count": 4,
+      "seed": 910002,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 167,
+      "group": "natural",
+      "count": 4,
+      "seed": 910002,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 168,
+      "group": "natural",
+      "count": 4,
+      "seed": 910002,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 169,
+      "group": "natural",
+      "count": 4,
+      "seed": 910002,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 170,
+      "group": "natural",
+      "count": 4,
+      "seed": 910002,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 171,
+      "group": "natural",
+      "count": 4,
+      "seed": 910003,
+      "focal": 3,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 172,
+      "group": "natural",
+      "count": 4,
+      "seed": 910003,
+      "focal": 3,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 173,
+      "group": "natural",
+      "count": 4,
+      "seed": 910003,
+      "focal": 3,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 174,
+      "group": "natural",
+      "count": 4,
+      "seed": 910003,
+      "focal": 3,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 175,
+      "group": "natural",
+      "count": 4,
+      "seed": 910003,
+      "focal": 3,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 176,
+      "group": "natural",
+      "count": 4,
+      "seed": 910003,
+      "focal": 3,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 177,
+      "group": "natural",
+      "count": 4,
+      "seed": 910003,
+      "focal": 3,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 178,
+      "group": "natural",
+      "count": 4,
+      "seed": 910003,
+      "focal": 3,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 179,
+      "group": "natural",
+      "count": 4,
+      "seed": 910003,
+      "focal": 3,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 180,
+      "group": "natural",
+      "count": 4,
+      "seed": 910004,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 181,
+      "group": "natural",
+      "count": 4,
+      "seed": 910004,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 182,
+      "group": "natural",
+      "count": 4,
+      "seed": 910004,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 183,
+      "group": "natural",
+      "count": 4,
+      "seed": 910004,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 184,
+      "group": "natural",
+      "count": 4,
+      "seed": 910004,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 185,
+      "group": "natural",
+      "count": 4,
+      "seed": 910004,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 186,
+      "group": "natural",
+      "count": 4,
+      "seed": 910004,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 187,
+      "group": "natural",
+      "count": 4,
+      "seed": 910004,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 188,
+      "group": "natural",
+      "count": 4,
+      "seed": 910004,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 189,
+      "group": "natural",
+      "count": 4,
+      "seed": 910005,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 190,
+      "group": "natural",
+      "count": 4,
+      "seed": 910005,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 191,
+      "group": "natural",
+      "count": 4,
+      "seed": 910005,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 192,
+      "group": "natural",
+      "count": 4,
+      "seed": 910005,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 193,
+      "group": "natural",
+      "count": 4,
+      "seed": 910005,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 194,
+      "group": "natural",
+      "count": 4,
+      "seed": 910005,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 195,
+      "group": "natural",
+      "count": 4,
+      "seed": 910005,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 196,
+      "group": "natural",
+      "count": 4,
+      "seed": 910005,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 197,
+      "group": "natural",
+      "count": 4,
+      "seed": 910005,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 198,
+      "group": "natural",
+      "count": 4,
+      "seed": 910006,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 199,
+      "group": "natural",
+      "count": 4,
+      "seed": 910006,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 200,
+      "group": "natural",
+      "count": 4,
+      "seed": 910006,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 201,
+      "group": "natural",
+      "count": 4,
+      "seed": 910006,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 202,
+      "group": "natural",
+      "count": 4,
+      "seed": 910006,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 203,
+      "group": "natural",
+      "count": 4,
+      "seed": 910006,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 204,
+      "group": "natural",
+      "count": 4,
+      "seed": 910006,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 205,
+      "group": "natural",
+      "count": 4,
+      "seed": 910006,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 206,
+      "group": "natural",
+      "count": 4,
+      "seed": 910006,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 207,
+      "group": "natural",
+      "count": 4,
+      "seed": 910007,
+      "focal": 3,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 208,
+      "group": "natural",
+      "count": 4,
+      "seed": 910007,
+      "focal": 3,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 209,
+      "group": "natural",
+      "count": 4,
+      "seed": 910007,
+      "focal": 3,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 210,
+      "group": "natural",
+      "count": 4,
+      "seed": 910007,
+      "focal": 3,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 211,
+      "group": "natural",
+      "count": 4,
+      "seed": 910007,
+      "focal": 3,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 212,
+      "group": "natural",
+      "count": 4,
+      "seed": 910007,
+      "focal": 3,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 213,
+      "group": "natural",
+      "count": 4,
+      "seed": 910007,
+      "focal": 3,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 214,
+      "group": "natural",
+      "count": 4,
+      "seed": 910007,
+      "focal": 3,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 215,
+      "group": "natural",
+      "count": 4,
+      "seed": 910007,
+      "focal": 3,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 216,
+      "group": "natural",
+      "count": 5,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 217,
+      "group": "natural",
+      "count": 5,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 218,
+      "group": "natural",
+      "count": 5,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 219,
+      "group": "natural",
+      "count": 5,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 220,
+      "group": "natural",
+      "count": 5,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 221,
+      "group": "natural",
+      "count": 5,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 222,
+      "group": "natural",
+      "count": 5,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 223,
+      "group": "natural",
+      "count": 5,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 224,
+      "group": "natural",
+      "count": 5,
+      "seed": 910000,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 225,
+      "group": "natural",
+      "count": 5,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 226,
+      "group": "natural",
+      "count": 5,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 227,
+      "group": "natural",
+      "count": 5,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 228,
+      "group": "natural",
+      "count": 5,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 229,
+      "group": "natural",
+      "count": 5,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 230,
+      "group": "natural",
+      "count": 5,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 231,
+      "group": "natural",
+      "count": 5,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 232,
+      "group": "natural",
+      "count": 5,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 233,
+      "group": "natural",
+      "count": 5,
+      "seed": 910001,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 234,
+      "group": "natural",
+      "count": 5,
+      "seed": 910002,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 235,
+      "group": "natural",
+      "count": 5,
+      "seed": 910002,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 236,
+      "group": "natural",
+      "count": 5,
+      "seed": 910002,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 237,
+      "group": "natural",
+      "count": 5,
+      "seed": 910002,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 238,
+      "group": "natural",
+      "count": 5,
+      "seed": 910002,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 239,
+      "group": "natural",
+      "count": 5,
+      "seed": 910002,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 240,
+      "group": "natural",
+      "count": 5,
+      "seed": 910002,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 241,
+      "group": "natural",
+      "count": 5,
+      "seed": 910002,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 242,
+      "group": "natural",
+      "count": 5,
+      "seed": 910002,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 243,
+      "group": "natural",
+      "count": 5,
+      "seed": 910003,
+      "focal": 3,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 244,
+      "group": "natural",
+      "count": 5,
+      "seed": 910003,
+      "focal": 3,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 245,
+      "group": "natural",
+      "count": 5,
+      "seed": 910003,
+      "focal": 3,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 246,
+      "group": "natural",
+      "count": 5,
+      "seed": 910003,
+      "focal": 3,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 247,
+      "group": "natural",
+      "count": 5,
+      "seed": 910003,
+      "focal": 3,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 248,
+      "group": "natural",
+      "count": 5,
+      "seed": 910003,
+      "focal": 3,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 249,
+      "group": "natural",
+      "count": 5,
+      "seed": 910003,
+      "focal": 3,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 250,
+      "group": "natural",
+      "count": 5,
+      "seed": 910003,
+      "focal": 3,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 251,
+      "group": "natural",
+      "count": 5,
+      "seed": 910003,
+      "focal": 3,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 252,
+      "group": "natural",
+      "count": 5,
+      "seed": 910004,
+      "focal": 4,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 253,
+      "group": "natural",
+      "count": 5,
+      "seed": 910004,
+      "focal": 4,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 254,
+      "group": "natural",
+      "count": 5,
+      "seed": 910004,
+      "focal": 4,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 255,
+      "group": "natural",
+      "count": 5,
+      "seed": 910004,
+      "focal": 4,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 256,
+      "group": "natural",
+      "count": 5,
+      "seed": 910004,
+      "focal": 4,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 257,
+      "group": "natural",
+      "count": 5,
+      "seed": 910004,
+      "focal": 4,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 258,
+      "group": "natural",
+      "count": 5,
+      "seed": 910004,
+      "focal": 4,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 259,
+      "group": "natural",
+      "count": 5,
+      "seed": 910004,
+      "focal": 4,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 260,
+      "group": "natural",
+      "count": 5,
+      "seed": 910004,
+      "focal": 4,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 261,
+      "group": "natural",
+      "count": 5,
+      "seed": 910005,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 262,
+      "group": "natural",
+      "count": 5,
+      "seed": 910005,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 263,
+      "group": "natural",
+      "count": 5,
+      "seed": 910005,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 264,
+      "group": "natural",
+      "count": 5,
+      "seed": 910005,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 265,
+      "group": "natural",
+      "count": 5,
+      "seed": 910005,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 266,
+      "group": "natural",
+      "count": 5,
+      "seed": 910005,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 267,
+      "group": "natural",
+      "count": 5,
+      "seed": 910005,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 268,
+      "group": "natural",
+      "count": 5,
+      "seed": 910005,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 269,
+      "group": "natural",
+      "count": 5,
+      "seed": 910005,
+      "focal": 0,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 270,
+      "group": "natural",
+      "count": 5,
+      "seed": 910006,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 271,
+      "group": "natural",
+      "count": 5,
+      "seed": 910006,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 272,
+      "group": "natural",
+      "count": 5,
+      "seed": 910006,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 273,
+      "group": "natural",
+      "count": 5,
+      "seed": 910006,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 274,
+      "group": "natural",
+      "count": 5,
+      "seed": 910006,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 275,
+      "group": "natural",
+      "count": 5,
+      "seed": 910006,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 276,
+      "group": "natural",
+      "count": 5,
+      "seed": 910006,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 277,
+      "group": "natural",
+      "count": 5,
+      "seed": 910006,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 278,
+      "group": "natural",
+      "count": 5,
+      "seed": 910006,
+      "focal": 1,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 279,
+      "group": "natural",
+      "count": 5,
+      "seed": 910007,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "baseline"
+    },
+    {
+      "id": 280,
+      "group": "natural",
+      "count": 5,
+      "seed": 910007,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "economy"
+    },
+    {
+      "id": 281,
+      "group": "natural",
+      "count": 5,
+      "seed": 910007,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "tech"
+    },
+    {
+      "id": 282,
+      "group": "natural",
+      "count": 5,
+      "seed": 910007,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "faith"
+    },
+    {
+      "id": 283,
+      "group": "natural",
+      "count": 5,
+      "seed": 910007,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "war"
+    },
+    {
+      "id": 284,
+      "group": "natural",
+      "count": 5,
+      "seed": 910007,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "bonus"
+    },
+    {
+      "id": 285,
+      "group": "natural",
+      "count": 5,
+      "seed": 910007,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "savings"
+    },
+    {
+      "id": 286,
+      "group": "natural",
+      "count": 5,
+      "seed": 910007,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "flexible"
+    },
+    {
+      "id": 287,
+      "group": "natural",
+      "count": 5,
+      "seed": 910007,
+      "focal": 2,
+      "opponent": "balanced",
+      "arm": "committed"
+    },
+    {
+      "id": 288,
+      "group": "expert",
+      "count": 2,
+      "seed": 911000,
+      "focal": 0,
+      "opponent": "expert",
+      "arm": "baseline"
+    },
+    {
+      "id": 289,
+      "group": "expert",
+      "count": 2,
+      "seed": 911000,
+      "focal": 0,
+      "opponent": "expert",
+      "arm": "flexible"
+    },
+    {
+      "id": 290,
+      "group": "expert",
+      "count": 2,
+      "seed": 911001,
+      "focal": 1,
+      "opponent": "expert",
+      "arm": "baseline"
+    },
+    {
+      "id": 291,
+      "group": "expert",
+      "count": 2,
+      "seed": 911001,
+      "focal": 1,
+      "opponent": "expert",
+      "arm": "flexible"
+    },
+    {
+      "id": 292,
+      "group": "expert",
+      "count": 2,
+      "seed": 911002,
+      "focal": 0,
+      "opponent": "expert",
+      "arm": "baseline"
+    },
+    {
+      "id": 293,
+      "group": "expert",
+      "count": 2,
+      "seed": 911002,
+      "focal": 0,
+      "opponent": "expert",
+      "arm": "flexible"
+    },
+    {
+      "id": 294,
+      "group": "expert",
+      "count": 2,
+      "seed": 911003,
+      "focal": 1,
+      "opponent": "expert",
+      "arm": "baseline"
+    },
+    {
+      "id": 295,
+      "group": "expert",
+      "count": 2,
+      "seed": 911003,
+      "focal": 1,
+      "opponent": "expert",
+      "arm": "flexible"
+    },
+    {
+      "id": 296,
+      "group": "expert",
+      "count": 2,
+      "seed": 911004,
+      "focal": 0,
+      "opponent": "expert",
+      "arm": "baseline"
+    },
+    {
+      "id": 297,
+      "group": "expert",
+      "count": 2,
+      "seed": 911004,
+      "focal": 0,
+      "opponent": "expert",
+      "arm": "flexible"
+    },
+    {
+      "id": 298,
+      "group": "expert",
+      "count": 2,
+      "seed": 911005,
+      "focal": 1,
+      "opponent": "expert",
+      "arm": "baseline"
+    },
+    {
+      "id": 299,
+      "group": "expert",
+      "count": 2,
+      "seed": 911005,
+      "focal": 1,
+      "opponent": "expert",
+      "arm": "flexible"
+    },
+    {
+      "id": 300,
+      "group": "expert",
+      "count": 2,
+      "seed": 911006,
+      "focal": 0,
+      "opponent": "expert",
+      "arm": "baseline"
+    },
+    {
+      "id": 301,
+      "group": "expert",
+      "count": 2,
+      "seed": 911006,
+      "focal": 0,
+      "opponent": "expert",
+      "arm": "flexible"
+    },
+    {
+      "id": 302,
+      "group": "expert",
+      "count": 2,
+      "seed": 911007,
+      "focal": 1,
+      "opponent": "expert",
+      "arm": "baseline"
+    },
+    {
+      "id": 303,
+      "group": "expert",
+      "count": 2,
+      "seed": 911007,
+      "focal": 1,
+      "opponent": "expert",
+      "arm": "flexible"
+    },
+    {
+      "id": 304,
+      "group": "expert",
+      "count": 5,
+      "seed": 911000,
+      "focal": 0,
+      "opponent": "expert",
+      "arm": "baseline"
+    },
+    {
+      "id": 305,
+      "group": "expert",
+      "count": 5,
+      "seed": 911000,
+      "focal": 0,
+      "opponent": "expert",
+      "arm": "flexible"
+    },
+    {
+      "id": 306,
+      "group": "expert",
+      "count": 5,
+      "seed": 911001,
+      "focal": 1,
+      "opponent": "expert",
+      "arm": "baseline"
+    },
+    {
+      "id": 307,
+      "group": "expert",
+      "count": 5,
+      "seed": 911001,
+      "focal": 1,
+      "opponent": "expert",
+      "arm": "flexible"
+    },
+    {
+      "id": 308,
+      "group": "expert",
+      "count": 5,
+      "seed": 911002,
+      "focal": 2,
+      "opponent": "expert",
+      "arm": "baseline"
+    },
+    {
+      "id": 309,
+      "group": "expert",
+      "count": 5,
+      "seed": 911002,
+      "focal": 2,
+      "opponent": "expert",
+      "arm": "flexible"
+    },
+    {
+      "id": 310,
+      "group": "expert",
+      "count": 5,
+      "seed": 911003,
+      "focal": 3,
+      "opponent": "expert",
+      "arm": "baseline"
+    },
+    {
+      "id": 311,
+      "group": "expert",
+      "count": 5,
+      "seed": 911003,
+      "focal": 3,
+      "opponent": "expert",
+      "arm": "flexible"
+    },
+    {
+      "id": 312,
+      "group": "expert",
+      "count": 5,
+      "seed": 911004,
+      "focal": 4,
+      "opponent": "expert",
+      "arm": "baseline"
+    },
+    {
+      "id": 313,
+      "group": "expert",
+      "count": 5,
+      "seed": 911004,
+      "focal": 4,
+      "opponent": "expert",
+      "arm": "flexible"
+    },
+    {
+      "id": 314,
+      "group": "expert",
+      "count": 5,
+      "seed": 911005,
+      "focal": 0,
+      "opponent": "expert",
+      "arm": "baseline"
+    },
+    {
+      "id": 315,
+      "group": "expert",
+      "count": 5,
+      "seed": 911005,
+      "focal": 0,
+      "opponent": "expert",
+      "arm": "flexible"
+    },
+    {
+      "id": 316,
+      "group": "expert",
+      "count": 5,
+      "seed": 911006,
+      "focal": 1,
+      "opponent": "expert",
+      "arm": "baseline"
+    },
+    {
+      "id": 317,
+      "group": "expert",
+      "count": 5,
+      "seed": 911006,
+      "focal": 1,
+      "opponent": "expert",
+      "arm": "flexible"
+    },
+    {
+      "id": 318,
+      "group": "expert",
+      "count": 5,
+      "seed": 911007,
+      "focal": 2,
+      "opponent": "expert",
+      "arm": "baseline"
+    },
+    {
+      "id": 319,
+      "group": "expert",
+      "count": 5,
+      "seed": 911007,
+      "focal": 2,
+      "opponent": "expert",
+      "arm": "flexible"
+    }
+  ]
+}

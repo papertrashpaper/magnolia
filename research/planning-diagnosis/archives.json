@@ -1,0 +1,16 @@
+{
+  "results": {
+    "file": "results.jsonl.gz",
+    "states": 32,
+    "bytes": 19569,
+    "sha256": "047889724cb8293857fcf4a02dafb603327b2f3602de207d16b4ca51d772437e",
+    "rawSha256": "0a8acf7e9af0468d5d7e1d2e4fe1c3c60cb4397cd68812f9189406693d8260e3"
+  },
+  "validation": {
+    "file": "validation.jsonl.gz",
+    "states": 32,
+    "bytes": 19570,
+    "sha256": "464f64d19c8c4d07d2cba0c5061fa895253d4b042e02b9fdedd5fe729a160115",
+    "rawSha256": "f241cc6fc289f056551ed672f8913607bcf26e446bbd4d3c0aeac3be7c541a11"
+  }
+}
