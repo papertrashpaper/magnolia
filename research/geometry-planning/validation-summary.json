@@ -1,0 +1,1970 @@
+{
+  "states": 32,
+  "groups": {
+    "baseline1": {
+      "states": 32,
+      "extra": 0,
+      "plans": 4,
+      "value": -408.49999999999994,
+      "vp": 44.15625,
+      "gap": -5.958333333333333,
+      "terminalFraction": 1,
+      "terminalShare": 0.296875
+    },
+    "baseline3": {
+      "states": 32,
+      "extra": 0,
+      "plans": 5,
+      "value": -392.56250000000006,
+      "vp": 44.364583333333336,
+      "gap": -5.854166666666667,
+      "terminalFraction": 1,
+      "terminalShare": 0.3020833333333333
+    },
+    "wide1": {
+      "states": 32,
+      "extra": 2,
+      "plans": 6,
+      "value": -429.86458333333326,
+      "vp": 44.041666666666664,
+      "gap": -6.135416666666667,
+      "terminalFraction": 1,
+      "terminalShare": 0.2864583333333333
+    },
+    "wide3": {
+      "states": 32,
+      "extra": 2,
+      "plans": 6,
+      "value": -392.18750000000006,
+      "vp": 44.322916666666664,
+      "gap": -5.729166666666667,
+      "terminalFraction": 1,
+      "terminalShare": 0.3020833333333333
+    },
+    "geometry1": {
+      "states": 32,
+      "extra": 1,
+      "plans": 5,
+      "value": -429.64583333333326,
+      "vp": 44.083333333333336,
+      "gap": -6.0625,
+      "terminalFraction": 1,
+      "terminalShare": 0.2864583333333333
+    },
+    "geometry3": {
+      "states": 32,
+      "extra": 2,
+      "plans": 6,
+      "value": -392.15625000000006,
+      "vp": 44.354166666666664,
+      "gap": -5.71875,
+      "terminalFraction": 1,
+      "terminalShare": 0.3020833333333333
+    }
+  },
+  "comparisons": {
+    "wide1-baseline1": {
+      "states": 32,
+      "clusters": 8,
+      "difference": -21.364583333333336,
+      "ci95": [
+        -63.65625000000001,
+        0
+      ]
+    },
+    "geometry1-baseline1": {
+      "states": 32,
+      "clusters": 8,
+      "difference": -21.145833333333336,
+      "ci95": [
+        -63.43750000000001,
+        0
+      ]
+    },
+    "geometry1-wide1": {
+      "states": 32,
+      "clusters": 8,
+      "difference": 0.21875,
+      "ci95": [
+        0,
+        0.65625
+      ]
+    },
+    "wide3-baseline3": {
+      "states": 32,
+      "clusters": 8,
+      "difference": 0.375,
+      "ci95": [
+        0,
+        1
+      ]
+    },
+    "geometry3-baseline3": {
+      "states": 32,
+      "clusters": 8,
+      "difference": 0.40625,
+      "ci95": [
+        0,
+        1.03125
+      ]
+    },
+    "geometry3-wide3": {
+      "states": 32,
+      "clusters": 8,
+      "difference": 0.03125,
+      "ci95": [
+        0,
+        0.09375
+      ]
+    },
+    "baseline3-baseline1": {
+      "states": 32,
+      "clusters": 8,
+      "difference": 15.937500000000004,
+      "ci95": [
+        -53.80208333333333,
+        85.20833333333334
+      ]
+    },
+    "wide3-wide1": {
+      "states": 32,
+      "clusters": 8,
+      "difference": 37.67708333333334,
+      "ci95": [
+        -42.979166666666664,
+        109.16666666666669
+      ]
+    },
+    "geometry3-geometry1": {
+      "states": 32,
+      "clusters": 8,
+      "difference": 37.48958333333334,
+      "ci95": [
+        -43.197916666666664,
+        108.97916666666669
+      ]
+    }
+  },
+  "diagnostic": {
+    "wide": {
+      "beatsExistingCeiling": 2,
+      "missed1": 2,
+      "missed3": 2,
+      "harmful1": 2,
+      "harmful3": 0,
+      "improved1": 0,
+      "improved3": 2
+    },
+    "geometry": {
+      "beatsExistingCeiling": 2,
+      "missed1": 2,
+      "missed3": 2,
+      "harmful1": 1,
+      "harmful3": 0,
+      "improved1": 0,
+      "improved3": 2
+    }
+  },
+  "candidateCount": 22,
+  "uniqueCandidates": 17.71875,
+  "generationMs": 1249.9654952187498,
+  "examples": [
+    {
+      "seed": 1070000,
+      "count": 2,
+      "round": 2,
+      "hand": [
+        "human_marchant",
+        "elf_follower",
+        "dwarf_gem",
+        "dwarf_saint"
+      ],
+      "board": [
+        {
+          "card": "human_smith",
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "chosen": "savings",
+      "baseline": "savings",
+      "bestExisting": "bonus",
+      "bestGeometry": "geometry-front-0",
+      "ceilingDifference": -181.66666666666666,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "dwarf_saint",
+            "x": -1,
+            "y": 0
+          }
+        ],
+        [
+          {
+            "card": "elf_follower",
+            "x": -2,
+            "y": 0
+          }
+        ],
+        [
+          {
+            "card": "dwarf_gem",
+            "x": 0,
+            "y": -1
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "seed": 1070000,
+      "count": 2,
+      "round": 4,
+      "hand": [
+        "dwarf_gem",
+        "dwarf_saint",
+        "golem_iron"
+      ],
+      "board": [
+        {
+          "card": "human_smith",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "elf_follower",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "human_marchant",
+          "x": 0,
+          "y": -1
+        },
+        {
+          "card": "dwarf_cook",
+          "x": -2,
+          "y": 0
+        },
+        {
+          "card": "goblin_scavenger",
+          "x": -2,
+          "y": -1
+        }
+      ],
+      "chosen": "war",
+      "baseline": "war",
+      "bestExisting": "war",
+      "bestGeometry": "geometry-front-0",
+      "ceilingDifference": -8,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "dwarf_saint",
+            "x": -2,
+            "y": -2
+          }
+        ],
+        [
+          {
+            "card": "golem_iron",
+            "x": 0,
+            "y": -2
+          },
+          {
+            "card": "dwarf_gem",
+            "x": -1,
+            "y": -1
+          }
+        ]
+      ]
+    },
+    {
+      "seed": 1070001,
+      "count": 2,
+      "round": 2,
+      "hand": [
+        "dwarf_alchemist",
+        "dwarf_alchemist",
+        "dwarf_gem"
+      ],
+      "board": [
+        {
+          "card": "elf_marchant",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "elf_saint",
+          "x": 0,
+          "y": -1
+        }
+      ],
+      "chosen": "rush",
+      "baseline": "rush",
+      "bestExisting": "economy",
+      "bestGeometry": "geometry-front-0",
+      "ceilingDifference": -1230.6666666666667,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "dwarf_gem",
+            "x": -1,
+            "y": 0
+          },
+          {
+            "card": "dwarf_alchemist",
+            "x": 1,
+            "y": -1
+          }
+        ],
+        [
+          {
+            "card": "dwarf_alchemist",
+            "x": 0,
+            "y": -2
+          }
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "seed": 1070001,
+      "count": 2,
+      "round": 4,
+      "hand": [
+        "elf_caster",
+        "goblin_junk",
+        "elf_mistic",
+        "dwarf_pugilist"
+      ],
+      "board": [
+        {
+          "card": "elf_marchant",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "elf_saint",
+          "x": 0,
+          "y": -1
+        },
+        {
+          "card": "dwarf_gem",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "dwarf_alchemist",
+          "x": -1,
+          "y": -1
+        },
+        {
+          "card": "dwarf_alchemist",
+          "x": -2,
+          "y": -1
+        }
+      ],
+      "chosen": "balanced",
+      "baseline": "balanced",
+      "bestExisting": "war",
+      "bestGeometry": "geometry-balanced-0",
+      "ceilingDifference": -22,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "elf_caster",
+            "x": 0,
+            "y": -2
+          },
+          {
+            "card": "goblin_junk",
+            "x": -2,
+            "y": -2
+          }
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "seed": 1070002,
+      "count": 2,
+      "round": 2,
+      "hand": [
+        "elf_mistic",
+        "human_great_marchant",
+        "elf_marchant"
+      ],
+      "board": [
+        {
+          "card": "elf_marchant",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "human_saint",
+          "x": 0,
+          "y": -1
+        }
+      ],
+      "chosen": "economy",
+      "baseline": "economy",
+      "bestExisting": "war",
+      "bestGeometry": "geometry-balanced-0",
+      "ceilingDifference": -706.6666666666667,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "elf_marchant",
+            "x": -1,
+            "y": 0
+          },
+          {
+            "card": "human_great_marchant",
+            "x": -2,
+            "y": 0
+          }
+        ],
+        [],
+        [
+          {
+            "card": "elf_mistic",
+            "x": -1,
+            "y": -1
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "seed": 1070002,
+      "count": 2,
+      "round": 4,
+      "hand": [
+        "elf_mistic",
+        "dwarf_king",
+        "dwarf_cook"
+      ],
+      "board": [
+        {
+          "card": "elf_marchant",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "human_saint",
+          "x": 0,
+          "y": -1
+        },
+        {
+          "card": "goblin_lunatic",
+          "x": -1,
+          "y": -1
+        },
+        {
+          "card": "human_great_marchant",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "elf_marchant",
+          "x": -2,
+          "y": 0
+        },
+        {
+          "card": "goblin_saint",
+          "x": -1,
+          "y": -2
+        }
+      ],
+      "chosen": "tech",
+      "baseline": "tech",
+      "bestExisting": "war",
+      "bestGeometry": "geometry-balanced-0",
+      "ceilingDifference": -11,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "dwarf_cook",
+            "x": -2,
+            "y": -2
+          },
+          {
+            "card": "dwarf_king",
+            "x": 0,
+            "y": -2
+          }
+        ]
+      ]
+    },
+    {
+      "seed": 1070003,
+      "count": 2,
+      "round": 2,
+      "hand": [
+        "dwarf_gem",
+        "demon_eye",
+        "elf_caster"
+      ],
+      "board": [
+        {
+          "card": "dwarf_gardian",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "elf_saint",
+          "x": 0,
+          "y": -1
+        }
+      ],
+      "chosen": "tech",
+      "baseline": "tech",
+      "bestExisting": "faith",
+      "bestGeometry": "geometry-front-0",
+      "ceilingDifference": -1386.2681481481482,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "dwarf_gem",
+            "x": -1,
+            "y": 0
+          }
+        ],
+        [
+          {
+            "card": "elf_caster",
+            "x": 1,
+            "y": -1
+          }
+        ],
+        [
+          {
+            "card": "demon_eye",
+            "x": 0,
+            "y": -2
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "seed": 1070003,
+      "count": 2,
+      "round": 4,
+      "hand": [
+        "demon_eye",
+        "elf_caster",
+        "elf_queen",
+        "golem_gold"
+      ],
+      "board": [
+        {
+          "card": "dwarf_gardian",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "elf_saint",
+          "x": 0,
+          "y": -1
+        },
+        {
+          "card": "dwarf_gem",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "elf_artist",
+          "x": 1,
+          "y": -1
+        }
+      ],
+      "chosen": "war",
+      "baseline": "war",
+      "bestExisting": "balanced",
+      "bestGeometry": "geometry-balanced-0",
+      "ceilingDifference": -11,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "elf_caster",
+            "x": 1,
+            "y": -2
+          }
+        ],
+        [
+          {
+            "card": "demon_eye",
+            "x": -1,
+            "y": -1
+          },
+          {
+            "card": "golem_gold",
+            "x": -1,
+            "y": -2
+          }
+        ]
+      ]
+    },
+    {
+      "seed": 1070004,
+      "count": 2,
+      "round": 2,
+      "hand": [
+        "goblin_junk",
+        "human_knight",
+        "elf_artist"
+      ],
+      "board": [
+        {
+          "card": "goblin_lunatic",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "goblin_lunatic",
+          "x": 0,
+          "y": -1
+        }
+      ],
+      "chosen": "rush",
+      "baseline": "rush",
+      "bestExisting": "war",
+      "bestGeometry": "geometry-balanced-1",
+      "ceilingDifference": -695.6666666666667,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "goblin_junk",
+            "x": 0,
+            "y": -2
+          },
+          {
+            "card": "elf_artist",
+            "x": -1,
+            "y": -2
+          }
+        ],
+        [
+          {
+            "card": "human_knight",
+            "x": 1,
+            "y": -1
+          }
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "seed": 1070004,
+      "count": 2,
+      "round": 4,
+      "hand": [
+        "human_knight",
+        "human_sorcerer",
+        "golem_iron",
+        "dwarf_beer"
+      ],
+      "board": [
+        {
+          "card": "goblin_lunatic",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "goblin_lunatic",
+          "x": 0,
+          "y": -1
+        },
+        {
+          "card": "elf_saint",
+          "x": 0,
+          "y": -2
+        },
+        {
+          "card": "goblin_junk",
+          "x": -1,
+          "y": -1
+        },
+        {
+          "card": "dwarf_cook",
+          "x": 1,
+          "y": -2
+        }
+      ],
+      "chosen": "balanced",
+      "baseline": "balanced",
+      "bestExisting": "balanced",
+      "bestGeometry": "geometry-balanced-0",
+      "ceilingDifference": -6,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "dwarf_beer",
+            "x": 1,
+            "y": 0
+          }
+        ],
+        [
+          {
+            "card": "golem_iron",
+            "x": -1,
+            "y": -2
+          }
+        ]
+      ]
+    },
+    {
+      "seed": 1070005,
+      "count": 2,
+      "round": 2,
+      "hand": [
+        "demon_eye",
+        "goblin_soldier",
+        "elf_archer",
+        "dwarf_beer"
+      ],
+      "board": [
+        {
+          "card": "demon_pest",
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "chosen": "balanced",
+      "baseline": "balanced",
+      "bestExisting": "rush",
+      "bestGeometry": "geometry-front-0",
+      "ceilingDifference": -1369.012962962963,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "goblin_soldier",
+            "x": -1,
+            "y": 0
+          }
+        ],
+        [
+          {
+            "card": "demon_eye",
+            "x": -2,
+            "y": 0
+          },
+          {
+            "card": "elf_archer",
+            "x": -1,
+            "y": 1
+          }
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "seed": 1070005,
+      "count": 2,
+      "round": 4,
+      "hand": [
+        "human_knight",
+        "demon_destroy",
+        "goblin_soldier",
+        "elf_artist"
+      ],
+      "board": [
+        {
+          "card": "demon_pest",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "elf_saint",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "goblin_soldier",
+          "x": -1,
+          "y": -1
+        },
+        {
+          "card": "demon_eye",
+          "x": 0,
+          "y": -1
+        }
+      ],
+      "chosen": "geometry-front-0",
+      "baseline": "plan-1",
+      "bestExisting": "balanced",
+      "bestGeometry": "geometry-front-0",
+      "ceilingDifference": -9,
+      "chosenDifference": 3,
+      "schedule": [
+        [
+          {
+            "card": "human_knight",
+            "x": -1,
+            "y": -2
+          },
+          {
+            "card": "goblin_soldier",
+            "x": -2,
+            "y": -2
+          }
+        ],
+        [
+          {
+            "card": "demon_destroy",
+            "x": 0,
+            "y": -2
+          }
+        ]
+      ]
+    },
+    {
+      "seed": 1070006,
+      "count": 2,
+      "round": 2,
+      "hand": [
+        "goblin_soldier",
+        "dwarf_alchemist",
+        "dwarf_cook"
+      ],
+      "board": [
+        {
+          "card": "elf_follower",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "human_great_marchant",
+          "x": 0,
+          "y": -1
+        }
+      ],
+      "chosen": "bonus",
+      "baseline": "bonus",
+      "bestExisting": "faith",
+      "bestGeometry": "geometry-balanced-0",
+      "ceilingDifference": -1405.3333333333333,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "dwarf_cook",
+            "x": -1,
+            "y": -1
+          },
+          {
+            "card": "dwarf_alchemist",
+            "x": -1,
+            "y": -2
+          }
+        ],
+        [
+          {
+            "card": "goblin_soldier",
+            "x": -2,
+            "y": -2
+          }
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "seed": 1070006,
+      "count": 2,
+      "round": 4,
+      "hand": [
+        "goblin_soldier",
+        "dwarf_alchemist",
+        "dwarf_alchemist",
+        "goblin_saint"
+      ],
+      "board": [
+        {
+          "card": "elf_follower",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "human_great_marchant",
+          "x": 0,
+          "y": -1
+        },
+        {
+          "card": "dwarf_gem",
+          "x": -1,
+          "y": -1
+        },
+        {
+          "card": "dwarf_cook",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "dwarf_beer",
+          "x": -1,
+          "y": 1
+        }
+      ],
+      "chosen": "faith",
+      "baseline": "faith",
+      "bestExisting": "bonus",
+      "bestGeometry": "geometry-balanced-0",
+      "ceilingDifference": -16,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "dwarf_alchemist",
+            "x": -2,
+            "y": 1
+          },
+          {
+            "card": "dwarf_alchemist",
+            "x": 0,
+            "y": 1
+          }
+        ],
+        [
+          {
+            "card": "goblin_saint",
+            "x": -2,
+            "y": 0
+          }
+        ]
+      ]
+    },
+    {
+      "seed": 1070007,
+      "count": 2,
+      "round": 2,
+      "hand": [
+        "goblin_soldier",
+        "elf_queen",
+        "elf_mistic"
+      ],
+      "board": [
+        {
+          "card": "elf_saint",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "dwarf_saint",
+          "x": 0,
+          "y": -1
+        }
+      ],
+      "chosen": "balanced",
+      "baseline": "balanced",
+      "bestExisting": "rush",
+      "bestGeometry": "geometry-balanced-0",
+      "ceilingDifference": -1373.3333333333333,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "elf_mistic",
+            "x": -1,
+            "y": 0
+          },
+          {
+            "card": "goblin_soldier",
+            "x": 1,
+            "y": -1
+          }
+        ],
+        [],
+        [
+          {
+            "card": "elf_queen",
+            "x": -1,
+            "y": -1
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "seed": 1070007,
+      "count": 2,
+      "round": 4,
+      "hand": [
+        "demon_destroy",
+        "golem_gold",
+        "goblin_lunatic",
+        "dwarf_gem"
+      ],
+      "board": [
+        {
+          "card": "elf_saint",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "dwarf_saint",
+          "x": 0,
+          "y": -1
+        },
+        {
+          "card": "elf_mistic",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "goblin_soldier",
+          "x": -1,
+          "y": -1
+        },
+        {
+          "card": "goblin_lunatic",
+          "x": 0,
+          "y": 1
+        }
+      ],
+      "chosen": "rush",
+      "baseline": "rush",
+      "bestExisting": "savings",
+      "bestGeometry": "geometry-balanced-0",
+      "ceilingDifference": -677.6666666666667,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "goblin_lunatic",
+            "x": 1,
+            "y": 1
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "seed": 1070000,
+      "count": 5,
+      "round": 2,
+      "hand": [
+        "human_marchant",
+        "elf_follower",
+        "goblin_strategist",
+        "dwarf_saint"
+      ],
+      "board": [
+        {
+          "card": "human_smith",
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "chosen": "plan-1",
+      "baseline": "plan-1",
+      "bestExisting": "plan-1",
+      "bestGeometry": "geometry-balanced-0",
+      "ceilingDifference": -18,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "dwarf_saint",
+            "x": -1,
+            "y": 0
+          }
+        ],
+        [
+          {
+            "card": "elf_follower",
+            "x": -1,
+            "y": 1
+          },
+          {
+            "card": "human_marchant",
+            "x": 0,
+            "y": -1
+          }
+        ],
+        [
+          {
+            "card": "goblin_strategist",
+            "x": 1,
+            "y": -1
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "seed": 1070000,
+      "count": 5,
+      "round": 4,
+      "hand": [
+        "dwarf_saint",
+        "goblin_soldier",
+        "dwarf_cook",
+        "golem_stollow"
+      ],
+      "board": [
+        {
+          "card": "human_smith",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "elf_follower",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "human_marchant",
+          "x": 0,
+          "y": -1
+        },
+        {
+          "card": "goblin_strategist",
+          "x": 1,
+          "y": -1
+        }
+      ],
+      "chosen": "balanced",
+      "baseline": "balanced",
+      "bestExisting": "tech",
+      "bestGeometry": "geometry-balanced-0",
+      "ceilingDifference": -3,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "dwarf_saint",
+            "x": -1,
+            "y": -1
+          },
+          {
+            "card": "goblin_soldier",
+            "x": 1,
+            "y": -2
+          }
+        ],
+        [
+          {
+            "card": "dwarf_cook",
+            "x": 1,
+            "y": 0
+          }
+        ],
+        [
+          {
+            "card": "golem_stollow",
+            "x": 0,
+            "y": -2
+          }
+        ]
+      ]
+    },
+    {
+      "seed": 1070001,
+      "count": 5,
+      "round": 2,
+      "hand": [
+        "dwarf_alchemist",
+        "dwarf_alchemist",
+        "human_knight"
+      ],
+      "board": [
+        {
+          "card": "elf_marchant",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "elf_saint",
+          "x": 0,
+          "y": -1
+        }
+      ],
+      "chosen": "economy",
+      "baseline": "economy",
+      "bestExisting": "war",
+      "bestGeometry": "geometry-front-0",
+      "ceilingDifference": -5,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "human_knight",
+            "x": -1,
+            "y": -1
+          },
+          {
+            "card": "dwarf_alchemist",
+            "x": -2,
+            "y": -1
+          }
+        ],
+        [
+          {
+            "card": "dwarf_alchemist",
+            "x": 0,
+            "y": -2
+          }
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "seed": 1070001,
+      "count": 5,
+      "round": 4,
+      "hand": [
+        "human_knight",
+        "human_sorcerer",
+        "elf_caster",
+        "goblin_scavenger"
+      ],
+      "board": [
+        {
+          "card": "elf_marchant",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "elf_saint",
+          "x": 0,
+          "y": -1
+        },
+        {
+          "card": "dwarf_alchemist",
+          "x": -1,
+          "y": -1
+        },
+        {
+          "card": "dwarf_alchemist",
+          "x": -1,
+          "y": -2
+        },
+        {
+          "card": "human_smith",
+          "x": -2,
+          "y": -2
+        }
+      ],
+      "chosen": "faith",
+      "baseline": "faith",
+      "bestExisting": "war",
+      "bestGeometry": "geometry-balanced-0",
+      "ceilingDifference": -34,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "elf_caster",
+            "x": 0,
+            "y": -2
+          },
+          {
+            "card": "goblin_scavenger",
+            "x": -1,
+            "y": 0
+          }
+        ],
+        [
+          {
+            "card": "human_knight",
+            "x": -2,
+            "y": -1
+          }
+        ],
+        [
+          {
+            "card": "human_sorcerer",
+            "x": -2,
+            "y": 0
+          }
+        ]
+      ]
+    },
+    {
+      "seed": 1070002,
+      "count": 5,
+      "round": 2,
+      "hand": [
+        "elf_marchant",
+        "goblin_saint",
+        "goblin_junk"
+      ],
+      "board": [
+        {
+          "card": "goblin_lunatic",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "human_saint",
+          "x": 0,
+          "y": -1
+        }
+      ],
+      "chosen": "rush",
+      "baseline": "rush",
+      "bestExisting": "war",
+      "bestGeometry": "geometry-front-0",
+      "ceilingDifference": -533,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "goblin_saint",
+            "x": -1,
+            "y": 0
+          },
+          {
+            "card": "elf_marchant",
+            "x": 1,
+            "y": -1
+          }
+        ],
+        [
+          {
+            "card": "goblin_junk",
+            "x": 1,
+            "y": -2
+          }
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "seed": 1070002,
+      "count": 5,
+      "round": 4,
+      "hand": [
+        "goblin_junk",
+        "dwarf_saint",
+        "demon_eye"
+      ],
+      "board": [
+        {
+          "card": "goblin_lunatic",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "human_saint",
+          "x": 0,
+          "y": -1
+        },
+        {
+          "card": "goblin_saint",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "human_marchant",
+          "x": 1,
+          "y": -1
+        },
+        {
+          "card": "goblin_scavenger",
+          "x": 1,
+          "y": 0
+        },
+        {
+          "card": "human_king",
+          "x": -1,
+          "y": -1
+        }
+      ],
+      "chosen": "plan-0",
+      "baseline": "plan-0",
+      "bestExisting": "war",
+      "bestGeometry": "geometry-front-0",
+      "ceilingDifference": -853.3333333333334,
+      "chosenDifference": 0,
+      "schedule": [
+        [],
+        [
+          {
+            "card": "demon_eye",
+            "x": 1,
+            "y": -2
+          },
+          {
+            "card": "goblin_junk",
+            "x": 0,
+            "y": -2
+          }
+        ]
+      ]
+    },
+    {
+      "seed": 1070003,
+      "count": 5,
+      "round": 2,
+      "hand": [
+        "elf_queen",
+        "human_knight",
+        "elf_marchant"
+      ],
+      "board": [
+        {
+          "card": "elf_marchant",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "human_saint",
+          "x": 0,
+          "y": -1
+        }
+      ],
+      "chosen": "tech",
+      "baseline": "tech",
+      "bestExisting": "tech",
+      "bestGeometry": "geometry-front-0",
+      "ceilingDifference": -22,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "human_knight",
+            "x": -1,
+            "y": -1
+          },
+          {
+            "card": "elf_marchant",
+            "x": 1,
+            "y": 0
+          }
+        ],
+        [],
+        [
+          {
+            "card": "elf_queen",
+            "x": 0,
+            "y": -2
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "seed": 1070003,
+      "count": 5,
+      "round": 4,
+      "hand": [
+        "elf_queen",
+        "human_sorcerer",
+        "dwarf_alchemist",
+        "golem_king"
+      ],
+      "board": [
+        {
+          "card": "elf_marchant",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "human_saint",
+          "x": 0,
+          "y": -1
+        },
+        {
+          "card": "elf_marchant",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "dwarf_saint",
+          "x": -1,
+          "y": -1
+        },
+        {
+          "card": "human_marchant",
+          "x": -2,
+          "y": 0
+        }
+      ],
+      "chosen": "geometry-balanced-2",
+      "baseline": "balanced",
+      "bestExisting": "war",
+      "bestGeometry": "geometry-balanced-2",
+      "ceilingDifference": -7,
+      "chosenDifference": 10,
+      "schedule": [
+        [
+          {
+            "card": "elf_queen",
+            "x": 0,
+            "y": -2
+          },
+          {
+            "card": "dwarf_alchemist",
+            "x": -1,
+            "y": -2
+          }
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "seed": 1070004,
+      "count": 5,
+      "round": 2,
+      "hand": [
+        "goblin_saint",
+        "dwarf_cook",
+        "golem_iron"
+      ],
+      "board": [
+        {
+          "card": "goblin_junk",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "dwarf_cook",
+          "x": -1,
+          "y": 0
+        }
+      ],
+      "chosen": "plan-1",
+      "baseline": "plan-1",
+      "bestExisting": "plan-1",
+      "bestGeometry": "geometry-front-0",
+      "ceilingDifference": 0,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "dwarf_cook",
+            "x": -2,
+            "y": 0
+          },
+          {
+            "card": "golem_iron",
+            "x": -2,
+            "y": -1
+          }
+        ],
+        [
+          {
+            "card": "goblin_saint",
+            "x": -1,
+            "y": -1
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "seed": 1070004,
+      "count": 5,
+      "round": 4,
+      "hand": [
+        "goblin_saint",
+        "human_marchant",
+        "elf_archer",
+        "goblin_scavenger"
+      ],
+      "board": [
+        {
+          "card": "goblin_junk",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "dwarf_cook",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "dwarf_cook",
+          "x": -2,
+          "y": 0
+        },
+        {
+          "card": "goblin_junk",
+          "x": 0,
+          "y": -1
+        },
+        {
+          "card": "dwarf_gem",
+          "x": -2,
+          "y": -1
+        }
+      ],
+      "chosen": "war",
+      "baseline": "war",
+      "bestExisting": "war",
+      "bestGeometry": "geometry-balanced-1",
+      "ceilingDifference": 3,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "goblin_scavenger",
+            "x": -1,
+            "y": -1
+          },
+          {
+            "card": "elf_archer",
+            "x": -1,
+            "y": 1
+          }
+        ],
+        [
+          {
+            "card": "goblin_saint",
+            "x": 0,
+            "y": 1
+          }
+        ]
+      ]
+    },
+    {
+      "seed": 1070005,
+      "count": 5,
+      "round": 2,
+      "hand": [
+        "human_marchant",
+        "elf_mistic",
+        "goblin_junk"
+      ],
+      "board": [
+        {
+          "card": "elf_marchant",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "human_saint",
+          "x": 0,
+          "y": -1
+        }
+      ],
+      "chosen": "economy",
+      "baseline": "economy",
+      "bestExisting": "economy",
+      "bestGeometry": "geometry-front-2",
+      "ceilingDifference": -18,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "elf_mistic",
+            "x": -1,
+            "y": 0
+          },
+          {
+            "card": "human_marchant",
+            "x": 1,
+            "y": -1
+          }
+        ],
+        [
+          {
+            "card": "goblin_junk",
+            "x": 0,
+            "y": -2
+          }
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "seed": 1070005,
+      "count": 5,
+      "round": 4,
+      "hand": [
+        "goblin_junk",
+        "dwarf_gem",
+        "elf_archer",
+        "goblin_saint"
+      ],
+      "board": [
+        {
+          "card": "elf_marchant",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "human_saint",
+          "x": 0,
+          "y": -1
+        },
+        {
+          "card": "elf_mistic",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "elf_saint",
+          "x": -1,
+          "y": -1
+        },
+        {
+          "card": "elf_caster",
+          "x": -1,
+          "y": -2
+        }
+      ],
+      "chosen": "economy",
+      "baseline": "economy",
+      "bestExisting": "faith",
+      "bestGeometry": "geometry-balanced-1",
+      "ceilingDifference": -1869.3333333333335,
+      "chosenDifference": 0,
+      "schedule": [
+        [],
+        [
+          {
+            "card": "elf_archer",
+            "x": -2,
+            "y": 0
+          }
+        ],
+        [
+          {
+            "card": "goblin_junk",
+            "x": -2,
+            "y": -2
+          }
+        ]
+      ]
+    },
+    {
+      "seed": 1070006,
+      "count": 5,
+      "round": 2,
+      "hand": [
+        "human_saint",
+        "dwarf_cook",
+        "goblin_great_soldier",
+        "demon_eye"
+      ],
+      "board": [
+        {
+          "card": "demon_eye",
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "chosen": "tech",
+      "baseline": "tech",
+      "bestExisting": "economy",
+      "bestGeometry": "geometry-front-0",
+      "ceilingDifference": -686.6666666666667,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "human_saint",
+            "x": -1,
+            "y": 0
+          },
+          {
+            "card": "goblin_great_soldier",
+            "x": -2,
+            "y": 0
+          }
+        ],
+        [
+          {
+            "card": "demon_eye",
+            "x": -1,
+            "y": -1
+          }
+        ],
+        [
+          {
+            "card": "dwarf_cook",
+            "x": -2,
+            "y": 1
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "seed": 1070006,
+      "count": 5,
+      "round": 4,
+      "hand": [
+        "human_saint",
+        "dwarf_cook",
+        "goblin_junk"
+      ],
+      "board": [
+        {
+          "card": "demon_eye",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "demon_eye",
+          "x": 0,
+          "y": -1
+        },
+        {
+          "card": "demon_eye",
+          "x": 0,
+          "y": -2
+        },
+        {
+          "card": "goblin_great_soldier",
+          "x": -1,
+          "y": -2
+        }
+      ],
+      "chosen": "savings",
+      "baseline": "savings",
+      "bestExisting": "balanced",
+      "bestGeometry": "geometry-balanced-0",
+      "ceilingDifference": -672.6666666666667,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "human_saint",
+            "x": 1,
+            "y": -1
+          },
+          {
+            "card": "dwarf_cook",
+            "x": -1,
+            "y": -1
+          }
+        ],
+        [
+          {
+            "card": "goblin_junk",
+            "x": 1,
+            "y": -2
+          }
+        ]
+      ]
+    },
+    {
+      "seed": 1070007,
+      "count": 5,
+      "round": 2,
+      "hand": [
+        "dwarf_cook",
+        "goblin_junk",
+        "golem_iron",
+        "goblin_strategist"
+      ],
+      "board": [
+        {
+          "card": "dwarf_gardian",
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "chosen": "bonus",
+      "baseline": "bonus",
+      "bestExisting": "plan-1",
+      "bestGeometry": "geometry-balanced-2",
+      "ceilingDifference": 7,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "goblin_strategist",
+            "x": -1,
+            "y": 0
+          },
+          {
+            "card": "goblin_junk",
+            "x": -1,
+            "y": 1
+          }
+        ],
+        [
+          {
+            "card": "dwarf_cook",
+            "x": 0,
+            "y": 1
+          },
+          {
+            "card": "golem_iron",
+            "x": -2,
+            "y": 0
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "seed": 1070007,
+      "count": 5,
+      "round": 4,
+      "hand": [
+        "golem_stollow",
+        "elf_saint",
+        "elf_mistic"
+      ],
+      "board": [
+        {
+          "card": "dwarf_gardian",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "card": "goblin_strategist",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "goblin_junk",
+          "x": -1,
+          "y": -1
+        },
+        {
+          "card": "goblin_strategist",
+          "x": -1,
+          "y": -2
+        },
+        {
+          "card": "dwarf_cook",
+          "x": -2,
+          "y": -1
+        }
+      ],
+      "chosen": "plan-0",
+      "baseline": "plan-0",
+      "bestExisting": "tech",
+      "bestGeometry": "geometry-balanced-0",
+      "ceilingDifference": -2,
+      "chosenDifference": 0,
+      "schedule": [
+        [
+          {
+            "card": "golem_stollow",
+            "x": -2,
+            "y": -2
+          }
+        ]
+      ]
+    }
+  ]
+}
