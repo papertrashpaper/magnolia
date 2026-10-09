@@ -1,0 +1,34 @@
+{
+  "results": {
+    "files": [
+      "results.jsonl.gz.part000"
+    ],
+    "bytes": 58795,
+    "sha256": "76f36bc7047094b5382a80fb888ca840ab1f523aa4f95f1a1051e7409d410161",
+    "rawSha256": "7becaa7a4f08d99ddaece97d7cf0610ae27fafe48e0379ca6397dc69ce1de2ac"
+  },
+  "extensions-results": {
+    "files": [
+      "extensions-results.jsonl.gz.part000"
+    ],
+    "bytes": 24994,
+    "sha256": "e88a2745aa924e880be6fe5adc3e36b1f14b8165968e31ad25598adf787dd760",
+    "rawSha256": "fe66622aa99a104f367c7c3e921f18cc1c13f99b74477524254a8b2c2a4d597e"
+  },
+  "validation": {
+    "files": [
+      "validation.jsonl.gz.part000"
+    ],
+    "bytes": 62546,
+    "sha256": "93bd9c2c5e5487d29ccfccf5f0bc5dcfdf189d36b7f7c8650b35f7e055ca1a76",
+    "rawSha256": "21c4da7d15768f45bb9ddf547d17aa4949119d174f15e14e6375b3f744df1481"
+  },
+  "extensions-validation": {
+    "files": [
+      "extensions-validation.jsonl.gz.part000"
+    ],
+    "bytes": 21619,
+    "sha256": "31d2df53546f42b2cb5f73760d1419ebebbac77910e4ec58a51d28e41f2bd635",
+    "rawSha256": "39180572de630121d0a4e40610df55d44d5b21186482bf1e4f9a7a64a78cf48e"
+  }
+}

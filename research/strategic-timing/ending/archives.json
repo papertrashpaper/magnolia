@@ -1,0 +1,34 @@
+{
+  "results": {
+    "files": [
+      "results.jsonl.gz.part000"
+    ],
+    "bytes": 86373,
+    "sha256": "75644ce1ec0f25ec67149a720e5e86c6e5725a50f361eee3ef7f60d98ae46e9d",
+    "rawSha256": "c20eb8654d2b26f022b4ea8679f1db01e5ae50ff78e6f7f1c8fbf70454c68dfe"
+  },
+  "validation": {
+    "files": [
+      "validation.jsonl.gz.part000"
+    ],
+    "bytes": 131897,
+    "sha256": "d6989612b8829be544998a1ae6b14d1d71ab4a9686d7fef3bbffff0fa2681c5f",
+    "rawSha256": "2f2eb4e3160de7cb110a723f0565c6bb882afd0711221eff894428ac4eeefcd9"
+  },
+  "focused": {
+    "files": [
+      "focused.jsonl.gz.part000"
+    ],
+    "bytes": 80287,
+    "sha256": "84671ff29a419da5a3daf380161701bcd77e38a5b58c6fa43b1bd61ec7a543ea",
+    "rawSha256": "0f62018f431cb88ef726ece71b7a5c43924e0cb6af4ec221e23dca602cc58eac"
+  },
+  "focused-validation": {
+    "files": [
+      "focused-validation.jsonl.gz.part000"
+    ],
+    "bytes": 99004,
+    "sha256": "4b836a09471002d224247e520515aff95c3a36bc5f3c0b0a215ebcc176ac3f84",
+    "rawSha256": "69798850c9712bae16d87905ccfb9c9c7c76d4e36f7bdd4003fdc2a5b62ed3fd"
+  }
+}
