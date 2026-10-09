@@ -1,0 +1,30 @@
+{
+  "source": {
+    "scripts/high-cost-retention.mjs": "9d5b7fa9cb1d44c27dce33c5895ee3cd7363d2c36388e8314c038da81ae3c823",
+    "scripts/focused-high-cost-retention.mjs": "d40ce96468956338816f08cbdc26300fdad4aa645122c87bb76d150aeee34dbd",
+    "scripts/extend-high-cost-retention.mjs": "bc339166ed7087238eb7ca3249b4d99ee0e7124daeba1a3232c980edc16ea92f",
+    "scripts/strategy-policies.mjs": "689a6f6cb9eca6080b02b6ef2dda885af038c4e167381335d2a5fbab33172849",
+    "scripts/adaptive-strategies.mjs": "41636deb581fa175907fdd2a3ae5fd5b7fe71add0ac5fd55b9286a64c765947a",
+    "scripts/strategic-timing.mjs": "4230d9d972c2815e1530442275adb7d5a5dc23dd9d24ec30e4918b49d4c3e1da",
+    "scripts/endgame-decisions.mjs": "6f39a53c97a8b364b547553d70d7304e7cd4ecb6d5ade08ecf1d79ae247f2a1d",
+    "public/js/cards.js": "bd2c8db4bf5714a149ec49af58a32a8efa467caae28d5117047aa0e07653c98c",
+    "public/js/engine.js": "ecd564615043d703fd1d496a110463911a59425716ae7098a74034e55f832032",
+    "public/js/objectives.js": "81f1e493a7c21c3cdaa6d76e4fcc6a6b68ba64d5ee4879c7dafda6da43fccc27",
+    "public/js/review.js": "56a55137323478bfb1c7ab655bcdec1352685d33723259c4919411222793f6bd"
+  },
+  "states": 176,
+  "createdAt": "2026-10-09T04:39:50.827Z",
+  "baseSource": {
+    "public/js/cards.js": "bd2c8db4bf5714a149ec49af58a32a8efa467caae28d5117047aa0e07653c98c",
+    "public/js/engine.js": "ecd564615043d703fd1d496a110463911a59425716ae7098a74034e55f832032",
+    "public/js/objectives.js": "81f1e493a7c21c3cdaa6d76e4fcc6a6b68ba64d5ee4879c7dafda6da43fccc27",
+    "public/js/review.js": "56a55137323478bfb1c7ab655bcdec1352685d33723259c4919411222793f6bd",
+    "scripts/strategy-policies.mjs": "689a6f6cb9eca6080b02b6ef2dda885af038c4e167381335d2a5fbab33172849",
+    "scripts/adaptive-strategies.mjs": "41636deb581fa175907fdd2a3ae5fd5b7fe71add0ac5fd55b9286a64c765947a",
+    "scripts/endgame-decisions.mjs": "6f39a53c97a8b364b547553d70d7304e7cd4ecb6d5ade08ecf1d79ae247f2a1d",
+    "scripts/strategic-timing.mjs": "4230d9d972c2815e1530442275adb7d5a5dc23dd9d24ec30e4918b49d4c3e1da",
+    "scripts/high-cost-retention.mjs": "9d5b7fa9cb1d44c27dce33c5895ee3cd7363d2c36388e8314c038da81ae3c823",
+    "scripts/run-high-cost-retention.mjs": "968b70b2a62af44c6694ba4d25b3bd84684e13b4750da28c7b5969c5ab429aa1"
+  },
+  "inputStateHash": "5f04bf190dd8df06102bb9539fcfc9df789966ce5efe3fec33c9f75083953072"
+}

@@ -1,0 +1,858 @@
+{
+  "createdAt": "2026-10-09T04:22:18.220Z",
+  "source": {
+    "public/js/cards.js": "bd2c8db4bf5714a149ec49af58a32a8efa467caae28d5117047aa0e07653c98c",
+    "public/js/engine.js": "ecd564615043d703fd1d496a110463911a59425716ae7098a74034e55f832032",
+    "public/js/objectives.js": "81f1e493a7c21c3cdaa6d76e4fcc6a6b68ba64d5ee4879c7dafda6da43fccc27",
+    "public/js/review.js": "56a55137323478bfb1c7ab655bcdec1352685d33723259c4919411222793f6bd",
+    "scripts/strategy-policies.mjs": "689a6f6cb9eca6080b02b6ef2dda885af038c4e167381335d2a5fbab33172849",
+    "scripts/adaptive-strategies.mjs": "41636deb581fa175907fdd2a3ae5fd5b7fe71add0ac5fd55b9286a64c765947a",
+    "scripts/endgame-decisions.mjs": "6f39a53c97a8b364b547553d70d7304e7cd4ecb6d5ade08ecf1d79ae247f2a1d",
+    "scripts/strategic-timing.mjs": "4230d9d972c2815e1530442275adb7d5a5dc23dd9d24ec30e4918b49d4c3e1da",
+    "scripts/high-cost-retention.mjs": "9d5b7fa9cb1d44c27dce33c5895ee3cd7363d2c36388e8314c038da81ae3c823",
+    "scripts/run-high-cost-retention.mjs": "968b70b2a62af44c6694ba4d25b3bd84684e13b4750da28c7b5969c5ab429aa1"
+  },
+  "cards": [
+    {
+      "id": "human_knight",
+      "name": "人間の騎士",
+      "cost": 3,
+      "copies": 3
+    },
+    {
+      "id": "human_marchant",
+      "name": "人間の行商",
+      "cost": 1,
+      "copies": 3
+    },
+    {
+      "id": "human_saint",
+      "name": "人間の聖職者",
+      "cost": 3,
+      "copies": 3
+    },
+    {
+      "id": "human_sorcerer",
+      "name": "人間の呪い師",
+      "cost": 3,
+      "copies": 3
+    },
+    {
+      "id": "human_smith",
+      "name": "人間の大工",
+      "cost": 5,
+      "copies": 3
+    },
+    {
+      "id": "human_great_marchant",
+      "name": "人間の大商人",
+      "cost": 2,
+      "copies": 2
+    },
+    {
+      "id": "human_undertaker",
+      "name": "人間の葬儀屋",
+      "cost": 3,
+      "copies": 2
+    },
+    {
+      "id": "human_king",
+      "name": "人間の君主",
+      "cost": 6,
+      "copies": 1
+    },
+    {
+      "id": "dwarf_pugilist",
+      "name": "ドワーフの拳闘士",
+      "cost": 2,
+      "copies": 3
+    },
+    {
+      "id": "dwarf_gem",
+      "name": "ドワーフの鉱石屋",
+      "cost": 3,
+      "copies": 3
+    },
+    {
+      "id": "dwarf_cook",
+      "name": "ドワーフの料理人",
+      "cost": 2,
+      "copies": 3
+    },
+    {
+      "id": "dwarf_saint",
+      "name": "ドワーフの神官",
+      "cost": 4,
+      "copies": 3
+    },
+    {
+      "id": "dwarf_alchemist",
+      "name": "ドワーフの錬金術師",
+      "cost": 2,
+      "copies": 3
+    },
+    {
+      "id": "dwarf_beer",
+      "name": "ドワーフのビール職人",
+      "cost": 6,
+      "copies": 2
+    },
+    {
+      "id": "dwarf_gardian",
+      "name": "ドワーフの聖堂守り",
+      "cost": 4,
+      "copies": 2
+    },
+    {
+      "id": "dwarf_king",
+      "name": "ドワーフの王",
+      "cost": 7,
+      "copies": 1
+    },
+    {
+      "id": "elf_archer",
+      "name": "エルフの射手",
+      "cost": 2,
+      "copies": 3
+    },
+    {
+      "id": "elf_marchant",
+      "name": "エルフの交易人",
+      "cost": 1,
+      "copies": 3
+    },
+    {
+      "id": "elf_artist",
+      "name": "エルフの芸術家",
+      "cost": 3,
+      "copies": 3
+    },
+    {
+      "id": "elf_mistic",
+      "name": "エルフの神秘家",
+      "cost": 2,
+      "copies": 3
+    },
+    {
+      "id": "elf_saint",
+      "name": "エルフの祈り手",
+      "cost": 1,
+      "copies": 3
+    },
+    {
+      "id": "elf_caster",
+      "name": "エルフの魔術師",
+      "cost": 6,
+      "copies": 2
+    },
+    {
+      "id": "elf_queen",
+      "name": "エルフの女王",
+      "cost": 7,
+      "copies": 1
+    },
+    {
+      "id": "elf_follower",
+      "name": "エルフの信奉者",
+      "cost": 3,
+      "copies": 2
+    },
+    {
+      "id": "goblin_soldier",
+      "name": "ゴブリンの兵士",
+      "cost": 1,
+      "copies": 3
+    },
+    {
+      "id": "goblin_scavenger",
+      "name": "ゴブリンのゴミ売り",
+      "cost": 2,
+      "copies": 3
+    },
+    {
+      "id": "goblin_junk",
+      "name": "ゴブリンのガラクタ集め",
+      "cost": 2,
+      "copies": 3
+    },
+    {
+      "id": "goblin_saint",
+      "name": "ゴブリンの祈祷師",
+      "cost": 1,
+      "copies": 3
+    },
+    {
+      "id": "goblin_lunatic",
+      "name": "ゴブリンの錯乱者",
+      "cost": 2,
+      "copies": 3
+    },
+    {
+      "id": "goblin_great_soldier",
+      "name": "ゴブリンの百人長",
+      "cost": 2,
+      "copies": 2
+    },
+    {
+      "id": "goblin_strategist",
+      "name": "ゴブリンの戦術家",
+      "cost": 4,
+      "copies": 2
+    },
+    {
+      "id": "goblin_king",
+      "name": "ゴブリンの族長",
+      "cost": 8,
+      "copies": 1
+    },
+    {
+      "id": "golem_iron",
+      "name": "鉄のゴーレム",
+      "cost": 2,
+      "copies": 3
+    },
+    {
+      "id": "golem_gold",
+      "name": "黄金のゴーレム",
+      "cost": 2,
+      "copies": 3
+    },
+    {
+      "id": "golem_stollow",
+      "name": "藁のゴーレム",
+      "cost": 5,
+      "copies": 3
+    },
+    {
+      "id": "golem_cristal",
+      "name": "水晶のゴーレム",
+      "cost": 6,
+      "copies": 2
+    },
+    {
+      "id": "golem_king",
+      "name": "ゴーレムの王",
+      "cost": 6,
+      "copies": 1
+    },
+    {
+      "id": "demon_destroy",
+      "name": "破壊のデーモン",
+      "cost": 5,
+      "copies": 3
+    },
+    {
+      "id": "demon_eye",
+      "name": "眼のデーモン",
+      "cost": 5,
+      "copies": 3
+    },
+    {
+      "id": "demon_pest",
+      "name": "疫病のデーモン",
+      "cost": 5,
+      "copies": 3
+    },
+    {
+      "id": "demon_storm",
+      "name": "嵐のデーモン",
+      "cost": 9,
+      "copies": 1
+    }
+  ],
+  "totalCards": 102,
+  "states": 176,
+  "sampling": [
+    {
+      "case": "pair",
+      "count": 2,
+      "stratum": "cheapTechIncome",
+      "found": 4,
+      "quota": 4,
+      "attempted": 8377
+    },
+    {
+      "case": "pair",
+      "count": 2,
+      "stratum": "cheapTechNoIncome",
+      "found": 4,
+      "quota": 4,
+      "attempted": 8377
+    },
+    {
+      "case": "pair",
+      "count": 2,
+      "stratum": "otherTechIncome",
+      "found": 4,
+      "quota": 4,
+      "attempted": 8377
+    },
+    {
+      "case": "pair",
+      "count": 2,
+      "stratum": "otherTechNoIncome",
+      "found": 4,
+      "quota": 4,
+      "attempted": 8377
+    },
+    {
+      "case": "pair",
+      "count": 3,
+      "stratum": "cheapTechIncome",
+      "found": 4,
+      "quota": 4,
+      "attempted": 15048
+    },
+    {
+      "case": "pair",
+      "count": 3,
+      "stratum": "cheapTechNoIncome",
+      "found": 4,
+      "quota": 4,
+      "attempted": 15048
+    },
+    {
+      "case": "pair",
+      "count": 3,
+      "stratum": "otherTechIncome",
+      "found": 4,
+      "quota": 4,
+      "attempted": 15048
+    },
+    {
+      "case": "pair",
+      "count": 3,
+      "stratum": "otherTechNoIncome",
+      "found": 4,
+      "quota": 4,
+      "attempted": 15048
+    },
+    {
+      "case": "pair",
+      "count": 4,
+      "stratum": "cheapTechIncome",
+      "found": 4,
+      "quota": 4,
+      "attempted": 7977
+    },
+    {
+      "case": "pair",
+      "count": 4,
+      "stratum": "cheapTechNoIncome",
+      "found": 4,
+      "quota": 4,
+      "attempted": 7977
+    },
+    {
+      "case": "pair",
+      "count": 4,
+      "stratum": "otherTechIncome",
+      "found": 4,
+      "quota": 4,
+      "attempted": 7977
+    },
+    {
+      "case": "pair",
+      "count": 4,
+      "stratum": "otherTechNoIncome",
+      "found": 4,
+      "quota": 4,
+      "attempted": 7977
+    },
+    {
+      "case": "pair",
+      "count": 5,
+      "stratum": "cheapTechIncome",
+      "found": 4,
+      "quota": 4,
+      "attempted": 5618
+    },
+    {
+      "case": "pair",
+      "count": 5,
+      "stratum": "cheapTechNoIncome",
+      "found": 4,
+      "quota": 4,
+      "attempted": 5618
+    },
+    {
+      "case": "pair",
+      "count": 5,
+      "stratum": "otherTechIncome",
+      "found": 4,
+      "quota": 4,
+      "attempted": 5618
+    },
+    {
+      "case": "pair",
+      "count": 5,
+      "stratum": "otherTechNoIncome",
+      "found": 4,
+      "quota": 4,
+      "attempted": 5618
+    },
+    {
+      "case": "single",
+      "count": 2,
+      "stratum": "human_smith",
+      "found": 2,
+      "quota": 2,
+      "attempted": 10
+    },
+    {
+      "case": "single",
+      "count": 2,
+      "stratum": "human_king",
+      "found": 2,
+      "quota": 2,
+      "attempted": 78
+    },
+    {
+      "case": "single",
+      "count": 2,
+      "stratum": "dwarf_beer",
+      "found": 2,
+      "quota": 2,
+      "attempted": 41
+    },
+    {
+      "case": "single",
+      "count": 2,
+      "stratum": "dwarf_king",
+      "found": 2,
+      "quota": 2,
+      "attempted": 73
+    },
+    {
+      "case": "single",
+      "count": 2,
+      "stratum": "elf_caster",
+      "found": 2,
+      "quota": 2,
+      "attempted": 15
+    },
+    {
+      "case": "single",
+      "count": 2,
+      "stratum": "elf_queen",
+      "found": 2,
+      "quota": 2,
+      "attempted": 75
+    },
+    {
+      "case": "single",
+      "count": 2,
+      "stratum": "goblin_king",
+      "found": 2,
+      "quota": 2,
+      "attempted": 31
+    },
+    {
+      "case": "single",
+      "count": 2,
+      "stratum": "golem_stollow",
+      "found": 2,
+      "quota": 2,
+      "attempted": 5
+    },
+    {
+      "case": "single",
+      "count": 2,
+      "stratum": "golem_cristal",
+      "found": 2,
+      "quota": 2,
+      "attempted": 13
+    },
+    {
+      "case": "single",
+      "count": 2,
+      "stratum": "golem_king",
+      "found": 2,
+      "quota": 2,
+      "attempted": 95
+    },
+    {
+      "case": "single",
+      "count": 2,
+      "stratum": "demon_destroy",
+      "found": 2,
+      "quota": 2,
+      "attempted": 11
+    },
+    {
+      "case": "single",
+      "count": 2,
+      "stratum": "demon_eye",
+      "found": 2,
+      "quota": 2,
+      "attempted": 28
+    },
+    {
+      "case": "single",
+      "count": 2,
+      "stratum": "demon_pest",
+      "found": 2,
+      "quota": 2,
+      "attempted": 42
+    },
+    {
+      "case": "single",
+      "count": 2,
+      "stratum": "demon_storm",
+      "found": 2,
+      "quota": 2,
+      "attempted": 28
+    },
+    {
+      "case": "single",
+      "count": 3,
+      "stratum": "human_smith",
+      "found": 2,
+      "quota": 2,
+      "attempted": 13
+    },
+    {
+      "case": "single",
+      "count": 3,
+      "stratum": "human_king",
+      "found": 2,
+      "quota": 2,
+      "attempted": 33
+    },
+    {
+      "case": "single",
+      "count": 3,
+      "stratum": "dwarf_beer",
+      "found": 2,
+      "quota": 2,
+      "attempted": 13
+    },
+    {
+      "case": "single",
+      "count": 3,
+      "stratum": "dwarf_king",
+      "found": 2,
+      "quota": 2,
+      "attempted": 55
+    },
+    {
+      "case": "single",
+      "count": 3,
+      "stratum": "elf_caster",
+      "found": 2,
+      "quota": 2,
+      "attempted": 18
+    },
+    {
+      "case": "single",
+      "count": 3,
+      "stratum": "elf_queen",
+      "found": 2,
+      "quota": 2,
+      "attempted": 31
+    },
+    {
+      "case": "single",
+      "count": 3,
+      "stratum": "goblin_king",
+      "found": 2,
+      "quota": 2,
+      "attempted": 81
+    },
+    {
+      "case": "single",
+      "count": 3,
+      "stratum": "golem_stollow",
+      "found": 2,
+      "quota": 2,
+      "attempted": 44
+    },
+    {
+      "case": "single",
+      "count": 3,
+      "stratum": "golem_cristal",
+      "found": 2,
+      "quota": 2,
+      "attempted": 19
+    },
+    {
+      "case": "single",
+      "count": 3,
+      "stratum": "golem_king",
+      "found": 2,
+      "quota": 2,
+      "attempted": 27
+    },
+    {
+      "case": "single",
+      "count": 3,
+      "stratum": "demon_destroy",
+      "found": 2,
+      "quota": 2,
+      "attempted": 4
+    },
+    {
+      "case": "single",
+      "count": 3,
+      "stratum": "demon_eye",
+      "found": 2,
+      "quota": 2,
+      "attempted": 11
+    },
+    {
+      "case": "single",
+      "count": 3,
+      "stratum": "demon_pest",
+      "found": 2,
+      "quota": 2,
+      "attempted": 8
+    },
+    {
+      "case": "single",
+      "count": 3,
+      "stratum": "demon_storm",
+      "found": 2,
+      "quota": 2,
+      "attempted": 52
+    },
+    {
+      "case": "single",
+      "count": 4,
+      "stratum": "human_smith",
+      "found": 2,
+      "quota": 2,
+      "attempted": 11
+    },
+    {
+      "case": "single",
+      "count": 4,
+      "stratum": "human_king",
+      "found": 2,
+      "quota": 2,
+      "attempted": 19
+    },
+    {
+      "case": "single",
+      "count": 4,
+      "stratum": "dwarf_beer",
+      "found": 2,
+      "quota": 2,
+      "attempted": 19
+    },
+    {
+      "case": "single",
+      "count": 4,
+      "stratum": "dwarf_king",
+      "found": 2,
+      "quota": 2,
+      "attempted": 78
+    },
+    {
+      "case": "single",
+      "count": 4,
+      "stratum": "elf_caster",
+      "found": 2,
+      "quota": 2,
+      "attempted": 9
+    },
+    {
+      "case": "single",
+      "count": 4,
+      "stratum": "elf_queen",
+      "found": 2,
+      "quota": 2,
+      "attempted": 123
+    },
+    {
+      "case": "single",
+      "count": 4,
+      "stratum": "goblin_king",
+      "found": 2,
+      "quota": 2,
+      "attempted": 28
+    },
+    {
+      "case": "single",
+      "count": 4,
+      "stratum": "golem_stollow",
+      "found": 2,
+      "quota": 2,
+      "attempted": 16
+    },
+    {
+      "case": "single",
+      "count": 4,
+      "stratum": "golem_cristal",
+      "found": 2,
+      "quota": 2,
+      "attempted": 14
+    },
+    {
+      "case": "single",
+      "count": 4,
+      "stratum": "golem_king",
+      "found": 2,
+      "quota": 2,
+      "attempted": 22
+    },
+    {
+      "case": "single",
+      "count": 4,
+      "stratum": "demon_destroy",
+      "found": 2,
+      "quota": 2,
+      "attempted": 28
+    },
+    {
+      "case": "single",
+      "count": 4,
+      "stratum": "demon_eye",
+      "found": 2,
+      "quota": 2,
+      "attempted": 19
+    },
+    {
+      "case": "single",
+      "count": 4,
+      "stratum": "demon_pest",
+      "found": 2,
+      "quota": 2,
+      "attempted": 15
+    },
+    {
+      "case": "single",
+      "count": 4,
+      "stratum": "demon_storm",
+      "found": 2,
+      "quota": 2,
+      "attempted": 34
+    },
+    {
+      "case": "single",
+      "count": 5,
+      "stratum": "human_smith",
+      "found": 2,
+      "quota": 2,
+      "attempted": 9
+    },
+    {
+      "case": "single",
+      "count": 5,
+      "stratum": "human_king",
+      "found": 2,
+      "quota": 2,
+      "attempted": 56
+    },
+    {
+      "case": "single",
+      "count": 5,
+      "stratum": "dwarf_beer",
+      "found": 2,
+      "quota": 2,
+      "attempted": 47
+    },
+    {
+      "case": "single",
+      "count": 5,
+      "stratum": "dwarf_king",
+      "found": 2,
+      "quota": 2,
+      "attempted": 14
+    },
+    {
+      "case": "single",
+      "count": 5,
+      "stratum": "elf_caster",
+      "found": 2,
+      "quota": 2,
+      "attempted": 21
+    },
+    {
+      "case": "single",
+      "count": 5,
+      "stratum": "elf_queen",
+      "found": 2,
+      "quota": 2,
+      "attempted": 18
+    },
+    {
+      "case": "single",
+      "count": 5,
+      "stratum": "goblin_king",
+      "found": 2,
+      "quota": 2,
+      "attempted": 4
+    },
+    {
+      "case": "single",
+      "count": 5,
+      "stratum": "golem_stollow",
+      "found": 2,
+      "quota": 2,
+      "attempted": 10
+    },
+    {
+      "case": "single",
+      "count": 5,
+      "stratum": "golem_cristal",
+      "found": 2,
+      "quota": 2,
+      "attempted": 18
+    },
+    {
+      "case": "single",
+      "count": 5,
+      "stratum": "golem_king",
+      "found": 2,
+      "quota": 2,
+      "attempted": 50
+    },
+    {
+      "case": "single",
+      "count": 5,
+      "stratum": "demon_destroy",
+      "found": 2,
+      "quota": 2,
+      "attempted": 23
+    },
+    {
+      "case": "single",
+      "count": 5,
+      "stratum": "demon_eye",
+      "found": 2,
+      "quota": 2,
+      "attempted": 12
+    },
+    {
+      "case": "single",
+      "count": 5,
+      "stratum": "demon_pest",
+      "found": 2,
+      "quota": 2,
+      "attempted": 16
+    },
+    {
+      "case": "single",
+      "count": 5,
+      "stratum": "demon_storm",
+      "found": 2,
+      "quota": 2,
+      "attempted": 8
+    }
+  ],
+  "worlds": [
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107
+  ],
+  "models": [
+    "balanced",
+    "war"
+  ],
+  "limit": 12
+}

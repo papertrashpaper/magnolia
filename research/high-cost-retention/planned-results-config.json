@@ -1,0 +1,18 @@
+{
+  "source": {
+    "scripts/planned-high-cost-retention.mjs": "eb950e0104b17b3c9a0df093944d3772ab24da9b398963798bf42e685a288914",
+    "scripts/extend-planned-retention.mjs": "12c980803b16431bf7a43253cbbcc92cdd4ba2a8351f89b9de435b13e42b5400",
+    "scripts/high-cost-retention.mjs": "9d5b7fa9cb1d44c27dce33c5895ee3cd7363d2c36388e8314c038da81ae3c823",
+    "scripts/strategy-policies.mjs": "689a6f6cb9eca6080b02b6ef2dda885af038c4e167381335d2a5fbab33172849",
+    "scripts/adaptive-strategies.mjs": "41636deb581fa175907fdd2a3ae5fd5b7fe71add0ac5fd55b9286a64c765947a",
+    "scripts/strategic-timing.mjs": "4230d9d972c2815e1530442275adb7d5a5dc23dd9d24ec30e4918b49d4c3e1da",
+    "scripts/endgame-decisions.mjs": "6f39a53c97a8b364b547553d70d7304e7cd4ecb6d5ade08ecf1d79ae247f2a1d",
+    "public/js/cards.js": "bd2c8db4bf5714a149ec49af58a32a8efa467caae28d5117047aa0e07653c98c",
+    "public/js/engine.js": "ecd564615043d703fd1d496a110463911a59425716ae7098a74034e55f832032",
+    "public/js/objectives.js": "81f1e493a7c21c3cdaa6d76e4fcc6a6b68ba64d5ee4879c7dafda6da43fccc27",
+    "public/js/review.js": "56a55137323478bfb1c7ab655bcdec1352685d33723259c4919411222793f6bd"
+  },
+  "states": 64,
+  "baseRawHash": "d4f8ff4dfefad04f9fd4ef6884cdad2db77a2c1e3bc7ac6f65b7499d9aaa4586",
+  "inputStateHash": "67ba5e46c924a79512732beec6f0862d679e77d9faac4dbd64dc59674884d50e"
+}
