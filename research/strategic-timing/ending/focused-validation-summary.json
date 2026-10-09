@@ -1,0 +1,90 @@
+{
+  "states": 32,
+  "candidates": 371,
+  "rollouts": 8904,
+  "incompleteRollouts": 0,
+  "groups": {
+    "finishNow": {
+      "states": 32,
+      "completed": 32,
+      "share": 0.15104166666666666,
+      "vp": 38.28125,
+      "steps": 1,
+      "endsFirst": 1,
+      "secondPlaced": null,
+      "bonusMade": 0,
+      "targetPlaced": 0
+    },
+    "defer": {
+      "states": 32,
+      "completed": 32,
+      "share": 0.048828125,
+      "vp": 37.21875,
+      "steps": 1.140625,
+      "endsFirst": 0.859375,
+      "secondPlaced": null,
+      "bonusMade": 0,
+      "targetPlaced": 0
+    }
+  },
+  "primary": {
+    "states": 32,
+    "share": 0.10221354166666667,
+    "vp": 1.0625,
+    "gap": 4.380859375,
+    "steps": -0.140625,
+    "better": 10,
+    "equal": 22,
+    "worse": 0,
+    "ci95": [
+      0.060221354166666664,
+      0.1455078125
+    ]
+  },
+  "conditions": {
+    "bankedLead": {
+      "states": 9,
+      "share": 0.2939814814814815,
+      "vp": -1.4791666666666667,
+      "gap": 4.9375,
+      "steps": -0.2777777777777778,
+      "better": 6,
+      "equal": 3,
+      "worse": 0,
+      "ci95": null
+    },
+    "bankedBehind": {
+      "states": 23,
+      "share": 0.02717391304347826,
+      "vp": 2.057065217391304,
+      "gap": 4.163043478260869,
+      "steps": -0.08695652173913043,
+      "better": 4,
+      "equal": 19,
+      "worse": 0,
+      "ci95": null
+    },
+    "fasterPassive": {
+      "states": 2,
+      "share": 0.3125,
+      "vp": 2.1875,
+      "gap": 4.6875,
+      "steps": -0.125,
+      "better": 1,
+      "equal": 1,
+      "worse": 0,
+      "ci95": null
+    },
+    "enemySeven": {
+      "states": 20,
+      "share": 0.04010416666666667,
+      "vp": 1.01875,
+      "gap": 3.40625,
+      "steps": -0.115625,
+      "better": 4,
+      "equal": 16,
+      "worse": 0,
+      "ci95": null
+    }
+  }
+}

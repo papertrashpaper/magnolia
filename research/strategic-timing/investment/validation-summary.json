@@ -1,0 +1,155 @@
+{
+  "states": 32,
+  "candidates": 98,
+  "rollouts": 2352,
+  "incompleteRollouts": 0,
+  "groups": {
+    "investmentFirst": {
+      "states": 32,
+      "completed": 32,
+      "share": 0.15201822916666666,
+      "vp": 37.53515625,
+      "steps": 3.455078125,
+      "endsFirst": 0,
+      "secondPlaced": 1,
+      "bonusMade": 0,
+      "targetPlaced": 0
+    },
+    "payoffFirst": {
+      "states": 32,
+      "completed": 32,
+      "share": 0.1904296875,
+      "vp": 38.181640625,
+      "steps": 3.482421875,
+      "endsFirst": 0,
+      "secondPlaced": 1,
+      "bonusMade": 0,
+      "targetPlaced": 0
+    },
+    "bothNow": {
+      "states": 17,
+      "completed": 17,
+      "share": 0.28615196078431376,
+      "vp": 41.95955882352941,
+      "steps": 3.389705882352941,
+      "endsFirst": 0,
+      "secondPlaced": null,
+      "bonusMade": 0,
+      "targetPlaced": 0
+    },
+    "sequentialBest": {
+      "states": 32,
+      "completed": 32,
+      "share": 0.1982421875,
+      "vp": 39.0703125,
+      "steps": 3.48046875,
+      "endsFirst": 0,
+      "secondPlaced": 1,
+      "bonusMade": 0,
+      "targetPlaced": 0
+    }
+  },
+  "primary": {
+    "states": 32,
+    "share": -0.038411458333333336,
+    "vp": -0.646484375,
+    "gap": -0.625,
+    "steps": -0.02734375,
+    "better": 4,
+    "equal": 16,
+    "worse": 12,
+    "ci95": [
+      -0.0615234375,
+      -0.014973958333333334
+    ]
+  },
+  "conditions": {
+    "income": {
+      "states": 21,
+      "share": -0.02876984126984127,
+      "vp": -0.8303571428571429,
+      "gap": -0.8482142857142857,
+      "steps": -0.020833333333333332,
+      "better": 3,
+      "equal": 11,
+      "worse": 7,
+      "ci95": null
+    },
+    "develop": {
+      "states": 11,
+      "share": -0.056818181818181816,
+      "vp": -0.29545454545454547,
+      "gap": -0.19886363636363635,
+      "steps": -0.03977272727272727,
+      "better": 1,
+      "equal": 5,
+      "worse": 5,
+      "ci95": null
+    },
+    "thresholdSoon": {
+      "states": 4,
+      "share": -0.0625,
+      "vp": 0.890625,
+      "gap": 0.5625,
+      "steps": -0.078125,
+      "better": 0,
+      "equal": 2,
+      "worse": 2,
+      "ci95": null
+    },
+    "cannotBothNow": {
+      "states": 15,
+      "share": -0.04027777777777778,
+      "vp": -0.041666666666666664,
+      "gap": -0.15416666666666667,
+      "steps": 0.008333333333333333,
+      "better": 2,
+      "equal": 6,
+      "worse": 7,
+      "ci95": null
+    }
+  },
+  "bothNow": {
+    "states": 17,
+    "share": 0.1868872549019608,
+    "vp": 6.786764705882353,
+    "gap": 8.533088235294118,
+    "steps": -0.07720588235294118,
+    "better": 13,
+    "equal": 4,
+    "worse": 0,
+    "ci95": null
+  },
+  "timeline": [
+    {
+      "step": 1,
+      "investmentBanked": 12.111328125,
+      "payoffBanked": 12.998046875
+    },
+    {
+      "step": 2,
+      "investmentBanked": 18.09765625,
+      "payoffBanked": 18.861328125
+    },
+    {
+      "step": 3,
+      "investmentBanked": 29.2265625,
+      "payoffBanked": 29.751953125
+    },
+    {
+      "step": 4,
+      "investmentBanked": 37.2421875,
+      "payoffBanked": 37.849609375
+    },
+    {
+      "step": 5,
+      "investmentBanked": 37.53515625,
+      "payoffBanked": 38.181640625
+    },
+    {
+      "step": 6,
+      "investmentBanked": 37.53515625,
+      "payoffBanked": 38.181640625
+    }
+  ]
+}

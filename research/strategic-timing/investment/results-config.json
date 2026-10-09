@@ -1,0 +1,358 @@
+{
+  "createdAt": "2026-10-09T02:47:51.187Z",
+  "source": {
+    "public/js/cards.js": "bd2c8db4bf5714a149ec49af58a32a8efa467caae28d5117047aa0e07653c98c",
+    "public/js/engine.js": "ecd564615043d703fd1d496a110463911a59425716ae7098a74034e55f832032",
+    "public/js/objectives.js": "81f1e493a7c21c3cdaa6d76e4fcc6a6b68ba64d5ee4879c7dafda6da43fccc27",
+    "public/js/review.js": "56a55137323478bfb1c7ab655bcdec1352685d33723259c4919411222793f6bd",
+    "scripts/strategy-policies.mjs": "689a6f6cb9eca6080b02b6ef2dda885af038c4e167381335d2a5fbab33172849",
+    "scripts/adaptive-strategies.mjs": "41636deb581fa175907fdd2a3ae5fd5b7fe71add0ac5fd55b9286a64c765947a",
+    "scripts/endgame-decisions.mjs": "6f39a53c97a8b364b547553d70d7304e7cd4ecb6d5ade08ecf1d79ae247f2a1d",
+    "scripts/strategic-timing.mjs": "4230d9d972c2815e1530442275adb7d5a5dc23dd9d24ec30e4918b49d4c3e1da",
+    "scripts/run-strategic-timing.mjs": "f525bd9d3437dce3fa241e292befbd32e1c150988f1a10744df38f95dfd60dc4"
+  },
+  "cards": [
+    {
+      "id": "human_knight",
+      "name": "人間の騎士",
+      "copies": 3
+    },
+    {
+      "id": "human_marchant",
+      "name": "人間の行商",
+      "copies": 3
+    },
+    {
+      "id": "human_saint",
+      "name": "人間の聖職者",
+      "copies": 3
+    },
+    {
+      "id": "human_sorcerer",
+      "name": "人間の呪い師",
+      "copies": 3
+    },
+    {
+      "id": "human_smith",
+      "name": "人間の大工",
+      "copies": 3
+    },
+    {
+      "id": "human_great_marchant",
+      "name": "人間の大商人",
+      "copies": 2
+    },
+    {
+      "id": "human_undertaker",
+      "name": "人間の葬儀屋",
+      "copies": 2
+    },
+    {
+      "id": "human_king",
+      "name": "人間の君主",
+      "copies": 1
+    },
+    {
+      "id": "dwarf_pugilist",
+      "name": "ドワーフの拳闘士",
+      "copies": 3
+    },
+    {
+      "id": "dwarf_gem",
+      "name": "ドワーフの鉱石屋",
+      "copies": 3
+    },
+    {
+      "id": "dwarf_cook",
+      "name": "ドワーフの料理人",
+      "copies": 3
+    },
+    {
+      "id": "dwarf_saint",
+      "name": "ドワーフの神官",
+      "copies": 3
+    },
+    {
+      "id": "dwarf_alchemist",
+      "name": "ドワーフの錬金術師",
+      "copies": 3
+    },
+    {
+      "id": "dwarf_beer",
+      "name": "ドワーフのビール職人",
+      "copies": 2
+    },
+    {
+      "id": "dwarf_gardian",
+      "name": "ドワーフの聖堂守り",
+      "copies": 2
+    },
+    {
+      "id": "dwarf_king",
+      "name": "ドワーフの王",
+      "copies": 1
+    },
+    {
+      "id": "elf_archer",
+      "name": "エルフの射手",
+      "copies": 3
+    },
+    {
+      "id": "elf_marchant",
+      "name": "エルフの交易人",
+      "copies": 3
+    },
+    {
+      "id": "elf_artist",
+      "name": "エルフの芸術家",
+      "copies": 3
+    },
+    {
+      "id": "elf_mistic",
+      "name": "エルフの神秘家",
+      "copies": 3
+    },
+    {
+      "id": "elf_saint",
+      "name": "エルフの祈り手",
+      "copies": 3
+    },
+    {
+      "id": "elf_caster",
+      "name": "エルフの魔術師",
+      "copies": 2
+    },
+    {
+      "id": "elf_queen",
+      "name": "エルフの女王",
+      "copies": 1
+    },
+    {
+      "id": "elf_follower",
+      "name": "エルフの信奉者",
+      "copies": 2
+    },
+    {
+      "id": "goblin_soldier",
+      "name": "ゴブリンの兵士",
+      "copies": 3
+    },
+    {
+      "id": "goblin_scavenger",
+      "name": "ゴブリンのゴミ売り",
+      "copies": 3
+    },
+    {
+      "id": "goblin_junk",
+      "name": "ゴブリンのガラクタ集め",
+      "copies": 3
+    },
+    {
+      "id": "goblin_saint",
+      "name": "ゴブリンの祈祷師",
+      "copies": 3
+    },
+    {
+      "id": "goblin_lunatic",
+      "name": "ゴブリンの錯乱者",
+      "copies": 3
+    },
+    {
+      "id": "goblin_great_soldier",
+      "name": "ゴブリンの百人長",
+      "copies": 2
+    },
+    {
+      "id": "goblin_strategist",
+      "name": "ゴブリンの戦術家",
+      "copies": 2
+    },
+    {
+      "id": "goblin_king",
+      "name": "ゴブリンの族長",
+      "copies": 1
+    },
+    {
+      "id": "golem_iron",
+      "name": "鉄のゴーレム",
+      "copies": 3
+    },
+    {
+      "id": "golem_gold",
+      "name": "黄金のゴーレム",
+      "copies": 3
+    },
+    {
+      "id": "golem_stollow",
+      "name": "藁のゴーレム",
+      "copies": 3
+    },
+    {
+      "id": "golem_cristal",
+      "name": "水晶のゴーレム",
+      "copies": 2
+    },
+    {
+      "id": "golem_king",
+      "name": "ゴーレムの王",
+      "copies": 1
+    },
+    {
+      "id": "demon_destroy",
+      "name": "破壊のデーモン",
+      "copies": 3
+    },
+    {
+      "id": "demon_eye",
+      "name": "眼のデーモン",
+      "copies": 3
+    },
+    {
+      "id": "demon_pest",
+      "name": "疫病のデーモン",
+      "copies": 3
+    },
+    {
+      "id": "demon_storm",
+      "name": "嵐のデーモン",
+      "copies": 1
+    }
+  ],
+  "totalCards": 102,
+  "states": 32,
+  "sampling": [
+    {
+      "count": 2,
+      "profile": "balanced",
+      "found": 2,
+      "quota": 2,
+      "attempted": 2
+    },
+    {
+      "count": 2,
+      "profile": "economy",
+      "found": 2,
+      "quota": 2,
+      "attempted": 2
+    },
+    {
+      "count": 2,
+      "profile": "tech",
+      "found": 2,
+      "quota": 2,
+      "attempted": 3
+    },
+    {
+      "count": 2,
+      "profile": "faith",
+      "found": 2,
+      "quota": 2,
+      "attempted": 2
+    },
+    {
+      "count": 3,
+      "profile": "balanced",
+      "found": 2,
+      "quota": 2,
+      "attempted": 4
+    },
+    {
+      "count": 3,
+      "profile": "economy",
+      "found": 2,
+      "quota": 2,
+      "attempted": 2
+    },
+    {
+      "count": 3,
+      "profile": "tech",
+      "found": 2,
+      "quota": 2,
+      "attempted": 2
+    },
+    {
+      "count": 3,
+      "profile": "faith",
+      "found": 2,
+      "quota": 2,
+      "attempted": 2
+    },
+    {
+      "count": 4,
+      "profile": "balanced",
+      "found": 2,
+      "quota": 2,
+      "attempted": 2
+    },
+    {
+      "count": 4,
+      "profile": "economy",
+      "found": 2,
+      "quota": 2,
+      "attempted": 3
+    },
+    {
+      "count": 4,
+      "profile": "tech",
+      "found": 2,
+      "quota": 2,
+      "attempted": 2
+    },
+    {
+      "count": 4,
+      "profile": "faith",
+      "found": 2,
+      "quota": 2,
+      "attempted": 2
+    },
+    {
+      "count": 5,
+      "profile": "balanced",
+      "found": 2,
+      "quota": 2,
+      "attempted": 3
+    },
+    {
+      "count": 5,
+      "profile": "economy",
+      "found": 2,
+      "quota": 2,
+      "attempted": 2
+    },
+    {
+      "count": 5,
+      "profile": "tech",
+      "found": 2,
+      "quota": 2,
+      "attempted": 2
+    },
+    {
+      "count": 5,
+      "profile": "faith",
+      "found": 2,
+      "quota": 2,
+      "attempted": 2
+    }
+  ],
+  "trainWorlds": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "auditWorlds": [
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107
+  ],
+  "models": [
+    "balanced",
+    "war"
+  ],
+  "limit": 12
+}

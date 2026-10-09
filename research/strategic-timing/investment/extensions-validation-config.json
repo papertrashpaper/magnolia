@@ -1,0 +1,16 @@
+{
+  "source": {
+    "scripts/extend-investment-timing.mjs": "f2f3a9e59a47d50276f5edccb36fc4de23f4e6eb9528806860c970f879ed24bb",
+    "scripts/strategic-timing.mjs": "4230d9d972c2815e1530442275adb7d5a5dc23dd9d24ec30e4918b49d4c3e1da",
+    "public/js/cards.js": "bd2c8db4bf5714a149ec49af58a32a8efa467caae28d5117047aa0e07653c98c",
+    "public/js/engine.js": "ecd564615043d703fd1d496a110463911a59425716ae7098a74034e55f832032",
+    "public/js/objectives.js": "81f1e493a7c21c3cdaa6d76e4fcc6a6b68ba64d5ee4879c7dafda6da43fccc27",
+    "public/js/review.js": "56a55137323478bfb1c7ab655bcdec1352685d33723259c4919411222793f6bd",
+    "scripts/strategy-policies.mjs": "689a6f6cb9eca6080b02b6ef2dda885af038c4e167381335d2a5fbab33172849",
+    "scripts/adaptive-strategies.mjs": "41636deb581fa175907fdd2a3ae5fd5b7fe71add0ac5fd55b9286a64c765947a",
+    "scripts/endgame-decisions.mjs": "6f39a53c97a8b364b547553d70d7304e7cd4ecb6d5ade08ecf1d79ae247f2a1d"
+  },
+  "rawHash": "21c4da7d15768f45bb9ddf547d17aa4949119d174f15e14e6375b3f744df1481",
+  "states": 32,
+  "createdAt": "2026-10-09T02:56:06.615Z"
+}
