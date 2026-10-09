@@ -1,0 +1,7022 @@
+[
+  {
+    "title": "枚数を減らす方が良かった例",
+    "state": {
+      "id": 41,
+      "prefix": "results",
+      "seed": 1440202,
+      "count": 4,
+      "profile": "bonus",
+      "focal": 2,
+      "round": 4,
+      "phase": "place",
+      "p": {
+        "id": "2",
+        "name": "2",
+        "cpu": false,
+        "gold": 5,
+        "tech": 0,
+        "faith": 0,
+        "vp": 31,
+        "hand": [
+          "dwarf_alchemist",
+          "human_great_marchant",
+          "demon_eye",
+          "demon_destroy",
+          "demon_destroy"
+        ],
+        "board": [
+          {
+            "card": "demon_pest",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "card": "goblin_strategist",
+            "x": -1,
+            "y": 0
+          },
+          {
+            "card": "dwarf_gardian",
+            "x": -2,
+            "y": 0
+          }
+        ],
+        "bonuses": [],
+        "bonusRewards": {},
+        "power": 13,
+        "rank": 1,
+        "warVP": 5,
+        "cpuDifficulty": "normal"
+      },
+      "opponents": [
+        {
+          "id": "0",
+          "name": "0",
+          "cpu": false,
+          "gold": 3,
+          "tech": 4,
+          "faith": 2,
+          "vp": 17,
+          "board": [
+            {
+              "card": "human_smith",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "card": "elf_artist",
+              "x": -1,
+              "y": 0
+            },
+            {
+              "card": "goblin_saint",
+              "x": -1,
+              "y": -1
+            },
+            {
+              "card": "dwarf_cook",
+              "x": -2,
+              "y": 0
+            },
+            {
+              "card": "elf_saint",
+              "x": -2,
+              "y": -1
+            }
+          ],
+          "bonuses": [
+            "y:0:job:artisan"
+          ],
+          "bonusRewards": {
+            "y:0:job:artisan": {
+              "reward": {
+                "tech": 2
+              },
+              "multiplier": 1,
+              "limited": []
+            }
+          },
+          "power": 8,
+          "rank": 4,
+          "warVP": 0,
+          "cpuDifficulty": "normal",
+          "handCount": 5,
+          "hand": []
+        },
+        {
+          "id": "1",
+          "name": "1",
+          "cpu": false,
+          "gold": 4,
+          "tech": 0,
+          "faith": 3,
+          "vp": 16,
+          "board": [
+            {
+              "card": "goblin_lunatic",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "card": "elf_follower",
+              "x": 0,
+              "y": -1
+            },
+            {
+              "card": "elf_archer",
+              "x": -1,
+              "y": -1
+            },
+            {
+              "card": "demon_pest",
+              "x": -1,
+              "y": -2
+            }
+          ],
+          "bonuses": [],
+          "bonusRewards": {},
+          "power": 10,
+          "rank": 3,
+          "warVP": 0,
+          "cpuDifficulty": "normal",
+          "handCount": 5,
+          "hand": []
+        },
+        {
+          "id": "3",
+          "name": "3",
+          "cpu": false,
+          "gold": 5,
+          "tech": 1,
+          "faith": 1,
+          "vp": 29,
+          "board": [
+            {
+              "card": "goblin_lunatic",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "card": "goblin_great_soldier",
+              "x": 0,
+              "y": -1
+            },
+            {
+              "card": "goblin_strategist",
+              "x": -1,
+              "y": -1
+            },
+            {
+              "card": "dwarf_gem",
+              "x": 1,
+              "y": 0
+            },
+            {
+              "card": "human_marchant",
+              "x": 1,
+              "y": 1
+            }
+          ],
+          "bonuses": [],
+          "bonusRewards": {},
+          "power": 13,
+          "rank": 1,
+          "warVP": 5,
+          "cpuDifficulty": "normal",
+          "handCount": 5,
+          "hand": []
+        }
+      ],
+      "settings": {
+        "additionalObjectives": false,
+        "warVP": [
+          5,
+          3,
+          0,
+          0
+        ],
+        "targetVP": 40,
+        "cpuDifficulty": "normal",
+        "cpuDifficulties": [
+          "normal",
+          "normal",
+          "normal"
+        ]
+      },
+      "discard": [
+        "dwarf_saint",
+        "golem_stollow",
+        "human_undertaker",
+        "elf_mistic",
+        "golem_gold",
+        "dwarf_saint",
+        "elf_artist",
+        "human_undertaker",
+        "elf_queen",
+        "human_knight",
+        "demon_destroy",
+        "elf_saint",
+        "golem_king"
+      ]
+    },
+    "left": "single",
+    "right": "double",
+    "leftAction": {
+      "id": 91,
+      "moves": [
+        {
+          "handIndex": 3,
+          "x": -2,
+          "y": -1
+        }
+      ],
+      "named": [
+        {
+          "card": "demon_destroy",
+          "x": -2,
+          "y": -1
+        }
+      ],
+      "features": {
+        "count": 1,
+        "power": 16,
+        "powerGain": 3,
+        "newBonuses": 0,
+        "placementVP": 0,
+        "placementGold": -5,
+        "remainingGold": 1,
+        "techGain": 0,
+        "faithGain": 0
+      },
+      "train": {
+        "share": 1,
+        "vp": 50,
+        "gap": 7.5,
+        "rank": 1,
+        "warVP": 5,
+        "goldVP": 1
+      },
+      "audit": {
+        "share": 1,
+        "vp": 50,
+        "gap": 7.125,
+        "rank": 1,
+        "warVP": 5,
+        "goldVP": 1
+      },
+      "byModel": {
+        "balanced": {
+          "train": {
+            "share": 1,
+            "vp": 50,
+            "gap": 7.125,
+            "rank": 1,
+            "warVP": 5,
+            "goldVP": 1
+          },
+          "audit": {
+            "share": 1,
+            "vp": 50,
+            "gap": 6.4375,
+            "rank": 1,
+            "warVP": 5,
+            "goldVP": 1
+          }
+        },
+        "war": {
+          "train": {
+            "share": 1,
+            "vp": 50,
+            "gap": 7.875,
+            "rank": 1,
+            "warVP": 5,
+            "goldVP": 1
+          },
+          "audit": {
+            "share": 1,
+            "vp": 50,
+            "gap": 7.8125,
+            "rank": 1,
+            "warVP": 5,
+            "goldVP": 1
+          }
+        }
+      },
+      "outcomes": [
+        [
+          1,
+          50,
+          7,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          12,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          4,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          12,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          1,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          8,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          7,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          6,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          8,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          7,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          8,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          2,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          5,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          3,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          2,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          10,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          8,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          11,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          8,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          3,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          6,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          8,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          8,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          6,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          11,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          13,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          5,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          12,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          1,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          8,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          7,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          6,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          8,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          12,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          8,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          9,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          5,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          3,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          8,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          10,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          8,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          11,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          14,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          3,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          6,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          6,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          8,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          50,
+          6,
+          1,
+          5,
+          1
+        ]
+      ]
+    },
+    "rightAction": {
+      "id": 26,
+      "moves": [
+        {
+          "handIndex": 0,
+          "x": -2,
+          "y": 1
+        },
+        {
+          "handIndex": 0,
+          "x": -1,
+          "y": 1
+        }
+      ],
+      "named": [
+        {
+          "card": "dwarf_alchemist",
+          "x": -2,
+          "y": 1
+        },
+        {
+          "card": "human_great_marchant",
+          "x": -1,
+          "y": 1
+        }
+      ],
+      "features": {
+        "count": 2,
+        "power": 13,
+        "powerGain": 0,
+        "newBonuses": 0,
+        "placementVP": 0,
+        "placementGold": -4,
+        "remainingGold": 1,
+        "techGain": 0,
+        "faithGain": 0
+      },
+      "train": {
+        "share": 0.84375,
+        "vp": 46.125,
+        "gap": 2.125,
+        "rank": 1.875,
+        "warVP": 3.125,
+        "goldVP": 2
+      },
+      "audit": {
+        "share": 0.359375,
+        "vp": 45.96875,
+        "gap": -0.0625,
+        "rank": 1.9375,
+        "warVP": 2.96875,
+        "goldVP": 2
+      },
+      "byModel": {
+        "balanced": {
+          "train": {
+            "share": 0.8125,
+            "vp": 46.125,
+            "gap": 2.125,
+            "rank": 1.875,
+            "warVP": 3.125,
+            "goldVP": 2
+          },
+          "audit": {
+            "share": 0.34375,
+            "vp": 46.4375,
+            "gap": 0,
+            "rank": 1.75,
+            "warVP": 3.4375,
+            "goldVP": 2
+          }
+        },
+        "war": {
+          "train": {
+            "share": 0.875,
+            "vp": 46.125,
+            "gap": 2.125,
+            "rank": 1.875,
+            "warVP": 3.125,
+            "goldVP": 2
+          },
+          "audit": {
+            "share": 0.375,
+            "vp": 45.5,
+            "gap": -0.125,
+            "rank": 2.125,
+            "warVP": 2.5,
+            "goldVP": 2
+          }
+        }
+      },
+      "outcomes": [
+        [
+          1,
+          46,
+          3,
+          2,
+          3,
+          2
+        ],
+        [
+          1,
+          46,
+          3,
+          2,
+          3,
+          2
+        ],
+        [
+          0.5,
+          48,
+          0,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          43,
+          5,
+          3,
+          0,
+          2
+        ],
+        [
+          0,
+          48,
+          -3,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          46,
+          4,
+          2,
+          3,
+          2
+        ],
+        [
+          1,
+          46,
+          3,
+          2,
+          3,
+          2
+        ],
+        [
+          1,
+          46,
+          2,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          46,
+          -1,
+          2,
+          3,
+          2
+        ],
+        [
+          1,
+          46,
+          3,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          46,
+          -1,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          48,
+          -2,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          46,
+          -4,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          48,
+          -1,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          48,
+          -2,
+          1,
+          5,
+          2
+        ],
+        [
+          0.5,
+          46,
+          0,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          46,
+          -1,
+          2,
+          3,
+          2
+        ],
+        [
+          1,
+          46,
+          2,
+          2,
+          3,
+          2
+        ],
+        [
+          1,
+          48,
+          4,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          46,
+          -1,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          46,
+          -5,
+          2,
+          3,
+          2
+        ],
+        [
+          1,
+          48,
+          6,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          46,
+          4,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          43,
+          -1,
+          3,
+          0,
+          2
+        ],
+        [
+          1,
+          46,
+          1,
+          2,
+          3,
+          2
+        ],
+        [
+          1,
+          46,
+          4,
+          2,
+          3,
+          2
+        ],
+        [
+          1,
+          48,
+          1,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          43,
+          5,
+          3,
+          0,
+          2
+        ],
+        [
+          0,
+          48,
+          -3,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          46,
+          4,
+          2,
+          3,
+          2
+        ],
+        [
+          1,
+          46,
+          3,
+          2,
+          3,
+          2
+        ],
+        [
+          1,
+          46,
+          2,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          46,
+          -1,
+          2,
+          3,
+          2
+        ],
+        [
+          1,
+          43,
+          5,
+          3,
+          0,
+          2
+        ],
+        [
+          0,
+          46,
+          -1,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          46,
+          -2,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          46,
+          -4,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          48,
+          -1,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          46,
+          -2,
+          2,
+          3,
+          2
+        ],
+        [
+          1,
+          43,
+          3,
+          3,
+          0,
+          2
+        ],
+        [
+          0,
+          46,
+          -1,
+          2,
+          3,
+          2
+        ],
+        [
+          1,
+          46,
+          2,
+          2,
+          3,
+          2
+        ],
+        [
+          1,
+          43,
+          1,
+          3,
+          0,
+          2
+        ],
+        [
+          0,
+          46,
+          -1,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          46,
+          -5,
+          2,
+          3,
+          2
+        ],
+        [
+          1,
+          48,
+          2,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          46,
+          4,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          43,
+          -1,
+          3,
+          0,
+          2
+        ]
+      ]
+    }
+  },
+  {
+    "title": "2枚配置する方が良かった例",
+    "state": {
+      "id": 26,
+      "prefix": "validation",
+      "seed": 1530209,
+      "count": 3,
+      "profile": "bonus",
+      "focal": 0,
+      "round": 5,
+      "phase": "place",
+      "p": {
+        "id": "0",
+        "name": "0",
+        "cpu": false,
+        "gold": 5,
+        "tech": 1,
+        "faith": 1,
+        "vp": 34,
+        "hand": [
+          "dwarf_cook",
+          "human_knight",
+          "human_saint",
+          "elf_artist",
+          "goblin_junk"
+        ],
+        "board": [
+          {
+            "card": "human_smith",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "card": "dwarf_gardian",
+            "x": 0,
+            "y": -1
+          },
+          {
+            "card": "goblin_strategist",
+            "x": -1,
+            "y": -1
+          },
+          {
+            "card": "demon_destroy",
+            "x": -1,
+            "y": -2
+          },
+          {
+            "card": "elf_marchant",
+            "x": -2,
+            "y": -2
+          }
+        ],
+        "bonuses": [],
+        "bonusRewards": {},
+        "power": 15,
+        "rank": 1,
+        "warVP": 5,
+        "cpuDifficulty": "normal"
+      },
+      "opponents": [
+        {
+          "id": "1",
+          "name": "1",
+          "cpu": false,
+          "gold": 6,
+          "tech": 0,
+          "faith": 2,
+          "vp": 34,
+          "board": [
+            {
+              "card": "goblin_lunatic",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "card": "goblin_lunatic",
+              "x": 0,
+              "y": -1
+            },
+            {
+              "card": "goblin_strategist",
+              "x": -1,
+              "y": -1
+            },
+            {
+              "card": "goblin_soldier",
+              "x": 1,
+              "y": 0
+            },
+            {
+              "card": "demon_pest",
+              "x": -1,
+              "y": -2
+            }
+          ],
+          "bonuses": [],
+          "bonusRewards": {},
+          "power": 10,
+          "rank": 2,
+          "warVP": 3,
+          "cpuDifficulty": "normal",
+          "handCount": 5,
+          "hand": []
+        },
+        {
+          "id": "2",
+          "name": "2",
+          "cpu": false,
+          "gold": 19,
+          "tech": 1,
+          "faith": 4,
+          "vp": 39,
+          "board": [
+            {
+              "card": "human_great_marchant",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "card": "goblin_scavenger",
+              "x": 0,
+              "y": -1
+            },
+            {
+              "card": "elf_marchant",
+              "x": 0,
+              "y": 1
+            },
+            {
+              "card": "goblin_saint",
+              "x": -1,
+              "y": -1
+            },
+            {
+              "card": "human_saint",
+              "x": 1,
+              "y": 0
+            },
+            {
+              "card": "human_undertaker",
+              "x": -1,
+              "y": 0
+            },
+            {
+              "card": "golem_gold",
+              "x": -1,
+              "y": 1
+            },
+            {
+              "card": "demon_eye",
+              "x": 1,
+              "y": 1
+            }
+          ],
+          "bonuses": [
+            "x:0:job:merchant",
+            "y:0:race:human",
+            "y:1:job:merchant"
+          ],
+          "bonusRewards": {
+            "x:0:job:merchant": {
+              "reward": {
+                "vp": 5
+              },
+              "multiplier": 1,
+              "limited": []
+            },
+            "y:0:race:human": {
+              "reward": {
+                "vp": 5
+              },
+              "multiplier": 1,
+              "limited": []
+            },
+            "y:1:job:merchant": {
+              "reward": {
+                "vp": 5
+              },
+              "multiplier": 1,
+              "limited": []
+            }
+          },
+          "power": 10,
+          "rank": 2,
+          "warVP": 3,
+          "cpuDifficulty": "normal",
+          "handCount": 5,
+          "hand": []
+        }
+      ],
+      "settings": {
+        "additionalObjectives": false,
+        "warVP": [
+          5,
+          3,
+          0
+        ],
+        "targetVP": 40,
+        "cpuDifficulty": "normal",
+        "cpuDifficulties": [
+          "normal",
+          "normal"
+        ]
+      },
+      "discard": [
+        "human_undertaker",
+        "human_knight",
+        "dwarf_pugilist",
+        "human_king",
+        "dwarf_beer",
+        "golem_gold",
+        "dwarf_saint",
+        "golem_iron",
+        "dwarf_pugilist",
+        "elf_archer",
+        "golem_king",
+        "demon_eye",
+        "golem_stollow",
+        "human_sorcerer"
+      ]
+    },
+    "left": "double",
+    "right": "single",
+    "leftAction": {
+      "id": 32,
+      "moves": [
+        {
+          "handIndex": 0,
+          "x": -1,
+          "y": 0
+        },
+        {
+          "handIndex": 2,
+          "x": -2,
+          "y": 0
+        }
+      ],
+      "named": [
+        {
+          "card": "dwarf_cook",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "elf_artist",
+          "x": -2,
+          "y": 0
+        }
+      ],
+      "features": {
+        "count": 2,
+        "power": 15,
+        "powerGain": 0,
+        "newBonuses": 1,
+        "placementVP": 0,
+        "placementGold": -5,
+        "remainingGold": 0,
+        "techGain": 2,
+        "faithGain": 0
+      },
+      "train": {
+        "share": 0.59375,
+        "vp": 56.625,
+        "gap": 0.375,
+        "rank": 1.6875,
+        "warVP": 3.625,
+        "goldVP": 1
+      },
+      "audit": {
+        "share": 0.765625,
+        "vp": 56.5,
+        "gap": 0.90625,
+        "rank": 1.65625,
+        "warVP": 3.59375,
+        "goldVP": 1
+      },
+      "byModel": {
+        "balanced": {
+          "train": {
+            "share": 0.5625,
+            "vp": 56.75,
+            "gap": 0.25,
+            "rank": 1.625,
+            "warVP": 3.75,
+            "goldVP": 1
+          },
+          "audit": {
+            "share": 0.78125,
+            "vp": 56.625,
+            "gap": 0.9375,
+            "rank": 1.625,
+            "warVP": 3.6875,
+            "goldVP": 1
+          }
+        },
+        "war": {
+          "train": {
+            "share": 0.625,
+            "vp": 56.5,
+            "gap": 0.5,
+            "rank": 1.75,
+            "warVP": 3.5,
+            "goldVP": 1
+          },
+          "audit": {
+            "share": 0.75,
+            "vp": 56.375,
+            "gap": 0.875,
+            "rank": 1.6875,
+            "warVP": 3.5,
+            "goldVP": 1
+          }
+        }
+      },
+      "outcomes": [
+        [
+          0.5,
+          56,
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          58,
+          1,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          58,
+          1,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          56,
+          -1,
+          2,
+          3,
+          1
+        ],
+        [
+          0.5,
+          58,
+          0,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          56,
+          2,
+          2,
+          3,
+          1
+        ],
+        [
+          0,
+          56,
+          -1,
+          2,
+          3,
+          1
+        ],
+        [
+          0.5,
+          56,
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          56,
+          2,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          58,
+          3,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          58,
+          1,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          58,
+          1,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          52,
+          -3,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          58,
+          3,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          58,
+          3,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          58,
+          1,
+          1,
+          5,
+          1
+        ],
+        [
+          0.5,
+          56,
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          0.5,
+          56,
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          56,
+          1,
+          2,
+          3,
+          1
+        ],
+        [
+          0.5,
+          56,
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          56,
+          1,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          58,
+          2,
+          1,
+          5,
+          1
+        ],
+        [
+          0.5,
+          56,
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          0.5,
+          56,
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          0.5,
+          56,
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          58,
+          1,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          56,
+          1,
+          2,
+          3,
+          1
+        ],
+        [
+          0,
+          56,
+          -1,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          58,
+          2,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          56,
+          2,
+          2,
+          3,
+          1
+        ],
+        [
+          0,
+          56,
+          -1,
+          2,
+          3,
+          1
+        ],
+        [
+          0.5,
+          56,
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          56,
+          2,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          58,
+          3,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          58,
+          2,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          58,
+          2,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          52,
+          -3,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          58,
+          3,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          58,
+          3,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          58,
+          2,
+          1,
+          5,
+          1
+        ],
+        [
+          0.5,
+          56,
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          0.5,
+          56,
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          56,
+          1,
+          2,
+          3,
+          1
+        ],
+        [
+          0.5,
+          56,
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          56,
+          1,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          58,
+          2,
+          1,
+          5,
+          1
+        ],
+        [
+          0.5,
+          56,
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          0,
+          52,
+          -4,
+          3,
+          0,
+          1
+        ]
+      ]
+    },
+    "rightAction": {
+      "id": 36,
+      "moves": [
+        {
+          "handIndex": 1,
+          "x": 0,
+          "y": -2
+        }
+      ],
+      "named": [
+        {
+          "card": "human_knight",
+          "x": 0,
+          "y": -2
+        }
+      ],
+      "features": {
+        "count": 1,
+        "power": 16,
+        "powerGain": 1,
+        "newBonuses": 0,
+        "placementVP": 0,
+        "placementGold": -3,
+        "remainingGold": 3,
+        "techGain": 0,
+        "faithGain": 0
+      },
+      "train": {
+        "share": 0,
+        "vp": 52.75,
+        "gap": -3.375,
+        "rank": 1.125,
+        "warVP": 4.75,
+        "goldVP": 2
+      },
+      "audit": {
+        "share": 0,
+        "vp": 52.125,
+        "gap": -3.15625,
+        "rank": 1.4375,
+        "warVP": 4.125,
+        "goldVP": 2
+      },
+      "byModel": {
+        "balanced": {
+          "train": {
+            "share": 0,
+            "vp": 52.75,
+            "gap": -3.75,
+            "rank": 1.125,
+            "warVP": 4.75,
+            "goldVP": 2
+          },
+          "audit": {
+            "share": 0,
+            "vp": 52.125,
+            "gap": -3.25,
+            "rank": 1.4375,
+            "warVP": 4.125,
+            "goldVP": 2
+          }
+        },
+        "war": {
+          "train": {
+            "share": 0,
+            "vp": 52.75,
+            "gap": -3,
+            "rank": 1.125,
+            "warVP": 4.75,
+            "goldVP": 2
+          },
+          "audit": {
+            "share": 0,
+            "vp": 52.125,
+            "gap": -3.0625,
+            "rank": 1.4375,
+            "warVP": 4.125,
+            "goldVP": 2
+          }
+        }
+      },
+      "outcomes": [
+        [
+          0,
+          51,
+          -5,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          53,
+          -4,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          53,
+          -4,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          53,
+          -4,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          53,
+          -5,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          53,
+          -1,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          53,
+          -4,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          53,
+          -3,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          51,
+          -3,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          53,
+          -2,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          53,
+          -4,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          53,
+          -2,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          51,
+          -4,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          53,
+          -2,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          53,
+          -2,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          53,
+          -4,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          51,
+          -5,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          53,
+          -3,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          51,
+          -4,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          51,
+          -5,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          53,
+          -2,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          53,
+          -1,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          51,
+          -4,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          51,
+          -5,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          51,
+          -5,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          53,
+          -4,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          53,
+          -2,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          53,
+          -4,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          53,
+          -1,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          53,
+          -1,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          53,
+          -4,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          53,
+          -3,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          51,
+          -3,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          53,
+          -2,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          53,
+          -2,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          53,
+          -2,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          51,
+          -4,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          53,
+          -2,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          53,
+          -2,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          53,
+          -3,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          51,
+          -5,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          53,
+          -3,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          51,
+          -4,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          51,
+          -5,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          53,
+          -2,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          53,
+          -1,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          51,
+          -4,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          51,
+          -5,
+          2,
+          3,
+          2
+        ]
+      ]
+    }
+  },
+  {
+    "title": "前線を優先する方が良かった例",
+    "state": {
+      "id": 26,
+      "prefix": "results",
+      "seed": 1430204,
+      "count": 3,
+      "profile": "bonus",
+      "focal": 1,
+      "round": 4,
+      "phase": "place",
+      "p": {
+        "id": "1",
+        "name": "1",
+        "cpu": false,
+        "gold": 5,
+        "tech": 7,
+        "faith": 0,
+        "vp": 34,
+        "hand": [
+          "human_marchant",
+          "human_marchant",
+          "human_smith",
+          "dwarf_gardian",
+          "elf_mistic"
+        ],
+        "board": [
+          {
+            "card": "demon_pest",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "card": "dwarf_cook",
+            "x": -1,
+            "y": 0
+          },
+          {
+            "card": "dwarf_cook",
+            "x": -2,
+            "y": 0
+          },
+          {
+            "card": "goblin_junk",
+            "x": -2,
+            "y": -1
+          }
+        ],
+        "bonuses": [
+          "y:0:job:artisan"
+        ],
+        "bonusRewards": {
+          "y:0:job:artisan": {
+            "reward": {
+              "tech": 2
+            },
+            "multiplier": 1,
+            "limited": []
+          }
+        },
+        "power": 9,
+        "rank": 2,
+        "warVP": 3,
+        "cpuDifficulty": "normal"
+      },
+      "opponents": [
+        {
+          "id": "0",
+          "name": "0",
+          "cpu": false,
+          "gold": 4,
+          "tech": 1,
+          "faith": 6,
+          "vp": 23,
+          "board": [
+            {
+              "card": "goblin_lunatic",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "card": "human_saint",
+              "x": 0,
+              "y": -1
+            },
+            {
+              "card": "goblin_saint",
+              "x": -1,
+              "y": 0
+            },
+            {
+              "card": "goblin_soldier",
+              "x": -1,
+              "y": -1
+            },
+            {
+              "card": "elf_saint",
+              "x": -2,
+              "y": -1
+            },
+            {
+              "card": "goblin_junk",
+              "x": -2,
+              "y": -2
+            }
+          ],
+          "bonuses": [],
+          "bonusRewards": {},
+          "power": 10,
+          "rank": 1,
+          "warVP": 5,
+          "cpuDifficulty": "normal",
+          "handCount": 5,
+          "hand": []
+        },
+        {
+          "id": "2",
+          "name": "2",
+          "cpu": false,
+          "gold": 6,
+          "tech": 0,
+          "faith": 0,
+          "vp": 30,
+          "board": [
+            {
+              "card": "demon_pest",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "card": "dwarf_gardian",
+              "x": -1,
+              "y": 0
+            },
+            {
+              "card": "goblin_strategist",
+              "x": -1,
+              "y": -1
+            }
+          ],
+          "bonuses": [],
+          "bonusRewards": {},
+          "power": 8,
+          "rank": 3,
+          "warVP": 0,
+          "cpuDifficulty": "normal",
+          "handCount": 5,
+          "hand": []
+        }
+      ],
+      "settings": {
+        "additionalObjectives": false,
+        "warVP": [
+          5,
+          3,
+          0
+        ],
+        "targetVP": 40,
+        "cpuDifficulty": "normal",
+        "cpuDifficulties": [
+          "normal",
+          "normal"
+        ]
+      },
+      "discard": [
+        "human_knight",
+        "dwarf_saint",
+        "demon_destroy",
+        "elf_archer",
+        "dwarf_pugilist",
+        "golem_king",
+        "golem_iron",
+        "dwarf_saint",
+        "elf_mistic",
+        "human_sorcerer",
+        "golem_gold",
+        "demon_eye"
+      ]
+    },
+    "left": "war",
+    "right": "bonus",
+    "leftAction": {
+      "id": 188,
+      "moves": [
+        {
+          "handIndex": 3,
+          "x": -1,
+          "y": -1
+        }
+      ],
+      "named": [
+        {
+          "card": "dwarf_gardian",
+          "x": -1,
+          "y": -1
+        }
+      ],
+      "features": {
+        "count": 1,
+        "power": 13,
+        "powerGain": 4,
+        "newBonuses": 0,
+        "placementVP": 0,
+        "placementGold": -4,
+        "remainingGold": 2,
+        "techGain": 0,
+        "faithGain": 0
+      },
+      "train": {
+        "share": 1,
+        "vp": 53.875,
+        "gap": 6.3125,
+        "rank": 1.0625,
+        "warVP": 4.875,
+        "goldVP": 2
+      },
+      "audit": {
+        "share": 0.96875,
+        "vp": 53.875,
+        "gap": 4.375,
+        "rank": 1.0625,
+        "warVP": 4.875,
+        "goldVP": 2
+      },
+      "byModel": {
+        "balanced": {
+          "train": {
+            "share": 1,
+            "vp": 53.75,
+            "gap": 6.125,
+            "rank": 1.125,
+            "warVP": 4.75,
+            "goldVP": 2
+          },
+          "audit": {
+            "share": 0.96875,
+            "vp": 53.875,
+            "gap": 4.375,
+            "rank": 1.0625,
+            "warVP": 4.875,
+            "goldVP": 2
+          }
+        },
+        "war": {
+          "train": {
+            "share": 1,
+            "vp": 54,
+            "gap": 6.5,
+            "rank": 1,
+            "warVP": 5,
+            "goldVP": 2
+          },
+          "audit": {
+            "share": 0.96875,
+            "vp": 53.875,
+            "gap": 4.375,
+            "rank": 1.0625,
+            "warVP": 4.875,
+            "goldVP": 2
+          }
+        }
+      },
+      "outcomes": [
+        [
+          1,
+          54,
+          10,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          7,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          6,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          52,
+          1,
+          2,
+          3,
+          2
+        ],
+        [
+          1,
+          54,
+          7,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          6,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          5,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          7,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          6,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          5,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          6,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          3,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          7,
+          1,
+          5,
+          2
+        ],
+        [
+          0.5,
+          54,
+          0,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          3,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          3,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          3,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          4,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          6,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          3,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          52,
+          1,
+          2,
+          3,
+          2
+        ],
+        [
+          1,
+          54,
+          10,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          3,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          7,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          10,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          7,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          6,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          4,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          7,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          6,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          5,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          7,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          5,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          7,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          6,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          3,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          4,
+          1,
+          5,
+          2
+        ],
+        [
+          0.5,
+          54,
+          0,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          3,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          3,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          4,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          4,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          7,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          3,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          52,
+          1,
+          2,
+          3,
+          2
+        ],
+        [
+          1,
+          54,
+          10,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          3,
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          54,
+          7,
+          1,
+          5,
+          2
+        ]
+      ]
+    },
+    "rightAction": {
+      "id": 175,
+      "moves": [
+        {
+          "handIndex": 2,
+          "x": -2,
+          "y": -2
+        }
+      ],
+      "named": [
+        {
+          "card": "human_smith",
+          "x": -2,
+          "y": -2
+        }
+      ],
+      "features": {
+        "count": 1,
+        "power": 7,
+        "powerGain": -2,
+        "newBonuses": 1,
+        "placementVP": 0,
+        "placementGold": -5,
+        "remainingGold": 1,
+        "techGain": 3,
+        "faithGain": 0
+      },
+      "train": {
+        "share": 0.84375,
+        "vp": 51,
+        "gap": 1.4375,
+        "rank": 3,
+        "warVP": 0,
+        "goldVP": 1
+      },
+      "audit": {
+        "share": 0.5625,
+        "vp": 51,
+        "gap": 0.125,
+        "rank": 3,
+        "warVP": 0,
+        "goldVP": 1
+      },
+      "byModel": {
+        "balanced": {
+          "train": {
+            "share": 0.875,
+            "vp": 51,
+            "gap": 1.5,
+            "rank": 3,
+            "warVP": 0,
+            "goldVP": 1
+          },
+          "audit": {
+            "share": 0.59375,
+            "vp": 51,
+            "gap": 0.1875,
+            "rank": 3,
+            "warVP": 0,
+            "goldVP": 1
+          }
+        },
+        "war": {
+          "train": {
+            "share": 0.8125,
+            "vp": 51,
+            "gap": 1.375,
+            "rank": 3,
+            "warVP": 0,
+            "goldVP": 1
+          },
+          "audit": {
+            "share": 0.53125,
+            "vp": 51,
+            "gap": 0.0625,
+            "rank": 3,
+            "warVP": 0,
+            "goldVP": 1
+          }
+        }
+      },
+      "outcomes": [
+        [
+          1,
+          51,
+          4,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          51,
+          2,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          51,
+          1,
+          3,
+          0,
+          1
+        ],
+        [
+          0.5,
+          51,
+          0,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          51,
+          2,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          51,
+          1,
+          3,
+          0,
+          1
+        ],
+        [
+          0.5,
+          51,
+          0,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          51,
+          2,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          51,
+          1,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          51,
+          2,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          51,
+          1,
+          3,
+          0,
+          1
+        ],
+        [
+          0,
+          51,
+          -2,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          51,
+          2,
+          3,
+          0,
+          1
+        ],
+        [
+          0,
+          51,
+          -5,
+          3,
+          0,
+          1
+        ],
+        [
+          0,
+          51,
+          -2,
+          3,
+          0,
+          1
+        ],
+        [
+          0.5,
+          51,
+          0,
+          3,
+          0,
+          1
+        ],
+        [
+          0.5,
+          51,
+          0,
+          3,
+          0,
+          1
+        ],
+        [
+          0,
+          51,
+          -1,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          51,
+          1,
+          3,
+          0,
+          1
+        ],
+        [
+          0.5,
+          51,
+          0,
+          3,
+          0,
+          1
+        ],
+        [
+          0.5,
+          51,
+          0,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          51,
+          4,
+          3,
+          0,
+          1
+        ],
+        [
+          0.5,
+          51,
+          0,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          51,
+          2,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          51,
+          4,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          51,
+          2,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          51,
+          1,
+          3,
+          0,
+          1
+        ],
+        [
+          0,
+          51,
+          -1,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          51,
+          2,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          51,
+          1,
+          3,
+          0,
+          1
+        ],
+        [
+          0.5,
+          51,
+          0,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          51,
+          2,
+          3,
+          0,
+          1
+        ],
+        [
+          0.5,
+          51,
+          0,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          51,
+          2,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          51,
+          1,
+          3,
+          0,
+          1
+        ],
+        [
+          0,
+          51,
+          -2,
+          3,
+          0,
+          1
+        ],
+        [
+          0,
+          51,
+          -1,
+          3,
+          0,
+          1
+        ],
+        [
+          0,
+          51,
+          -5,
+          3,
+          0,
+          1
+        ],
+        [
+          0,
+          51,
+          -2,
+          3,
+          0,
+          1
+        ],
+        [
+          0.5,
+          51,
+          0,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          51,
+          1,
+          3,
+          0,
+          1
+        ],
+        [
+          0,
+          51,
+          -1,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          51,
+          2,
+          3,
+          0,
+          1
+        ],
+        [
+          0.5,
+          51,
+          0,
+          3,
+          0,
+          1
+        ],
+        [
+          0.5,
+          51,
+          0,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          51,
+          4,
+          3,
+          0,
+          1
+        ],
+        [
+          0.5,
+          51,
+          0,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          51,
+          2,
+          3,
+          0,
+          1
+        ]
+      ]
+    }
+  },
+  {
+    "title": "揃いを優先する方が良かった例",
+    "state": {
+      "id": 26,
+      "prefix": "validation",
+      "seed": 1530209,
+      "count": 3,
+      "profile": "bonus",
+      "focal": 0,
+      "round": 5,
+      "phase": "place",
+      "p": {
+        "id": "0",
+        "name": "0",
+        "cpu": false,
+        "gold": 5,
+        "tech": 1,
+        "faith": 1,
+        "vp": 34,
+        "hand": [
+          "dwarf_cook",
+          "human_knight",
+          "human_saint",
+          "elf_artist",
+          "goblin_junk"
+        ],
+        "board": [
+          {
+            "card": "human_smith",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "card": "dwarf_gardian",
+            "x": 0,
+            "y": -1
+          },
+          {
+            "card": "goblin_strategist",
+            "x": -1,
+            "y": -1
+          },
+          {
+            "card": "demon_destroy",
+            "x": -1,
+            "y": -2
+          },
+          {
+            "card": "elf_marchant",
+            "x": -2,
+            "y": -2
+          }
+        ],
+        "bonuses": [],
+        "bonusRewards": {},
+        "power": 15,
+        "rank": 1,
+        "warVP": 5,
+        "cpuDifficulty": "normal"
+      },
+      "opponents": [
+        {
+          "id": "1",
+          "name": "1",
+          "cpu": false,
+          "gold": 6,
+          "tech": 0,
+          "faith": 2,
+          "vp": 34,
+          "board": [
+            {
+              "card": "goblin_lunatic",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "card": "goblin_lunatic",
+              "x": 0,
+              "y": -1
+            },
+            {
+              "card": "goblin_strategist",
+              "x": -1,
+              "y": -1
+            },
+            {
+              "card": "goblin_soldier",
+              "x": 1,
+              "y": 0
+            },
+            {
+              "card": "demon_pest",
+              "x": -1,
+              "y": -2
+            }
+          ],
+          "bonuses": [],
+          "bonusRewards": {},
+          "power": 10,
+          "rank": 2,
+          "warVP": 3,
+          "cpuDifficulty": "normal",
+          "handCount": 5,
+          "hand": []
+        },
+        {
+          "id": "2",
+          "name": "2",
+          "cpu": false,
+          "gold": 19,
+          "tech": 1,
+          "faith": 4,
+          "vp": 39,
+          "board": [
+            {
+              "card": "human_great_marchant",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "card": "goblin_scavenger",
+              "x": 0,
+              "y": -1
+            },
+            {
+              "card": "elf_marchant",
+              "x": 0,
+              "y": 1
+            },
+            {
+              "card": "goblin_saint",
+              "x": -1,
+              "y": -1
+            },
+            {
+              "card": "human_saint",
+              "x": 1,
+              "y": 0
+            },
+            {
+              "card": "human_undertaker",
+              "x": -1,
+              "y": 0
+            },
+            {
+              "card": "golem_gold",
+              "x": -1,
+              "y": 1
+            },
+            {
+              "card": "demon_eye",
+              "x": 1,
+              "y": 1
+            }
+          ],
+          "bonuses": [
+            "x:0:job:merchant",
+            "y:0:race:human",
+            "y:1:job:merchant"
+          ],
+          "bonusRewards": {
+            "x:0:job:merchant": {
+              "reward": {
+                "vp": 5
+              },
+              "multiplier": 1,
+              "limited": []
+            },
+            "y:0:race:human": {
+              "reward": {
+                "vp": 5
+              },
+              "multiplier": 1,
+              "limited": []
+            },
+            "y:1:job:merchant": {
+              "reward": {
+                "vp": 5
+              },
+              "multiplier": 1,
+              "limited": []
+            }
+          },
+          "power": 10,
+          "rank": 2,
+          "warVP": 3,
+          "cpuDifficulty": "normal",
+          "handCount": 5,
+          "hand": []
+        }
+      ],
+      "settings": {
+        "additionalObjectives": false,
+        "warVP": [
+          5,
+          3,
+          0
+        ],
+        "targetVP": 40,
+        "cpuDifficulty": "normal",
+        "cpuDifficulties": [
+          "normal",
+          "normal"
+        ]
+      },
+      "discard": [
+        "human_undertaker",
+        "human_knight",
+        "dwarf_pugilist",
+        "human_king",
+        "dwarf_beer",
+        "golem_gold",
+        "dwarf_saint",
+        "golem_iron",
+        "dwarf_pugilist",
+        "elf_archer",
+        "golem_king",
+        "demon_eye",
+        "golem_stollow",
+        "human_sorcerer"
+      ]
+    },
+    "left": "bonus",
+    "right": "war",
+    "leftAction": {
+      "id": 32,
+      "moves": [
+        {
+          "handIndex": 0,
+          "x": -1,
+          "y": 0
+        },
+        {
+          "handIndex": 2,
+          "x": -2,
+          "y": 0
+        }
+      ],
+      "named": [
+        {
+          "card": "dwarf_cook",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "elf_artist",
+          "x": -2,
+          "y": 0
+        }
+      ],
+      "features": {
+        "count": 2,
+        "power": 15,
+        "powerGain": 0,
+        "newBonuses": 1,
+        "placementVP": 0,
+        "placementGold": -5,
+        "remainingGold": 0,
+        "techGain": 2,
+        "faithGain": 0
+      },
+      "train": {
+        "share": 0.59375,
+        "vp": 56.625,
+        "gap": 0.375,
+        "rank": 1.6875,
+        "warVP": 3.625,
+        "goldVP": 1
+      },
+      "audit": {
+        "share": 0.765625,
+        "vp": 56.5,
+        "gap": 0.90625,
+        "rank": 1.65625,
+        "warVP": 3.59375,
+        "goldVP": 1
+      },
+      "byModel": {
+        "balanced": {
+          "train": {
+            "share": 0.5625,
+            "vp": 56.75,
+            "gap": 0.25,
+            "rank": 1.625,
+            "warVP": 3.75,
+            "goldVP": 1
+          },
+          "audit": {
+            "share": 0.78125,
+            "vp": 56.625,
+            "gap": 0.9375,
+            "rank": 1.625,
+            "warVP": 3.6875,
+            "goldVP": 1
+          }
+        },
+        "war": {
+          "train": {
+            "share": 0.625,
+            "vp": 56.5,
+            "gap": 0.5,
+            "rank": 1.75,
+            "warVP": 3.5,
+            "goldVP": 1
+          },
+          "audit": {
+            "share": 0.75,
+            "vp": 56.375,
+            "gap": 0.875,
+            "rank": 1.6875,
+            "warVP": 3.5,
+            "goldVP": 1
+          }
+        }
+      },
+      "outcomes": [
+        [
+          0.5,
+          56,
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          58,
+          1,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          58,
+          1,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          56,
+          -1,
+          2,
+          3,
+          1
+        ],
+        [
+          0.5,
+          58,
+          0,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          56,
+          2,
+          2,
+          3,
+          1
+        ],
+        [
+          0,
+          56,
+          -1,
+          2,
+          3,
+          1
+        ],
+        [
+          0.5,
+          56,
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          56,
+          2,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          58,
+          3,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          58,
+          1,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          58,
+          1,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          52,
+          -3,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          58,
+          3,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          58,
+          3,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          58,
+          1,
+          1,
+          5,
+          1
+        ],
+        [
+          0.5,
+          56,
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          0.5,
+          56,
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          56,
+          1,
+          2,
+          3,
+          1
+        ],
+        [
+          0.5,
+          56,
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          56,
+          1,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          58,
+          2,
+          1,
+          5,
+          1
+        ],
+        [
+          0.5,
+          56,
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          0.5,
+          56,
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          0.5,
+          56,
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          58,
+          1,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          56,
+          1,
+          2,
+          3,
+          1
+        ],
+        [
+          0,
+          56,
+          -1,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          58,
+          2,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          56,
+          2,
+          2,
+          3,
+          1
+        ],
+        [
+          0,
+          56,
+          -1,
+          2,
+          3,
+          1
+        ],
+        [
+          0.5,
+          56,
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          56,
+          2,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          58,
+          3,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          58,
+          2,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          58,
+          2,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          52,
+          -3,
+          3,
+          0,
+          1
+        ],
+        [
+          1,
+          58,
+          3,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          58,
+          3,
+          1,
+          5,
+          1
+        ],
+        [
+          1,
+          58,
+          2,
+          1,
+          5,
+          1
+        ],
+        [
+          0.5,
+          56,
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          0.5,
+          56,
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          56,
+          1,
+          2,
+          3,
+          1
+        ],
+        [
+          0.5,
+          56,
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          56,
+          1,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          58,
+          2,
+          1,
+          5,
+          1
+        ],
+        [
+          0.5,
+          56,
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          0,
+          52,
+          -4,
+          3,
+          0,
+          1
+        ]
+      ]
+    },
+    "rightAction": {
+      "id": 39,
+      "moves": [
+        {
+          "handIndex": 1,
+          "x": 0,
+          "y": -2
+        },
+        {
+          "handIndex": 3,
+          "x": -2,
+          "y": -1
+        }
+      ],
+      "named": [
+        {
+          "card": "human_knight",
+          "x": 0,
+          "y": -2
+        },
+        {
+          "card": "goblin_junk",
+          "x": -2,
+          "y": -1
+        }
+      ],
+      "features": {
+        "count": 2,
+        "power": 16,
+        "powerGain": 1,
+        "newBonuses": 0,
+        "placementVP": 0,
+        "placementGold": -5,
+        "remainingGold": 0,
+        "techGain": 1,
+        "faithGain": 0
+      },
+      "train": {
+        "share": 0.09375,
+        "vp": 53.75,
+        "gap": -2.375,
+        "rank": 1.125,
+        "warVP": 4.75,
+        "goldVP": 1
+      },
+      "audit": {
+        "share": 0.03125,
+        "vp": 53.125,
+        "gap": -2.15625,
+        "rank": 1.4375,
+        "warVP": 4.125,
+        "goldVP": 1
+      },
+      "byModel": {
+        "balanced": {
+          "train": {
+            "share": 0.0625,
+            "vp": 53.75,
+            "gap": -2.75,
+            "rank": 1.125,
+            "warVP": 4.75,
+            "goldVP": 1
+          },
+          "audit": {
+            "share": 0.03125,
+            "vp": 53.125,
+            "gap": -2.25,
+            "rank": 1.4375,
+            "warVP": 4.125,
+            "goldVP": 1
+          }
+        },
+        "war": {
+          "train": {
+            "share": 0.125,
+            "vp": 53.75,
+            "gap": -2,
+            "rank": 1.125,
+            "warVP": 4.75,
+            "goldVP": 1
+          },
+          "audit": {
+            "share": 0.03125,
+            "vp": 53.125,
+            "gap": -2.0625,
+            "rank": 1.4375,
+            "warVP": 4.125,
+            "goldVP": 1
+          }
+        }
+      },
+      "outcomes": [
+        [
+          0,
+          52,
+          -4,
+          2,
+          3,
+          1
+        ],
+        [
+          0,
+          54,
+          -3,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          54,
+          -3,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          54,
+          -3,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          54,
+          -4,
+          1,
+          5,
+          1
+        ],
+        [
+          0.5,
+          54,
+          0,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          54,
+          -3,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          54,
+          -2,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          52,
+          -2,
+          2,
+          3,
+          1
+        ],
+        [
+          0,
+          54,
+          -1,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          54,
+          -3,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          54,
+          -1,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          52,
+          -3,
+          2,
+          3,
+          1
+        ],
+        [
+          0,
+          54,
+          -1,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          54,
+          -1,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          54,
+          -3,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          52,
+          -4,
+          2,
+          3,
+          1
+        ],
+        [
+          0,
+          54,
+          -2,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          52,
+          -3,
+          2,
+          3,
+          1
+        ],
+        [
+          0,
+          52,
+          -4,
+          2,
+          3,
+          1
+        ],
+        [
+          0,
+          54,
+          -1,
+          1,
+          5,
+          1
+        ],
+        [
+          0.5,
+          54,
+          0,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          52,
+          -3,
+          2,
+          3,
+          1
+        ],
+        [
+          0,
+          52,
+          -4,
+          2,
+          3,
+          1
+        ],
+        [
+          0,
+          52,
+          -4,
+          2,
+          3,
+          1
+        ],
+        [
+          0,
+          54,
+          -3,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          54,
+          -1,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          54,
+          -3,
+          1,
+          5,
+          1
+        ],
+        [
+          0.5,
+          54,
+          0,
+          1,
+          5,
+          1
+        ],
+        [
+          0.5,
+          54,
+          0,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          54,
+          -3,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          54,
+          -2,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          52,
+          -2,
+          2,
+          3,
+          1
+        ],
+        [
+          0,
+          54,
+          -1,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          54,
+          -1,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          54,
+          -1,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          52,
+          -3,
+          2,
+          3,
+          1
+        ],
+        [
+          0,
+          54,
+          -1,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          54,
+          -1,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          54,
+          -2,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          52,
+          -4,
+          2,
+          3,
+          1
+        ],
+        [
+          0,
+          54,
+          -2,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          52,
+          -3,
+          2,
+          3,
+          1
+        ],
+        [
+          0,
+          52,
+          -4,
+          2,
+          3,
+          1
+        ],
+        [
+          0,
+          54,
+          -1,
+          1,
+          5,
+          1
+        ],
+        [
+          0.5,
+          54,
+          0,
+          1,
+          5,
+          1
+        ],
+        [
+          0,
+          52,
+          -3,
+          2,
+          3,
+          1
+        ],
+        [
+          0,
+          52,
+          -4,
+          2,
+          3,
+          1
+        ]
+      ]
+    }
+  },
+  {
+    "title": "自分のVP最大化より勝敗を優先した例",
+    "state": {
+      "id": 9,
+      "prefix": "validation",
+      "seed": 1520202,
+      "count": 2,
+      "profile": "bonus",
+      "focal": 0,
+      "round": 5,
+      "phase": "place",
+      "p": {
+        "id": "0",
+        "name": "0",
+        "cpu": false,
+        "gold": 4,
+        "tech": 0,
+        "faith": 3,
+        "vp": 34,
+        "hand": [
+          "goblin_scavenger",
+          "golem_stollow",
+          "dwarf_pugilist",
+          "human_smith",
+          "human_sorcerer"
+        ],
+        "board": [
+          {
+            "card": "goblin_lunatic",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "card": "elf_follower",
+            "x": 0,
+            "y": -1
+          },
+          {
+            "card": "elf_archer",
+            "x": -1,
+            "y": -1
+          },
+          {
+            "card": "demon_pest",
+            "x": -1,
+            "y": -2
+          },
+          {
+            "card": "goblin_strategist",
+            "x": 1,
+            "y": 0
+          }
+        ],
+        "bonuses": [],
+        "bonusRewards": {},
+        "power": 14,
+        "rank": 1,
+        "warVP": 4,
+        "cpuDifficulty": "normal"
+      },
+      "opponents": [
+        {
+          "id": "1",
+          "name": "1",
+          "cpu": false,
+          "gold": 11,
+          "tech": 0,
+          "faith": 0,
+          "vp": 35,
+          "board": [
+            {
+              "card": "demon_pest",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "card": "goblin_strategist",
+              "x": -1,
+              "y": 0
+            },
+            {
+              "card": "dwarf_alchemist",
+              "x": -1,
+              "y": 1
+            },
+            {
+              "card": "human_great_marchant",
+              "x": -2,
+              "y": 0
+            },
+            {
+              "card": "human_great_marchant",
+              "x": -2,
+              "y": -1
+            },
+            {
+              "card": "goblin_soldier",
+              "x": 0,
+              "y": -1
+            }
+          ],
+          "bonuses": [],
+          "bonusRewards": {},
+          "power": 10,
+          "rank": 2,
+          "warVP": 0,
+          "cpuDifficulty": "normal",
+          "handCount": 5,
+          "hand": []
+        }
+      ],
+      "settings": {
+        "additionalObjectives": false,
+        "warVP": [
+          4,
+          0
+        ],
+        "targetVP": 40,
+        "cpuDifficulty": "normal",
+        "cpuDifficulties": [
+          "normal"
+        ]
+      },
+      "discard": [
+        "golem_iron",
+        "elf_artist",
+        "golem_iron",
+        "human_knight",
+        "dwarf_saint",
+        "dwarf_pugilist",
+        "human_sorcerer",
+        "elf_archer",
+        "dwarf_pugilist",
+        "dwarf_saint",
+        "human_king",
+        "elf_artist",
+        "elf_marchant",
+        "dwarf_king",
+        "goblin_soldier",
+        "demon_storm"
+      ]
+    },
+    "left": "all",
+    "right": "ownVP",
+    "leftAction": {
+      "id": 12,
+      "moves": [
+        {
+          "handIndex": 0,
+          "x": -1,
+          "y": 0
+        },
+        {
+          "handIndex": 1,
+          "x": 0,
+          "y": -2
+        }
+      ],
+      "named": [
+        {
+          "card": "goblin_scavenger",
+          "x": -1,
+          "y": 0
+        },
+        {
+          "card": "dwarf_pugilist",
+          "x": 0,
+          "y": -2
+        }
+      ],
+      "features": {
+        "count": 2,
+        "power": 16,
+        "powerGain": 2,
+        "newBonuses": 1,
+        "placementVP": 0,
+        "placementGold": -1,
+        "remainingGold": 3,
+        "techGain": 1,
+        "faithGain": 0
+      },
+      "train": {
+        "share": 0,
+        "vp": 52,
+        "gap": -4.1875,
+        "rank": 1,
+        "warVP": 4,
+        "goldVP": 2
+      },
+      "audit": {
+        "share": 0.0625,
+        "vp": 52,
+        "gap": -3.21875,
+        "rank": 1,
+        "warVP": 4,
+        "goldVP": 2
+      },
+      "byModel": {
+        "balanced": {
+          "train": {
+            "share": 0,
+            "vp": 52,
+            "gap": -4.5,
+            "rank": 1,
+            "warVP": 4,
+            "goldVP": 2
+          },
+          "audit": {
+            "share": 0.0625,
+            "vp": 52,
+            "gap": -3.25,
+            "rank": 1,
+            "warVP": 4,
+            "goldVP": 2
+          }
+        },
+        "war": {
+          "train": {
+            "share": 0,
+            "vp": 52,
+            "gap": -3.875,
+            "rank": 1,
+            "warVP": 4,
+            "goldVP": 2
+          },
+          "audit": {
+            "share": 0.0625,
+            "vp": 52,
+            "gap": -3.1875,
+            "rank": 1,
+            "warVP": 4,
+            "goldVP": 2
+          }
+        }
+      },
+      "outcomes": [
+        [
+          0,
+          52,
+          -3,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -6,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -6,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -5,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -5,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -1,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -6,
+          1,
+          4,
+          2
+        ],
+        [
+          0.5,
+          52,
+          0,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          2
+        ],
+        [
+          0.5,
+          52,
+          0,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -9,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -3,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -3,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -1,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -5,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -2,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -1,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -3,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -6,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -2,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -5,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -5,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -1,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -5,
+          1,
+          4,
+          2
+        ],
+        [
+          0.5,
+          52,
+          0,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          2
+        ],
+        [
+          0.5,
+          52,
+          0,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -9,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -3,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -2,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -1,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -5,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -2,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          52,
+          -1,
+          1,
+          4,
+          2
+        ]
+      ]
+    },
+    "rightAction": {
+      "id": 9,
+      "moves": [
+        {
+          "handIndex": 0,
+          "x": -1,
+          "y": 0
+        }
+      ],
+      "named": [
+        {
+          "card": "goblin_scavenger",
+          "x": -1,
+          "y": 0
+        }
+      ],
+      "features": {
+        "count": 1,
+        "power": 14,
+        "powerGain": 0,
+        "newBonuses": 1,
+        "placementVP": 0,
+        "placementGold": 1,
+        "remainingGold": 6,
+        "techGain": 0,
+        "faithGain": 0
+      },
+      "train": {
+        "share": 0,
+        "vp": 52,
+        "gap": -6.0625,
+        "rank": 1,
+        "warVP": 4,
+        "goldVP": 3
+      },
+      "audit": {
+        "share": 0,
+        "vp": 52,
+        "gap": -4.59375,
+        "rank": 1,
+        "warVP": 4,
+        "goldVP": 3
+      },
+      "byModel": {
+        "balanced": {
+          "train": {
+            "share": 0,
+            "vp": 52,
+            "gap": -6,
+            "rank": 1,
+            "warVP": 4,
+            "goldVP": 3
+          },
+          "audit": {
+            "share": 0,
+            "vp": 52,
+            "gap": -4.625,
+            "rank": 1,
+            "warVP": 4,
+            "goldVP": 3
+          }
+        },
+        "war": {
+          "train": {
+            "share": 0,
+            "vp": 52,
+            "gap": -6.125,
+            "rank": 1,
+            "warVP": 4,
+            "goldVP": 3
+          },
+          "audit": {
+            "share": 0,
+            "vp": 52,
+            "gap": -4.5625,
+            "rank": 1,
+            "warVP": 4,
+            "goldVP": 3
+          }
+        }
+      },
+      "outcomes": [
+        [
+          0,
+          52,
+          -3,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -6,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -6,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -11,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -5,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -7,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -6,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -6,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -6,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -9,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -9,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -3,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -3,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -6,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -5,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -2,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -1,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -3,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -6,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -8,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -11,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -5,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -7,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -5,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -6,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -6,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -9,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -9,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -3,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -2,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -6,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -5,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -4,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -2,
+          1,
+          4,
+          3
+        ],
+        [
+          0,
+          52,
+          -1,
+          1,
+          4,
+          3
+        ]
+      ]
+    }
+  },
+  {
+    "title": "見送りで残金VPを守る例（勝敗は変わらない）",
+    "state": {
+      "id": 49,
+      "prefix": "validation",
+      "seed": 1550001,
+      "count": 5,
+      "profile": "balanced",
+      "focal": 1,
+      "round": 5,
+      "phase": "place",
+      "p": {
+        "id": "1",
+        "name": "1",
+        "cpu": false,
+        "gold": 4,
+        "tech": 1,
+        "faith": 5,
+        "vp": 27,
+        "hand": [
+          "dwarf_beer",
+          "elf_caster",
+          "demon_destroy",
+          "dwarf_alchemist",
+          "human_sorcerer"
+        ],
+        "board": [
+          {
+            "card": "human_smith",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "card": "human_knight",
+            "x": -1,
+            "y": 0
+          },
+          {
+            "card": "elf_saint",
+            "x": 0,
+            "y": -1
+          },
+          {
+            "card": "human_saint",
+            "x": -2,
+            "y": 0
+          },
+          {
+            "card": "dwarf_alchemist",
+            "x": -2,
+            "y": -1
+          },
+          {
+            "card": "elf_archer",
+            "x": -1,
+            "y": 1
+          }
+        ],
+        "bonuses": [
+          "y:0:race:human"
+        ],
+        "bonusRewards": {
+          "y:0:race:human": {
+            "reward": {
+              "vp": 5
+            },
+            "multiplier": 1,
+            "limited": []
+          }
+        },
+        "power": 17,
+        "rank": 1,
+        "warVP": 5,
+        "cpuDifficulty": "normal"
+      },
+      "opponents": [
+        {
+          "id": "0",
+          "name": "0",
+          "cpu": false,
+          "gold": 7,
+          "tech": 4,
+          "faith": 0,
+          "vp": 33,
+          "board": [
+            {
+              "card": "demon_pest",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "card": "human_great_marchant",
+              "x": -1,
+              "y": 0
+            },
+            {
+              "card": "goblin_scavenger",
+              "x": -1,
+              "y": -1
+            },
+            {
+              "card": "goblin_soldier",
+              "x": -2,
+              "y": -1
+            },
+            {
+              "card": "goblin_junk",
+              "x": 0,
+              "y": -1
+            },
+            {
+              "card": "human_smith",
+              "x": 0,
+              "y": 1
+            },
+            {
+              "card": "golem_cristal",
+              "x": -2,
+              "y": 0
+            }
+          ],
+          "bonuses": [
+            "y:-1:race:goblin",
+            "x:0:job:artisan"
+          ],
+          "bonusRewards": {
+            "y:-1:race:goblin": {
+              "reward": {
+                "gold": 3
+              },
+              "multiplier": 1,
+              "limited": []
+            },
+            "x:0:job:artisan": {
+              "reward": {
+                "tech": 2
+              },
+              "multiplier": 1,
+              "limited": []
+            }
+          },
+          "power": 11,
+          "rank": 5,
+          "warVP": 0,
+          "cpuDifficulty": "normal",
+          "handCount": 5,
+          "hand": []
+        },
+        {
+          "id": "2",
+          "name": "2",
+          "cpu": false,
+          "gold": 6,
+          "tech": 1,
+          "faith": 9,
+          "vp": 31,
+          "board": [
+            {
+              "card": "goblin_lunatic",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "card": "elf_follower",
+              "x": 0,
+              "y": -1
+            },
+            {
+              "card": "elf_saint",
+              "x": -1,
+              "y": -1
+            },
+            {
+              "card": "human_marchant",
+              "x": 1,
+              "y": 0
+            },
+            {
+              "card": "demon_pest",
+              "x": -1,
+              "y": -2
+            },
+            {
+              "card": "dwarf_saint",
+              "x": 0,
+              "y": -2
+            }
+          ],
+          "bonuses": [
+            "x:0:job:priest"
+          ],
+          "bonusRewards": {
+            "x:0:job:priest": {
+              "reward": {
+                "faith": 2
+              },
+              "multiplier": 1,
+              "limited": []
+            }
+          },
+          "power": 13,
+          "rank": 3,
+          "warVP": 0,
+          "cpuDifficulty": "normal",
+          "handCount": 5,
+          "hand": []
+        },
+        {
+          "id": "3",
+          "name": "3",
+          "cpu": false,
+          "gold": 11,
+          "tech": 8,
+          "faith": 0,
+          "vp": 39,
+          "board": [
+            {
+              "card": "dwarf_gem",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "card": "dwarf_cook",
+              "x": -1,
+              "y": 0
+            },
+            {
+              "card": "goblin_strategist",
+              "x": -1,
+              "y": -1
+            },
+            {
+              "card": "dwarf_gardian",
+              "x": 0,
+              "y": -1
+            },
+            {
+              "card": "goblin_great_soldier",
+              "x": -2,
+              "y": -1
+            },
+            {
+              "card": "dwarf_gem",
+              "x": 0,
+              "y": -2
+            },
+            {
+              "card": "goblin_great_soldier",
+              "x": -2,
+              "y": -2
+            }
+          ],
+          "bonuses": [
+            "x:0:race:dwarf"
+          ],
+          "bonusRewards": {
+            "x:0:race:dwarf": {
+              "reward": {
+                "tech": 2
+              },
+              "multiplier": 1,
+              "limited": []
+            }
+          },
+          "power": 13,
+          "rank": 3,
+          "warVP": 0,
+          "cpuDifficulty": "normal",
+          "handCount": 5,
+          "hand": []
+        },
+        {
+          "id": "4",
+          "name": "4",
+          "cpu": false,
+          "gold": 8,
+          "tech": 0,
+          "faith": 3,
+          "vp": 35,
+          "board": [
+            {
+              "card": "demon_pest",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "card": "goblin_scavenger",
+              "x": -1,
+              "y": 0
+            },
+            {
+              "card": "elf_saint",
+              "x": -2,
+              "y": 0
+            },
+            {
+              "card": "goblin_strategist",
+              "x": -1,
+              "y": -1
+            },
+            {
+              "card": "human_knight",
+              "x": -2,
+              "y": -1
+            }
+          ],
+          "bonuses": [],
+          "bonusRewards": {},
+          "power": 14,
+          "rank": 2,
+          "warVP": 3,
+          "cpuDifficulty": "normal",
+          "handCount": 5,
+          "hand": []
+        }
+      ],
+      "settings": {
+        "additionalObjectives": false,
+        "warVP": [
+          5,
+          3,
+          0,
+          0,
+          0
+        ],
+        "targetVP": 40,
+        "cpuDifficulty": "normal",
+        "cpuDifficulties": [
+          "normal",
+          "normal",
+          "normal",
+          "normal"
+        ]
+      },
+      "discard": [
+        "elf_artist",
+        "golem_iron",
+        "demon_destroy",
+        "elf_caster",
+        "elf_artist",
+        "elf_artist",
+        "goblin_king",
+        "goblin_saint",
+        "human_sorcerer",
+        "dwarf_alchemist",
+        "goblin_soldier",
+        "elf_marchant",
+        "goblin_soldier",
+        "demon_eye",
+        "human_marchant",
+        "golem_gold",
+        "human_undertaker",
+        "human_knight",
+        "dwarf_saint",
+        "dwarf_saint",
+        "golem_stollow",
+        "golem_stollow",
+        "human_sorcerer",
+        "dwarf_pugilist",
+        "human_undertaker"
+      ]
+    },
+    "left": "pass",
+    "right": "deploy",
+    "leftAction": {
+      "id": 0,
+      "moves": [],
+      "named": [],
+      "features": {
+        "count": 0,
+        "power": 17,
+        "powerGain": 0,
+        "newBonuses": 0,
+        "placementVP": 0,
+        "placementGold": 0,
+        "remainingGold": 6,
+        "techGain": 0,
+        "faithGain": 0
+      },
+      "train": {
+        "share": 0,
+        "vp": 38.5,
+        "gap": -27.3125,
+        "rank": 2.0625,
+        "warVP": 2.6875,
+        "goldVP": 3
+      },
+      "audit": {
+        "share": 0,
+        "vp": 38.6875,
+        "gap": -27.75,
+        "rank": 1.96875,
+        "warVP": 2.96875,
+        "goldVP": 3
+      },
+      "byModel": {
+        "balanced": {
+          "train": {
+            "share": 0,
+            "vp": 38.75,
+            "gap": -27.5,
+            "rank": 2,
+            "warVP": 2.875,
+            "goldVP": 3
+          },
+          "audit": {
+            "share": 0,
+            "vp": 39.125,
+            "gap": -27.5625,
+            "rank": 1.8125,
+            "warVP": 3.3125,
+            "goldVP": 3
+          }
+        },
+        "war": {
+          "train": {
+            "share": 0,
+            "vp": 38.25,
+            "gap": -27.125,
+            "rank": 2.125,
+            "warVP": 2.5,
+            "goldVP": 3
+          },
+          "audit": {
+            "share": 0,
+            "vp": 38.25,
+            "gap": -27.9375,
+            "rank": 2.125,
+            "warVP": 2.625,
+            "goldVP": 3
+          }
+        }
+      },
+      "outcomes": [
+        [
+          0,
+          35,
+          -33,
+          3,
+          0,
+          3
+        ],
+        [
+          0,
+          39,
+          -21,
+          2,
+          3,
+          3
+        ],
+        [
+          0,
+          39,
+          -29,
+          2,
+          3,
+          3
+        ],
+        [
+          0,
+          39,
+          -19,
+          2,
+          3,
+          3
+        ],
+        [
+          0,
+          39,
+          -33,
+          2,
+          3,
+          3
+        ],
+        [
+          0,
+          39,
+          -28,
+          2,
+          3,
+          3
+        ],
+        [
+          0,
+          39,
+          -26,
+          2,
+          3,
+          3
+        ],
+        [
+          0,
+          41,
+          -31,
+          1,
+          5,
+          3
+        ],
+        [
+          0,
+          35,
+          -32,
+          3,
+          0,
+          3
+        ],
+        [
+          0,
+          41,
+          -33,
+          1,
+          5,
+          3
+        ],
+        [
+          0,
+          41,
+          -23,
+          1,
+          5,
+          3
+        ],
+        [
+          0,
+          41,
+          -31,
+          1,
+          5,
+          3
+        ],
+        [
+          0,
+          41,
+          -26,
+          1,
+          5,
+          3
+        ],
+        [
+          0,
+          39,
+          -28,
+          2,
+          3,
+          3
+        ],
+        [
+          0,
+          39,
+          -23,
+          2,
+          3,
+          3
+        ],
+        [
+          0,
+          41,
+          -21,
+          1,
+          5,
+          3
+        ],
+        [
+          0,
+          39,
+          -26,
+          2,
+          3,
+          3
+        ],
+        [
+          0,
+          41,
+          -28,
+          1,
+          5,
+          3
+        ],
+        [
+          0,
+          35,
+          -33,
+          4,
+          0,
+          3
+        ],
+        [
+          0,
+          39,
+          -18,
+          2,
+          3,
+          3
+        ],
+        [
+          0,
+          39,
+          -30,
+          2,
+          3,
+          3
+        ],
+        [
+          0,
+          35,
+          -27,
+          3,
+          0,
+          3
+        ],
+        [
+          0,
+          39,
+          -31,
+          2,
+          3,
+          3
+        ],
+        [
+          0,
+          41,
+          -31,
+          1,
+          5,
+          3
+        ],
+        [
+          0,
+          35,
+          -33,
+          3,
+          0,
+          3
+        ],
+        [
+          0,
+          39,
+          -21,
+          2,
+          3,
+          3
+        ],
+        [
+          0,
+          35,
+          -26,
+          3,
+          0,
+          3
+        ],
+        [
+          0,
+          39,
+          -19,
+          2,
+          3,
+          3
+        ],
+        [
+          0,
+          39,
+          -33,
+          2,
+          3,
+          3
+        ],
+        [
+          0,
+          39,
+          -28,
+          2,
+          3,
+          3
+        ],
+        [
+          0,
+          39,
+          -26,
+          2,
+          3,
+          3
+        ],
+        [
+          0,
+          41,
+          -31,
+          1,
+          5,
+          3
+        ],
+        [
+          0,
+          35,
+          -30,
+          4,
+          0,
+          3
+        ],
+        [
+          0,
+          41,
+          -31,
+          1,
+          5,
+          3
+        ],
+        [
+          0,
+          41,
+          -23,
+          1,
+          5,
+          3
+        ],
+        [
+          0,
+          41,
+          -31,
+          1,
+          5,
+          3
+        ],
+        [
+          0,
+          41,
+          -26,
+          1,
+          5,
+          3
+        ],
+        [
+          0,
+          39,
+          -28,
+          2,
+          3,
+          3
+        ],
+        [
+          0,
+          35,
+          -27,
+          3,
+          0,
+          3
+        ],
+        [
+          0,
+          35,
+          -27,
+          3,
+          0,
+          3
+        ],
+        [
+          0,
+          39,
+          -26,
+          2,
+          3,
+          3
+        ],
+        [
+          0,
+          41,
+          -28,
+          1,
+          5,
+          3
+        ],
+        [
+          0,
+          35,
+          -33,
+          4,
+          0,
+          3
+        ],
+        [
+          0,
+          35,
+          -22,
+          3,
+          0,
+          3
+        ],
+        [
+          0,
+          39,
+          -30,
+          2,
+          3,
+          3
+        ],
+        [
+          0,
+          35,
+          -27,
+          3,
+          0,
+          3
+        ],
+        [
+          0,
+          39,
+          -31,
+          2,
+          3,
+          3
+        ],
+        [
+          0,
+          41,
+          -27,
+          1,
+          5,
+          3
+        ]
+      ]
+    },
+    "rightAction": {
+      "id": 1,
+      "moves": [
+        {
+          "handIndex": 3,
+          "x": -1,
+          "y": -1
+        }
+      ],
+      "named": [
+        {
+          "card": "dwarf_alchemist",
+          "x": -1,
+          "y": -1
+        }
+      ],
+      "features": {
+        "count": 1,
+        "power": 17,
+        "powerGain": 0,
+        "newBonuses": 0,
+        "placementVP": 0,
+        "placementGold": -2,
+        "remainingGold": 3,
+        "techGain": 0,
+        "faithGain": 0
+      },
+      "train": {
+        "share": 0,
+        "vp": 37.5,
+        "gap": -28.3125,
+        "rank": 2.0625,
+        "warVP": 2.6875,
+        "goldVP": 2
+      },
+      "audit": {
+        "share": 0,
+        "vp": 37.6875,
+        "gap": -28.75,
+        "rank": 1.96875,
+        "warVP": 2.96875,
+        "goldVP": 2
+      },
+      "byModel": {
+        "balanced": {
+          "train": {
+            "share": 0,
+            "vp": 37.75,
+            "gap": -28.5,
+            "rank": 2,
+            "warVP": 2.875,
+            "goldVP": 2
+          },
+          "audit": {
+            "share": 0,
+            "vp": 38.125,
+            "gap": -28.5625,
+            "rank": 1.8125,
+            "warVP": 3.3125,
+            "goldVP": 2
+          }
+        },
+        "war": {
+          "train": {
+            "share": 0,
+            "vp": 37.25,
+            "gap": -28.125,
+            "rank": 2.125,
+            "warVP": 2.5,
+            "goldVP": 2
+          },
+          "audit": {
+            "share": 0,
+            "vp": 37.25,
+            "gap": -28.9375,
+            "rank": 2.125,
+            "warVP": 2.625,
+            "goldVP": 2
+          }
+        }
+      },
+      "outcomes": [
+        [
+          0,
+          34,
+          -34,
+          3,
+          0,
+          2
+        ],
+        [
+          0,
+          38,
+          -22,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          38,
+          -30,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          38,
+          -20,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          38,
+          -34,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          38,
+          -29,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          38,
+          -27,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          40,
+          -32,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          34,
+          -33,
+          3,
+          0,
+          2
+        ],
+        [
+          0,
+          40,
+          -34,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          40,
+          -24,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          40,
+          -32,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          40,
+          -27,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          38,
+          -29,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          38,
+          -24,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          40,
+          -22,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          38,
+          -27,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          40,
+          -29,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          34,
+          -34,
+          4,
+          0,
+          2
+        ],
+        [
+          0,
+          38,
+          -19,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          38,
+          -31,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          34,
+          -28,
+          3,
+          0,
+          2
+        ],
+        [
+          0,
+          38,
+          -32,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          40,
+          -32,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          34,
+          -34,
+          3,
+          0,
+          2
+        ],
+        [
+          0,
+          38,
+          -22,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          34,
+          -27,
+          3,
+          0,
+          2
+        ],
+        [
+          0,
+          38,
+          -20,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          38,
+          -34,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          38,
+          -29,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          38,
+          -27,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          40,
+          -32,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          34,
+          -31,
+          4,
+          0,
+          2
+        ],
+        [
+          0,
+          40,
+          -32,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          40,
+          -24,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          40,
+          -32,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          40,
+          -27,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          38,
+          -29,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          34,
+          -28,
+          3,
+          0,
+          2
+        ],
+        [
+          0,
+          34,
+          -28,
+          3,
+          0,
+          2
+        ],
+        [
+          0,
+          38,
+          -27,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          40,
+          -29,
+          1,
+          5,
+          2
+        ],
+        [
+          0,
+          34,
+          -34,
+          4,
+          0,
+          2
+        ],
+        [
+          0,
+          34,
+          -23,
+          3,
+          0,
+          2
+        ],
+        [
+          0,
+          38,
+          -31,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          34,
+          -28,
+          3,
+          0,
+          2
+        ],
+        [
+          0,
+          38,
+          -32,
+          2,
+          3,
+          2
+        ],
+        [
+          0,
+          40,
+          -28,
+          1,
+          5,
+          2
+        ]
+      ]
+    }
+  }
+]

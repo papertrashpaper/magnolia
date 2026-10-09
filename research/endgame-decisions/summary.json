@@ -1,0 +1,592 @@
+{
+  "createdAt": "2026-10-09T02:21:55.400Z",
+  "totalCards": 102,
+  "cards": [
+    {
+      "id": "human_knight",
+      "name": "人間の騎士",
+      "copies": 3
+    },
+    {
+      "id": "human_marchant",
+      "name": "人間の行商",
+      "copies": 3
+    },
+    {
+      "id": "human_saint",
+      "name": "人間の聖職者",
+      "copies": 3
+    },
+    {
+      "id": "human_sorcerer",
+      "name": "人間の呪い師",
+      "copies": 3
+    },
+    {
+      "id": "human_smith",
+      "name": "人間の大工",
+      "copies": 3
+    },
+    {
+      "id": "human_great_marchant",
+      "name": "人間の大商人",
+      "copies": 2
+    },
+    {
+      "id": "human_undertaker",
+      "name": "人間の葬儀屋",
+      "copies": 2
+    },
+    {
+      "id": "human_king",
+      "name": "人間の君主",
+      "copies": 1
+    },
+    {
+      "id": "dwarf_pugilist",
+      "name": "ドワーフの拳闘士",
+      "copies": 3
+    },
+    {
+      "id": "dwarf_gem",
+      "name": "ドワーフの鉱石屋",
+      "copies": 3
+    },
+    {
+      "id": "dwarf_cook",
+      "name": "ドワーフの料理人",
+      "copies": 3
+    },
+    {
+      "id": "dwarf_saint",
+      "name": "ドワーフの神官",
+      "copies": 3
+    },
+    {
+      "id": "dwarf_alchemist",
+      "name": "ドワーフの錬金術師",
+      "copies": 3
+    },
+    {
+      "id": "dwarf_beer",
+      "name": "ドワーフのビール職人",
+      "copies": 2
+    },
+    {
+      "id": "dwarf_gardian",
+      "name": "ドワーフの聖堂守り",
+      "copies": 2
+    },
+    {
+      "id": "dwarf_king",
+      "name": "ドワーフの王",
+      "copies": 1
+    },
+    {
+      "id": "elf_archer",
+      "name": "エルフの射手",
+      "copies": 3
+    },
+    {
+      "id": "elf_marchant",
+      "name": "エルフの交易人",
+      "copies": 3
+    },
+    {
+      "id": "elf_artist",
+      "name": "エルフの芸術家",
+      "copies": 3
+    },
+    {
+      "id": "elf_mistic",
+      "name": "エルフの神秘家",
+      "copies": 3
+    },
+    {
+      "id": "elf_saint",
+      "name": "エルフの祈り手",
+      "copies": 3
+    },
+    {
+      "id": "elf_caster",
+      "name": "エルフの魔術師",
+      "copies": 2
+    },
+    {
+      "id": "elf_queen",
+      "name": "エルフの女王",
+      "copies": 1
+    },
+    {
+      "id": "elf_follower",
+      "name": "エルフの信奉者",
+      "copies": 2
+    },
+    {
+      "id": "goblin_soldier",
+      "name": "ゴブリンの兵士",
+      "copies": 3
+    },
+    {
+      "id": "goblin_scavenger",
+      "name": "ゴブリンのゴミ売り",
+      "copies": 3
+    },
+    {
+      "id": "goblin_junk",
+      "name": "ゴブリンのガラクタ集め",
+      "copies": 3
+    },
+    {
+      "id": "goblin_saint",
+      "name": "ゴブリンの祈祷師",
+      "copies": 3
+    },
+    {
+      "id": "goblin_lunatic",
+      "name": "ゴブリンの錯乱者",
+      "copies": 3
+    },
+    {
+      "id": "goblin_great_soldier",
+      "name": "ゴブリンの百人長",
+      "copies": 2
+    },
+    {
+      "id": "goblin_strategist",
+      "name": "ゴブリンの戦術家",
+      "copies": 2
+    },
+    {
+      "id": "goblin_king",
+      "name": "ゴブリンの族長",
+      "copies": 1
+    },
+    {
+      "id": "golem_iron",
+      "name": "鉄のゴーレム",
+      "copies": 3
+    },
+    {
+      "id": "golem_gold",
+      "name": "黄金のゴーレム",
+      "copies": 3
+    },
+    {
+      "id": "golem_stollow",
+      "name": "藁のゴーレム",
+      "copies": 3
+    },
+    {
+      "id": "golem_cristal",
+      "name": "水晶のゴーレム",
+      "copies": 2
+    },
+    {
+      "id": "golem_king",
+      "name": "ゴーレムの王",
+      "copies": 1
+    },
+    {
+      "id": "demon_destroy",
+      "name": "破壊のデーモン",
+      "copies": 3
+    },
+    {
+      "id": "demon_eye",
+      "name": "眼のデーモン",
+      "copies": 3
+    },
+    {
+      "id": "demon_pest",
+      "name": "疫病のデーモン",
+      "copies": 3
+    },
+    {
+      "id": "demon_storm",
+      "name": "嵐のデーモン",
+      "copies": 1
+    }
+  ],
+  "replays": [
+    {
+      "prefix": "results",
+      "id": 0
+    },
+    {
+      "prefix": "validation",
+      "id": 0
+    }
+  ],
+  "states": 128,
+  "actions": 19735,
+  "groups": {
+    "all": {
+      "states": 128,
+      "share": 0.3376871744791667,
+      "vp": 48.3037109375,
+      "gap": -5.165283203125,
+      "counts": [
+        4,
+        38,
+        86
+      ]
+    },
+    "war": {
+      "states": 128,
+      "share": 0.3118082682291667,
+      "vp": 46.724365234375,
+      "gap": -6.421630859375,
+      "counts": [
+        4,
+        35,
+        89
+      ]
+    },
+    "bonus": {
+      "states": 98,
+      "share": 0.29214498299319724,
+      "vp": 48.166772959183675,
+      "gap": -5.786352040816326,
+      "counts": [
+        0,
+        19,
+        79
+      ]
+    },
+    "single": {
+      "states": 128,
+      "share": 0.2978515625,
+      "vp": 46.8251953125,
+      "gap": -6.634521484375,
+      "counts": [
+        6,
+        122,
+        0
+      ]
+    },
+    "double": {
+      "states": 114,
+      "share": 0.3202211257309941,
+      "vp": 47.77412280701754,
+      "gap": -5.577302631578948,
+      "counts": [
+        0,
+        0,
+        114
+      ]
+    },
+    "pass": {
+      "states": 128,
+      "share": 0.16092936197916669,
+      "vp": 42.664794921875,
+      "gap": -11.996826171875,
+      "counts": [
+        128,
+        0,
+        0
+      ]
+    },
+    "ownVP": {
+      "states": 128,
+      "share": 0.3391520182291667,
+      "vp": 48.35546875,
+      "gap": -5.26611328125,
+      "counts": [
+        4,
+        38,
+        86
+      ]
+    },
+    "one": {
+      "states": 128,
+      "share": 0.2978515625,
+      "vp": 46.8056640625,
+      "gap": -6.654052734375,
+      "counts": [
+        0,
+        128,
+        0
+      ]
+    }
+  },
+  "comparisons": {
+    "single-double": {
+      "states": 114,
+      "share": -0.03225511695906433,
+      "vp": -1.2672697368421053,
+      "gap": -1.240405701754386,
+      "ci95": [
+        -0.05838815789473685,
+        -0.0062134502923976605
+      ],
+      "better": 9,
+      "equal": 81,
+      "worse": 24
+    },
+    "one-double": {
+      "states": 114,
+      "share": -0.03225511695906433,
+      "vp": -1.2804276315789473,
+      "gap": -1.2535635964912282,
+      "ci95": [
+        -0.05838815789473685,
+        -0.0062134502923976605
+      ],
+      "better": 9,
+      "equal": 81,
+      "worse": 24
+    },
+    "war-bonus": {
+      "states": 98,
+      "share": -0.012436224489795918,
+      "vp": -1.3300382653061225,
+      "gap": -0.7592474489795918,
+      "ci95": [
+        -0.03714923469387755,
+        0.009885204081632654
+      ],
+      "better": 6,
+      "equal": 79,
+      "worse": 13
+    },
+    "all-war": {
+      "states": 128,
+      "share": 0.02587890625,
+      "vp": 1.579345703125,
+      "gap": 1.25634765625,
+      "ci95": [
+        0.0128173828125,
+        0.0418701171875
+      ],
+      "better": 20,
+      "equal": 107,
+      "worse": 1
+    },
+    "all-bonus": {
+      "states": 98,
+      "share": 0.016900510204081634,
+      "vp": 0.46364795918367346,
+      "gap": 0.6559311224489796,
+      "ci95": [
+        0.0052614795918367345,
+        0.030293367346938774
+      ],
+      "better": 7,
+      "equal": 91,
+      "worse": 0
+    },
+    "all-ownVP": {
+      "states": 128,
+      "share": -0.00146484375,
+      "vp": -0.0517578125,
+      "gap": 0.100830078125,
+      "ci95": [
+        -0.005859375,
+        0.00146484375
+      ],
+      "better": 3,
+      "equal": 123,
+      "worse": 2
+    },
+    "ownVP-war": {
+      "states": 128,
+      "share": 0.02734375,
+      "vp": 1.631103515625,
+      "gap": 1.155517578125,
+      "ci95": [
+        0.013916015625,
+        0.0435791015625
+      ],
+      "better": 21,
+      "equal": 105,
+      "worse": 2
+    },
+    "ownVP-bonus": {
+      "states": 98,
+      "share": 0.01881377551020408,
+      "vp": 0.5216836734693877,
+      "gap": 0.5813137755102041,
+      "ci95": [
+        0.006696428571428571,
+        0.03284438775510204
+      ],
+      "better": 9,
+      "equal": 87,
+      "worse": 2
+    },
+    "all-pass": {
+      "states": 128,
+      "share": 0.1767578125,
+      "vp": 5.638916015625,
+      "gap": 6.83154296875,
+      "ci95": [
+        0.130859375,
+        0.22387695312500003
+      ],
+      "better": 49,
+      "equal": 79,
+      "worse": 0
+    }
+  },
+  "conditions": {
+    "sameWar": {
+      "states": 34,
+      "singleDouble": {
+        "states": 29,
+        "share": -0.0334051724137931,
+        "vp": -1.3609913793103448,
+        "gap": -1.3588362068965518,
+        "ci95": null,
+        "better": 0,
+        "equal": 23,
+        "worse": 6
+      },
+      "warBonus": {
+        "states": 26,
+        "share": 0,
+        "vp": -0.057692307692307696,
+        "gap": -0.016826923076923076,
+        "ci95": null,
+        "better": 1,
+        "equal": 24,
+        "worse": 1
+      },
+      "allWar": {
+        "states": 34,
+        "share": 0.001838235294117647,
+        "vp": 0.1948529411764706,
+        "gap": 0.16544117647058823,
+        "ci95": null,
+        "better": 1,
+        "equal": 33,
+        "worse": 0
+      }
+    },
+    "betterWar": {
+      "states": 94,
+      "singleDouble": {
+        "states": 85,
+        "share": -0.03186274509803922,
+        "vp": -1.2352941176470589,
+        "gap": -1.2,
+        "ci95": [
+          -0.0664828431372549,
+          0.0007965686274509795
+        ],
+        "better": 9,
+        "equal": 58,
+        "worse": 18
+      },
+      "warBonus": {
+        "states": 72,
+        "share": -0.016927083333333332,
+        "vp": -1.7894965277777777,
+        "gap": -1.02734375,
+        "ci95": [
+          -0.050347222222222224,
+          0.013454861111111112
+        ],
+        "better": 5,
+        "equal": 55,
+        "worse": 12
+      },
+      "allWar": {
+        "states": 94,
+        "share": 0.034574468085106384,
+        "vp": 2.080119680851064,
+        "gap": 1.6509308510638299,
+        "ci95": [
+          0.016788563829787235,
+          0.05518617021276596
+        ],
+        "better": 19,
+        "equal": 74,
+        "worse": 1
+      }
+    },
+    "king": {
+      "states": 5,
+      "singleDouble": {
+        "states": 5,
+        "share": 0,
+        "vp": 0.625,
+        "gap": 0.80625,
+        "ci95": null,
+        "better": 0,
+        "equal": 5,
+        "worse": 0
+      },
+      "warBonus": {
+        "states": 5,
+        "share": -0.103125,
+        "vp": -3.99375,
+        "gap": -2.96875,
+        "ci95": null,
+        "better": 0,
+        "equal": 3,
+        "worse": 2
+      },
+      "allWar": {
+        "states": 5,
+        "share": 0.103125,
+        "vp": 3.98125,
+        "gap": 3.1375,
+        "ci95": null,
+        "better": 2,
+        "equal": 3,
+        "worse": 0
+      }
+    },
+    "noKing": {
+      "states": 123,
+      "singleDouble": {
+        "states": 109,
+        "share": -0.033734709480122325,
+        "vp": -1.354071100917431,
+        "gap": -1.334288990825688,
+        "ci95": [
+          -0.059680810397553526,
+          -0.006976299694189603
+        ],
+        "better": 9,
+        "equal": 76,
+        "worse": 24
+      },
+      "warBonus": {
+        "states": 93,
+        "share": -0.007560483870967742,
+        "vp": -1.1868279569892473,
+        "gap": -0.6404569892473119,
+        "ci95": [
+          -0.03293010752688172,
+          0.014448924731182795
+        ],
+        "better": 6,
+        "equal": 76,
+        "worse": 11
+      },
+      "allWar": {
+        "states": 123,
+        "share": 0.022738821138211383,
+        "vp": 1.4817073170731707,
+        "gap": 1.1798780487804879,
+        "ci95": [
+          0.010035569105691058,
+          0.03874491869918699
+        ],
+        "better": 18,
+        "equal": 104,
+        "worse": 1
+      }
+    }
+  },
+  "diagnostics": {
+    "bonusAvailable": 98,
+    "oneAvailable": 128,
+    "doubleAvailable": 114,
+    "allSameAsWar": 55,
+    "allSameAsBonus": 72,
+    "ownVPHasHigherScoreButLowerShare": 2
+  }
+}

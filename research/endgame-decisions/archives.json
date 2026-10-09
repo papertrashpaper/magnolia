@@ -1,0 +1,25 @@
+{
+  "results": {
+    "files": [
+      "results.jsonl.gz.part000",
+      "results.jsonl.gz.part001",
+      "results.jsonl.gz.part002",
+      "results.jsonl.gz.part003"
+    ],
+    "states": 64,
+    "bytes": 619923,
+    "sha256": "c9f0815d93ba25647496ba9d497f6d3645268761788f62334b3fc87eb8396bd0",
+    "rawSha256": "7f3b08eaec09e0e3eb85c06884283e0523d50f162f9a37790cca95cc55a241bd"
+  },
+  "validation": {
+    "files": [
+      "validation.jsonl.gz.part000",
+      "validation.jsonl.gz.part001",
+      "validation.jsonl.gz.part002"
+    ],
+    "states": 64,
+    "bytes": 563201,
+    "sha256": "782b4a63131e2350371bf60ccf8c410128eefa6528186172eaf2f2d5f9e5ca97",
+    "rawSha256": "98e6a90f9b3c83f2e365ba371199e7dfd4b7d0383c2f6238a4e4fd8799816b35"
+  }
+}
